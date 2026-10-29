@@ -1,0 +1,12 @@
+error[E0308]: mismatched types
+ --> tests/ui/bad_modes_fn.rs:3:10
+  |
+3 | #[derive(HashType)]
+  |          ^^^^^^^^
+  |          |
+  |          expected `Vec<Mode>`, found `u32`
+  |          expected `Vec<Mode>` because of return type
+  |
+  = note: expected struct `Vec<Mode>`
+               found type `u32`
+  = note: this error originates in the derive macro `HashType` (in Nightly builds, run with -Z macro-backtrace for more info)

@@ -275,6 +275,14 @@ pub struct ParseError {
     pub message: String,
 }
 
+impl core::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{} (at byte {})", self.message, self.offset)
+    }
+}
+
+impl core::error::Error for ParseError {}
+
 /// Categories for parse failures.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ParseErrorKind {

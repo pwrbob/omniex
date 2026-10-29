@@ -1,0 +1,7 @@
+error: at least one hashcat or John mode is required
+ --> tests/ui/no_modes.rs:3:10
+  |
+3 | #[derive(HashType)]
+  |          ^^^^^^^^
+  |
+  = note: this error originates in the derive macro `HashType` (in Nightly builds, run with -Z macro-backtrace for more info)

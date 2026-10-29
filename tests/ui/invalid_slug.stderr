@@ -1,0 +1,5 @@
+error: slug must contain only lowercase ASCII letters, digits, and hyphens
+ --> tests/ui/invalid_slug.rs:4:33
+  |
+4 | #[hash(name = "Example", slug = "Bad Slug", hashcat = [0])]
+  |                                 ^^^^^^^^^^

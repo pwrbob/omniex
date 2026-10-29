@@ -1,0 +1,5 @@
+error: unknown family `Sha999`
+ --> tests/ui/unknown_family.rs:4:53
+  |
+4 | #[hash(name = "Example", slug = "example", family = Sha999, hashcat = [0])]
+  |                                                     ^^^^^^

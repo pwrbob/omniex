@@ -1,0 +1,5 @@
+error: every field requires a doc comment
+ --> tests/ui/missing_doc.rs:6:5
+  |
+6 |     digest: [u8; 16],
+  |     ^^^^^^

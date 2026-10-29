@@ -31,11 +31,8 @@ Hashcat's plaintext mode is excluded below.
 
 ### 0-999
 
-- [ ] `0` - `MD5`
-- [ ] `10` - `md5($pass.$salt)`
 - [ ] `11` - `Joomla < 2.5.18`
 - [ ] `12` - `PostgreSQL`
-- [ ] `20` - `md5($salt.$pass)`
 - [ ] `21` - `osCommerce, xt:Commerce`
 - [ ] `22` - `Juniper NetScreen/SSG (ScreenOS)`
 - [ ] `23` - `Skype`
@@ -131,7 +128,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `3710` - `md5($salt.md5($pass))`
 - [ ] `3711` - `MediaWiki B type`
 - [ ] `3730` - `md5($salt1.strtoupper(md5($salt2.$pass)))`
-- [ ] `3800` - `md5($salt.$pass.$salt)`
 - [ ] `3910` - `md5(md5($pass).md5($salt))`
 
 ### 4000-4999
@@ -1095,7 +1091,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `Raw-Keccak`
 - [ ] `Raw-Keccak-256`
 - [ ] `Raw-MD4` - OpenCL: `raw-MD4-opencl`
-- [ ] `Raw-MD5` - OpenCL: `raw-MD5-opencl`
 - [ ] `Raw-MD5-flat`
 - [ ] `Raw-MD5u`
 - [ ] `Raw-SHA1` - OpenCL: `raw-SHA1-opencl`
