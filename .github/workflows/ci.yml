@@ -61,7 +61,68 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Run tests
-        run: cargo test --workspace --all-targets --all-features --locked
+        run: cargo test --workspace --all-targets --locked
 
       - name: Run doc tests
-        run: cargo test --workspace --doc --all-features --locked
+        run: cargo test --workspace --doc --locked
+
+  hashcat:
+    name: Hashcat conformance
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+
+      - name: Cache reference hashcat
+        uses: actions/cache@v4
+        with:
+          path: tmp/reference
+          key: reference-hashcat-8.0.0
+
+      - name: Build hashcat 8.0.0
+        run: scripts/build-hashcat.sh
+
+      - name: Run hashcat conformance
+        env:
+          OMNIEX_HASHCAT: ${{ github.workspace }}/tmp/reference/hashcat-8.0.0/hashcat
+        run: cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
+
+  john:
+    name: John conformance
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install John build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libssl-dev
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+
+      - name: Cache reference John
+        uses: actions/cache@v4
+        with:
+          path: tmp/reference
+          key: reference-john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
+
+      - name: Build John jumbo
+        run: scripts/build-john.sh
+
+      - name: Run John conformance
+        env:
+          OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
+        run: cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture

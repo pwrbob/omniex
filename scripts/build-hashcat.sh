@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Build the pinned hashcat release used by the conformance tests.
+set -euo pipefail
+
+version="8.0.0"
+sha256="6281721ef2bc57aed1ffa1a186aa39d01cee09899741cb58e027733a373c2ae3"
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cache="${OMNIEX_REFERENCE_DIR:-$root/tmp/reference}"
+dest="$cache/hashcat-$version"
+
+if [[ -x "$dest/hashcat" ]]; then
+    echo "$dest/hashcat"
+    exit 0
+fi
+
+mkdir -p "$cache"
+archive="$cache/hashcat-$version.tar.gz"
+
+if [[ ! -f "$archive" ]]; then
+    curl -fsSL --retry 3 -o "$archive" \
+        "https://github.com/hashcat/hashcat/archive/refs/tags/v$version.tar.gz"
+fi
+
+echo "$sha256  $archive" | sha256sum -c -
+
+rm -rf "$dest"
+tar -xzf "$archive" -C "$cache"
+
+jobs="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)"
+make -C "$dest" -j"$jobs"
+
+test -x "$dest/hashcat"
+echo "$dest/hashcat"

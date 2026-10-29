@@ -124,10 +124,16 @@ Use `assert_cmd` or `trycmd` plus `insta` for snapshots:
 
 ```text
 cargo test --workspace
-cargo test --test hashcat_conformance
-cargo test --test john_conformance
+cargo test --test hashcat_conformance -- --ignored
+cargo test --test john_conformance -- --ignored
 cargo test --test extraction
 ```
+
+Conformance tests are `#[ignore]`d so the fast suite never needs a reference
+tool. Run them explicitly with `--ignored`. `scripts/build-hashcat.sh` and
+`scripts/build-john.sh` build the pinned versions under `tmp/reference/`; set
+`OMNIEX_HASHCAT` and `OMNIEX_JOHN` to the resulting binaries if they are not on
+`PATH`.
 
 The conformance tests are table-driven. Small vectors stay inline. Use a fixture
 file only when the case is too large or binary.
@@ -183,8 +189,9 @@ tables are enough.
 | `master` | hashcat master drift | no, later |
 
 The fast suite must run without hashcat or John. Missing reference tools are a
-failure for conformance jobs; local runs may skip only with an explicit
-`OMNIEX_ALLOW_MISSING_REFERENCE=1` and a printed warning.
+failure when a conformance test is run; an explicit
+`OMNIEX_ALLOW_MISSING_REFERENCE=1` turns that into a skipped test with a printed
+warning.
 
 Target budgets: fast suite under 5 minutes; PR total under 20 minutes.
 

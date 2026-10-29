@@ -1,6 +1,7 @@
 [workspace]
 resolver = "3"
 members = ["omniex-core", "omniex-macros"]
+exclude = ["tmp"]
 
 [workspace.package]
 version = "0.1.0"
