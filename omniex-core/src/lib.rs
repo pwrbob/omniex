@@ -105,11 +105,14 @@ pub struct FieldValue {
     pub value: String,
 }
 
-/// Metadata and behavior shared by every concrete hash type.
+/// Metadata shared by every concrete hash type.
 ///
-/// This trait is not object-safe because it has associated constants. The CLI
-/// should dispatch through an enum or a static registry instead of
-/// `dyn HashType`.
+/// This trait is metadata-only. Parsing, rendering, description, and mode
+/// compatibility live in [`Parse`], [`Render`], [`Describe`], and
+/// [`ModeCompat`].
+///
+/// It is not object-safe because it has associated constants. The CLI should
+/// dispatch through the descriptor registry instead of `dyn HashType`.
 pub trait HashType {
     /// Human-readable name.
     const NAME: &'static str;
@@ -119,20 +122,6 @@ pub trait HashType {
     const FAMILY: Option<Family>;
     /// Metadata for every field.
     const FIELDS: &'static [Field];
-
-    /// Every mode the type can ever support. Used by coverage and docs.
-    const ALL_MODES: &'static [Mode];
-
-    /// Modes that actually work for these values.
-    ///
-    /// The default returns [`Self::ALL_MODES`]. A type with value-dependent
-    /// compatibility can override this method.
-    fn modes(&self) -> Vec<Mode> {
-        Self::ALL_MODES.to_vec()
-    }
-
-    /// Values for `--verbose` and JSON output.
-    fn describe(&self) -> Vec<FieldValue>;
 }
 
 /// The target tool for rendering.
@@ -144,13 +133,68 @@ pub enum Tool {
     John,
 }
 
-/// A hashcat version number.
+/// An official hashcat release. Ordered for feature checks.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct HashcatVersion(pub u16, pub u16, pub u16);
+pub struct ReleaseVersion {
+    /// Major version.
+    pub major: u16,
+    /// Minor version.
+    pub minor: u16,
+    /// Patch version.
+    pub patch: u16,
+}
+
+impl ReleaseVersion {
+    /// Creates a release version.
+    #[must_use]
+    pub const fn new(major: u16, minor: u16, patch: u16) -> Self {
+        Self {
+            major,
+            minor,
+            patch,
+        }
+    }
+}
+
+/// A pinned hashcat master snapshot. Not ordered: tests pin an exact commit.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct MasterSnapshot {
+    /// Full commit hash.
+    pub commit: &'static str,
+    /// ISO 8601 commit date, for display only.
+    pub date: &'static str,
+}
+
+/// A hashcat build `omniex` can target.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum HashcatVersion {
+    /// Official release. Mismatches are gating.
+    Release(ReleaseVersion),
+    /// Master snapshot. Mismatches are informational only.
+    Master(MasterSnapshot),
+}
 
 impl HashcatVersion {
-    /// Newest version `omniex` knows about. Update when adding a reference.
-    pub const NEWEST: Self = Self(8, 0, 0);
+    /// The first hashcat release supported by `omniex`.
+    pub const FIRST_SUPPORTED_RELEASE: Self = Self::Release(ReleaseVersion::new(8, 0, 0));
+
+    /// Newest official release known to `omniex`. This is the default target.
+    pub const NEWEST_RELEASE: Self = Self::Release(ReleaseVersion::new(8, 0, 0));
+
+    /// Returns `true` for an official release.
+    #[must_use]
+    pub const fn is_release(self) -> bool {
+        matches!(self, Self::Release(_))
+    }
+
+    /// Returns the release version, or `None` for a master snapshot.
+    #[must_use]
+    pub const fn release(self) -> Option<ReleaseVersion> {
+        match self {
+            Self::Release(version) => Some(version),
+            Self::Master(_) => None,
+        }
+    }
 }
 
 /// Options that affect rendering.
@@ -166,7 +210,7 @@ impl Default for RenderOptions {
     fn default() -> Self {
         Self {
             tool: Tool::Hashcat,
-            hc_version: HashcatVersion::NEWEST,
+            hc_version: HashcatVersion::NEWEST_RELEASE,
         }
     }
 }
@@ -177,6 +221,96 @@ impl Default for RenderOptions {
 pub trait Render {
     /// Render the type using the given options.
     fn render(&self, opts: &RenderOptions) -> String;
+}
+
+/// Reports the current values of a hash type's fields.
+pub trait Describe {
+    /// Values for `--verbose` and JSON output.
+    fn describe(&self) -> Vec<FieldValue>;
+}
+
+/// Reports the modes that work for the concrete field values.
+pub trait ModeCompat {
+    /// Modes that can attack this value.
+    fn modes(&self) -> Vec<Mode>;
+}
+
+/// Object-safe bundle used by the descriptor registry.
+pub trait HashValue: Render + Describe + ModeCompat {}
+
+impl<T: Render + Describe + ModeCompat> HashValue for T {}
+
+/// Parses one hash string into a concrete hash type.
+pub trait Parse: Sized {
+    /// Parses `input` using the target tool and version.
+    fn parse(input: &str, opts: &ParseOptions) -> Result<Self, ParseError>;
+}
+
+/// Options that affect parsing.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ParseOptions {
+    /// Target tool.
+    pub tool: Tool,
+    /// Hashcat version used when parsing for hashcat.
+    pub hc_version: HashcatVersion,
+}
+
+impl Default for ParseOptions {
+    fn default() -> Self {
+        Self {
+            tool: Tool::Hashcat,
+            hc_version: HashcatVersion::NEWEST_RELEASE,
+        }
+    }
+}
+
+/// A parse failure with a byte offset into the input.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ParseError {
+    /// Machine-readable error category.
+    pub kind: ParseErrorKind,
+    /// Byte offset where the error was detected.
+    pub offset: usize,
+    /// Human-readable explanation.
+    pub message: String,
+}
+
+/// Categories for parse failures.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum ParseErrorKind {
+    /// The input was empty.
+    Empty,
+    /// A field had the wrong length.
+    InvalidLength,
+    /// Invalid hexadecimal input.
+    InvalidHex,
+    /// Invalid base64 input.
+    InvalidBase64,
+    /// An unexpected character was found.
+    InvalidCharacter,
+    /// The mode is not supported by this hash type.
+    Unsupported,
+    /// Any other parse error.
+    Other,
+}
+
+/// Parses a hash string into a boxed runtime value.
+pub type ParseFn = fn(&str, &ParseOptions) -> Result<Box<dyn HashValue>, ParseError>;
+
+/// Type-erased metadata and parser for one hash type.
+pub struct HashTypeDescriptor {
+    /// Human-readable name.
+    pub name: &'static str,
+    /// Stable machine-readable identifier.
+    pub slug: &'static str,
+    /// Algorithm family, if one applies.
+    pub family: Option<Family>,
+    /// Metadata for every field.
+    pub fields: &'static [Field],
+    /// Every mode the type can ever support.
+    pub all_modes: &'static [Mode],
+    /// Parses a hash string into a boxed runtime value.
+    pub parse: ParseFn,
 }
 
 #[cfg(test)]
@@ -190,19 +324,75 @@ mod tests {
         const SLUG: &'static str = "example";
         const FAMILY: Option<Family> = Some(Family::Md5);
         const FIELDS: &'static [Field] = &[];
-        const ALL_MODES: &'static [Mode] = &[Mode::Hashcat(0), Mode::John("raw-md5")];
+    }
 
+    impl Describe for Example {
         fn describe(&self) -> Vec<FieldValue> {
             Vec::new()
         }
     }
 
-    #[test]
-    fn modes_default_to_all_modes() {
-        assert_eq!(
-            Example.modes(),
+    impl ModeCompat for Example {
+        fn modes(&self) -> Vec<Mode> {
             vec![Mode::Hashcat(0), Mode::John("raw-md5")]
-        );
+        }
+    }
+
+    impl Render for Example {
+        fn render(&self, _opts: &RenderOptions) -> String {
+            "example".to_owned()
+        }
+    }
+
+    impl Parse for Example {
+        fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
+            if input == "example" {
+                Ok(Self)
+            } else {
+                Err(ParseError {
+                    kind: ParseErrorKind::InvalidCharacter,
+                    offset: 0,
+                    message: "expected `example`".to_owned(),
+                })
+            }
+        }
+    }
+
+    impl Example {
+        const DESCRIPTOR: HashTypeDescriptor = HashTypeDescriptor {
+            name: Self::NAME,
+            slug: Self::SLUG,
+            family: Self::FAMILY,
+            fields: Self::FIELDS,
+            all_modes: &[Mode::Hashcat(0), Mode::John("raw-md5")],
+            parse: |input, opts| Ok(Box::new(<Self as Parse>::parse(input, opts)?)),
+        };
+    }
+
+    #[test]
+    fn hash_type_is_metadata_only() {
+        assert_eq!(Example::NAME, "Example");
+        assert_eq!(Example::SLUG, "example");
+        assert_eq!(Example::FAMILY, Some(Family::Md5));
+        assert!(Example::FIELDS.is_empty());
+    }
+
+    #[test]
+    fn hash_value_bundles_runtime_traits() {
+        let value: Box<dyn HashValue> = Box::new(Example);
+
+        assert_eq!(value.modes(), vec![Mode::Hashcat(0), Mode::John("raw-md5")]);
+        assert!(value.describe().is_empty());
+        assert_eq!(value.render(&RenderOptions::default()), "example");
+    }
+
+    #[test]
+    fn descriptor_parses_to_a_hash_value() {
+        let value = (Example::DESCRIPTOR.parse)("example", &ParseOptions::default())
+            .expect("example parses");
+
+        assert_eq!(value.render(&RenderOptions::default()), "example");
+        assert_eq!(value.modes(), vec![Mode::Hashcat(0), Mode::John("raw-md5")]);
     }
 
     #[test]
@@ -210,6 +400,44 @@ mod tests {
         let opts = RenderOptions::default();
 
         assert_eq!(opts.tool, Tool::Hashcat);
-        assert_eq!(opts.hc_version, HashcatVersion::NEWEST);
+        assert_eq!(opts.hc_version, HashcatVersion::NEWEST_RELEASE);
+    }
+
+    #[test]
+    fn parse_options_default_to_hashcat() {
+        let opts = ParseOptions::default();
+
+        assert_eq!(opts.tool, Tool::Hashcat);
+        assert_eq!(opts.hc_version, HashcatVersion::NEWEST_RELEASE);
+    }
+
+    #[test]
+    fn initial_release_is_8_0_0() {
+        assert_eq!(
+            HashcatVersion::FIRST_SUPPORTED_RELEASE.release(),
+            Some(ReleaseVersion::new(8, 0, 0))
+        );
+        assert_eq!(
+            HashcatVersion::NEWEST_RELEASE.release(),
+            Some(ReleaseVersion::new(8, 0, 0))
+        );
+        assert!(HashcatVersion::NEWEST_RELEASE.is_release());
+    }
+
+    #[test]
+    fn release_versions_are_ordered() {
+        assert!(ReleaseVersion::new(7, 1, 2) < ReleaseVersion::new(8, 0, 0));
+        assert!(ReleaseVersion::new(8, 0, 0) < ReleaseVersion::new(8, 0, 1));
+    }
+
+    #[test]
+    fn master_snapshots_are_not_releases() {
+        let master = HashcatVersion::Master(MasterSnapshot {
+            commit: "0123456789abcdef",
+            date: "2026-10-29",
+        });
+
+        assert!(!master.is_release());
+        assert_eq!(master.release(), None);
     }
 }

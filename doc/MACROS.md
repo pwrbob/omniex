@@ -1,284 +1,108 @@
-# Macro System Design
+# Macro System
 
-This document fleshes out the macro layer described in `DESIGN.md`. It records
-the agreed design; remaining work is implementation.
+Status: specification for the first `#[derive(HashType)]` implementation. The
+core traits it targets are in `DESIGN.md`.
+
+The derive has one job: turn a normal Rust struct into metadata. It does not
+generate parsing or rendering.
 
 ## Goals
 
-- Declare each hash type **once**, as an ordinary Rust struct.
-- Generate the metadata needed by the CLI, `--verbose`, JSON output, and the
-  mode lookup.
-- Let the same declaration carry:
-  - a human-readable name and a stable machine-readable slug,
-  - the algorithm family,
-  - the hashcat / John the Ripper modes that can attack it,
-  - a description for every struct member.
-- Stay idiomatic Rust: `#[derive(...)]`, doc comments, namespaced helper
-  attributes, no macro DSL that duplicates Rust syntax.
-- Be extensible: new metadata can be added without breaking existing hash
-  structs.
+- Declare a hash type once, as a normal struct.
+- Generate `HashType`, `Describe`, and `ModeCompat`.
+- Generate the inherent `HashTypeDescriptor`.
+- Require a doc comment for every field.
+- Keep parsing and rendering manual and easy to read.
+- Keep the attribute syntax close to Rust.
 
-Non-goals (for now): generating parsing / rendering logic. The derive is
-metadata-only; `Render` is implemented manually per struct.
+Non-goals: generating `Parse`, generating `Render`, supporting enums, tuple
+structs, generic structs, or optional/repeated fields. Base64 is not supported
+until its flavor model is defined.
 
-John's dynamic compiler (`--format='dynamic=...'`) is explicitly out of scope.
-John modes are plain named format labels with no payloads.
-
-Mode categorization is out of scope here. The concrete mode numbers in this
-document are illustrative; correctly mapping every hash type to every
-compatible hashcat / John mode is a separate job.
-
-## One struct per logical hash type
-
-A **logical hash type** is defined by the *data needed to describe or attack the
-hash* together with *the serialization of that data into the string consumed by
-hashcat / John*.
-
-- `Md5` — digest only → `<digest>`
-- `SaltedMd5` — digest plus one salt → `<digest>:<salt>`
-- `DoubleSaltedMd5` — digest plus two salts → `<digest>:<salt1>:<salt2>`
-
-The derivations `md5($salt.$pass.$salt)`, `md5($salt.$pass)`, and
-`md5($pass.$salt)` all describe the same data and all consume the same attack
-string, `<digest>:<salt>`. They are therefore all compatible modes of
-`SaltedMd5`.
-
-Rendering produces the **actual attack string** (`<digest>:<salt>`), never the
-derivation notation (`md5($salt.$pass.$salt)`). The latter belongs to hashcat's
-mode table, not to our data model.
-
-Consequences:
-
-1. **Modes are compatibility metadata on the type, not part of its identity.**
-2. **Rendering is a property of the type, not the mode.** It is implemented
-   manually per struct and takes the target tool (and hashcat version) as an
-   argument.
-3. **A mode that needs a different serialization is not compatible with this
-   type.** Deciding that is the separate categorization job.
-4. **Compatibility is value-dependent.** A type declares the modes it can ever
-   support, and `modes(&self)` returns the subset that actually works for the
-   concrete field values.
-5. **`family` groups related logical types** (`Md5`, `SaltedMd5`,
-   `DoubleSaltedMd5` all in the `Md5` family).
-6. **Rust type names describe the data shape**, e.g. `SaltedMd5`. The stable
-   identifier is the slug, e.g. `salted-md5`.
-
-## Runtime types (`omniex-core`)
+## Example
 
 ```rust
-/// Static description of one struct member.
-pub struct Field {
-    /// Rust field name, or the `rename` value.
-    pub name: &'static str,
-    /// Doc comment text.
-    pub description: &'static str,
-    /// The Rust type, as a string, for `--verbose` and JSON.
-    pub ty: &'static str,
-    /// Semantic role of the member.
-    pub role: FieldRole,
-    /// How to render the value.
-    pub encoding: Encoding,
-}
+use omniex::HashType;
 
-pub enum FieldRole {
-    Salt,
-    Digest,
-    Iv,
-    Ciphertext,
-    Iterations,
-    Username,
-    Other,
-}
+/// MD5 with one salt, serialized as `<digest>:<salt>`.
+#[derive(HashType)]
+#[hash(
+    name = "Salted MD5",
+    slug = "salted-md5",
+    family = Md5,
+    hashcat = [10, 20, 3800],
+)]
+pub struct SaltedMd5 {
+    /// Salt used by the attack mode.
+    #[field(role = salt, encoding = hex)]
+    pub salt: Vec<u8>,
 
-pub enum Encoding {
-    Raw,      // format via Debug
-    Hex,
-    Base64,
-    Decimal,
-    Ascii,
-}
-
-/// Fixed algorithm families. Grows as modes are added.
-pub enum Family {
-    Md5,
-    Sha1,
-    Sha2,
-    Sha3,
-    Blake2,
-    Ripemd,
-    Whirlpool,
-    Ntlm,
-    Lm,
-    Des,
-    Aes,
-    Other,
-}
-
-/// A hashcat or John mode. Identifies the mode; carries no description.
-/// John modes are named format labels only, including pre-defined `dynamic_N`
-/// labels; ad-hoc `dynamic=...` expressions are out of scope.
-#[derive(Clone, Copy, PartialEq, Eq, Hash)]
-pub enum Mode {
-    Hashcat(u32),
-    John(&'static str),
-}
-
-/// One rendered member: metadata plus its current value.
-pub struct FieldValue {
-    pub field: &'static Field,
-    pub value: String,
-}
-
-pub trait HashType {
-    const NAME: &'static str;
-    const SLUG: &'static str;
-    const FAMILY: Option<Family>;
-    const FIELDS: &'static [Field];
-
-    /// Every mode the type can ever support. Used by coverage and docs.
-    const ALL_MODES: &'static [Mode];
-
-    /// Modes that actually work for these values. Defaults to ALL_MODES;
-    /// conditional types override it (see `modes_fn` below).
-    fn modes(&self) -> Vec<Mode> {
-        Self::ALL_MODES.to_vec()
-    }
-
-    /// Values for `--verbose` / JSON. Generated by the derive.
-    fn describe(&self) -> Vec<FieldValue>;
-}
-
-pub enum Tool {
-    Hashcat,
-    John,
-}
-
-/// An official hashcat release. Ordered for feature checks.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct ReleaseVersion {
-    pub major: u16,
-    pub minor: u16,
-    pub patch: u16,
-}
-
-impl ReleaseVersion {
-    pub const fn new(major: u16, minor: u16, patch: u16) -> Self {
-        Self {
-            major,
-            minor,
-            patch,
-        }
-    }
-}
-
-/// A pinned hashcat master snapshot. Not ordered: tests pin an exact commit.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct MasterSnapshot {
-    pub commit: &'static str,
-    /// ISO 8601 date, for display only.
-    pub date: &'static str,
-}
-
-/// A hashcat build omniex can target.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum HashcatVersion {
-    /// Official release. Mismatches are gating.
-    Release(ReleaseVersion),
-    /// Master snapshot. Mismatches are informational only.
-    Master(MasterSnapshot),
-}
-
-impl HashcatVersion {
-    /// The first hashcat release supported by omniex.
-    pub const FIRST_SUPPORTED_RELEASE: Self = Self::Release(ReleaseVersion::new(8, 0, 0));
-
-    /// Newest official release known to omniex. This is the default target.
-    pub const NEWEST_RELEASE: Self = Self::Release(ReleaseVersion::new(8, 0, 0));
-
-    pub const fn is_release(self) -> bool {
-        matches!(self, Self::Release(_))
-    }
-
-    pub const fn release(self) -> Option<ReleaseVersion> {
-        match self {
-            Self::Release(v) => Some(v),
-            Self::Master(_) => None,
-        }
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct RenderOptions {
-    pub tool: Tool,
-    pub hc_version: HashcatVersion,
-}
-
-impl Default for RenderOptions {
-    fn default() -> Self {
-        Self {
-            tool: Tool::Hashcat,
-            hc_version: HashcatVersion::NEWEST_RELEASE,
-        }
-    }
-}
-
-/// Serializes the type into the string consumed by hashcat / John.
-/// Implemented manually per struct.
-pub trait Render {
-    fn render(&self, opts: &RenderOptions) -> String;
+    /// The 16-byte MD5 digest.
+    #[field(role = digest, encoding = hex)]
+    pub digest: [u8; 16],
 }
 ```
 
-`HashType` is not object-safe (associated consts), which is fine: the CLI
-dispatches through an enum or a static registry instead of `dyn HashType`.
+`Parse` and `Render` are written manually:
 
-### `ALL_MODES` plus `modes(&self)`
+```rust
+impl omniex::Parse for SaltedMd5 {
+    fn parse(input: &str, _opts: &omniex::ParseOptions) -> Result<Self, omniex::ParseError> {
+        // Format-specific parsing goes here.
+    }
+}
 
-The type declares the full set in `ALL_MODES` (static, useful for coverage,
-documentation, and tests) and exposes the effective set through
-`modes(&self)`. The default returns `ALL_MODES`; a type with value-dependent
-compatibility provides a `modes_fn` (see below).
+impl omniex::Render for SaltedMd5 {
+    fn render(&self, _opts: &omniex::RenderOptions) -> String {
+        format!("{}:{}", omniex::format::hex(&self.digest), omniex::format::hex(&self.salt))
+    }
+}
+```
 
-This keeps a single source of truth for "what could this type support?" while
-making the CLI answer "what works for this particular hash?" without callers
-having to remember to filter.
-
-### Official releases and master
-
-Official releases are the compatibility contract. `RenderOptions::default()`
-targets `HashcatVersion::NEWEST_RELEASE`; only `Release` targets gate tests.
-Master snapshots are pinned by commit and used for informational testing so
-breakage is visible before a release, but a master mismatch never fails CI.
-
-`8.0.0` is the first supported release. Legacy releases are added only when a
-concrete need arises; the `ReleaseVersion` type keeps that path open.
-
-Mode lists are not version-annotated yet. `ALL_MODES` is the union across
-supported builds, and per-version test vectors record differences. If the CLI
-later needs to hide modes absent from a selected release, `Mode::Hashcat` can
-grow `since` / `until` metadata.
-
-## Attribute grammar
-
-Use one derive and two helper attributes. Helper attributes are declared with
-`attributes(hash, field)` on the derive, so they are inert and cannot collide
-with normal attributes.
-
-### Struct level: `#[hash(...)]`
+## Struct attributes
 
 ```rust
 #[hash(
-    name = "Salted MD5",              // human-readable name
-    slug = "salted-md5",               // stable, unique id
-    family = Md5,                      // fixed enum variant
-    hashcat = [10, 20, 3800],          // compatible hashcat modes (illustrative)
-    john = ["dynamic_10"],             // compatible John formats (illustrative)
+    name = "Salted MD5",
+    slug = "salted-md5",
+    family = Md5,
+    hashcat = [10, 20, 3800],
 )]
 ```
 
-Modes are identifiers only; no per-mode descriptions.
+| Key | Required | Meaning |
+| --- | --- | --- |
+| `name` | yes | Human-readable name. |
+| `slug` | yes | Stable, unique machine-readable identifier. |
+| `family` | no | Algorithm family. Omit for `None`. |
+| `hashcat` | no | Full declared set of compatible hashcat mode IDs. |
+| `john` | no | Full declared set of compatible John format labels. |
+| `modes_fn` | no | Function used for value-dependent compatibility. |
 
-Value-dependent compatibility uses a function attribute:
+At least one mode must be declared. Modes are identifiers only.
+
+`slug` must be lowercase ASCII letters, digits, and hyphens. A registry test
+checks uniqueness. The derive checks the syntax but cannot see other types.
+
+`family` is optional. `Family::Other` means "known but not in the current list";
+omitting `family` means "not classified".
+
+## Value-dependent modes
+
+The full declared set belongs on the descriptor. The effective set comes from
+`ModeCompat::modes(&self)`.
+
+By default the derive generates:
+
+```rust
+impl omniex::ModeCompat for SaltedMd5 {
+    fn modes(&self) -> Vec<omniex::Mode> {
+        Self::DESCRIPTOR.all_modes.to_vec()
+    }
+}
+```
+
+When compatibility depends on the values, provide a function:
 
 ```rust
 #[hash(
@@ -288,214 +112,109 @@ Value-dependent compatibility uses a function attribute:
     hashcat = [10, 20],
     modes_fn = example_modes,
 )]
-fn example_modes(h: &Example) -> Vec<Mode> {
-    let mut modes = vec![Mode::Hashcat(10)];
-    if h.salt.len() <= 16 {
-        modes.push(Mode::Hashcat(20));
+pub struct Example {
+    /// Salt value.
+    #[field(role = salt, encoding = hex)]
+    pub salt: Vec<u8>,
+}
+
+fn example_modes(value: &Example) -> Vec<omniex::Mode> {
+    let mut modes = vec![omniex::Mode::Hashcat(10)];
+    if value.salt.len() <= 16 {
+        modes.push(omniex::Mode::Hashcat(20));
     }
     modes
 }
 ```
 
-When `modes_fn` is absent, the derive relies on the trait default and
-`modes()` returns `ALL_MODES`. `ALL_MODES` always contains the full declared
-set, regardless of `modes_fn`.
+The function must be visible at the struct's location and have the signature
+`fn(&TheType) -> Vec<Mode>`. It must return a subset of `all_modes`; tests
+enforce that. The derive still records the full declared set.
 
-### Field level: `#[field(...)]`
-
-Doc comments are the only source of descriptions. A member without a doc
-comment is a **compile error**. `#[field(...)]` carries machine-relevant
-metadata only.
+## Field attributes
 
 ```rust
-pub struct SaltedMd5 {
-    /// Salt, prepended and appended to the password.
-    #[field(role = salt, encoding = hex)]
-    pub salt: Vec<u8>,
+/// Salt used by the attack mode.
+#[field(role = salt, encoding = hex)]
+pub salt: Vec<u8>,
+```
 
-    /// The resulting 16-byte MD5 digest.
-    #[field(role = digest, encoding = hex)]
-    pub digest: [u8; 16],
+Doc comments are the only source of descriptions. A field without one is a
+compile error.
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `role` | `other` | Semantic role. |
+| `encoding` | `raw` | How `Describe` formats the value. |
+| `rename` | field name | Name used in verbose/JSON output. |
+
+Supported roles: `salt`, `digest`, `iv`, `ciphertext`, `iterations`,
+`username`, `other`.
+
+Supported encodings:
+
+- `hex`: lowercase hex; requires `AsRef<[u8]>`.
+- `decimal`: requires `Display`.
+- `ascii`: UTF-8 text; requires `AsRef<[u8]>`.
+- `raw`: uses `Debug`.
+- `base64`: reserved; not implemented yet.
+
+Fields are single values. `Vec<u8>` is allowed as a byte string. `Option<T>` and
+repeated fields are not part of the derive yet.
+
+## Generated code
+
+For the example above the derive generates:
+
+- `impl HashType` with `NAME`, `SLUG`, `FAMILY`, and `FIELDS`.
+- `impl Describe` using each field's `encoding`.
+- `impl ModeCompat` returning the descriptor's full set, unless `modes_fn` is
+  supplied.
+- `impl SaltedMd5 { pub const DESCRIPTOR: HashTypeDescriptor }`.
+
+The descriptor is the registry entry:
+
+```rust
+impl SaltedMd5 {
+    pub const DESCRIPTOR: HashTypeDescriptor = HashTypeDescriptor {
+        name: "Salted MD5",
+        slug: "salted-md5",
+        family: Some(Family::Md5),
+        fields: Self::FIELDS,
+        all_modes: &[
+            Mode::Hashcat(10),
+            Mode::Hashcat(20),
+            Mode::Hashcat(3800),
+        ],
+        parse: |input, opts| Ok(Box::new(<Self as Parse>::parse(input, opts)?)),
+    };
 }
 ```
 
-Supported keys (initial set):
+The facade registers descriptors in a static slice. The derive does not write
+the registry.
 
-| key        | meaning                                                     | default    |
-| ---------- | ----------------------------------------------------------- | ---------- |
-| `role`     | semantic role (`salt`, `digest`, `iv`, ...)                 | `other`    |
-| `encoding` | value rendering (`raw`, `hex`, `base64`, `decimal`, `ascii`) | `raw`      |
-| `rename`   | name used in output instead of the Rust field name          | field name |
+## Compile-time checks
 
-## Derived expansion
+The derive rejects:
 
-For `SaltedMd5`:
-
-```rust
-impl ::omniex::HashType for SaltedMd5 {
-    const NAME: &'static str = "Salted MD5";
-    const SLUG: &'static str = "salted-md5";
-    const FAMILY: Option<::omniex::Family> = Some(::omniex::Family::Md5);
-
-    const FIELDS: &'static [::omniex::Field] = &[
-        ::omniex::Field {
-            name: "salt",
-            description: "Salt, prepended and appended to the password.",
-            ty: "Vec<u8>",
-            role: ::omniex::FieldRole::Salt,
-            encoding: ::omniex::Encoding::Hex,
-        },
-        ::omniex::Field {
-            name: "digest",
-            description: "The resulting 16-byte MD5 digest.",
-            ty: "[u8; 16]",
-            role: ::omniex::FieldRole::Digest,
-            encoding: ::omniex::Encoding::Hex,
-        },
-    ];
-
-    const ALL_MODES: &'static [::omniex::Mode] = &[
-        ::omniex::Mode::Hashcat(10),
-        ::omniex::Mode::Hashcat(20),
-        ::omniex::Mode::Hashcat(3800),
-        ::omniex::Mode::John("dynamic_10"),
-    ];
-
-    // No modes_fn: the trait default returns ALL_MODES.
-
-    fn describe(&self) -> ::std::vec::Vec<::omniex::FieldValue> {
-        ::std::vec![
-            ::omniex::FieldValue {
-                field: &Self::FIELDS[0],
-                value: ::omniex::format::hex(&self.salt),
-            },
-            ::omniex::FieldValue {
-                field: &Self::FIELDS[1],
-                value: ::omniex::format::hex(&self.digest),
-            },
-        ]
-    }
-}
-```
-
-The `describe` body is generated from `encoding`:
-
-- `hex` / `base64` / `ascii` require `AsRef<[u8]>`,
-- `decimal` requires `Display`,
-- `raw` requires `Debug`.
-The derive emits a compile error pointing at the field if the bound is not met.
-
-## Rendering
-
-Manual per struct. The tool and hashcat version are explicit arguments; ignore
-either when it makes no difference.
-
-```rust
-impl ::omniex::Render for SaltedMd5 {
-    fn render(&self, opts: &::omniex::RenderOptions) -> String {
-        let rendered = format!(
-            "{}:{}",
-            hex::encode(self.digest),
-            hex::encode(&self.salt)
-        );
-
-        match opts.tool {
-            ::omniex::Tool::Hashcat => rendered,
-            ::omniex::Tool::John => rendered,
-        }
-    }
-}
-```
-
-`RenderOptions::default()` uses hashcat and the newest known hashcat version.
-
-## `--verbose` output
-
-The metadata is enough to render something like this (colors omitted):
-
-```text
-Salted MD5 (salted-md5)
-  hashcat: 10, 20, 3800
-  John:    dynamic_10
-
-  hash    d41d8cd98f00b204e9800998ecf8427e:0011223344556677
-
-  salt    Salt, prepended and appended to the password.
-          0011223344556677
-  digest  The resulting 16-byte MD5 digest.
-          d41d8cd98f00b204e9800998ecf8427e
-```
-
-The mode list comes from `modes(&self)`, so it reflects the actual values. The
-color-coded original hash string can reuse the same per-field spans: render
-each field with a distinct color, then print the legend below.
-
-## JSON
-
-Decision: build JSON from `FIELDS` + `describe()`, so the JSON schema is
-centralized and identical to `--verbose`. Add `serde` later only if library
-consumers need it.
-
-## Compile-time validation
-
-The derive fails with a good span on:
-
-- duplicate struct keys, unknown keys,
-- a field without a doc comment,
-- duplicate `rename` values,
-- `encoding = hex` on a field whose type is not byte-like (best effort),
-- hashcat ids that are not `u32`, John names that are empty,
-- an empty `name` or `slug`,
-- a slug that is not lowercase ASCII alphanumeric plus hyphens,
+- duplicate or unknown struct keys,
+- a missing `name` or `slug`,
+- an invalid slug,
 - an unknown `family` variant,
 - a struct with no modes,
-- a `modes_fn` that does not exist or has the wrong signature (via type checking).
+- duplicate `rename` values,
+- a field without a doc comment,
+- an unknown `role` or `encoding`,
+- a `modes_fn` with the wrong signature.
 
-Slug **uniqueness** cannot be checked by a derive that only sees one struct.
-It is enforced by a test that collects every `SLUG` (or a generated registry)
-and fails on duplicates.
+The derive cannot check slug uniqueness or that `modes_fn` returns a subset of
+`all_modes`. Those are tests.
 
-## Example: full declaration
+## Limitations
 
-```rust
-use omniex::HashType;
-
-/// MD5 with a single salt, serialized as `<digest>:<salt>`.
-#[derive(HashType)]
-#[hash(
-    name = "Salted MD5",
-    slug = "salted-md5",
-    family = Md5,
-    hashcat = [10, 20, 3800],
-    john = ["dynamic_10"],
-)]
-pub struct SaltedMd5 {
-    /// Salt, prepended and appended to the password.
-    #[field(role = salt, encoding = hex)]
-    pub salt: Vec<u8>,
-
-    /// The resulting 16-byte MD5 digest.
-    #[field(role = digest, encoding = hex)]
-    pub digest: [u8; 16],
-}
-```
-
-## Why this shape
-
-- Doc comments already are Rust's description mechanism; `--verbose` and JSON
-  simply surface them.
-- The struct stays a normal struct, so pattern matching, `serde`, tests, and
-  `Debug` all work without macro magic.
-- One struct per data shape avoids near-duplicate structs.
-- `ALL_MODES` keeps coverage/docs static, while `modes(&self)` gives the CLI an
-  accurate answer for the actual values.
-- The attack string is a property of the data shape, so rendering is stable and
-  mode selection only affects which attacker is recommended.
-- A slug gives CLI/JSON/tests a stable, readable identifier that is independent
-  of the Rust type name.
-- A single metadata trait keeps parsing / extraction / rendering independent.
-
-## Status
-
-The macro design is settled. Remaining work is implementing the derive, the
-mode mapping, and the test matrix.
+- Named-field structs only.
+- No enums, tuple structs, unit structs, or generic structs.
+- No optional or repeated fields.
+- No base64 until a flavor model is defined.
+- No version annotations on individual modes.
