@@ -36,6 +36,16 @@ fn every_type_describes_every_field() {
         ("juniper-screenos", &["digest", "salt"]),
         ("blake2b-512", &["digest"]),
         ("salted-blake2b-512", &["digest", "salt"]),
+        ("ntlm", &["digest"]),
+        ("dcc", &["digest", "username"]),
+        ("sha224", &["digest"]),
+        ("sha256", &["digest"]),
+        ("salted-sha256", &["digest", "salt"]),
+        ("hmac-sha256", &["digest", "key"]),
+        ("hmailserver", &["salt", "digest"]),
+        ("sha512", &["digest"]),
+        ("salted-sha512", &["digest", "salt"]),
+        ("hmac-sha512", &["digest", "key"]),
     ];
 
     for (slug, names) in expected {
@@ -262,6 +272,78 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$BLAKE2$abcd".into(),
             ParseErrorKind::InvalidCharacter,
         ),
+        ("ntlm".into(), "".into(), ParseErrorKind::Empty),
+        ("ntlm".into(), "abcd".into(), ParseErrorKind::InvalidLength),
+        (
+            "dcc".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "dcc".into(),
+            format!("{}:a:b", zeros(32)),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "sha224".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sha256".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "salted-sha256".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "salted-sha256".into(),
+            format!("{}:a:b", zeros(64)),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "hmac-sha256".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "hmac-sha256".into(),
+            format!("{}:a:b", zeros(64)),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "hmailserver".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sha512".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "salted-sha512".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "salted-sha512".into(),
+            format!("{}:a:b", zeros(128)),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "hmac-sha512".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "hmac-sha512".into(),
+            format!("{}:a:b", zeros(128)),
+            ParseErrorKind::InvalidCharacter,
+        ),
     ];
 
     for (slug, input, kind) in cases {
@@ -384,6 +466,41 @@ fn structured_fields_are_decoded_not_kept_as_whole_strings() {
         JuniperScreenos::parse("nKjiFErqK7TPcZdFZsZMNWPtw4Pv8n:26506173", &opts).unwrap();
     assert_eq!(screenos.salt, "26506173");
     assert_eq!(screenos.digest.len(), 30);
+
+    let ntlm = omniex::types::Ntlm::parse("b4b9b02e6f09a9bd760f388b67351e2b", &opts).unwrap();
+    assert_eq!(ntlm.digest.len(), 16);
+
+    let dcc =
+        omniex::types::Dcc::parse("c896b3c6963e03c86ade3a38370bbb09:54161084332", &opts).unwrap();
+    assert_eq!(dcc.username, "54161084332");
+
+    let sha224 = omniex::types::Sha224::parse(
+        "e4fa1555ad877bf0ec455483371867200eee89550a93eff2f95a6198",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(sha224.digest.len(), 28);
+
+    let sha256 = omniex::types::Sha256::parse(
+        "127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(sha256.digest.len(), 32);
+
+    let sha512 = omniex::types::Sha512::parse(
+        "82a9dda829eb7f8ffe9fbe49e45d47d2dad9664fbb7adf72492e3c81ebd3e29134d9bc12212bf83c6840f10e8246b9db54a4859b7ccd0123d86e5872c1e5082f",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(sha512.digest.len(), 64);
+
+    let hmail = omniex::types::HmailServer::parse(
+        "8fe7ca27a17adc337cd892b1d959b4e487b8f0ef09e32214f44fb1b07e461c532e9ec3",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(&hmail.salt, b"8fe7ca");
 }
 
 #[test]
@@ -450,6 +567,22 @@ fn value_dependent_modes_track_salt_and_key_limits() {
 
     let hmac = HmacMd5::parse(&format!("{}:{}", "0".repeat(32), "k".repeat(300)), &opts).unwrap();
     assert!(hmac.modes().is_empty());
+
+    let sha256 = omniex::types::SaltedSha256::parse(
+        &format!("{}:{}", "0".repeat(64), "a".repeat(30)),
+        &opts,
+    )
+    .unwrap();
+    assert!(sha256.modes().contains(&omniex::Mode::Hashcat(1410)));
+    assert!(!sha256.modes().contains(&omniex::Mode::Hashcat(1430)));
+
+    let sha512 = omniex::types::SaltedSha512::parse(
+        &format!("{}:{}", "0".repeat(128), "a".repeat(30)),
+        &opts,
+    )
+    .unwrap();
+    assert!(sha512.modes().contains(&omniex::Mode::Hashcat(1710)));
+    assert!(!sha512.modes().contains(&omniex::Mode::Hashcat(1730)));
 
     let blake = omniex::types::SaltedBlake2b512::parse(
         &format!("$BLAKE2${}:{}", "0".repeat(128), "s".repeat(200)),

@@ -114,7 +114,7 @@ fn identify_lists_the_matching_type() {
         .args(["identify", MD5_HASH])
         .assert()
         .success()
-        .stdout("md4\tMD4\nmd5\tMD5\n");
+        .stdout("md4\tMD4\nmd5\tMD5\nntlm\tNTLM\n");
 }
 
 #[test]

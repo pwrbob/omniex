@@ -242,6 +242,144 @@ pub const VECTORS: &[Vector] = &[
         ],
         john: &[],
     },
+    Vector {
+        slug: "ntlm",
+        hashcat: &[hc!(1000, "b4b9b02e6f09a9bd760f388b67351e2b")],
+        john: &[john!("NT", "b4b9b02e6f09a9bd760f388b67351e2b")],
+    },
+    Vector {
+        slug: "dcc",
+        hashcat: &[hc!(1100, "c896b3c6963e03c86ade3a38370bbb09:54161084332")],
+        john: &[],
+    },
+    Vector {
+        slug: "sha224",
+        hashcat: &[hc!(
+            1300,
+            "e4fa1555ad877bf0ec455483371867200eee89550a93eff2f95a6198"
+        )],
+        john: &[john!(
+            "Raw-SHA224",
+            "e4fa1555ad877bf0ec455483371867200eee89550a93eff2f95a6198"
+        )],
+    },
+    Vector {
+        slug: "sha256",
+        hashcat: &[
+            hc!(
+                1400,
+                "127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935"
+            ),
+            hc!(
+                1470,
+                "9e9283e633f4a7a42d3abc93701155be8afe5660da24c8758e7d3533e2f2dc82"
+            ),
+        ],
+        john: &[john!(
+            "Raw-SHA256",
+            "127e6fbfe24a750e72930c220a8e138275656b8e5d8f48a98c3c92df2caba935"
+        )],
+    },
+    Vector {
+        slug: "salted-sha256",
+        hashcat: &[
+            hc!(
+                1410,
+                "5bb7456f43e3610363f68ad6de82b8b96f3fc9ad24e9d1f1f8d8bd89638db7c0:12480864321"
+            ),
+            hc!(
+                1420,
+                "816d1ded1d621873595048912ea3405d9d42afd3b57665d9f5a2db4d89720854:36176620"
+            ),
+            hc!(
+                1430,
+                "b2d0db162e30dfef1bfd606689a3acbc213c47ef3fd11968394191886075249d:32002"
+            ),
+            hc!(
+                1440,
+                "84ebe1bc3d59919a8c4f9337d66bd163661586c828b24b8067a27a6dc4228c64:05662"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-sha256",
+        hashcat: &[
+            hc!(
+                1450,
+                "b435ffbacea34d5eb0dbc4d69a92f0152f2cf4cd364d34c2ece322ca22d8b334:21217"
+            ),
+            hc!(
+                1460,
+                "8b9472281c36c3a693703de0e0f1ffab8fc0ecdd3bc5ead04c76dd74ef431e49:70108387805"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "hmailserver",
+        hashcat: &[hc!(
+            1421,
+            "8fe7ca27a17adc337cd892b1d959b4e487b8f0ef09e32214f44fb1b07e461c532e9ec3"
+        )],
+        john: &[john!(
+            "hMailServer",
+            "8fe7ca27a17adc337cd892b1d959b4e487b8f0ef09e32214f44fb1b07e461c532e9ec3"
+        )],
+    },
+    Vector {
+        slug: "sha512",
+        hashcat: &[
+            hc!(
+                1700,
+                "82a9dda829eb7f8ffe9fbe49e45d47d2dad9664fbb7adf72492e3c81ebd3e29134d9bc12212bf83c6840f10e8246b9db54a4859b7ccd0123d86e5872c1e5082f"
+            ),
+            hc!(
+                1770,
+                "79bba09eb9354412d0f2c037c22a777b8bf549ab12d49b77d5b25faa839e4378d8f6fa11aceb6d9413977ae5ad5d011568bad2de4f998d75fd4ce916eda83697"
+            ),
+        ],
+        john: &[john!(
+            "Raw-SHA512",
+            "82a9dda829eb7f8ffe9fbe49e45d47d2dad9664fbb7adf72492e3c81ebd3e29134d9bc12212bf83c6840f10e8246b9db54a4859b7ccd0123d86e5872c1e5082f"
+        )],
+    },
+    Vector {
+        slug: "salted-sha512",
+        hashcat: &[
+            hc!(
+                1710,
+                "3f749c84d00c6f94a6651b5c195c71dacae08f3cea6fed760232856cef701f7bf60d7f38a587f69f159d4e4cbe00435aeb9c8c0a4927b252d76a744e16e87e91:388026522082"
+            ),
+            hc!(
+                1720,
+                "efc5dd0e4145970917abdc311e1d4e23ba0afa9426d960cb28569f4d585cb031af5c936f57fbcb0a08368a1b302573cf582100d40bd7c632f3d8aecd1a1a8eb1:812"
+            ),
+            hc!(
+                1730,
+                "eefb67342d62a5d8ac84e8ae89d0f157f03749bd0427c80637003a4760feefdb36cbe11ba35ab2015b3691e2e83803178c986aa85f29e6f56938b469a31ccd7a:6576666"
+            ),
+            hc!(
+                1740,
+                "ce77bf8a8ca9b9cf0ed67edde58ed7fafd4542ce1378fc8bd87b05656ebf92e5711517d5930c18de93a71990e77e1037423e5b64c2f293be7d859d7b6921622e:1512373"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-sha512",
+        hashcat: &[
+            hc!(
+                1750,
+                "138c00f17a1a0363f274817c91118f019aff09f937bfdaea844280a0c0e7811267cc4735d967d8640eed1218268c1c4a76fec8f7aa551491b353829f3a654270:885142"
+            ),
+            hc!(
+                1760,
+                "7d02921299935179d509e6dd4f3d0f2944e3451ea9de3af16baead6a7297e5653577d2473a0fff743d9fe78a89bd49296114319989dc7e7870fc7f62bc96accb:114"
+            ),
+        ],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

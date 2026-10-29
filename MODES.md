@@ -31,33 +31,13 @@ Hashcat's plaintext mode is excluded below.
 
 ### 1000-1999
 
-- [ ] `1000` - `NTLM`
-- [ ] `1100` - `Domain Cached Credentials (DCC), MS Cache`
-- [ ] `1300` - `SHA2-224`
-- [ ] `1400` - `SHA2-256`
-- [ ] `1410` - `sha256($pass.$salt)`
 - [ ] `1411` - `SSHA-256(Base64), LDAP {SSHA256}`
-- [ ] `1420` - `sha256($salt.$pass)`
-- [ ] `1421` - `hMailServer`
-- [ ] `1430` - `sha256(utf16le($pass).$salt)`
-- [ ] `1440` - `sha256($salt.utf16le($pass))`
 - [ ] `1441` - `Episerver 6.x >= .NET 4`
-- [ ] `1450` - `HMAC-SHA256 (key = $pass)`
-- [ ] `1460` - `HMAC-SHA256 (key = $salt)`
-- [ ] `1470` - `sha256(utf16le($pass))`
 - [ ] `1500` - `descrypt, DES (Unix), Traditional DES`
 - [ ] `1600` - `Apache $apr1$ MD5, md5apr1, MD5 (APR)`
-- [ ] `1700` - `SHA2-512`
-- [ ] `1710` - `sha512($pass.$salt)`
 - [ ] `1711` - `SSHA-512(Base64), LDAP {SSHA512}`
-- [ ] `1720` - `sha512($salt.$pass)`
 - [ ] `1722` - `macOS v10.7`
-- [ ] `1730` - `sha512(utf16le($pass).$salt)`
 - [ ] `1731` - `MSSQL (2012, 2014)`
-- [ ] `1740` - `sha512($salt.utf16le($pass))`
-- [ ] `1750` - `HMAC-SHA512 (key = $pass)`
-- [ ] `1760` - `HMAC-SHA512 (key = $salt)`
-- [ ] `1770` - `sha512(utf16le($pass))`
 - [ ] `1800` - `sha512crypt $6$, SHA512 (Unix)`
 
 ### 2000-2999
@@ -920,7 +900,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `HMAC-SHA1`
 - [ ] `HMAC-SHA256`
 - [ ] `HMAC-SHA512`
-- [ ] `hMailServer`
 - [ ] `hsrp`
 - [ ] `IKE`
 - [ ] `ipb2`
@@ -985,7 +964,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `nk`
 - [ ] `notes` - OpenCL: `notes-opencl`
 - [ ] `nsec3`
-- [ ] `NT` - OpenCL: `NT-opencl`
 - [ ] `NT-long`
 - [ ] `ntlmv2-opencl` - OpenCL only
 - [ ] `o10glogon`
@@ -1045,11 +1023,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `Raw-MD5-flat`
 - [ ] `Raw-MD5u`
 - [ ] `Raw-SHA1-Linkedin`
-- [ ] `Raw-SHA224`
-- [ ] `Raw-SHA256` - OpenCL: `raw-SHA256-opencl`
 - [ ] `Raw-SHA3`
 - [ ] `Raw-SHA384`
-- [ ] `Raw-SHA512` - OpenCL: `raw-SHA512-opencl`
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
 - [ ] `Raw-SM3`
 - [ ] `restic`

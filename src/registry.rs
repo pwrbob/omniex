@@ -1,9 +1,10 @@
 //! Static registry of every concrete hash type.
 
 use crate::types::{
-    ArubaSha1, Blake2b512, DjangoSha1, Episerver, HmacMd5, HmacSha1, JuniperIve, JuniperScreenos,
-    LdapSha1, LdapSsha1, MacosSha1, Md4, Md5, Md5Crypt, Mssql2000, Mssql2005, Mysql323, OracleSha1,
-    PeoplesoftSha1, Phpass, SaltedBlake2b512, SaltedMd5, SaltedSha1, Sha1,
+    ArubaSha1, Blake2b512, Dcc, DjangoSha1, Episerver, HmacMd5, HmacSha1, HmacSha256, HmacSha512,
+    HmailServer, JuniperIve, JuniperScreenos, LdapSha1, LdapSsha1, MacosSha1, Md4, Md5, Md5Crypt,
+    Mssql2000, Mssql2005, Mysql323, Ntlm, OracleSha1, PeoplesoftSha1, Phpass, SaltedBlake2b512,
+    SaltedMd5, SaltedSha1, SaltedSha256, SaltedSha512, Sha1, Sha224, Sha256, Sha512,
 };
 use crate::{HashTypeDescriptor, ParseError, ParseFn, ParseOptions};
 
@@ -33,6 +34,16 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &JuniperScreenos::DESCRIPTOR,
     &Blake2b512::DESCRIPTOR,
     &SaltedBlake2b512::DESCRIPTOR,
+    &Ntlm::DESCRIPTOR,
+    &Dcc::DESCRIPTOR,
+    &Sha224::DESCRIPTOR,
+    &Sha256::DESCRIPTOR,
+    &SaltedSha256::DESCRIPTOR,
+    &HmacSha256::DESCRIPTOR,
+    &HmailServer::DESCRIPTOR,
+    &Sha512::DESCRIPTOR,
+    &SaltedSha512::DESCRIPTOR,
+    &HmacSha512::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

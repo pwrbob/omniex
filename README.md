@@ -47,6 +47,16 @@ Run `omniex types` for the full list in a given build.
 | `juniper-screenos` | 22 | - |
 | `blake2b-512` | 600 | `Raw-Blake2` |
 | `salted-blake2b-512` | 610, 620 | - |
+| `ntlm` | 1000 | `NT` |
+| `dcc` | 1100 | - |
+| `sha224` | 1300 | `Raw-SHA224` |
+| `sha256` | 1400, 1470 | `Raw-SHA256` |
+| `salted-sha256` | 1410, 1420, 1430, 1440 | - |
+| `hmac-sha256` | 1450, 1460 | - |
+| `hmailserver` | 1421 | `hMailServer` |
+| `sha512` | 1700, 1770 | `Raw-SHA512` |
+| `salted-sha512` | 1710, 1720, 1730, 1740 | - |
+| `hmac-sha512` | 1750, 1760 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.
