@@ -24,8 +24,8 @@ Run `omniex types` for the full list in a given build.
 | Type (`--type`) | Hashcat modes | John format |
 | --- | --- | --- |
 | `md4` | 900 | `Raw-MD4` |
-| `md5` | 0, 70 | `Raw-MD5` |
-| `salted-md5` | 10, 11, 12, 20, 21, 23, 24, 30, 40, 3800 | - |
+| `md5` | 0, 70, 2600 | `Raw-MD5` |
+| `salted-md5` | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3800 | - |
 | `hmac-md5` | 50, 60 | - |
 | `sha1` | 100, 170, 300 | `Raw-SHA1` |
 | `salted-sha1` | 110, 120, 121, 130, 140 | - |
@@ -65,6 +65,10 @@ Run `omniex types` for the full list in a given build.
 | `macos-sha512` | 1722 | - |
 | `mssql-2012` | 1731 | `mssql12` |
 | `sha512crypt` | 1800 | `sha512crypt` |
+| `dcc2` | 2100 | `mscash2` |
+| `cisco-pix` | 2400 | `pix-md5` |
+| `cisco-asa` | 2410 | - |
+| `phps` | 2612 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

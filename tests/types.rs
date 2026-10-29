@@ -54,6 +54,10 @@ fn every_type_describes_every_field() {
         ("macos-sha512", &["salt", "digest"]),
         ("mssql-2012", &["salt", "digest"]),
         ("sha512crypt", &["rounds", "salt", "digest"]),
+        ("dcc2", &["iterations", "username", "digest"]),
+        ("cisco-pix", &["crypt"]),
+        ("cisco-asa", &["crypt", "salt"]),
+        ("phps", &["salt", "digest"]),
     ];
 
     for (slug, names) in expected {
@@ -432,6 +436,46 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$6$salt$short".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "dcc2".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "dcc2".into(),
+            "$DCC2$x#user#00".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "cisco-pix".into(),
+            "short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "cisco-pix".into(),
+            "!!!!!!!!!!!!!!!!".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "cisco-asa".into(),
+            "short:1".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "cisco-asa".into(),
+            "YjDBNr.A0AN7DA8s:abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "phps".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "phps".into(),
+            "$PHPS$abc$00".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
     ];
 
     for (slug, input, kind) in cases {
@@ -640,6 +684,25 @@ fn structured_fields_are_decoded_not_kept_as_whole_strings() {
     )
     .unwrap();
     assert_eq!(omniex::format::hex(mssql12.salt), "37880067");
+
+    let dcc2 =
+        omniex::types::Dcc2::parse("$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626", &opts)
+            .unwrap();
+    assert_eq!(dcc2.iterations, 10240);
+    assert_eq!(dcc2.username, "6848");
+
+    let pix = omniex::types::CiscoPix::parse("dRRVnUmUHXOTt9nk", &opts).unwrap();
+    assert_eq!(pix.crypt, "dRRVnUmUHXOTt9nk");
+
+    let asa = omniex::types::CiscoAsa::parse("YjDBNr.A0AN7DA8s:4684", &opts).unwrap();
+    assert_eq!(asa.salt, "4684");
+
+    let phps = omniex::types::Phps::parse(
+        "$PHPS$30353031383437363132$f02b0b2f25e5754edb04522c346ba243",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(phps.salt, "30353031383437363132");
 }
 
 #[test]

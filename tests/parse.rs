@@ -160,7 +160,12 @@ fn modes_are_a_subset_of_declared_modes() {
 fn declared_modes_match_the_design() {
     assert_eq!(
         Md5::DESCRIPTOR.all_modes,
-        &[Mode::Hashcat(0), Mode::Hashcat(70), Mode::John("Raw-MD5")]
+        &[
+            Mode::Hashcat(0),
+            Mode::Hashcat(70),
+            Mode::Hashcat(2600),
+            Mode::John("Raw-MD5"),
+        ]
     );
     assert_eq!(
         SaltedMd5::DESCRIPTOR.all_modes,
@@ -174,6 +179,10 @@ fn declared_modes_match_the_design() {
             Mode::Hashcat(24),
             Mode::Hashcat(30),
             Mode::Hashcat(40),
+            Mode::Hashcat(2611),
+            Mode::Hashcat(2630),
+            Mode::Hashcat(2711),
+            Mode::Hashcat(2811),
             Mode::Hashcat(3800),
         ]
     );

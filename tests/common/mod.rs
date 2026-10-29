@@ -51,6 +51,7 @@ pub const VECTORS: &[Vector] = &[
         hashcat: &[
             hc!(0, "8743b52063cd84097a65d1633f5c74f5"),
             hc!(70, "2303b15bfa48c74a74758135a0df1201"),
+            hc!(2600, "a936af92b0ae20b1ff6c3347a72e5fbe"),
         ],
         john: &[john!("Raw-MD5", "8743b52063cd84097a65d1633f5c74f5")],
     },
@@ -72,6 +73,13 @@ pub const VECTORS: &[Vector] = &[
             hc!(24, "e983672a03adcc9767b24584338eb378:00"),
             hc!(30, "1169500a7dfece72e1f7fc9c9410867a:687430237020"),
             hc!(40, "23a8a90599fc5d0d15265d4d3b565f6e:58802707"),
+            hc!(2611, "28f9975808ae2bdc5847b1cda26033ea:308"),
+            hc!(2630, "0127eecea3120e34c8934ba3b72a390a:0"),
+            hc!(
+                2711,
+                "0844fbb2fdeda31884a7a45ec2010bb6:324410183853308365427804872426"
+            ),
+            hc!(2811, "022f7e02b3314f7d0968f73c00ba759f:67588"),
             hc!(3800, "78274b1105fb8a7c415b43ffe35ec4a9:6"),
         ],
         john: &[],
@@ -446,6 +454,35 @@ pub const VECTORS: &[Vector] = &[
             "sha512crypt",
             "$6$72820166$U4DVzpcYxgw7MVVDGGvB2/H5lRistD5.Ah4upwENR5UtffLR4X4SxSzfREv8z6wVl0jRFX40/KnYVvK4829kD1"
         )],
+    },
+    Vector {
+        slug: "dcc2",
+        hashcat: &[hc!(
+            2100,
+            "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"
+        )],
+        john: &[john!(
+            "mscash2",
+            "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"
+        )],
+    },
+    Vector {
+        slug: "cisco-pix",
+        hashcat: &[hc!(2400, "dRRVnUmUHXOTt9nk")],
+        john: &[john!("pix-md5", "dRRVnUmUHXOTt9nk")],
+    },
+    Vector {
+        slug: "cisco-asa",
+        hashcat: &[hc!(2410, "YjDBNr.A0AN7DA8s:4684")],
+        john: &[],
+    },
+    Vector {
+        slug: "phps",
+        hashcat: &[hc!(
+            2612,
+            "$PHPS$30353031383437363132$f02b0b2f25e5754edb04522c346ba243"
+        )],
+        john: &[],
     },
 ];
 

@@ -34,18 +34,8 @@ Hashcat's plaintext mode is excluded below.
 
 ### 2000-2999
 
-- [ ] `2000` - `STDOUT`
-- [ ] `2100` - `Domain Cached Credentials 2 (DCC2), MS Cache 2`
-- [ ] `2400` - `Cisco-PIX MD5`
-- [ ] `2410` - `Cisco-ASA MD5`
 - [ ] `2500` - `WPA-EAPOL-PBKDF2`
 - [ ] `2501` - `WPA-EAPOL-PMK`
-- [ ] `2600` - `md5(md5($pass))`
-- [ ] `2611` - `vBulletin < v3.8.5`
-- [ ] `2612` - `PHPS`
-- [ ] `2630` - `md5(md5($pass.$salt))`
-- [ ] `2711` - `vBulletin >= v3.8.5`
-- [ ] `2811` - `MyBB 1.2+, IPB2+ (Invision Power Board)`
 
 ### 3000-3999
 
@@ -938,7 +928,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `MongoDB`
 - [ ] `Mozilla`
 - [ ] `mscash` - OpenCL: `mscash-opencl`
-- [ ] `mscash2`
 - [ ] `mschapv2-naive`
 - [ ] `mssql12`
 - [ ] `multibit`
@@ -992,7 +981,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `pgpwde` - OpenCL: `pgpwde-opencl`
 - [ ] `PHPS`
 - [ ] `PHPS2`
-- [ ] `pix-md5`
 - [ ] `PKZIP`
 - [ ] `po`
 - [ ] `postgres`
@@ -1098,4 +1086,5 @@ Remove each entry together with the base mode it duplicates.
 
 - hashcat `99999` - `Plaintext`: not a hash.
 - John `plaintext`: not a hash.
+- hashcat `2000` - `STDOUT`: not a hash.
 - John `dynamic` and `dynamic=`: dynamic compiler support is out of scope.
