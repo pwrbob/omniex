@@ -16,28 +16,55 @@ behavior. Macro details are in `MACROS.md`; testing is in `TESTING.md`.
 
 ## What is a logical hash type?
 
-A logical hash type is defined by:
+`omniex` uses algorithm-based identity. A logical hash type is defined by:
 
 - the algorithm family,
 - the fields needed to describe or attack the hash,
 - one serialization per target tool.
 
-The exact key-derivation order is a mode, not a separate type, when the fields
-and string stay the same. This keeps one struct per representation while `modes`
-records the attack variants.
+The exact key-derivation order or password encoding is a mode, not a separate
+type, when the algorithm, fields, and serialized string stay the same. If the
+algorithm differs, or a field changes meaning, or the serialization differs,
+the result is a different type.
+
+This choice keeps field names and doc comments accurate. A salt is named
+`salt`; an HMAC key is named `key`. The two are not merged just because both
+serialize next to a digest.
 
 Examples:
 
-- `Md5` has one digest and renders as hex.
+- `Md5` has one 16-byte digest and renders as 32 hex digits. Hashcat modes 0
+  and 70 both use MD5. MD4 is a different algorithm, so `Md4` is a separate
+  type even though the byte length and serialization are identical.
 - `SaltedMd5` has a digest and one salt and renders as `<digest>:<salt>`.
-  Hashcat modes 10, 20, and 3800 consume that same string, so they are modes of
-  the same type.
-- `Ntlm` is not `Md5` even though both are digest-only. The algorithm family
-  differs.
-- If two modes need different fields or hashcat strings, they need different
-  types.
+  Hashcat modes 10, 20, 30, 40, and 3800 consume that same string with the same
+  fields, so they are modes of the same type. Branded variants such as Joomla
+  and PostgreSQL are also modes of `SaltedMd5`; they do not rename the type.
+- `HmacMd5` is separate from `SaltedMd5` because the extra value is an HMAC key,
+  not a salt. The member is named `key` and its description says so.
+- `Sha1` and `SaltedSha1` are separate from the MD5 types because their
+  algorithm and digest length differ.
+- Oracle, macOS, ArubaOS, Django, MSSQL, and similar SHA-1 schemes each have a
+  different field layout or serialization, so they have their own types.
 - Hashcat and John may use different strings for the same type. `Tool` selects
   the serialization.
+
+There is no `Family` field on a hash type. The name, slug, fields, and
+declared modes already identify it, and a separate family classification was a
+second identity axis that invited incorrect grouping.
+
+### Naming rule
+
+When adding a mode:
+
+- If an existing type has the same algorithm, fields, field meanings, and
+  serialization, add the mode to that type. Do not rename the type after the
+  new mode; the name describes the algorithm and representation, not every
+  product that uses it.
+- If any of those differ, add a new type with a name that names the algorithm
+  and the distinguishing shape, for example `Salted MD5`, `HMAC-MD5`,
+  `Oracle 11g SHA1`, or `MSSQL (2000)`.
+- A slug is stable once published. It identifies the struct, not a hashcat mode.
 
 Fields hold one value in v0. `Vec<u8>` is allowed as a byte string; optional and
 repeated fields are added only when a format needs them.
@@ -50,7 +77,6 @@ repeated fields are added only when a format needs them.
 pub trait HashType {
     const NAME: &'static str;
     const SLUG: &'static str;
-    const FAMILY: Option<Family>;
     const FIELDS: &'static [Field];
 }
 
@@ -84,7 +110,6 @@ a value-dependent type supplies a `modes_fn`.
 pub struct HashTypeDescriptor {
     pub name: &'static str,
     pub slug: &'static str,
-    pub family: Option<Family>,
     pub fields: &'static [Field],
     pub all_modes: &'static [Mode],
     // fn(&str, &ParseOptions) -> Result<Box<dyn HashValue>, ParseError>
@@ -116,13 +141,13 @@ pub struct Field {
 Every field must have a doc comment. The derive turns that comment into
 `description` and fails the build when it is missing.
 
-`Encoding` currently covers `raw`, `hex`, `decimal`, and `ascii`. `Raw` uses
-`Debug`; `hex` is lowercase; `decimal` uses `Display`; `ascii` requires
-`AsRef<[u8]>`. Base64 is reserved but not specified yet; do not use it until a
-concrete flavor (alphabet and padding) is added.
+`Encoding` covers `raw`, `hex`, `base64`, `decimal`, and `ascii`. `Raw` uses
+`Debug`; `hex` is lowercase; `base64` is standard RFC 4648 with padding;
+`decimal` uses `Display`; `ascii` requires `AsRef<[u8]>`.
 
-`FieldRole` starts with `salt`, `digest`, `iv`, `ciphertext`, `iterations`,
-`username`, and `other`. It can grow when a real format needs a new role.
+`FieldRole` starts with `salt`, `key`, `digest`, `iv`, `ciphertext`,
+`iterations`, `username`, and `other`. It can grow when a real format needs a
+new role.
 
 ## Modes and versions
 
@@ -152,6 +177,7 @@ The CLI is intentionally small:
 ```text
 omniex parse <hash> [--type <slug>] [--format hashcat|john] [--hc-version <release>] [--verbose|--json]
 omniex identify <hash>
+omniex types [--json]
 omniex extract <artifact> [--type <slug>] [--format hashcat|john]
 ```
 
@@ -160,6 +186,8 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
   `extract`.
 - `identify` lists every hash type that parses the input. Ambiguous input is
   not an error; the user disambiguates with `--type`.
+- `types` lists the hash types registered in this build. It is separate from
+  `identify`, which is always input-driven.
 - `extract` uses the extractor registered for the selected hash type. Without
   `--type`, it auto-detects when exactly one type matches; otherwise it lists
   candidates.
@@ -170,8 +198,8 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
   with its line number and byte offset. Partial output is not written.
 - Exit codes: `0` success, `1` input/parse/extract error, `2` usage error.
 - JSON is built from the descriptor and `Describe` output. The schema is pinned
-  by CLI snapshots: name, slug, family, modes, and fields with name, role,
-  encoding, description, and value.
+  by CLI snapshots: name, slug, modes, and fields with name, role, encoding,
+  description, and value.
 - Colorized `--verbose` spans are a later enhancement. v0 prints the components
   in `Describe` order.
 
@@ -195,7 +223,7 @@ v0 covers:
 - CLI output and basic hash lists.
 
 Later work covers extraction, the broad mode sweep, version-specific format
-changes, base64 flavors, and optional/repeated fields.
+changes, custom base64 alphabets, and optional/repeated fields.
 
 ## Non-goals
 

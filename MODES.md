@@ -29,48 +29,6 @@ Conventions:
 Initial source set: 728 listed hashcat entries (7 of them bridged modes).
 Hashcat's plaintext mode is excluded below.
 
-### 0-999
-
-- [ ] `11` - `Joomla < 2.5.18`
-- [ ] `12` - `PostgreSQL`
-- [ ] `21` - `osCommerce, xt:Commerce`
-- [ ] `22` - `Juniper NetScreen/SSG (ScreenOS)`
-- [ ] `23` - `Skype`
-- [ ] `24` - `SolarWinds Serv-U`
-- [ ] `30` - `md5(utf16le($pass).$salt)`
-- [ ] `40` - `md5($salt.utf16le($pass))`
-- [ ] `50` - `HMAC-MD5 (key = $pass)`
-- [ ] `60` - `HMAC-MD5 (key = $salt)`
-- [ ] `70` - `md5(utf16le($pass))`
-- [ ] `100` - `SHA1`
-- [ ] `101` - `nsldap, SHA-1(Base64), Netscape LDAP SHA`
-- [ ] `110` - `sha1($pass.$salt)`
-- [ ] `111` - `nsldaps, SSHA-1(Base64), Netscape LDAP SSHA`
-- [ ] `112` - `Oracle S: Type (Oracle 11+)`
-- [ ] `120` - `sha1($salt.$pass)`
-- [ ] `121` - `SMF (Simple Machines Forum) > v1.1`
-- [ ] `122` - `macOS v10.4, macOS v10.5, macOS v10.6`
-- [ ] `124` - `Django (SHA-1)`
-- [ ] `125` - `ArubaOS`
-- [ ] `130` - `sha1(utf16le($pass).$salt)`
-- [ ] `131` - `MSSQL (2000)`
-- [ ] `132` - `MSSQL (2005)`
-- [ ] `133` - `PeopleSoft`
-- [ ] `140` - `sha1($salt.utf16le($pass))`
-- [ ] `141` - `Episerver 6.x < .NET 4`
-- [ ] `150` - `HMAC-SHA1 (key = $pass)`
-- [ ] `160` - `HMAC-SHA1 (key = $salt)`
-- [ ] `170` - `sha1(utf16le($pass))`
-- [ ] `200` - `MySQL323`
-- [ ] `300` - `MySQL4.1/MySQL5`
-- [ ] `400` - `phpass`
-- [ ] `500` - `md5crypt, MD5 (Unix), Cisco-IOS $1$ (MD5)`
-- [ ] `501` - `Juniper IVE`
-- [ ] `600` - `BLAKE2b-512`
-- [ ] `610` - `BLAKE2b-512($pass.$salt)`
-- [ ] `620` - `BLAKE2b-512($salt.$pass)`
-- [ ] `900` - `MD4`
-
 ### 1000-1999
 
 - [ ] `1000` - `NTLM`
@@ -1001,7 +959,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 ### M-O
 
 - [ ] `MD2`
-- [ ] `md5crypt` - OpenCL: `md5crypt-opencl`
 - [ ] `md5crypt-long`
 - [ ] `md5ns`
 - [ ] `mdc2`
@@ -1013,11 +970,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `mscash` - OpenCL: `mscash-opencl`
 - [ ] `mscash2`
 - [ ] `mschapv2-naive`
-- [ ] `mssql`
-- [ ] `mssql05`
 - [ ] `mssql12`
 - [ ] `multibit`
-- [ ] `mysql`
 - [ ] `mysql-sha1` - OpenCL: `mysql-sha1-opencl`
 - [ ] `mysqlna`
 - [ ] `net-ah`
@@ -1067,7 +1021,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `pgpdisk` - OpenCL: `pgpdisk-opencl`
 - [ ] `pgpsda` - OpenCL: `pgpsda-opencl`
 - [ ] `pgpwde` - OpenCL: `pgpwde-opencl`
-- [ ] `phpass` - OpenCL: `phpass-opencl`
 - [ ] `PHPS`
 - [ ] `PHPS2`
 - [ ] `pix-md5`
@@ -1087,13 +1040,10 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `RAKP-SHA256` - OpenCL: `RAKP-SHA256-opencl`
 - [ ] `rar` - OpenCL: `rar-opencl`
 - [ ] `RAR5` - OpenCL: `RAR5-opencl`
-- [ ] `Raw-Blake2`
 - [ ] `Raw-Keccak`
 - [ ] `Raw-Keccak-256`
-- [ ] `Raw-MD4` - OpenCL: `raw-MD4-opencl`
 - [ ] `Raw-MD5-flat`
 - [ ] `Raw-MD5u`
-- [ ] `Raw-SHA1` - OpenCL: `raw-SHA1-opencl`
 - [ ] `Raw-SHA1-Linkedin`
 - [ ] `Raw-SHA224`
 - [ ] `Raw-SHA256` - OpenCL: `raw-SHA256-opencl`

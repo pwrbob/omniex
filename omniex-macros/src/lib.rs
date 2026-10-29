@@ -25,7 +25,6 @@ pub fn derive_hash_type(input: TokenStream) -> TokenStream {
 struct HashAttrs {
     name: LitStr,
     slug: LitStr,
-    family: Option<Path>,
     hashcat: Vec<u32>,
     john: Vec<String>,
     modes_fn: Option<Path>,
@@ -69,14 +68,6 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let ident = &input.ident;
     let name = &hash_attrs.name;
     let slug = &hash_attrs.slug;
-
-    let family = match &hash_attrs.family {
-        Some(path) => {
-            let variant = family_variant(path)?;
-            quote!(::std::option::Option::Some(::omniex::Family::#variant))
-        }
-        None => quote!(::std::option::Option::None),
-    };
 
     let mut field_entries = Vec::with_capacity(fields.len());
     let mut describe_entries = Vec::with_capacity(fields.len());
@@ -145,7 +136,6 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
         impl ::omniex::HashType for #ident {
             const NAME: &'static str = #name;
             const SLUG: &'static str = #slug;
-            const FAMILY: ::std::option::Option<::omniex::Family> = #family;
             const FIELDS: &'static [::omniex::Field] = &[#(#field_entries),*];
         }
 
@@ -164,7 +154,6 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
             pub const DESCRIPTOR: ::omniex::HashTypeDescriptor = ::omniex::HashTypeDescriptor {
                 name: <Self as ::omniex::HashType>::NAME,
                 slug: <Self as ::omniex::HashType>::SLUG,
-                family: <Self as ::omniex::HashType>::FAMILY,
                 fields: <Self as ::omniex::HashType>::FIELDS,
                 all_modes: &[#(#modes),*],
                 parse: |input, opts| {
@@ -180,7 +169,6 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
 fn parse_hash_attrs(attrs: &[Attribute]) -> syn::Result<HashAttrs> {
     let mut name: Option<LitStr> = None;
     let mut slug: Option<LitStr> = None;
-    let mut family: Option<Path> = None;
     let mut hashcat: Option<Vec<u32>> = None;
     let mut john: Option<Vec<String>> = None;
     let mut modes_fn: Option<Path> = None;
@@ -203,8 +191,6 @@ fn parse_hash_attrs(attrs: &[Attribute]) -> syn::Result<HashAttrs> {
                 name = Some(meta.value()?.parse()?);
             } else if meta.path.is_ident("slug") {
                 slug = Some(meta.value()?.parse()?);
-            } else if meta.path.is_ident("family") {
-                family = Some(meta.value()?.parse()?);
             } else if meta.path.is_ident("hashcat") {
                 let array: ExprArray = meta.value()?.parse()?;
                 let mut modes = Vec::with_capacity(array.elems.len());
@@ -263,7 +249,6 @@ fn parse_hash_attrs(attrs: &[Attribute]) -> syn::Result<HashAttrs> {
     Ok(HashAttrs {
         name,
         slug,
-        family,
         hashcat,
         john,
         modes_fn,
@@ -335,6 +320,7 @@ fn describe_value(ident: &Ident, encoding: &str) -> syn::Result<proc_macro2::Tok
     match encoding {
         "raw" => Ok(quote!(::std::format!("{:?}", self.#ident))),
         "hex" => Ok(quote!(::omniex::format::hex(&self.#ident))),
+        "base64" => Ok(quote!(::omniex::format::base64(&self.#ident))),
         "decimal" => Ok(quote!(::std::format!("{}", self.#ident))),
         "ascii" => Ok(quote! {
             ::std::string::String::from_utf8_lossy(
@@ -342,45 +328,17 @@ fn describe_value(ident: &Ident, encoding: &str) -> syn::Result<proc_macro2::Tok
             )
             .into_owned()
         }),
-        _ => Err(syn::Error::new(
+        other => Err(syn::Error::new(
             ident.span(),
-            format!("base64 encoding is not implemented (found `{encoding}`)"),
+            format!("unknown field encoding `{other}`"),
         )),
     }
-}
-
-fn family_variant(path: &Path) -> syn::Result<Ident> {
-    let segment = path
-        .segments
-        .last()
-        .ok_or_else(|| syn::Error::new(path.span(), "family must name a `Family` variant"))?;
-    let name = segment.ident.to_string();
-    let allowed = [
-        "Md5",
-        "Sha1",
-        "Sha2",
-        "Sha3",
-        "Blake2",
-        "Ripemd",
-        "Whirlpool",
-        "Ntlm",
-        "Lm",
-        "Des",
-        "Aes",
-        "Other",
-    ];
-    if !allowed.contains(&name.as_str()) {
-        return Err(syn::Error::new(
-            segment.ident.span(),
-            format!("unknown family `{name}`"),
-        ));
-    }
-    Ok(segment.ident.clone())
 }
 
 fn role_variant(role: &str) -> syn::Result<Ident> {
     let variant = match role {
         "salt" => "Salt",
+        "key" => "Key",
         "digest" => "Digest",
         "iv" => "Iv",
         "ciphertext" => "Ciphertext",
@@ -403,12 +361,7 @@ fn encoding_variant(encoding: &str) -> syn::Result<Ident> {
         "hex" => "Hex",
         "decimal" => "Decimal",
         "ascii" => "Ascii",
-        "base64" => {
-            return Err(syn::Error::new(
-                Span::call_site(),
-                "base64 encoding is not implemented",
-            ));
-        }
+        "base64" => "Base64",
         other => {
             return Err(syn::Error::new(
                 Span::call_site(),

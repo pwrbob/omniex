@@ -16,8 +16,7 @@ generate parsing or rendering.
 - Keep the attribute syntax close to Rust.
 
 Non-goals: generating `Parse`, generating `Render`, supporting enums, tuple
-structs, generic structs, or optional/repeated fields. Base64 is not supported
-until its flavor model is defined.
+structs, generic structs, or optional/repeated fields.
 
 ## Example
 
@@ -29,13 +28,12 @@ use omniex::HashType;
 #[hash(
     name = "Salted MD5",
     slug = "salted-md5",
-    family = Md5,
     hashcat = [10, 20, 3800],
 )]
 pub struct SaltedMd5 {
     /// Salt used by the attack mode.
-    #[field(role = salt, encoding = hex)]
-    pub salt: Vec<u8>,
+    #[field(role = salt, encoding = ascii)]
+    pub salt: String,
 
     /// The 16-byte MD5 digest.
     #[field(role = digest, encoding = hex)]
@@ -54,7 +52,7 @@ impl omniex::Parse for SaltedMd5 {
 
 impl omniex::Render for SaltedMd5 {
     fn render(&self, _opts: &omniex::RenderOptions) -> String {
-        format!("{}:{}", omniex::format::hex(&self.digest), omniex::format::hex(&self.salt))
+        format!("{}:{}", omniex::format::hex(&self.digest), self.salt)
     }
 }
 ```
@@ -65,7 +63,6 @@ impl omniex::Render for SaltedMd5 {
 #[hash(
     name = "Salted MD5",
     slug = "salted-md5",
-    family = Md5,
     hashcat = [10, 20, 3800],
 )]
 ```
@@ -74,7 +71,6 @@ impl omniex::Render for SaltedMd5 {
 | --- | --- | --- |
 | `name` | yes | Human-readable name. |
 | `slug` | yes | Stable, unique machine-readable identifier. |
-| `family` | no | Algorithm family. Omit for `None`. |
 | `hashcat` | no | Full declared set of compatible hashcat mode IDs. |
 | `john` | no | Full declared set of compatible John format labels. |
 | `modes_fn` | no | Function used for value-dependent compatibility. |
@@ -83,9 +79,6 @@ At least one mode must be declared. Modes are identifiers only.
 
 `slug` must be lowercase ASCII letters, digits, and hyphens. A registry test
 checks uniqueness. The derive checks the syntax but cannot see other types.
-
-`family` is optional. `Family::Other` means "known but not in the current list";
-omitting `family` means "not classified".
 
 ## Value-dependent modes
 
@@ -108,7 +101,6 @@ When compatibility depends on the values, provide a function:
 #[hash(
     name = "Example",
     slug = "example",
-    family = Md5,
     hashcat = [10, 20],
     modes_fn = example_modes,
 )]
@@ -148,7 +140,7 @@ compile error.
 | `encoding` | `raw` | How `Describe` formats the value. |
 | `rename` | field name | Name used in verbose/JSON output. |
 
-Supported roles: `salt`, `digest`, `iv`, `ciphertext`, `iterations`,
+Supported roles: `salt`, `key`, `digest`, `iv`, `ciphertext`, `iterations`,
 `username`, `other`.
 
 Supported encodings:
@@ -157,7 +149,8 @@ Supported encodings:
 - `decimal`: requires `Display`.
 - `ascii`: UTF-8 text; requires `AsRef<[u8]>`.
 - `raw`: uses `Debug`.
-- `base64`: reserved; not implemented yet.
+- `base64`: standard RFC 4648 alphabet with padding. Unpadded input is
+  accepted by parsers where the format omits padding.
 
 Fields are single values. `Vec<u8>` is allowed as a byte string. `Option<T>` and
 repeated fields are not part of the derive yet.
@@ -179,7 +172,6 @@ impl SaltedMd5 {
     pub const DESCRIPTOR: HashTypeDescriptor = HashTypeDescriptor {
         name: "Salted MD5",
         slug: "salted-md5",
-        family: Some(Family::Md5),
         fields: Self::FIELDS,
         all_modes: &[
             Mode::Hashcat(10),
@@ -201,7 +193,6 @@ The derive rejects:
 - duplicate or unknown struct keys,
 - a missing `name` or `slug`,
 - an invalid slug,
-- an unknown `family` variant,
 - a struct with no modes,
 - duplicate `rename` values,
 - a field without a doc comment,
@@ -216,5 +207,5 @@ The derive cannot check slug uniqueness or that `modes_fn` returns a subset of
 - Named-field structs only.
 - No enums, tuple structs, unit structs, or generic structs.
 - No optional or repeated fields.
-- No base64 until a flavor model is defined.
+- No custom base64 alphabets.
 - No version annotations on individual modes.

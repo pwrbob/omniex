@@ -2,8 +2,7 @@
 
 use omniex::types::{Md5, SaltedMd5};
 use omniex::{
-    Describe, Family, HashType, Mode, ModeCompat, Parse, ParseErrorKind, ParseOptions, Render,
-    RenderOptions, Tool,
+    Describe, Mode, ModeCompat, Parse, ParseErrorKind, ParseOptions, Render, RenderOptions, Tool,
 };
 
 const MD5_HASH: &str = "8743b52063cd84097a65d1633f5c74f5";
@@ -101,18 +100,18 @@ fn salted_md5_requires_separator() {
 }
 
 #[test]
-fn salted_md5_reports_salt_offset() {
-    let input = format!("{MD5_HASH}:zz");
-    let error = SaltedMd5::parse(&input, &ParseOptions::default()).unwrap_err();
-    assert_eq!(error.kind, ParseErrorKind::InvalidHex);
-    assert_eq!(error.offset, MD5_HASH.len() + 1);
+fn salted_md5_accepts_non_hex_ascii_salt() {
+    let input = format!("{MD5_HASH}:abcXYZ");
+    let value = SaltedMd5::parse(&input, &ParseOptions::default()).unwrap();
+    assert_eq!(value.salt, "abcXYZ");
+    assert_eq!(value.render(&RenderOptions::default()), input);
 }
 
 #[test]
 fn salted_md5_rejects_extra_separator() {
     let input = format!("{MD5_HASH}:aa:bbc");
     let error = SaltedMd5::parse(&input, &ParseOptions::default()).unwrap_err();
-    assert_eq!(error.kind, ParseErrorKind::InvalidHex);
+    assert_eq!(error.kind, ParseErrorKind::InvalidCharacter);
     assert_eq!(error.offset, MD5_HASH.len() + 3);
 }
 
@@ -161,11 +160,21 @@ fn modes_are_a_subset_of_declared_modes() {
 fn declared_modes_match_the_design() {
     assert_eq!(
         Md5::DESCRIPTOR.all_modes,
-        &[Mode::Hashcat(0), Mode::John("Raw-MD5")]
+        &[Mode::Hashcat(0), Mode::Hashcat(70), Mode::John("Raw-MD5")]
     );
     assert_eq!(
         SaltedMd5::DESCRIPTOR.all_modes,
-        &[Mode::Hashcat(10), Mode::Hashcat(20), Mode::Hashcat(3800)]
+        &[
+            Mode::Hashcat(10),
+            Mode::Hashcat(11),
+            Mode::Hashcat(12),
+            Mode::Hashcat(20),
+            Mode::Hashcat(21),
+            Mode::Hashcat(23),
+            Mode::Hashcat(24),
+            Mode::Hashcat(30),
+            Mode::Hashcat(40),
+            Mode::Hashcat(3800),
+        ]
     );
-    assert_eq!(Md5::FAMILY, Some(Family::Md5));
 }

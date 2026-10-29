@@ -8,8 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[hash(
     name = "MD5",
     slug = "md5",
-    family = Md5,
-    hashcat = [0],
+    hashcat = [0, 70],
     john = ["Raw-MD5"],
 )]
 pub struct Md5 {

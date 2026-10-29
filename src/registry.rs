@@ -1,10 +1,39 @@
 //! Static registry of every concrete hash type.
 
-use crate::types::{Md5, SaltedMd5};
+use crate::types::{
+    ArubaSha1, Blake2b512, DjangoSha1, Episerver, HmacMd5, HmacSha1, JuniperIve, JuniperScreenos,
+    LdapSha1, LdapSsha1, MacosSha1, Md4, Md5, Md5Crypt, Mssql2000, Mssql2005, Mysql323, OracleSha1,
+    PeoplesoftSha1, Phpass, SaltedBlake2b512, SaltedMd5, SaltedSha1, Sha1,
+};
 use crate::{HashTypeDescriptor, ParseError, ParseFn, ParseOptions};
 
 /// Every hash type known to this build.
-pub static REGISTRY: &[&HashTypeDescriptor] = &[&Md5::DESCRIPTOR, &SaltedMd5::DESCRIPTOR];
+pub static REGISTRY: &[&HashTypeDescriptor] = &[
+    &Md4::DESCRIPTOR,
+    &Md5::DESCRIPTOR,
+    &SaltedMd5::DESCRIPTOR,
+    &HmacMd5::DESCRIPTOR,
+    &Sha1::DESCRIPTOR,
+    &SaltedSha1::DESCRIPTOR,
+    &HmacSha1::DESCRIPTOR,
+    &OracleSha1::DESCRIPTOR,
+    &LdapSha1::DESCRIPTOR,
+    &LdapSsha1::DESCRIPTOR,
+    &MacosSha1::DESCRIPTOR,
+    &DjangoSha1::DESCRIPTOR,
+    &ArubaSha1::DESCRIPTOR,
+    &Mssql2000::DESCRIPTOR,
+    &Mssql2005::DESCRIPTOR,
+    &PeoplesoftSha1::DESCRIPTOR,
+    &Episerver::DESCRIPTOR,
+    &Mysql323::DESCRIPTOR,
+    &Phpass::DESCRIPTOR,
+    &Md5Crypt::DESCRIPTOR,
+    &JuniperIve::DESCRIPTOR,
+    &JuniperScreenos::DESCRIPTOR,
+    &Blake2b512::DESCRIPTOR,
+    &SaltedBlake2b512::DESCRIPTOR,
+];
 
 /// Returns every registered descriptor.
 #[must_use]
@@ -31,17 +60,17 @@ pub fn parse(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Family, Mode};
+    use crate::Mode;
 
     #[test]
     fn slugs_are_unique_and_valid() {
         let mut slugs = Vec::new();
         for descriptor in all() {
             assert!(
-                descriptor
-                    .slug
-                    .bytes()
-                    .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'-'),
+                !descriptor.slug.is_empty()
+                    && descriptor.slug.bytes().all(|byte| byte.is_ascii_lowercase()
+                        || byte.is_ascii_digit()
+                        || byte == b'-'),
                 "invalid slug {}",
                 descriptor.slug
             );
@@ -77,10 +106,9 @@ mod tests {
     fn md5_declares_expected_metadata() {
         let descriptor = by_slug("md5").expect("md5 registered");
         assert_eq!(descriptor.name, "MD5");
-        assert_eq!(descriptor.family, Some(Family::Md5));
         assert_eq!(
             descriptor.all_modes,
-            &[Mode::Hashcat(0), Mode::John("Raw-MD5")]
+            &[Mode::Hashcat(0), Mode::Hashcat(70), Mode::John("Raw-MD5")]
         );
         assert_eq!(descriptor.fields[0].name, "digest");
         assert_eq!(descriptor.fields[0].ty, "[u8; 16]");

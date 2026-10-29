@@ -17,61 +17,47 @@ fn john_loads_every_vector() {
         return;
     };
     let work = work_dir("john-conformance");
-    let potfile = work.join("empty.pot");
-    let _ = std::fs::remove_file(&potfile);
     let mut checked_formats = Vec::new();
 
     for vector in VECTORS {
-        if vector.john.is_empty() {
-            continue;
-        }
+        for entry in vector.john {
+            let hash_file = work.join(format!("{}-{}.txt", vector.slug, entry.format));
+            std::fs::write(&hash_file, format!("{}\n", entry.hash)).expect("write hash file");
 
-        let hash_file = work.join(format!("{}.txt", vector.slug));
-        std::fs::write(&hash_file, format!("{}\n", vector.hash)).expect("write hash file");
-
-        for format in vector.john {
-            if !checked_formats.contains(format) {
+            if !checked_formats.contains(&entry.format) {
                 let list = Command::new(&john)
-                    .args(["--list=format-tests", &format!("--format={format}")])
+                    .args(["--list=format-tests", &format!("--format={}", entry.format)])
                     .output()
                     .expect("run john --list=format-tests");
                 assert!(
                     list.status.success() && !list.stdout.is_empty(),
-                    "john does not know format `{format}`: {}",
+                    "john does not know format `{}`: {}",
+                    entry.format,
                     String::from_utf8_lossy(&list.stderr)
                 );
-                checked_formats.push(*format);
+                checked_formats.push(entry.format);
             }
 
             let show = Command::new(&john)
-                .args([
-                    "--show",
-                    &format!("--format={format}"),
-                    &format!("--pot={}", potfile.display()),
-                ])
+                .args(["--show=formats", &format!("--format={}", entry.format)])
                 .arg(&hash_file)
                 .output()
-                .expect("run john --show");
-            let output = format!(
-                "{}{}",
-                String::from_utf8_lossy(&show.stdout),
-                String::from_utf8_lossy(&show.stderr)
-            );
+                .expect("run john --show=formats");
+            let stdout = String::from_utf8_lossy(&show.stdout);
+            let stderr = String::from_utf8_lossy(&show.stderr);
+            let label = format!("\"label\":\"{}\"", entry.format);
 
             assert!(
                 show.status.success(),
-                "john --show --format={format} failed for `{}`: {output}",
+                "john --show=formats --format={} failed for `{}`: {stderr}",
+                entry.format,
                 vector.slug
             );
             assert!(
-                output.contains("1 left") || output.contains("password hashes cracked"),
-                "john --show --format={format} did not load `{}`: {output}",
-                vector.slug
-            );
-            assert!(
-                !output.contains("No password hashes loaded"),
-                "john rejected `{}` as {format}: {output}",
-                vector.slug
+                stdout.contains(&label),
+                "john did not load `{}` as {}: stdout={stdout} stderr={stderr}",
+                vector.slug,
+                entry.format
             );
         }
     }

@@ -1,0 +1,5 @@
+error: unknown `#[hash]` key
+ --> tests/ui/unknown_key.rs:4:44
+  |
+4 | #[hash(name = "Example", slug = "example", unknown = 1, hashcat = [0])]
+  |                                            ^^^^^^^

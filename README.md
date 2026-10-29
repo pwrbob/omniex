@@ -1,74 +1,150 @@
 # omniex
 
-The extractor for everything.
+`omniex` is a strongly typed hash parser, renderer, and extractor for password
+forensics. It replaces a collection of loose extraction scripts with one tool
+that understands both hashcat and John the Ripper serializations.
 
-## Goal
+Status: early development. The first sweep covers every hashcat mode below
+1000. Higher modes are listed in [`MODES.md`](MODES.md); extraction is not
+implemented yet.
 
-`omniex` extracts hashes from many file types for password forensics. It replaces
-the loose collection of unmaintained extraction scripts with one strongly typed
-tool.
+## Features
 
-It should:
+- Parse a hash string into a strongly typed value with named, documented fields.
+- Render that value for hashcat or John.
+- Identify every registered type that accepts an input.
+- Inspect field values as a table or JSON.
+- Process hash lists from an argument, a file, or standard input.
+- Run conformance tests against pinned hashcat and John builds.
 
-- support hashcat modes and named John formats whose hashes can be extracted or
-  reverse-parsed; John's ad-hoc `dynamic=...` compiler is out of scope,
-- use one strongly typed Rust struct per logical hash type,
-- parse hash strings and extract hashes into that same struct,
-- render that struct back to hashcat or John format,
-- show a human-readable description of every field,
-- report the modes that work for a concrete hash, not just its broad type,
-- support hash lists,
-- test compatibility against real hashcat and John builds in CI.
+## Supported hash types
 
-## Core model
+Run `omniex types` for the full list in a given build.
 
-A hash type instance is the common representation in both directions:
+| Type (`--type`) | Hashcat modes | John format |
+| --- | --- | --- |
+| `md4` | 900 | `Raw-MD4` |
+| `md5` | 0, 70 | `Raw-MD5` |
+| `salted-md5` | 10, 11, 12, 20, 21, 23, 24, 30, 40, 3800 | - |
+| `hmac-md5` | 50, 60 | - |
+| `sha1` | 100, 170, 300 | `Raw-SHA1` |
+| `salted-sha1` | 110, 120, 121, 130, 140 | - |
+| `hmac-sha1` | 150, 160 | - |
+| `oracle-sha1` | 112 | - |
+| `ldap-sha1` | 101 | - |
+| `ldap-ssha1` | 111 | - |
+| `macos-sha1` | 122 | - |
+| `django-sha1` | 124 | - |
+| `aruba-sha1` | 125 | - |
+| `mssql-2000` | 131 | `mssql` |
+| `mssql-2005` | 132 | `mssql05` |
+| `peoplesoft-sha1` | 133 | - |
+| `episerver` | 141 | - |
+| `mysql323` | 200 | `mysql` |
+| `phpass` | 400 | `phpass` |
+| `md5crypt` | 500 | `md5crypt` |
+| `juniper-ive` | 501 | - |
+| `juniper-screenos` | 22 | - |
+| `blake2b-512` | 600 | `Raw-Blake2` |
+| `salted-blake2b-512` | 610, 620 | - |
 
-```text
-artifact -> extract -> instance -> render -> hash string
-hash string -> parse -> instance
+A type is a logical hash type, not a mode. Identity is algorithm-based: modes
+are grouped only when the algorithm, field meanings, and serialization match.
+A salt stays a salt and an HMAC key stays a key. Value-dependent compatibility
+is reflected in the `modes` output.
+
+## Install
+
+Rust 1.85 or newer is required.
+
+```bash
+cargo build --release
+./target/release/omniex --help
 ```
 
-`--type <slug>` always names that same hash type. A slug is not an extractor
-slug or a hash-mode number; it identifies the struct.
+There are no release binaries yet.
 
-## How to build this
+## Usage
 
-- Use Rust.
-- Read `doc/DESIGN.md` first. It defines the data model and CLI behavior.
-- Read `doc/MACROS.md` before adding a struct. The derive generates metadata,
-  `Describe`, `ModeCompat`, and the descriptor. `Parse` and `Render` are manual.
-- Read `doc/TESTING.md` before adding tests.
-- Start with `Md5` and `SaltedMd5`; use them as the reference implementation.
-- Do not add a C shim, FFI module harness, or long-running server. Do not link
-  against hashcat or John. Tests invoke the tools or their shipped Python test
-  modules.
-- Official hashcat releases are the pass/fail contract, starting with `8.0.0`.
-  Master is informational only.
+List registered types:
 
-## Implementation workflow
+```bash
+omniex types
+omniex types --json
+```
 
-`MODES.md` is a temporary checklist. It is not the source of truth.
+Parse and re-render a hash. Use `--type` when more than one type matches:
 
-For each mode or named John format:
+```bash
+omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5
+omniex parse --type salted-md5 3d83c8e717ff0e7ecfe187f088d69954:343141
+omniex parse --type md5crypt '$1$38652870$DUjsu4TTlTsOe/xxZ05uf/'
+```
 
-1. Find the logical hash type: algorithm, fields, and one serialization per
-   tool. A mode is not a type.
-2. If an existing type fits, add the mode to its `#[hash(...)]` metadata. If
-   compatibility depends on the values, update its `modes_fn`.
-3. Otherwise add a struct with doc comments on every field. Implement `Parse`
-   and `Render`; let the derive generate the rest.
-4. Add unit tests, hashcat/John conformance cases, and an extraction fixture if
-   the type is extractable.
-5. Remove the covered entries from `MODES.md`.
+Inspect fields:
 
-Do not merge two modes into one type just because they have the same field
-shape. If they need different hashcat serializations, they are different types.
+```bash
+omniex parse --type salted-md5 3d83c8e717ff0e7ecfe187f088d69954:343141 --verbose
+omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5 --json
+```
 
-## Scope
+Identify candidates (ambiguous input is not an error):
 
-v0 covers the core traits, the derive, `Md5`/`SaltedMd5`, parse/render/describe/
-modes/identify, and basic CLI behavior. Extraction follows with the first
-artifact format. The broad mode sweep and version matrix come later.
+```bash
+omniex identify 8743b52063cd84097a65d1633f5c74f5
+# md4	MD4
+# md5	MD5
+```
 
-See `doc/DESIGN.md`, `doc/MACROS.md`, and `doc/TESTING.md` for details.
+Process a hash list. Blank lines are skipped and the first bad line aborts with
+a line number; nothing is printed for a partially valid list:
+
+```bash
+omniex parse --type md5 --file hashes.txt
+printf '8743b52063cd84097a65d1633f5c74f5\n' | omniex parse --type md5 --stdin
+omniex identify --stdin < hashes.txt
+```
+
+### Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Success |
+| `1` | Input, parse, or extraction error |
+| `2` | Usage error |
+
+### Extraction
+
+`omniex extract` is present but no extractor is registered yet. It exits `1`
+with a clear message.
+
+## Testing
+
+Run the fast local CI mirror before sending or committing work:
+
+```bash
+scripts/ci.sh
+```
+
+Build the pinned reference tools and run conformance explicitly:
+
+```bash
+scripts/build-hashcat.sh
+scripts/build-john.sh
+OMNIEX_HASHCAT=tmp/reference/hashcat-8.0.0/hashcat scripts/ci.sh
+OMNIEX_JOHN=tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john scripts/ci.sh
+```
+
+Conformance tests are `#[ignore]`d so the fast suite never needs either tool.
+
+## Documentation
+
+- [`doc/DESIGN.md`](doc/DESIGN.md) - data model and CLI behavior.
+- [`doc/MACROS.md`](doc/MACROS.md) - `#[derive(HashType)]` reference.
+- [`doc/TESTING.md`](doc/TESTING.md) - test strategy and fixtures.
+- [`doc/DEVELOPMENT.md`](doc/DEVELOPMENT.md) - project goal, layout, and workflow.
+- [`AGENTS.md`](AGENTS.md) - instructions for automated contributors.
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).

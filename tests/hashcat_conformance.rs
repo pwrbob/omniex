@@ -20,44 +20,41 @@ fn hashcat_identifies_and_loads_every_vector() {
     let _ = std::fs::remove_file(&potfile);
 
     for vector in VECTORS {
-        if vector.hashcat.is_empty() {
-            continue;
-        }
+        for entry in vector.hashcat {
+            let hash_file = work.join(format!("{}-{}.txt", vector.slug, entry.mode));
+            std::fs::write(&hash_file, format!("{}\n", entry.hash)).expect("write hash file");
 
-        let hash_file = work.join(format!("{}.txt", vector.slug));
-        std::fs::write(&hash_file, format!("{}\n", vector.hash)).expect("write hash file");
-
-        let identify = Command::new(&hashcat)
-            .arg("--identify")
-            .arg(&hash_file)
-            .output()
-            .expect("run hashcat --identify");
-        assert!(
-            identify.status.success(),
-            "hashcat --identify failed for `{}`: {}",
-            vector.slug,
-            String::from_utf8_lossy(&identify.stderr)
-        );
-
-        let modes = identified_modes(&String::from_utf8_lossy(&identify.stdout));
-        for mode in vector.hashcat {
+            let identify = Command::new(&hashcat)
+                .arg("--identify")
+                .arg(&hash_file)
+                .output()
+                .expect("run hashcat --identify");
             assert!(
-                modes.contains(mode),
-                "hashcat did not identify mode {mode} for `{}` (saw {modes:?})",
+                identify.status.success(),
+                "hashcat --identify failed for `{}` mode {}: {}",
+                vector.slug,
+                entry.mode,
+                String::from_utf8_lossy(&identify.stderr)
+            );
+
+            let modes = identified_modes(&String::from_utf8_lossy(&identify.stdout));
+            assert!(
+                modes.contains(&entry.mode),
+                "hashcat did not identify mode {} for `{}` (saw {modes:?})",
+                entry.mode,
                 vector.slug
             );
-        }
 
-        for mode in vector.hashcat {
             let show = Command::new(&hashcat)
-                .args(["--show", "-m", &mode.to_string(), "--potfile-path"])
+                .args(["--show", "-m", &entry.mode.to_string(), "--potfile-path"])
                 .arg(&potfile)
                 .arg(&hash_file)
                 .output()
                 .expect("run hashcat --show");
             assert!(
                 show.status.success(),
-                "hashcat --show -m {mode} failed for `{}`",
+                "hashcat --show -m {} failed for `{}`",
+                entry.mode,
                 vector.slug
             );
 
@@ -68,7 +65,8 @@ fn hashcat_identifies_and_loads_every_vector() {
             );
             assert!(
                 !output.contains("No hashes loaded"),
-                "hashcat --show -m {mode} rejected `{}`: {output}",
+                "hashcat --show -m {} rejected `{}`: {output}",
+                entry.mode,
                 vector.slug
             );
         }

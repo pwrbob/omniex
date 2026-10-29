@@ -1,15 +1,19 @@
-//! MD5 with a salt, rendered as `<digest>:<salt>` in lowercase hex.
+//! MD5 with a salt, rendered as `<digest>:<salt>` with an ASCII salt.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
 /// MD5 with one salt.
+///
+/// This covers the hashcat modes that share the `<digest>:<salt>` string and
+/// an ASCII salt. The key-derivation order and password encoding are attack
+/// variants, not different types.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
     name = "Salted MD5",
     slug = "salted-md5",
-    family = Md5,
-    hashcat = [10, 20, 3800],
+    hashcat = [10, 11, 12, 20, 21, 23, 24, 30, 40, 3800],
+    modes_fn = salted_md5_modes,
 )]
 pub struct SaltedMd5 {
     /// The 16-byte MD5 digest.
@@ -17,8 +21,8 @@ pub struct SaltedMd5 {
     pub digest: [u8; 16],
 
     /// Salt used by the attack mode.
-    #[field(role = salt, encoding = hex)]
-    pub salt: Vec<u8>,
+    #[field(role = salt, encoding = ascii)]
+    pub salt: String,
 }
 
 impl Parse for SaltedMd5 {
@@ -35,19 +39,46 @@ impl Parse for SaltedMd5 {
             ));
         };
 
-        let digest = parse::decode_hex_field::<16>(&input[..separator], 0, "digest")?;
-        let salt = parse::decode_hex(&input[separator + 1..], separator + 1)?;
+        let salt = &input[separator + 1..];
+        if let Some(offset) = salt.find(':') {
+            return Err(parse::error(
+                ParseErrorKind::InvalidCharacter,
+                separator + 1 + offset,
+                "salt must not contain `:`",
+            ));
+        }
 
-        Ok(Self { digest, salt })
+        let digest = parse::decode_hex_field::<16>(&input[..separator], 0, "digest")?;
+
+        Ok(Self {
+            digest,
+            salt: salt.to_owned(),
+        })
     }
+}
+
+pub fn salted_md5_modes(value: &SaltedMd5) -> Vec<crate::Mode> {
+    let length = value.salt.chars().count();
+    let hex_salt = value.salt.bytes().all(|byte| byte.is_ascii_hexdigit());
+
+    SaltedMd5::DESCRIPTOR
+        .all_modes
+        .iter()
+        .copied()
+        .filter(|mode| match mode {
+            crate::Mode::Hashcat(11) => length == 32,
+            crate::Mode::Hashcat(12) => length <= 32,
+            crate::Mode::Hashcat(21 | 24) => length == 2 && hex_salt,
+            crate::Mode::Hashcat(23) => length <= 247,
+            crate::Mode::Hashcat(30 | 40) => length <= 27,
+            crate::Mode::Hashcat(10 | 20 | 3800) => length <= 256,
+            _ => false,
+        })
+        .collect()
 }
 
 impl Render for SaltedMd5 {
     fn render(&self, _opts: &RenderOptions) -> String {
-        format!(
-            "{}:{}",
-            crate::format::hex(self.digest),
-            crate::format::hex(&self.salt)
-        )
+        format!("{}:{}", crate::format::hex(self.digest), self.salt)
     }
 }

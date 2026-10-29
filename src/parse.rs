@@ -1,5 +1,8 @@
 //! Parsing helpers shared by concrete hash types.
 
+use base64::Engine;
+use base64::engine::general_purpose::{STANDARD, STANDARD_NO_PAD};
+
 use crate::{ParseError, ParseErrorKind};
 
 /// Builds an error for empty input.
@@ -20,6 +23,36 @@ pub fn error(kind: ParseErrorKind, offset: usize, message: impl Into<String>) ->
         offset,
         message: message.into(),
     }
+}
+
+/// Strips a required prefix.
+pub fn strip_prefix<'a>(input: &'a str, prefix: &str, base: usize) -> Result<&'a str, ParseError> {
+    input.strip_prefix(prefix).ok_or_else(|| {
+        error(
+            ParseErrorKind::InvalidCharacter,
+            base,
+            format!("expected prefix `{prefix}`"),
+        )
+    })
+}
+
+/// Splits once on `separator`, returning the parts and the offset of the
+/// second part.
+pub fn split_once(
+    input: &str,
+    separator: char,
+    base: usize,
+) -> Result<(&str, &str, usize), ParseError> {
+    let Some(index) = input.find(separator) else {
+        return Err(error(
+            ParseErrorKind::InvalidCharacter,
+            base + input.len(),
+            format!("expected `{separator}`"),
+        ));
+    };
+
+    let next = index + separator.len_utf8();
+    Ok((&input[..index], &input[next..], base + next))
 }
 
 /// Decodes a string of hexadecimal bytes.
@@ -56,6 +89,33 @@ pub fn decode_hex(input: &str, base: usize) -> Result<Vec<u8>, ParseError> {
     }
 
     Ok(out)
+}
+
+/// Decodes a standard base64 value with padding.
+///
+/// `base` is the byte offset of `input` in the original hash string.
+pub fn decode_base64(input: &str, base: usize) -> Result<Vec<u8>, ParseError> {
+    if input.is_empty() {
+        return Err(error(
+            ParseErrorKind::InvalidBase64,
+            base,
+            "base64 value is empty",
+        ));
+    }
+
+    STANDARD
+        .decode(input)
+        .or_else(|_| STANDARD_NO_PAD.decode(input))
+        .map_err(|failure| {
+            let offset = match failure {
+                base64::DecodeError::InvalidByte(index, _)
+                | base64::DecodeError::InvalidLastSymbol(index, _)
+                | base64::DecodeError::InvalidLength(index) => base + index,
+                _ => base,
+            };
+
+            error(ParseErrorKind::InvalidBase64, offset, "invalid base64")
+        })
 }
 
 /// Decodes exactly `N` hexadecimal bytes.

@@ -8,7 +8,7 @@ use std::process::ExitCode;
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use omniex::registry;
 use omniex::{
-    Encoding, Family, FieldRole, HashValue, HashcatVersion, Mode, ParseOptions, ReleaseVersion,
+    Encoding, FieldRole, HashValue, HashcatVersion, Mode, ParseOptions, ReleaseVersion,
     RenderOptions, Tool,
 };
 use serde_json::{Value, json};
@@ -33,6 +33,8 @@ enum Command {
     Identify(IdentifyArgs),
     /// Extract hashes from an artifact.
     Extract(ExtractArgs),
+    /// List the hash types available in this build.
+    Types(TypesArgs),
 }
 
 #[derive(Args)]
@@ -79,6 +81,13 @@ struct ParseArgs {
 struct IdentifyArgs {
     #[command(flatten)]
     input: InputArgs,
+}
+
+#[derive(Args)]
+struct TypesArgs {
+    /// Print a JSON array instead of a table.
+    #[arg(long)]
+    json: bool,
 }
 
 #[derive(Args)]
@@ -150,7 +159,29 @@ fn run(cli: Cli) -> Result<(), CliError> {
         Command::Parse(args) => run_parse(args),
         Command::Identify(args) => run_identify(args),
         Command::Extract(args) => run_extract(args),
+        Command::Types(args) => run_types(args),
     }
+}
+
+fn run_types(args: TypesArgs) -> Result<(), CliError> {
+    if args.json {
+        let entries = registry::all()
+            .iter()
+            .map(|descriptor| descriptor_json(descriptor))
+            .collect::<Vec<_>>();
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&Value::Array(entries))
+                .expect("JSON descriptors serialize")
+        );
+        return Ok(());
+    }
+
+    for descriptor in registry::all() {
+        println!("{}\t{}", descriptor.slug, descriptor.name);
+    }
+
+    Ok(())
 }
 
 fn run_parse(args: ParseArgs) -> Result<(), CliError> {
@@ -327,6 +358,29 @@ fn print_lines(lines: &[String]) {
     }
 }
 
+fn descriptor_json(descriptor: &omniex::HashTypeDescriptor) -> Value {
+    let fields = descriptor
+        .fields
+        .iter()
+        .map(|field| {
+            json!({
+                "name": field.name,
+                "role": role_name(field.role),
+                "encoding": encoding_name(field.encoding),
+                "description": field.description,
+                "ty": field.ty,
+            })
+        })
+        .collect::<Vec<_>>();
+
+    json!({
+        "name": descriptor.name,
+        "slug": descriptor.slug,
+        "modes": descriptor.all_modes.iter().copied().map(mode_value).collect::<Vec<_>>(),
+        "fields": fields,
+    })
+}
+
 fn json_value(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) -> Value {
     let fields = value
         .describe()
@@ -345,7 +399,6 @@ fn json_value(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) ->
     json!({
         "name": descriptor.name,
         "slug": descriptor.slug,
-        "family": descriptor.family.map(family_name),
         "modes": value.modes().into_iter().map(mode_value).collect::<Vec<_>>(),
         "fields": fields,
     })
@@ -358,11 +411,9 @@ fn verbose_value(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue)
         .map(mode_name)
         .collect::<Vec<_>>()
         .join(", ");
-    let family = descriptor.family.map(family_name).unwrap_or("none");
 
     let mut lines = vec![
         format!("{} [{}]", descriptor.name, descriptor.slug),
-        format!("family: {family}"),
         format!("modes: {modes}"),
     ];
 
@@ -394,26 +445,10 @@ fn mode_name(mode: Mode) -> String {
     }
 }
 
-fn family_name(family: Family) -> &'static str {
-    match family {
-        Family::Md5 => "md5",
-        Family::Sha1 => "sha1",
-        Family::Sha2 => "sha2",
-        Family::Sha3 => "sha3",
-        Family::Blake2 => "blake2",
-        Family::Ripemd => "ripemd",
-        Family::Whirlpool => "whirlpool",
-        Family::Ntlm => "ntlm",
-        Family::Lm => "lm",
-        Family::Des => "des",
-        Family::Aes => "aes",
-        Family::Other => "other",
-    }
-}
-
 fn role_name(role: FieldRole) -> &'static str {
     match role {
         FieldRole::Salt => "salt",
+        FieldRole::Key => "key",
         FieldRole::Digest => "digest",
         FieldRole::Iv => "iv",
         FieldRole::Ciphertext => "ciphertext",

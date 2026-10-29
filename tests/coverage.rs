@@ -3,7 +3,7 @@
 mod common;
 
 use common::{VECTORS, vector_for, vector_modes};
-use omniex::{ParseOptions, RenderOptions, Tool, registry};
+use omniex::{Mode, ParseOptions, RenderOptions, Tool, registry};
 
 #[test]
 fn every_registered_type_has_a_vector() {
@@ -44,27 +44,79 @@ fn every_vector_names_a_registered_type() {
 }
 
 #[test]
-fn vectors_round_trip_for_both_tools() {
+fn hashcat_vectors_round_trip_and_report_their_mode() {
+    for vector in VECTORS {
+        let descriptor = registry::by_slug(vector.slug).expect("registered");
+        let opts = ParseOptions {
+            tool: Tool::Hashcat,
+            ..ParseOptions::default()
+        };
+        let render_opts = RenderOptions {
+            tool: Tool::Hashcat,
+            ..RenderOptions::default()
+        };
+
+        for entry in vector.hashcat {
+            let value = registry::parse(descriptor, entry.hash, &opts).unwrap_or_else(|error| {
+                panic!(
+                    "`{}` failed to parse the mode {} vector: {error}",
+                    vector.slug, entry.mode
+                )
+            });
+
+            assert_eq!(
+                value.render(&render_opts),
+                entry.hash,
+                "`{}` did not round-trip for hashcat mode {}",
+                vector.slug,
+                entry.mode
+            );
+            assert!(
+                value.modes().contains(&Mode::Hashcat(entry.mode)),
+                "`{}` parsed the mode {} vector but did not report that mode: {:?}",
+                vector.slug,
+                entry.mode,
+                value.modes()
+            );
+        }
+    }
+}
+
+#[test]
+fn john_vectors_round_trip_and_report_their_format() {
     for vector in VECTORS {
         let descriptor = registry::by_slug(vector.slug).expect("registered");
 
-        for tool in [Tool::Hashcat, Tool::John] {
-            let parse_opts = ParseOptions {
-                tool,
+        for entry in vector.john {
+            let opts = ParseOptions {
+                tool: Tool::John,
                 ..ParseOptions::default()
             };
             let render_opts = RenderOptions {
-                tool,
+                tool: Tool::John,
                 ..RenderOptions::default()
             };
 
-            let value = registry::parse(descriptor, vector.hash, &parse_opts)
-                .unwrap_or_else(|error| panic!("`{}` failed to parse: {error}", vector.slug));
+            let value = registry::parse(descriptor, entry.hash, &opts).unwrap_or_else(|error| {
+                panic!(
+                    "`{}` failed to parse the {} vector: {error}",
+                    vector.slug, entry.format
+                )
+            });
+
             assert_eq!(
                 value.render(&render_opts),
-                vector.hash,
-                "`{}` did not round-trip for {tool:?}",
-                vector.slug
+                entry.hash,
+                "`{}` did not round-trip for John format {}",
+                vector.slug,
+                entry.format
+            );
+            assert!(
+                value.modes().contains(&Mode::John(entry.format)),
+                "`{}` parsed the {} vector but did not report that format: {:?}",
+                vector.slug,
+                entry.format,
+                value.modes()
             );
         }
     }
@@ -74,21 +126,11 @@ fn vectors_round_trip_for_both_tools() {
 fn vector_modes_are_a_subset_of_declared_modes() {
     for vector in VECTORS {
         let descriptor = registry::by_slug(vector.slug).expect("registered");
-        let value = registry::parse(descriptor, vector.hash, &ParseOptions::default())
-            .expect("vector parses");
-        let modes = value.modes();
 
-        for mode in &modes {
-            assert!(
-                descriptor.all_modes.contains(mode),
-                "`{}` reported undeclared mode {mode:?}",
-                vector.slug
-            );
-        }
         for mode in vector_modes(vector) {
             assert!(
-                modes.contains(&mode),
-                "`{}` did not report vector mode {mode:?}",
+                descriptor.all_modes.contains(&mode),
+                "`{}` vector names undeclared mode {mode:?}",
                 vector.slug
             );
         }

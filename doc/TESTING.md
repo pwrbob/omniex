@@ -38,7 +38,7 @@ Macro tests use `trybuild`:
 - missing field doc comment,
 - duplicate `rename`,
 - invalid slug,
-- unknown family,
+- unknown `#[hash]` key,
 - no modes,
 - bad `modes_fn`.
 

@@ -26,6 +26,8 @@ pub struct Field {
 pub enum FieldRole {
     /// Salt value.
     Salt,
+    /// HMAC or other key value.
+    Key,
     /// Digest value.
     Digest,
     /// Initialization vector.
@@ -53,35 +55,6 @@ pub enum Encoding {
     Decimal,
     /// ASCII.
     Ascii,
-}
-
-/// Fixed algorithm families. Grows as modes are added.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum Family {
-    /// MD5 family.
-    Md5,
-    /// SHA-1 family.
-    Sha1,
-    /// SHA-2 family.
-    Sha2,
-    /// SHA-3 family.
-    Sha3,
-    /// BLAKE2 family.
-    Blake2,
-    /// RIPEMD family.
-    Ripemd,
-    /// Whirlpool family.
-    Whirlpool,
-    /// NTLM family.
-    Ntlm,
-    /// LM family.
-    Lm,
-    /// DES family.
-    Des,
-    /// AES family.
-    Aes,
-    /// Any other family.
-    Other,
 }
 
 /// A hashcat or John mode.
@@ -118,8 +91,6 @@ pub trait HashType {
     const NAME: &'static str;
     /// Stable machine-readable identifier.
     const SLUG: &'static str;
-    /// Algorithm family, if one applies.
-    const FAMILY: Option<Family>;
     /// Metadata for every field.
     const FIELDS: &'static [Field];
 }
@@ -311,8 +282,6 @@ pub struct HashTypeDescriptor {
     pub name: &'static str,
     /// Stable machine-readable identifier.
     pub slug: &'static str,
-    /// Algorithm family, if one applies.
-    pub family: Option<Family>,
     /// Metadata for every field.
     pub fields: &'static [Field],
     /// Every mode the type can ever support.
@@ -330,7 +299,6 @@ mod tests {
     impl HashType for Example {
         const NAME: &'static str = "Example";
         const SLUG: &'static str = "example";
-        const FAMILY: Option<Family> = Some(Family::Md5);
         const FIELDS: &'static [Field] = &[];
     }
 
@@ -370,7 +338,6 @@ mod tests {
         const DESCRIPTOR: HashTypeDescriptor = HashTypeDescriptor {
             name: Self::NAME,
             slug: Self::SLUG,
-            family: Self::FAMILY,
             fields: Self::FIELDS,
             all_modes: &[Mode::Hashcat(0), Mode::John("raw-md5")],
             parse: |input, opts| Ok(Box::new(<Self as Parse>::parse(input, opts)?)),
@@ -381,7 +348,6 @@ mod tests {
     fn hash_type_is_metadata_only() {
         assert_eq!(Example::NAME, "Example");
         assert_eq!(Example::SLUG, "example");
-        assert_eq!(Example::FAMILY, Some(Family::Md5));
         assert!(Example::FIELDS.is_empty());
     }
 
