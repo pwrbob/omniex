@@ -31,14 +31,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 1000-1999
 
-- [ ] `1411` - `SSHA-256(Base64), LDAP {SSHA256}`
-- [ ] `1441` - `Episerver 6.x >= .NET 4`
-- [ ] `1500` - `descrypt, DES (Unix), Traditional DES`
-- [ ] `1600` - `Apache $apr1$ MD5, md5apr1, MD5 (APR)`
-- [ ] `1711` - `SSHA-512(Base64), LDAP {SSHA512}`
-- [ ] `1722` - `macOS v10.7`
-- [ ] `1731` - `MSSQL (2012, 2014)`
-- [ ] `1800` - `sha512crypt $6$, SHA512 (Unix)`
 
 ### 2000-2999
 
@@ -861,7 +853,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 - [ ] `dahua`
 - [ ] `dashlane` - OpenCL: `dashlane-opencl`
-- [ ] `descrypt`
 - [ ] `diskcryptor` - OpenCL: `diskcryptor-opencl`
 - [ ] `diskcryptor-aes-opencl` - OpenCL only
 - [ ] `Django`
@@ -1045,7 +1036,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `securezip`
 - [ ] `sha1crypt` - OpenCL: `sha1crypt-opencl`
 - [ ] `sha256crypt` - OpenCL: `sha256crypt-opencl`
-- [ ] `sha512crypt` - OpenCL: `sha512crypt-opencl`
 - [ ] `Siemens-S7`
 - [ ] `Signal`
 - [ ] `SIP`
@@ -1057,7 +1047,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `SNMP`
 - [ ] `solarwinds` - OpenCL: `solarwinds-opencl`
 - [ ] `SSH` - OpenCL: `ssh-opencl`
-- [ ] `SSHA512`
 - [ ] `sspr` - OpenCL: `sspr-opencl`
 - [ ] `streebog256crypt` - OpenCL: `streebog256crypt-opencl`
 - [ ] `streebog512crypt` - OpenCL: `streebog512crypt-opencl`

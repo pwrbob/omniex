@@ -46,6 +46,14 @@ fn every_type_describes_every_field() {
         ("sha512", &["digest"]),
         ("salted-sha512", &["digest", "salt"]),
         ("hmac-sha512", &["digest", "key"]),
+        ("ldap-ssha256", &["digest", "salt"]),
+        ("episerver-net4", &["salt", "digest"]),
+        ("descrypt", &["crypt"]),
+        ("apr1", &["rounds", "salt", "digest"]),
+        ("ldap-ssha512", &["digest", "salt"]),
+        ("macos-sha512", &["salt", "digest"]),
+        ("mssql-2012", &["salt", "digest"]),
+        ("sha512crypt", &["rounds", "salt", "digest"]),
     ];
 
     for (slug, names) in expected {
@@ -344,6 +352,86 @@ fn invalid_inputs_return_stable_error_kinds() {
             format!("{}:a:b", zeros(128)),
             ParseErrorKind::InvalidCharacter,
         ),
+        (
+            "ldap-ssha256".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "ldap-ssha256".into(),
+            "{SSHA256}YWJj".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "episerver-net4".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "episerver-net4".into(),
+            "$episerver$*1*MjEwNA==*!!!!".into(),
+            ParseErrorKind::InvalidBase64,
+        ),
+        (
+            "descrypt".into(),
+            "short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "descrypt".into(),
+            "!!!!!!!!!!!!!".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "apr1".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "apr1".into(),
+            "$apr1$rounds=x$salt$hash".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "apr1".into(),
+            "$apr1$salt$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "ldap-ssha512".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "ldap-ssha512".into(),
+            "{SSHA512}YWJj".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "macos-sha512".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "mssql-2012".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "mssql-2012".into(),
+            "0x0200abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sha512crypt".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "sha512crypt".into(),
+            "$6$salt$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {
@@ -501,6 +589,57 @@ fn structured_fields_are_decoded_not_kept_as_whole_strings() {
     )
     .unwrap();
     assert_eq!(&hmail.salt, b"8fe7ca");
+
+    let descrypt = omniex::types::DesCrypt::parse("24leDr0hHfb3A", &opts).unwrap();
+    assert_eq!(descrypt.crypt, "24leDr0hHfb3A");
+
+    let apr1 = omniex::types::Apr1::parse("$apr1$62722340$zGjeAwVP2KwY6MtumUI1N/", &opts).unwrap();
+    assert_eq!(apr1.salt, "62722340");
+    assert_eq!(apr1.digest, "zGjeAwVP2KwY6MtumUI1N/");
+
+    let sha512crypt = omniex::types::Sha512Crypt::parse(
+        "$6$72820166$U4DVzpcYxgw7MVVDGGvB2/H5lRistD5.Ah4upwENR5UtffLR4X4SxSzfREv8z6wVl0jRFX40/KnYVvK4829kD1",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(sha512crypt.salt, "72820166");
+    assert_eq!(sha512crypt.digest.len(), 86);
+
+    let episerver_net4 = omniex::types::EpiserverNet4::parse(
+        "$episerver$*1*NDg1NTIz*8BFCg/YJBAuZs/wjbH3OWKe69BLr5Lao26ybpnD48Zk",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(episerver_net4.salt, b"485523");
+    assert_eq!(episerver_net4.digest.len(), 32);
+
+    let ssha256 = omniex::types::LdapSsha256::parse(
+        "{SSHA256}L5Wk0zPY2lmoR5pH20zngq37KkxFwgTquEhx95rxfVk3Ng==",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(ssha256.digest.len(), 32);
+
+    let ssha512 = omniex::types::LdapSsha512::parse(
+        "{SSHA512}Bz8w5q6qEtB1Nnc8b1jfTvTXVTwohWag33oghQGOtLChnkZTw/cuJaHQlLJEI3AWKZGCRyLA6Phujdxo+is7AjA2MDcyNjY1Mg==",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(ssha512.digest.len(), 64);
+
+    let macos512 = omniex::types::MacosSha512::parse(
+        "07543781b07e905f6f947db8ae305c248b9e12f509b41097e852e2f450e824790e677ea7397b8a9a552b1c19ecf6a6e1dd3844fa5ee5db23976962859676f7d2fb85ca94",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(omniex::format::hex(macos512.salt), "07543781");
+
+    let mssql12 = omniex::types::Mssql2012::parse(
+        "0x02003788006711b2e74e7d8cb4be96b1d187c962c5591a02d5a6ae81b3a4a094b26b7877958b26733e45016d929a756ed30d0a5ee65d3ce1970f9b7bf946e705c595f07625b1",
+        &opts,
+    )
+    .unwrap();
+    assert_eq!(omniex::format::hex(mssql12.salt), "37880067");
 }
 
 #[test]

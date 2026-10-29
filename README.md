@@ -57,6 +57,14 @@ Run `omniex types` for the full list in a given build.
 | `sha512` | 1700, 1770 | `Raw-SHA512` |
 | `salted-sha512` | 1710, 1720, 1730, 1740 | - |
 | `hmac-sha512` | 1750, 1760 | - |
+| `ldap-ssha256` | 1411 | - |
+| `episerver-net4` | 1441 | - |
+| `descrypt` | 1500 | `descrypt` |
+| `apr1` | 1600 | `md5crypt` |
+| `ldap-ssha512` | 1711 | `SSHA512` |
+| `macos-sha512` | 1722 | - |
+| `mssql-2012` | 1731 | `mssql12` |
+| `sha512crypt` | 1800 | `sha512crypt` |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

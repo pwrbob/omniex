@@ -380,6 +380,73 @@ pub const VECTORS: &[Vector] = &[
         ],
         john: &[],
     },
+    Vector {
+        slug: "ldap-ssha256",
+        hashcat: &[hc!(
+            1411,
+            "{SSHA256}L5Wk0zPY2lmoR5pH20zngq37KkxFwgTquEhx95rxfVk3Ng=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "episerver-net4",
+        hashcat: &[hc!(
+            1441,
+            "$episerver$*1*NDg1NTIz*8BFCg/YJBAuZs/wjbH3OWKe69BLr5Lao26ybpnD48Zk"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "descrypt",
+        hashcat: &[hc!(1500, "24leDr0hHfb3A")],
+        john: &[john!("descrypt", "24leDr0hHfb3A")],
+    },
+    Vector {
+        slug: "apr1",
+        hashcat: &[hc!(1600, "$apr1$62722340$zGjeAwVP2KwY6MtumUI1N/")],
+        john: &[john!("md5crypt", "$apr1$62722340$zGjeAwVP2KwY6MtumUI1N/")],
+    },
+    Vector {
+        slug: "ldap-ssha512",
+        hashcat: &[hc!(
+            1711,
+            "{SSHA512}Bz8w5q6qEtB1Nnc8b1jfTvTXVTwohWag33oghQGOtLChnkZTw/cuJaHQlLJEI3AWKZGCRyLA6Phujdxo+is7AjA2MDcyNjY1Mg=="
+        )],
+        john: &[john!(
+            "SSHA512",
+            "{SSHA512}Bz8w5q6qEtB1Nnc8b1jfTvTXVTwohWag33oghQGOtLChnkZTw/cuJaHQlLJEI3AWKZGCRyLA6Phujdxo+is7AjA2MDcyNjY1Mg=="
+        )],
+    },
+    Vector {
+        slug: "macos-sha512",
+        hashcat: &[hc!(
+            1722,
+            "07543781b07e905f6f947db8ae305c248b9e12f509b41097e852e2f450e824790e677ea7397b8a9a552b1c19ecf6a6e1dd3844fa5ee5db23976962859676f7d2fb85ca94"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mssql-2012",
+        hashcat: &[hc!(
+            1731,
+            "0x02003788006711b2e74e7d8cb4be96b1d187c962c5591a02d5a6ae81b3a4a094b26b7877958b26733e45016d929a756ed30d0a5ee65d3ce1970f9b7bf946e705c595f07625b1"
+        )],
+        john: &[john!(
+            "mssql12",
+            "0x02003788006711b2e74e7d8cb4be96b1d187c962c5591a02d5a6ae81b3a4a094b26b7877958b26733e45016d929a756ed30d0a5ee65d3ce1970f9b7bf946e705c595f07625b1"
+        )],
+    },
+    Vector {
+        slug: "sha512crypt",
+        hashcat: &[hc!(
+            1800,
+            "$6$72820166$U4DVzpcYxgw7MVVDGGvB2/H5lRistD5.Ah4upwENR5UtffLR4X4SxSzfREv8z6wVl0jRFX40/KnYVvK4829kD1"
+        )],
+        john: &[john!(
+            "sha512crypt",
+            "$6$72820166$U4DVzpcYxgw7MVVDGGvB2/H5lRistD5.Ah4upwENR5UtffLR4X4SxSzfREv8z6wVl0jRFX40/KnYVvK4829kD1"
+        )],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {
