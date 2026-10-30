@@ -8,7 +8,9 @@ const MD5_HASH: &str = "8743b52063cd84097a65d1633f5c74f5";
 const SALTED_MD5_HASH: &str = "3d83c8e717ff0e7ecfe187f088d69954:343141";
 
 fn omniex() -> Command {
-    Command::cargo_bin("omniex").expect("binary is built")
+    let mut command = Command::cargo_bin("omniex").expect("binary is built");
+    command.env("COLUMNS", "120");
+    command
 }
 
 #[test]
@@ -67,14 +69,19 @@ fn parse_json_has_the_pinned_shape() {
     assert!(output.status.success());
 
     let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
-    assert_eq!(value["name"], "MD5");
-    assert_eq!(value["slug"], "md5");
-    assert_eq!(value["modes"][0]["tool"], "hashcat");
-    assert_eq!(value["modes"][0]["mode"], 0);
-    assert_eq!(value["fields"][0]["name"], "digest");
-    assert_eq!(value["fields"][0]["role"], "digest");
-    assert_eq!(value["fields"][0]["encoding"], "hex");
-    assert_eq!(value["fields"][0]["value"], MD5_HASH);
+    let entries = value.as_array().expect("array");
+    assert_eq!(entries.len(), 1);
+    let entry = &entries[0];
+    assert_eq!(entry["name"], "MD5");
+    assert_eq!(entry["slug"], "md5");
+    assert_eq!(entry["line"], 1);
+    assert_eq!(entry["input"], MD5_HASH);
+    assert_eq!(entry["hashcat"], serde_json::json!([0, 70, 2600, 3500]));
+    assert_eq!(entry["john"], serde_json::json!(["Raw-MD5"]));
+    assert_eq!(entry["fields"][0]["name"], "digest");
+    assert_eq!(entry["fields"][0]["role"], "digest");
+    assert_eq!(entry["fields"][0]["encoding"], "hex");
+    assert_eq!(entry["fields"][0]["value"], MD5_HASH);
 }
 
 #[test]
@@ -83,8 +90,11 @@ fn parse_verbose_reports_fields() {
         .args(["parse", MD5_HASH, "--type", "md5", "--verbose"])
         .assert()
         .success()
-        .stdout(predicate::str::contains("MD5 [md5]"))
-        .stdout(predicate::str::contains("field digest [digest, hex]"));
+        .stdout(predicate::str::contains("MD5 (md5)"))
+        .stdout(predicate::str::contains("Hashcat"))
+        .stdout(predicate::str::contains("Fields"))
+        .stdout(predicate::str::contains("digest"))
+        .stdout(predicate::str::contains("The 16-byte MD5 digest."));
 }
 
 #[test]
@@ -114,7 +124,13 @@ fn identify_lists_the_matching_type() {
         .args(["identify", MD5_HASH])
         .assert()
         .success()
-        .stdout("md4\tMD4\nmd5\tMD5\nntlm\tNTLM\n");
+        .stdout(predicate::str::contains(format!("Input: {MD5_HASH}")))
+        .stdout(predicate::str::contains("Slug"))
+        .stdout(predicate::str::contains("md4"))
+        .stdout(predicate::str::contains("MD4"))
+        .stdout(predicate::str::contains("900"))
+        .stdout(predicate::str::contains("Raw-MD4"))
+        .stdout(predicate::str::contains("─"));
 }
 
 #[test]
@@ -160,10 +176,15 @@ fn types_lists_available_hash_types() {
         .arg("types")
         .assert()
         .success()
-        .stdout(predicate::str::contains("md4\tMD4"))
-        .stdout(predicate::str::contains("md5\tMD5"))
-        .stdout(predicate::str::contains("salted-md5\tSalted MD5"))
-        .stdout(predicate::str::contains("phpass\tphpass"));
+        .stdout(predicate::str::contains("Hash types ("))
+        .stdout(predicate::str::contains("Slug"))
+        .stdout(predicate::str::contains("md4"))
+        .stdout(predicate::str::contains("MD4"))
+        .stdout(predicate::str::contains("900"))
+        .stdout(predicate::str::contains("Raw-MD4"))
+        .stdout(predicate::str::contains("salted-md5"))
+        .stdout(predicate::str::contains("Salted MD5"))
+        .stdout(predicate::str::contains("phpass"));
 }
 
 #[test]
@@ -179,7 +200,52 @@ fn types_json_is_an_array_of_descriptors() {
     assert!(entries.len() >= 20);
     assert_eq!(entries[0]["slug"], "md4");
     assert!(entries[0]["fields"].is_array());
-    assert!(entries[0]["modes"].is_array());
+    assert!(entries[0]["hashcat"].is_array());
+    assert!(entries[0]["john"].is_array());
+}
+
+#[test]
+fn identify_json_is_an_array_of_matches() {
+    let output = omniex()
+        .args(["identify", MD5_HASH, "--json"])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    let entries = value.as_array().expect("array");
+    assert!(entries.len() >= 3);
+    assert_eq!(entries[0]["line"], 1);
+    assert_eq!(entries[0]["input"], MD5_HASH);
+    assert_eq!(entries[0]["slug"], "md4");
+    assert_eq!(entries[0]["hashcat"], serde_json::json!([900]));
+    assert_eq!(entries[0]["john"], serde_json::json!(["Raw-MD4"]));
+}
+
+#[test]
+fn human_tables_have_one_rule_and_no_tabs() {
+    let output = omniex().arg("types").output().expect("command runs");
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(!stdout.contains('\t'));
+    assert_eq!(
+        stdout.lines().filter(|line| line.starts_with('─')).count(),
+        1
+    );
+    assert!(stdout.lines().any(|line| line.starts_with("Slug")));
+    assert!(!stdout.lines().any(|line| line.starts_with("SLUG")));
+}
+
+#[test]
+fn long_mode_lists_wrap_to_the_terminal_width() {
+    let mut command = Command::cargo_bin("omniex").expect("binary is built");
+    command.env("COLUMNS", "60");
+    let output = command.arg("types").output().expect("command runs");
+    assert!(output.status.success());
+    let stdout = String::from_utf8_lossy(&output.stdout);
+
+    assert!(stdout.lines().all(|line| line.chars().count() <= 60));
 }
 
 #[test]
@@ -192,4 +258,20 @@ fn parse_reports_ambiguity_between_md4_and_md5() {
         .stderr(predicate::str::contains("ambiguous hash type"))
         .stderr(predicate::str::contains("md4"))
         .stderr(predicate::str::contains("md5"));
+}
+
+#[test]
+fn parse_json_is_an_array_for_multiple_inputs() {
+    let output = omniex()
+        .args(["parse", "--type", "md5", "--stdin", "--json"])
+        .write_stdin(format!("{MD5_HASH}\n{MD5_HASH}\n"))
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    let entries = value.as_array().expect("array");
+    assert_eq!(entries.len(), 2);
+    assert_eq!(entries[0]["line"], 1);
+    assert_eq!(entries[1]["line"], 2);
 }

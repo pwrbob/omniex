@@ -176,7 +176,7 @@ The CLI is intentionally small:
 
 ```text
 omniex parse <hash> [--type <slug>] [--format hashcat|john] [--hc-version <release>] [--verbose|--json]
-omniex identify <hash>
+omniex identify <hash> [--json]
 omniex types [--json]
 omniex extract <artifact> [--type <slug>] [--format hashcat|john]
 ```
@@ -197,11 +197,15 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
 - Hash lists are one hash per line of the same type. The first bad line aborts
   with its line number and byte offset. Partial output is not written.
 - Exit codes: `0` success, `1` input/parse/extract error, `2` usage error.
-- JSON is built from the descriptor and `Describe` output. The schema is pinned
-  by CLI snapshots: name, slug, modes, and fields with name, role, encoding,
-  description, and value.
-- Colorized `--verbose` spans are a later enhancement. v0 prints the components
-  in `Describe` order.
+- Human output never uses tabs. It is space-aligned, uses bold titles and table
+  headers on a terminal, and has exactly one horizontal rule below each title.
+- The minimum terminal size is 40x10. Human output is rejected on smaller
+  terminals. Columns and mode lists wrap to the terminal width.
+- `--json` always emits one JSON array per invocation. `types` entries contain
+  slug, name, hashcat, john, and field metadata. `identify` entries contain
+  line, input, slug, name, hashcat, and john. `parse` entries add fields with
+  name, role, encoding, description, and value.
+- `parse` without `--verbose` or `--json` prints only the rendered hash.
 
 ## Extraction
 

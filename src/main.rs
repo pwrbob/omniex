@@ -13,6 +13,8 @@ use omniex::{
 };
 use serde_json::{Value, json};
 
+mod ui;
+
 #[derive(Parser)]
 #[command(
     name = "omniex",
@@ -81,6 +83,10 @@ struct ParseArgs {
 struct IdentifyArgs {
     #[command(flatten)]
     input: InputArgs,
+
+    /// Print one JSON array of matches.
+    #[arg(long)]
+    json: bool,
 }
 
 #[derive(Args)]
@@ -169,17 +175,26 @@ fn run_types(args: TypesArgs) -> Result<(), CliError> {
             .iter()
             .map(|descriptor| descriptor_json(descriptor))
             .collect::<Vec<_>>();
-        println!(
-            "{}",
-            serde_json::to_string_pretty(&Value::Array(entries))
-                .expect("JSON descriptors serialize")
-        );
+        print_json(&Value::Array(entries));
         return Ok(());
     }
 
-    for descriptor in registry::all() {
-        println!("{}\t{}", descriptor.slug, descriptor.name);
-    }
+    let context = human_context()?;
+    let rows = registry::all()
+        .iter()
+        .map(|descriptor| table_row(descriptor, descriptor.all_modes))
+        .collect::<Vec<_>>();
+    let title = format!("Hash types ({})", rows.len());
+
+    println!(
+        "{}",
+        ui::titled_table(
+            &context,
+            &title,
+            &["Slug", "Name", "Hashcat", "John"],
+            &rows
+        )
+    );
 
     Ok(())
 }
@@ -197,8 +212,15 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
     let selected = select_type(args.type_slug.as_deref())?;
     let lines = args.input.read()?;
     let total = lines.len();
+    let context = if args.verbose {
+        Some(human_context()?)
+    } else {
+        None
+    };
 
     let mut output = Vec::with_capacity(total);
+    let mut json_output = Vec::with_capacity(total);
+
     for (line, text) in &lines {
         let (descriptor, value) = match selected {
             Some(descriptor) => (
@@ -230,18 +252,27 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
         };
 
         if args.json {
-            output.push(
-                serde_json::to_string(&json_value(descriptor, value.as_ref()))
-                    .expect("JSON value serializes"),
-            );
+            json_output.push(json_value(descriptor, value.as_ref(), *line, text));
         } else if args.verbose {
-            output.push(verbose_value(descriptor, value.as_ref()));
+            output.push(verbose_value(
+                &context.expect("verbose context"),
+                descriptor,
+                value.as_ref(),
+                *line,
+                total,
+                text,
+            ));
         } else {
             output.push(value.render(&render_opts));
         }
     }
 
-    print_lines(&output);
+    if args.json {
+        print_json(&Value::Array(json_output));
+    } else {
+        print_lines(&output);
+    }
+
     Ok(())
 }
 
@@ -249,7 +280,14 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
     let opts = ParseOptions::default();
     let lines = args.input.read()?;
     let total = lines.len();
-    let mut output = Vec::with_capacity(total);
+    let context = if args.json {
+        None
+    } else {
+        Some(human_context()?)
+    };
+
+    let mut blocks = Vec::with_capacity(total);
+    let mut json_output = Vec::new();
 
     for (line, text) in &lines {
         let matches = matches(text, &opts);
@@ -258,12 +296,35 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
                 "line {line}: no hash type matched `{text}`"
             )));
         }
-        for (descriptor, _) in matches {
-            output.push(format!("{}\t{}", descriptor.slug, descriptor.name));
+
+        if args.json {
+            for (descriptor, _) in matches {
+                json_output.push(identify_json(descriptor, *line, text));
+            }
+            continue;
         }
+
+        let context = context.expect("human context");
+        let rows = matches
+            .into_iter()
+            .map(|(descriptor, _)| table_row(descriptor, descriptor.all_modes))
+            .collect::<Vec<_>>();
+        let mut block = ui::title(&context, &format!("Input: {text}"));
+        block.push('\n');
+        block.push_str(&ui::table(
+            &context,
+            &["Slug", "Name", "Hashcat", "John"],
+            &rows,
+        ));
+        blocks.push(block);
     }
 
-    print_lines(&output);
+    if args.json {
+        print_json(&Value::Array(json_output));
+    } else {
+        println!("{}", blocks.join("\n\n"));
+    }
+
     Ok(())
 }
 
@@ -352,13 +413,74 @@ impl InputArgs {
     }
 }
 
+fn human_context() -> Result<ui::Context, CliError> {
+    ui::Context::detect().map_err(|error| CliError::Input(error.to_string()))
+}
+
 fn print_lines(lines: &[String]) {
     for line in lines {
         println!("{line}");
     }
 }
 
+fn print_json(value: &Value) {
+    println!(
+        "{}",
+        serde_json::to_string_pretty(value).expect("JSON values serialize")
+    );
+}
+
+fn split_modes(modes: &[Mode]) -> (Vec<u32>, Vec<&'static str>) {
+    let mut hashcat = Vec::new();
+    let mut john = Vec::new();
+
+    for mode in modes {
+        match mode {
+            Mode::Hashcat(value) => hashcat.push(*value),
+            Mode::John(format) => john.push(*format),
+        }
+    }
+
+    (hashcat, john)
+}
+
+fn mode_columns(modes: &[Mode]) -> (String, String) {
+    let (hashcat, john) = split_modes(modes);
+    (join_numbers(hashcat), join_labels(john))
+}
+
+fn join_numbers(values: Vec<u32>) -> String {
+    if values.is_empty() {
+        "-".to_owned()
+    } else {
+        values
+            .into_iter()
+            .map(|value| value.to_string())
+            .collect::<Vec<_>>()
+            .join(", ")
+    }
+}
+
+fn join_labels(values: Vec<&str>) -> String {
+    if values.is_empty() {
+        "-".to_owned()
+    } else {
+        values.join(", ")
+    }
+}
+
+fn table_row(descriptor: &omniex::HashTypeDescriptor, modes: &[Mode]) -> Vec<String> {
+    let (hashcat, john) = mode_columns(modes);
+    vec![
+        descriptor.slug.to_owned(),
+        descriptor.name.to_owned(),
+        hashcat,
+        john,
+    ]
+}
+
 fn descriptor_json(descriptor: &omniex::HashTypeDescriptor) -> Value {
+    let (hashcat, john) = split_modes(descriptor.all_modes);
     let fields = descriptor
         .fields
         .iter()
@@ -374,14 +496,33 @@ fn descriptor_json(descriptor: &omniex::HashTypeDescriptor) -> Value {
         .collect::<Vec<_>>();
 
     json!({
-        "name": descriptor.name,
         "slug": descriptor.slug,
-        "modes": descriptor.all_modes.iter().copied().map(mode_value).collect::<Vec<_>>(),
+        "name": descriptor.name,
+        "hashcat": hashcat,
+        "john": john,
         "fields": fields,
     })
 }
 
-fn json_value(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) -> Value {
+fn identify_json(descriptor: &omniex::HashTypeDescriptor, line: usize, input: &str) -> Value {
+    let (hashcat, john) = split_modes(descriptor.all_modes);
+    json!({
+        "line": line,
+        "input": input,
+        "slug": descriptor.slug,
+        "name": descriptor.name,
+        "hashcat": hashcat,
+        "john": john,
+    })
+}
+
+fn json_value(
+    descriptor: &omniex::HashTypeDescriptor,
+    value: &dyn HashValue,
+    line: usize,
+    input: &str,
+) -> Value {
+    let (hashcat, john) = split_modes(&value.modes());
     let fields = value
         .describe()
         .into_iter()
@@ -397,52 +538,63 @@ fn json_value(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) ->
         .collect::<Vec<_>>();
 
     json!({
-        "name": descriptor.name,
+        "line": line,
+        "input": input,
         "slug": descriptor.slug,
-        "modes": value.modes().into_iter().map(mode_value).collect::<Vec<_>>(),
+        "name": descriptor.name,
+        "hashcat": hashcat,
+        "john": john,
         "fields": fields,
     })
 }
 
-fn verbose_value(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) -> String {
-    let modes = value
-        .modes()
+fn verbose_value(
+    context: &ui::Context,
+    descriptor: &omniex::HashTypeDescriptor,
+    value: &dyn HashValue,
+    line: usize,
+    total: usize,
+    input: &str,
+) -> String {
+    let (hashcat, john) = mode_columns(&value.modes());
+    let mut block = ui::title(
+        context,
+        &format!("{} ({})", descriptor.name, descriptor.slug),
+    );
+    block.push('\n');
+
+    let mut pairs = Vec::new();
+    if total > 1 {
+        pairs.push(("Line", line.to_string()));
+    }
+    pairs.push(("Input", input.to_owned()));
+    pairs.push(("Hashcat", hashcat));
+    pairs.push(("John", john));
+    block.push_str(&ui::key_values(context, &pairs));
+    block.push('\n');
+    block.push_str(&context.bold("Fields"));
+    block.push('\n');
+
+    let rows = value
+        .describe()
         .into_iter()
-        .map(mode_name)
-        .collect::<Vec<_>>()
-        .join(", ");
+        .map(|entry| {
+            vec![
+                entry.field.name.to_owned(),
+                role_name(entry.field.role).to_owned(),
+                encoding_name(entry.field.encoding).to_owned(),
+                entry.value,
+                entry.field.description.to_owned(),
+            ]
+        })
+        .collect::<Vec<_>>();
+    block.push_str(&ui::table(
+        context,
+        &["Name", "Role", "Encoding", "Value", "Description"],
+        &rows,
+    ));
 
-    let mut lines = vec![
-        format!("{} [{}]", descriptor.name, descriptor.slug),
-        format!("modes: {modes}"),
-    ];
-
-    for entry in value.describe() {
-        lines.push(format!(
-            "field {} [{}, {}]: {}",
-            entry.field.name,
-            role_name(entry.field.role),
-            encoding_name(entry.field.encoding),
-            entry.value
-        ));
-        lines.push(format!("  {}", entry.field.description));
-    }
-
-    lines.join("\n")
-}
-
-fn mode_value(mode: Mode) -> Value {
-    match mode {
-        Mode::Hashcat(mode) => json!({"tool": "hashcat", "mode": mode}),
-        Mode::John(format) => json!({"tool": "john", "format": format}),
-    }
-}
-
-fn mode_name(mode: Mode) -> String {
-    match mode {
-        Mode::Hashcat(mode) => format!("hashcat:{mode}"),
-        Mode::John(format) => format!("john:{format}"),
-    }
+    block
 }
 
 fn role_name(role: FieldRole) -> &'static str {

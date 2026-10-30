@@ -107,6 +107,9 @@ Use `assert_cmd` or `trycmd` plus `insta` for snapshots:
 - `--type` filtering,
 - `--format` default and John output,
 - `--verbose` and `--json`,
+- aligned human tables with one rule, bold-on-terminal only, and no tabs,
+- mode-list wrapping at narrow widths and the 40x10 minimum terminal size,
+- JSON always being one array per invocation,
 - exit codes `0`, `1`, and `2`.
 
 ## How to add tests for a new hash type
