@@ -2,6 +2,7 @@
 
 mod common;
 
+use assert_cmd::Command;
 use common::{VECTORS, vector_for, vector_modes};
 use omniex::{Mode, ParseOptions, RenderOptions, Tool, registry};
 
@@ -176,63 +177,61 @@ fn modes_checklist_does_not_list_implemented_modes() {
 }
 
 #[test]
-fn readme_type_table_matches_the_registry() {
-    let mut rows = 0;
-    let mut in_table = false;
-    for line in include_str!("../README.md").lines() {
-        if line == "## Supported hash types" {
-            in_table = true;
-            continue;
-        }
-        if in_table && line.starts_with("A type is a logical hash type") {
-            in_table = false;
-        }
-        if !in_table {
-            continue;
-        }
-        let Some(rest) = line.strip_prefix("| `") else {
-            continue;
-        };
-        let Some((slug, rest)) = rest.split_once('`') else {
-            continue;
-        };
-        let columns = rest.split('|').map(str::trim).collect::<Vec<_>>();
-        assert!(columns.len() >= 4, "malformed README row for `{slug}`");
+fn readme_type_table_matches_the_types_command() {
+    let output = Command::cargo_bin("omniex")
+        .expect("binary is built")
+        .env("COLUMNS", "1000")
+        .arg("types")
+        .output()
+        .expect("types command runs");
+    assert!(output.status.success());
 
-        let descriptor =
-            registry::by_slug(slug).unwrap_or_else(|| panic!("README lists unknown type `{slug}`"));
-        let expected = {
-            let (mut hashcat, mut john) = (Vec::new(), Vec::new());
-            for mode in descriptor.all_modes {
-                match mode {
-                    Mode::Hashcat(number) => hashcat.push(number.to_string()),
-                    Mode::John(label) => john.push((*label).to_owned()),
-                }
+    let stdout = String::from_utf8(output.stdout).expect("types output is UTF-8");
+    let lines = stdout.lines().collect::<Vec<_>>();
+    let header = lines
+        .iter()
+        .find(|line| line.starts_with("Slug"))
+        .expect("types output has a header");
+    let starts =
+        ["Slug", "Name", "Hashcat", "John"].map(|name| header.find(name).expect("header column"));
+
+    let cli_rows = lines
+        .iter()
+        .skip_while(|line| !line.starts_with("Slug"))
+        .skip(1)
+        .filter(|line| !line.trim().is_empty())
+        .map(|line| {
+            starts
+                .iter()
+                .enumerate()
+                .map(|(index, start)| {
+                    let end = starts.get(index + 1).copied().unwrap_or(line.len());
+                    line[*start..end].trim().to_owned()
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+
+    let readme_rows = include_str!("../README.md")
+        .lines()
+        .filter_map(|line| {
+            let rest = line.strip_prefix("| `")?;
+            let (slug, rest) = rest.split_once('`')?;
+            let columns = rest.split('|').map(str::trim).collect::<Vec<_>>();
+            if columns.len() < 5 {
+                return None;
             }
-            let join = |values: Vec<String>| {
-                if values.is_empty() {
-                    "-".to_owned()
-                } else {
-                    values.join(", ")
-                }
-            };
-            (join(hashcat), join(john))
-        };
-
-        assert_eq!(columns[1], expected.0, "README hashcat modes for `{slug}`");
-        assert_eq!(
-            columns[2].trim_matches('`'),
-            expected.1,
-            "README John formats for `{slug}`"
-        );
-        rows += 1;
-    }
+            Some(vec![
+                slug.to_owned(),
+                columns[1].to_owned(),
+                columns[2].to_owned(),
+                columns[3].trim_matches('`').to_owned(),
+            ])
+        })
+        .collect::<Vec<_>>();
 
     assert_eq!(
-        rows,
-        registry::all().len(),
-        "README lists {} types but {} are registered",
-        rows,
-        registry::all().len()
+        readme_rows, cli_rows,
+        "the README supported-type list must match `omniex types`"
     );
 }

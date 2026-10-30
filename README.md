@@ -70,93 +70,6 @@ artifact ─────────────▶ instance ──────�
 - Process hash lists from an argument, a file, or standard input.
 - Run conformance tests against pinned hashcat and John builds.
 
-## Supported hash types
-
-Run `omniex types` for the full list in a given build.
-
-| Type (`--type`) | Hashcat modes | John format |
-| --- | --- | --- |
-| `md4` | 900 | `Raw-MD4` |
-| `md5` | 0, 70, 2600, 3500, 4300, 4400 | `Raw-MD5` |
-| `salted-md5` | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430 | - |
-| `hmac-md5` | 50, 60 | - |
-| `sha1` | 100, 170, 300, 4500, 4700 | `Raw-SHA1` |
-| `salted-sha1` | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000 | - |
-| `hmac-sha1` | 150, 160 | - |
-| `oracle-sha1` | 112 | - |
-| `ldap-sha1` | 101 | - |
-| `ldap-ssha1` | 111 | - |
-| `macos-sha1` | 122 | - |
-| `django-sha1` | 124 | - |
-| `aruba-sha1` | 125 | - |
-| `mssql-2000` | 131 | `mssql` |
-| `mssql-2005` | 132 | `mssql05` |
-| `peoplesoft-sha1` | 133 | - |
-| `episerver` | 141 | - |
-| `mysql323` | 200 | `mysql` |
-| `phpass` | 400 | `phpass` |
-| `md5crypt` | 500 | `md5crypt` |
-| `juniper-ive` | 501 | - |
-| `juniper-screenos` | 22 | - |
-| `blake2b-512` | 600 | `Raw-Blake2` |
-| `salted-blake2b-512` | 610, 620 | - |
-| `ntlm` | 1000 | `NT` |
-| `dcc` | 1100 | - |
-| `sha224` | 1300 | `Raw-SHA224` |
-| `sha256` | 1400, 1470 | `Raw-SHA256` |
-| `salted-sha256` | 1410, 1420, 1430, 1440 | - |
-| `hmac-sha256` | 1450, 1460 | - |
-| `hmailserver` | 1421 | `hMailServer` |
-| `sha512` | 1700, 1770 | `Raw-SHA512` |
-| `salted-sha512` | 1710, 1720, 1730, 1740 | - |
-| `hmac-sha512` | 1750, 1760 | - |
-| `ldap-ssha256` | 1411 | - |
-| `episerver-net4` | 1441 | - |
-| `descrypt` | 1500 | `descrypt` |
-| `apr1` | 1600 | `md5crypt` |
-| `ldap-ssha512` | 1711 | `SSHA512` |
-| `macos-sha512` | 1722 | - |
-| `mssql-2012` | 1731 | `mssql12` |
-| `sha512crypt` | 1800 | `sha512crypt` |
-| `dcc2` | 2100 | `mscash2` |
-| `cisco-pix` | 2400 | `pix-md5` |
-| `cisco-asa` | 2410 | - |
-| `phps` | 2612 | - |
-| `lm` | 3000 | - |
-| `oracle-h` | 3100 | - |
-| `bcrypt` | 3200 | `bcrypt` |
-| `sunmd5` | 3300 | `SunMD5` |
-| `mediawiki-b` | 3711 | `MediaWiki` |
-| `md5-two-salts` | 3730 | - |
-| `iscsi-chap` | 4800 | - |
-| `half-md5` | 5100 | - |
-| `ike-psk-md5` | 5300 | - |
-| `ike-psk-sha1` | 5400 | - |
-| `netntlmv1` | 5500 | - |
-| `netntlmv2` | 5600 | - |
-| `cisco-ios4` | 5700 | - |
-| `samsung-android` | 5800 | - |
-| `ripemd-160` | 6000 | - |
-| `whirlpool` | 6100 | - |
-| `gost` | 6900 | - |
-| `sha384` | 10800 | `Raw-SHA384` |
-| `salted-sha384` | 10810, 10820, 10830, 10840 | - |
-| `sha384-utf16` | 10870 | - |
-| `sha3-224` | 17300 | - |
-| `sha3-256` | 17400 | - |
-| `sha3-384` | 17500 | - |
-| `sha3-512` | 17600 | `Raw-SHA3` |
-| `keccak-224` | 17700 | - |
-| `keccak-256` | 17800 | `Raw-Keccak-256` |
-| `keccak-384` | 17900 | - |
-| `keccak-512` | 18000 | `Raw-Keccak` |
-| `wpa-pmkid` | 22000, 22001 | - |
-
-A type is a logical hash type, not a mode. Identity is algorithm-based: modes
-are grouped only when the algorithm, field meanings, and serialization match.
-A salt stays a salt and an HMAC key stays a key. Value-dependent compatibility
-is reflected in the `modes` output.
-
 ## Install
 
 Rust 1.85 or newer is required.
@@ -269,3 +182,91 @@ Conformance tests are `#[ignore]`d so the fast suite never needs either tool.
 ## License
 
 MIT. See [`LICENSE`](LICENSE).
+
+## Supported hash types
+
+Run `omniex types` for the full list in a given build. The table below is
+checked against that command in CI.
+
+| Type (`--type`) | Name | Hashcat modes | John format |
+| --- | --- | --- | --- |
+| `md4` | MD4 | 900 | `Raw-MD4` |
+| `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | `Raw-MD5` |
+| `salted-md5` | Salted MD5 | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430 | - |
+| `hmac-md5` | HMAC-MD5 | 50, 60 | - |
+| `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | `Raw-SHA1` |
+| `salted-sha1` | Salted SHA1 | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000 | - |
+| `hmac-sha1` | HMAC-SHA1 | 150, 160 | - |
+| `oracle-sha1` | Oracle 11g SHA1 | 112 | - |
+| `ldap-sha1` | LDAP SHA1 (Base64) | 101 | - |
+| `ldap-ssha1` | LDAP SSHA1 (Base64) | 111 | - |
+| `macos-sha1` | macOS SHA1 | 122 | - |
+| `django-sha1` | Django SHA1 | 124 | - |
+| `aruba-sha1` | ArubaOS SHA1 | 125 | - |
+| `mssql-2000` | MSSQL (2000) | 131 | `mssql` |
+| `mssql-2005` | MSSQL (2005) | 132 | `mssql05` |
+| `peoplesoft-sha1` | PeopleSoft SHA1 | 133 | - |
+| `episerver` | EPiServer (< .NET 4) | 141 | - |
+| `mysql323` | MySQL323 | 200 | `mysql` |
+| `phpass` | phpass | 400 | `phpass` |
+| `md5crypt` | md5crypt | 500 | `md5crypt` |
+| `juniper-ive` | Juniper IVE | 501 | - |
+| `juniper-screenos` | Juniper ScreenOS | 22 | - |
+| `blake2b-512` | BLAKE2b-512 | 600 | `Raw-Blake2` |
+| `salted-blake2b-512` | Salted BLAKE2b-512 | 610, 620 | - |
+| `ntlm` | NTLM | 1000 | `NT` |
+| `dcc` | Domain Cached Credentials | 1100 | - |
+| `sha224` | SHA2-224 | 1300 | `Raw-SHA224` |
+| `sha256` | SHA2-256 | 1400, 1470 | `Raw-SHA256` |
+| `salted-sha256` | Salted SHA2-256 | 1410, 1420, 1430, 1440 | - |
+| `hmac-sha256` | HMAC-SHA256 | 1450, 1460 | - |
+| `hmailserver` | hMailServer | 1421 | `hMailServer` |
+| `sha512` | SHA2-512 | 1700, 1770 | `Raw-SHA512` |
+| `salted-sha512` | Salted SHA2-512 | 1710, 1720, 1730, 1740 | - |
+| `hmac-sha512` | HMAC-SHA512 | 1750, 1760 | - |
+| `ldap-ssha256` | LDAP SSHA256 (Base64) | 1411 | - |
+| `ldap-ssha512` | LDAP SSHA512 (Base64) | 1711 | `SSHA512` |
+| `episerver-net4` | EPiServer (>= .NET 4) | 1441 | - |
+| `descrypt` | descrypt | 1500 | `descrypt` |
+| `apr1` | Apache MD5 (apr1) | 1600 | `md5crypt` |
+| `macos-sha512` | macOS SHA512 | 1722 | - |
+| `mssql-2012` | MSSQL (2012, 2014) | 1731 | `mssql12` |
+| `sha512crypt` | sha512crypt | 1800 | `sha512crypt` |
+| `dcc2` | Domain Cached Credentials 2 | 2100 | `mscash2` |
+| `cisco-pix` | Cisco-PIX MD5 | 2400 | `pix-md5` |
+| `cisco-asa` | Cisco-ASA MD5 | 2410 | - |
+| `phps` | PHPS | 2612 | - |
+| `lm` | LM | 3000 | - |
+| `oracle-h` | Oracle H | 3100 | - |
+| `bcrypt` | bcrypt | 3200 | `bcrypt` |
+| `sunmd5` | SunMD5 | 3300 | `SunMD5` |
+| `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
+| `mediawiki-b` | MediaWiki B | 3711 | `MediaWiki` |
+| `md5-two-salts` | MD5 (two salts) | 3730 | - |
+| `iscsi-chap` | iSCSI CHAP | 4800 | - |
+| `half-md5` | Half MD5 | 5100 | - |
+| `ike-psk-md5` | IKE-PSK MD5 | 5300 | - |
+| `ike-psk-sha1` | IKE-PSK SHA1 | 5400 | - |
+| `netntlmv1` | NetNTLMv1 | 5500 | - |
+| `netntlmv2` | NetNTLMv2 | 5600 | - |
+| `cisco-ios4` | Cisco-IOS type 4 | 5700 | - |
+| `samsung-android` | Samsung Android | 5800 | - |
+| `ripemd-160` | RIPEMD-160 | 6000 | - |
+| `whirlpool` | Whirlpool | 6100 | - |
+| `gost` | GOST R 34.11-94 | 6900 | - |
+| `sha384` | SHA2-384 | 10800 | `Raw-SHA384` |
+| `salted-sha384` | Salted SHA2-384 | 10810, 10820, 10830, 10840 | - |
+| `sha384-utf16` | SHA2-384 (UTF-16LE) | 10870 | - |
+| `sha3-224` | SHA3-224 | 17300 | - |
+| `sha3-256` | SHA3-256 | 17400 | - |
+| `sha3-384` | SHA3-384 | 17500 | - |
+| `sha3-512` | SHA3-512 | 17600 | `Raw-SHA3` |
+| `keccak-224` | Keccak-224 | 17700 | - |
+| `keccak-256` | Keccak-256 | 17800 | `Raw-Keccak-256` |
+| `keccak-384` | Keccak-384 | 17900 | - |
+| `keccak-512` | Keccak-512 | 18000 | `Raw-Keccak` |
+
+A type is a logical hash type, not a mode. Identity is algorithm-based: modes
+are grouped only when the algorithm, field meanings, and serialization match.
+A salt stays a salt and an HMAC key stays a key. Value-dependent compatibility
+is reflected in the `modes` output.
