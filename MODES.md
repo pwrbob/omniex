@@ -116,12 +116,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `10510` - `PDF 1.3 - 1.6 (Acrobat 4 - 8) w/ RC4-40`
 - [ ] `10600` - `PDF 1.7 Level 3 (Acrobat 9)`
 - [ ] `10700` - `PDF 1.7 Level 8 (Acrobat 10 - 11)`
-- [ ] `10800` - `SHA2-384`
-- [ ] `10810` - `sha384($pass.$salt)`
-- [ ] `10820` - `sha384($salt.$pass)`
-- [ ] `10830` - `sha384(utf16le($pass).$salt)`
-- [ ] `10840` - `sha384($salt.utf16le($pass))`
-- [ ] `10870` - `sha384(utf16le($pass))`
 
 ### 11000-11999
 
@@ -231,17 +225,9 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `17220` - `PKZIP (Compressed Multi-File)`
 - [ ] `17225` - `PKZIP (Mixed Multi-File)`
 - [ ] `17230` - `PKZIP (Mixed Multi-File Checksum-Only)`
-- [ ] `17300` - `SHA3-224`
-- [ ] `17400` - `SHA3-256`
-- [ ] `17500` - `SHA3-384`
-- [ ] `17600` - `SHA3-512`
-- [ ] `17700` - `Keccak-224`
-- [ ] `17800` - `Keccak-256`
-- [ ] `17900` - `Keccak-384`
 
 ### 18000-18999
 
-- [ ] `18000` - `Keccak-512`
 - [ ] `18100` - `TOTP (HMAC-SHA1)`
 - [ ] `18200` - `Kerberos 5, etype 23, AS-REP`
 - [ ] `18300` - `Apple File System (APFS)`
@@ -950,13 +936,9 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `RAKP-SHA256` - OpenCL: `RAKP-SHA256-opencl`
 - [ ] `rar` - OpenCL: `rar-opencl`
 - [ ] `RAR5` - OpenCL: `RAR5-opencl`
-- [ ] `Raw-Keccak`
-- [ ] `Raw-Keccak-256`
 - [ ] `Raw-MD5-flat`
 - [ ] `Raw-MD5u`
 - [ ] `Raw-SHA1-Linkedin`
-- [ ] `Raw-SHA3`
-- [ ] `Raw-SHA384`
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
 - [ ] `Raw-SM3`
 - [ ] `restic`

@@ -673,6 +673,120 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "sha384",
+        hashcat: &[hc!(
+            10800,
+            "07371af1ca1fca7c6941d2399f3610f1e392c56c6d73fddffe38f18c430a2817028dae1ef09ac683b62148a2c8757f42"
+        )],
+        john: &[john!(
+            "Raw-SHA384",
+            "07371af1ca1fca7c6941d2399f3610f1e392c56c6d73fddffe38f18c430a2817028dae1ef09ac683b62148a2c8757f42"
+        )],
+    },
+    Vector {
+        slug: "salted-sha384",
+        hashcat: &[
+            hc!(
+                10810,
+                "ca1c843a7a336234baf9db2e10bc38824ce523402fbd7741286b1602bdf6cb869a45289bb9fb706bd404b9f3842ff729:2746460797049820734631508"
+            ),
+            hc!(
+                10820,
+                "63f63d7f82d4a4cb6b9ff37a6bc7c5ec39faaf9c9078551f5cbf7960e76ded87b643d37ac53c45bc544325e7ff83a1f2:93362"
+            ),
+            hc!(
+                10830,
+                "3516a589d2ed4071bf5e36f22e11212b3ad9050b9094b23067103d51e99dcb25c4dc397dba8034fed11a8184acfbb699:577730514588712"
+            ),
+            hc!(
+                10840,
+                "316e93ea8e04de3e5a909c53d36923a31a16c1b9e89b44201d6082f87ca49c5bca53cad65f685207db3ea2ccc7ca40f8:700067651"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "sha384-utf16",
+        hashcat: &[hc!(
+            10870,
+            "48e61d68e93027fae35d405ed16cd01b6f1ae66267833b4a7aa1759e45bab9bba652da2e4c07c155a3d8cf1d81f3a7e8"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha3-224",
+        hashcat: &[hc!(
+            17300,
+            "412ef78534ba6ab0e9b1607d3e9767a25c1ea9d5e83176b4c2817a6c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha3-256",
+        hashcat: &[hc!(
+            17400,
+            "d60fcf6585da4e17224f58858970f0ed5ab042c3916b76b0b828e62eaf636cbd"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha3-384",
+        hashcat: &[hc!(
+            17500,
+            "983ba28532cc6320d04f20fa485bcedb38bddb666eca5f1e5aa279ff1c6244fe5f83cf4bbf05b95ff378dd2353617221"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha3-512",
+        hashcat: &[hc!(
+            17600,
+            "7c2dc1d743735d4e069f3bda85b1b7e9172033dfdd8cd599ca094ef8570f3930c3f2c0b7afc8d6152ce4eaad6057a2ff22e71934b3a3dd0fb55a7fc84a53144e"
+        )],
+        john: &[john!(
+            "Raw-SHA3",
+            "7c2dc1d743735d4e069f3bda85b1b7e9172033dfdd8cd599ca094ef8570f3930c3f2c0b7afc8d6152ce4eaad6057a2ff22e71934b3a3dd0fb55a7fc84a53144e"
+        )],
+    },
+    Vector {
+        slug: "keccak-224",
+        hashcat: &[hc!(
+            17700,
+            "e1dfad9bafeae6ef15f5bbb16cf4c26f09f5f1e7870581962fc84636"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "keccak-256",
+        hashcat: &[hc!(
+            17800,
+            "203f88777f18bb4ee1226627b547808f38d90d3e106262b5de9ca943b57137b6"
+        )],
+        john: &[john!(
+            "Raw-Keccak-256",
+            "203f88777f18bb4ee1226627b547808f38d90d3e106262b5de9ca943b57137b6"
+        )],
+    },
+    Vector {
+        slug: "keccak-384",
+        hashcat: &[hc!(
+            17900,
+            "5804b7ada5806ba79540100e9a7ef493654ff2a21d94d4f2ce4bf69abda5d94bf03701fe9525a15dfdc625bfbd769701"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "keccak-512",
+        hashcat: &[hc!(
+            18000,
+            "2fbf5c9080f0a704de2e915ba8fdae6ab00bbc026b2c1c8fa07da1239381c6b7f4dfd399bf9652500da723694a4c719587dd0219cb30eabe61210a8ae4dc0b03"
+        )],
+        john: &[john!(
+            "Raw-Keccak",
+            "2fbf5c9080f0a704de2e915ba8fdae6ab00bbc026b2c1c8fa07da1239381c6b7f4dfd399bf9652500da723694a4c719587dd0219cb30eabe61210a8ae4dc0b03"
+        )],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

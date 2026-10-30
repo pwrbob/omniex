@@ -69,6 +69,17 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &Ripemd160::DESCRIPTOR,
     &Whirlpool::DESCRIPTOR,
     &Gost::DESCRIPTOR,
+    &Sha384::DESCRIPTOR,
+    &SaltedSha384::DESCRIPTOR,
+    &Sha384Utf16::DESCRIPTOR,
+    &Sha3_224::DESCRIPTOR,
+    &Sha3_256::DESCRIPTOR,
+    &Sha3_384::DESCRIPTOR,
+    &Sha3_512::DESCRIPTOR,
+    &Keccak224::DESCRIPTOR,
+    &Keccak256::DESCRIPTOR,
+    &Keccak384::DESCRIPTOR,
+    &Keccak512::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.
