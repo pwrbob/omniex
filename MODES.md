@@ -58,7 +58,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `6241` - `TrueCrypt RIPEMD160 + XTS 512 bit + boot-mode (legacy)`
 - [ ] `6242` - `TrueCrypt RIPEMD160 + XTS 1024 bit + boot-mode (legacy)`
 - [ ] `6243` - `TrueCrypt RIPEMD160 + XTS 1536 bit + boot-mode (legacy)`
-- [ ] `6300` - `AIX {smd5}`
 - [ ] `6600` - `1Password, agilekeychain`
 - [ ] `6800` - `LastPass + LastPass sniffed`
 
@@ -67,7 +66,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `7000` - `FortiGate (FortiOS)`
 - [ ] `7300` - `IPMI2 RAKP HMAC-SHA1`
 - [ ] `7350` - `IPMI2 RAKP HMAC-MD5`
-- [ ] `7400` - `sha256crypt $5$, SHA256 (Unix)`
 - [ ] `7401` - `MySQL $A$ (sha256crypt)`
 - [ ] `7500` - `Kerberos 5, etype 23, AS-REQ Pre-Auth`
 - [ ] `7700` - `SAP CODVN B (BCODE)`
@@ -78,10 +76,8 @@ Hashcat's plaintext mode is excluded below.
 ### 8000-8999
 
 - [ ] `8000` - `Sybase ASE`
-- [ ] `8100` - `Citrix NetScaler (SHA1)`
 - [ ] `8200` - `1Password, cloudkeychain`
 - [ ] `8300` - `DNSSEC (NSEC3)`
-- [ ] `8400` - `WBB3 (Woltlab Burning Board)`
 - [ ] `8500` - `RACF`
 - [ ] `8501` - `AS/400 DES`
 - [ ] `8600` - `Lotus Notes/Domino 5`
@@ -238,9 +234,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 19000-19999
 
-- [ ] `19000` - `QNX /etc/shadow (MD5)`
-- [ ] `19100` - `QNX /etc/shadow (SHA256)`
-- [ ] `19200` - `QNX /etc/shadow (SHA512)`
 - [ ] `19500` - `Ruby on Rails Restful-Authentication`
 - [ ] `19600` - `Kerberos 5, etype 17, TGS-REP`
 - [ ] `19700` - `Kerberos 5, etype 18, TGS-REP`
@@ -553,9 +546,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `40012` - `Cisco-ISE Hashed Password (SHA256)`
 - [ ] `40013` - `HMAC-RIPEMD160 (key = $pass)`
 - [ ] `40014` - `HMAC-RIPEMD160 (key = $salt)`
-- [ ] `40015` - `AIX {ssha256}`
-- [ ] `40016` - `AIX {ssha512}`
-- [ ] `40017` - `AIX {ssha1}`
 - [ ] `40018` - `macOS v10.8+ (PBKDF2-SHA512)`
 - [ ] `40019` - `GRUB 2`
 - [ ] `40020` - `Drupal7`
@@ -840,7 +830,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `scrypt`
 - [ ] `securezip`
 - [ ] `sha1crypt` - OpenCL: `sha1crypt-opencl`
-- [ ] `sha256crypt` - OpenCL: `sha256crypt-opencl`
 - [ ] `Siemens-S7`
 - [ ] `Signal`
 - [ ] `SIP`

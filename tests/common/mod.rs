@@ -1686,6 +1686,86 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "aix-smd5",
+        hashcat: &[hc!(6300, "{smd5}17800721$WkGka7tXcrfpUQS6WOQyw/")],
+        john: &[],
+    },
+    Vector {
+        slug: "ssha1-aix",
+        hashcat: &[hc!(
+            40017,
+            "{ssha1}06$5586485655847243$V5f1Ff1y4dr7AWeVSSdv6N52..Y"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "ssha256-aix",
+        hashcat: &[hc!(
+            40015,
+            "{ssha256}06$2715084824104660$1s/s4RZWEcvZ5VuWPXWGUfwSoG07eVSVce8F6ANJ.g4"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "ssha512-aix",
+        hashcat: &[hc!(
+            40016,
+            "{ssha512}06$4653718755856803$O04nVHL7iU9Jguy/B3Yow.veBM52irn.038Y/Ln6AMy/BG8wbU6ozSP8/W9KDZPUbhdsbl1lf8px.vKJS1S/.."
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha256crypt",
+        hashcat: &[hc!(
+            7400,
+            "$5$7777657035274252$XftMj84MW.New1/ViLY5V4CM4Y7EBvfETaZsCW9vcJ8"
+        )],
+        john: &[john!(
+            "sha256crypt",
+            "$5$7777657035274252$XftMj84MW.New1/ViLY5V4CM4Y7EBvfETaZsCW9vcJ8"
+        )],
+    },
+    Vector {
+        slug: "citrix-netscaler-sha1",
+        hashcat: &[hc!(
+            8100,
+            "1130725275da09ca13254957f2314a639818d44c37ef6d558"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "wbb3",
+        hashcat: &[hc!(
+            8400,
+            "7f8d1951fe48ae3266980c2979c141f60e4415e5:5037864764153886517871426607441768004150"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "qnx-md5",
+        hashcat: &[hc!(
+            19000,
+            "@m@75f6f129f9c9e77b6b1b78f791ed764a@8741857532330050"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "qnx-sha256",
+        hashcat: &[hc!(
+            19100,
+            "@s@0b365cab7e17ee1e7e1a90078501cc1aa85888d6da34e2f5b04f5c614b882a93@5498317092471604"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "qnx-sha512",
+        hashcat: &[hc!(
+            19200,
+            "@S@715df9e94c097805dd1e13c6a40f331d02ce589765a2100ec7435e76b978d5efc364ce10870780622cee003c9951bd92ec1020c924b124cfff7e0fa1f73e3672@2257314490293159"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

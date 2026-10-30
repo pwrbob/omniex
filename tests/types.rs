@@ -669,6 +669,36 @@ fn invalid_inputs_return_stable_error_kinds() {
             format!("{}:a:b:c", zeros(32)),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "aix-smd5".into(),
+            "{smd5}short".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "ssha1-aix".into(),
+            "{ssha1}06$salt$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sha256crypt".into(),
+            "$5$salt$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "citrix-netscaler-sha1".into(),
+            "2short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "wbb3".into(),
+            format!("{}:abc", zeros(40)),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "qnx-md5".into(),
+            "@m@abcd@12345678".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

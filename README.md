@@ -383,6 +383,16 @@ checked against that command in CI.
 | `authme-sha256` | AuthMe SHA2-256 | 20711 | - |
 | `netwitness-sha256` | NetWitness SHA2-256 | 20712 | - |
 | `sha1-utf16-username-salt` | SHA1 (UTF-16LE username, salted) | 29000 | - |
+| `aix-smd5` | AIX {smd5} | 6300 | - |
+| `ssha1-aix` | AIX {ssha1} | 40017 | - |
+| `ssha256-aix` | AIX {ssha256} | 40015 | - |
+| `ssha512-aix` | AIX {ssha512} | 40016 | - |
+| `sha256crypt` | sha256crypt | 7400 | `sha256crypt` |
+| `citrix-netscaler-sha1` | Citrix NetScaler SHA1 | 8100 | - |
+| `wbb3` | WBB3 | 8400 | - |
+| `qnx-md5` | QNX MD5 | 19000 | - |
+| `qnx-sha256` | QNX SHA2-256 | 19100 | - |
+| `qnx-sha512` | QNX SHA2-512 | 19200 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

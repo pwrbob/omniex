@@ -198,6 +198,16 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &AuthMeSha256::DESCRIPTOR,
     &NetWitnessSha256::DESCRIPTOR,
     &Sha1Utf16UsernameSalt::DESCRIPTOR,
+    &AixSmd5::DESCRIPTOR,
+    &AixSsha1::DESCRIPTOR,
+    &AixSsha256::DESCRIPTOR,
+    &AixSsha512::DESCRIPTOR,
+    &Sha256Crypt::DESCRIPTOR,
+    &CitrixNetScalerSha1::DESCRIPTOR,
+    &Wbb3::DESCRIPTOR,
+    &QnxMd5::DESCRIPTOR,
+    &QnxSha256::DESCRIPTOR,
+    &QnxSha512::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.
