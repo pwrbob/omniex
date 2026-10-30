@@ -34,8 +34,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 2000-2999
 
-- [ ] `2500` - `WPA-EAPOL-PBKDF2`
-- [ ] `2501` - `WPA-EAPOL-PMK`
 
 ### 3000-3999
 
@@ -321,8 +319,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 22000-22999
 
-- [ ] `22000` - `WPA-PBKDF2-PMKID+EAPOL`
-- [ ] `22001` - `WPA-PMK-PMKID+EAPOL`
 - [ ] `22100` - `BitLocker`
 - [ ] `22200` - `Citrix NetScaler (SHA512)`
 - [ ] `22300` - `sha256($salt.$pass.$salt)`
@@ -1073,4 +1069,5 @@ Remove each entry together with the base mode it duplicates.
 - hashcat `99999` - `Plaintext`: not a hash.
 - John `plaintext`: not a hash.
 - hashcat `2000` - `STDOUT`: not a hash.
+- hashcat `2500`/`2501`: deprecated in hashcat 8.0.0 and replaced by `22000`/`22001`.
 - John `dynamic` and `dynamic=`: dynamic compiler support is out of scope.

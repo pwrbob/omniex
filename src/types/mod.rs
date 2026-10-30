@@ -54,6 +54,7 @@ mod sha256;
 mod sha512;
 mod sha512crypt;
 mod sun_md5;
+mod wpa_pmkid;
 
 pub use apr1::Apr1;
 pub use aruba_sha1::ArubaSha1;
@@ -107,3 +108,4 @@ pub use sha256::Sha256;
 pub use sha512::Sha512;
 pub use sha512crypt::Sha512Crypt;
 pub use sun_md5::SunMd5;
+pub use wpa_pmkid::WpaPmkid;

@@ -58,6 +58,17 @@ fn every_type_describes_every_field() {
         ("cisco-pix", &["crypt"]),
         ("cisco-asa", &["crypt", "salt"]),
         ("phps", &["salt", "digest"]),
+        (
+            "wpa-pmkid",
+            &[
+                "kind",
+                "pmkid",
+                "access_point",
+                "station",
+                "essid",
+                "extras",
+            ],
+        ),
         ("lm", &["digest"]),
         ("oracle-h", &["digest", "salt"]),
         ("bcrypt", &["prefix", "cost", "salt", "digest"]),
@@ -481,6 +492,16 @@ fn invalid_inputs_return_stable_error_kinds() {
             "phps".into(),
             "$PHPS$abc$00".into(),
             ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "wpa-pmkid".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "wpa-pmkid".into(),
+            "WPA*01*abcd".into(),
+            ParseErrorKind::InvalidLength,
         ),
         ("lm".into(), "abcd".into(), ParseErrorKind::InvalidLength),
         (

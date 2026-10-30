@@ -6,7 +6,7 @@ use crate::types::{
     JuniperScreenos, LdapSha1, LdapSsha1, LdapSsha256, LdapSsha512, Lm, MacosSha1, MacosSha512,
     Md4, Md5, Md5Crypt, Md5TwoSalts, MediaWikiB, Mssql2000, Mssql2005, Mssql2012, Mysql323, Ntlm,
     OracleH, OracleSha1, PeoplesoftSha1, Phpass, Phps, SaltedBlake2b512, SaltedMd5, SaltedSha1,
-    SaltedSha256, SaltedSha512, Sha1, Sha224, Sha256, Sha512, Sha512Crypt, SunMd5,
+    SaltedSha256, SaltedSha512, Sha1, Sha224, Sha256, Sha512, Sha512Crypt, SunMd5, WpaPmkid,
 };
 use crate::{HashTypeDescriptor, ParseError, ParseFn, ParseOptions};
 
@@ -62,6 +62,7 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &OracleH::DESCRIPTOR,
     &Bcrypt::DESCRIPTOR,
     &SunMd5::DESCRIPTOR,
+    &WpaPmkid::DESCRIPTOR,
     &MediaWikiB::DESCRIPTOR,
     &Md5TwoSalts::DESCRIPTOR,
 ];

@@ -75,6 +75,7 @@ Run `omniex types` for the full list in a given build.
 | `sunmd5` | 3300 | `SunMD5` |
 | `mediawiki-b` | 3711 | `MediaWiki` |
 | `md5-two-salts` | 3730 | - |
+| `wpa-pmkid` | 22000, 22001 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.
