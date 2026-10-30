@@ -804,6 +804,31 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$mysqlsha2$abcd*abcd".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "coldfusion10".into(),
+            "abcd:00".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "des-plaintext".into(),
+            "abcd:00".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "aes128-ecb-nokdf".into(),
+            "abcd:00".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "murmurhash64a".into(),
+            "1234567890abcdef:nothex".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sha1-cx".into(),
+            "abcd:00".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

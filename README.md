@@ -215,7 +215,7 @@ checked against that command in CI.
 | `blake2b-512` | BLAKE2b-512 | 600 | `Raw-Blake2` |
 | `salted-blake2b-512` | Salted BLAKE2b-512 | 610, 620 | - |
 | `ntlm` | NTLM | 1000 | `NT` |
-| `dcc` | Domain Cached Credentials | 1100 | - |
+| `dcc` | Domain Cached Credentials | 1100, 31500 | - |
 | `sha224` | SHA2-224 | 1300 | `Raw-SHA224` |
 | `sha256` | SHA2-256 | 1400, 1470 | `Raw-SHA256` |
 | `salted-sha256` | Salted SHA2-256 | 1410, 1420, 1430, 1440 | - |
@@ -445,6 +445,21 @@ checked against that command in CI.
 | `sasl-digest-md5` | SASL DIGEST-MD5 | 37600 | - |
 | `ospf-md5` | OSPFv2/RIPv2 MD5 authentication | 40001 | - |
 | `mysql-caching-sha2` | MySQL caching_sha2_password challenge-response | 40006 | - |
+| `coldfusion10` | ColdFusion 10+ | 12600 | - |
+| `peoplesoft-ps-token` | PeopleSoft PS_TOKEN | 13500 | - |
+| `windows-phone-pin` | Windows Phone 8+ PIN/password | 13800 | - |
+| `opencart` | OpenCart | 13900 | - |
+| `md5-double-salt-md5` | MD5 of MD5 salt and MD5 password | 30500 | - |
+| `symfony-legacy-sha256` | Symfony Legacy SHA256 | 35800 | - |
+| `sha1-cx` | sha1(CX) | 14400 | - |
+| `skip32` | Skip32 (PT = $salt, key = $pass) | 14900 | - |
+| `rails-restful-auth` | Ruby on Rails Restful Auth (one round, no sitekey) | 27200 | - |
+| `murmurhash64a` | MurmurHash64A | 34200 | - |
+| `des-plaintext` | DES (PT = $salt, key = $pass) | 14000 | - |
+| `des3-plaintext` | 3DES (PT = $salt, key = $pass) | 14100 | - |
+| `aes128-ecb-nokdf` | AES-128-ECB NOKDF (PT = $salt, key = $pass) | 26401 | - |
+| `aes192-ecb-nokdf` | AES-192-ECB NOKDF (PT = $salt, key = $pass) | 26402 | - |
+| `aes256-ecb-nokdf` | AES-256-ECB NOKDF (PT = $salt, key = $pass) | 26403 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

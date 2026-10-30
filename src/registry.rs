@@ -260,6 +260,21 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &SaslDigestMd5::DESCRIPTOR,
     &OspfMd5::DESCRIPTOR,
     &MysqlCachingSha2::DESCRIPTOR,
+    &ColdFusion10::DESCRIPTOR,
+    &PeoplesoftPsToken::DESCRIPTOR,
+    &WindowsPhonePin::DESCRIPTOR,
+    &Opencart::DESCRIPTOR,
+    &Md5DoubleSaltMd5::DESCRIPTOR,
+    &SymfonyLegacySha256::DESCRIPTOR,
+    &Sha1Cx::DESCRIPTOR,
+    &Skip32::DESCRIPTOR,
+    &RailsRestfulAuth::DESCRIPTOR,
+    &MurmurHash64A::DESCRIPTOR,
+    &DesPlaintext::DESCRIPTOR,
+    &Des3Plaintext::DESCRIPTOR,
+    &Aes128EcbNokdf::DESCRIPTOR,
+    &Aes192EcbNokdf::DESCRIPTOR,
+    &Aes256EcbNokdf::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

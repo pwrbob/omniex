@@ -123,7 +123,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `12200` - `eCryptfs`
 - [ ] `12400` - `BSDi Crypt, Extended DES`
 - [ ] `12500` - `RAR3-hp`
-- [ ] `12600` - `ColdFusion 10+`
 - [ ] `12700` - `Blockchain, My Wallet`
 - [ ] `12900` - `Android FDE (Samsung DEK)`
 
@@ -134,7 +133,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `13200` - `AxCrypt 1`
 - [ ] `13300` - `AxCrypt 1 in-memory SHA1`
 - [ ] `13400` - `KeePass (KDBX v2/v3)`
-- [ ] `13500` - `PeopleSoft PS_TOKEN`
 - [ ] `13600` - `WinZip`
 - [ ] `13711` - `VeraCrypt RIPEMD160 + XTS 512 bit (legacy)`
 - [ ] `13712` - `VeraCrypt RIPEMD160 + XTS 1024 bit (legacy)`
@@ -160,20 +158,14 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `13781` - `VeraCrypt Streebog-512 + XTS 512 bit + boot-mode (legacy)`
 - [ ] `13782` - `VeraCrypt Streebog-512 + XTS 1024 bit + boot-mode (legacy)`
 - [ ] `13783` - `VeraCrypt Streebog-512 + XTS 1536 bit + boot-mode (legacy)`
-- [ ] `13800` - `Windows Phone 8+ PIN/password`
-- [ ] `13900` - `OpenCart`
 
 ### 14000-14999
 
-- [ ] `14000` - `DES (PT = $salt, key = $pass)`
-- [ ] `14100` - `3DES (PT = $salt, key = $pass)`
 - [ ] `14200` - `RACF KDFAES`
-- [ ] `14400` - `sha1(CX)`
 - [ ] `14500` - `Linux Kernel Crypto API (2.4)`
 - [ ] `14600` - `LUKS v1 (legacy)`
 - [ ] `14700` - `iTunes backup < 10.0`
 - [ ] `14800` - `iTunes backup >= 10.0`
-- [ ] `14900` - `Skip32 (PT = $salt, key = $pass)`
 
 ### 15000-15999
 
@@ -306,9 +298,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `26100` - `Mozilla key4.db`
 - [ ] `26150` - `Mozilla key4.db SHA384`
 - [ ] `26200` - `OpenEdge Progress Encode`
-- [ ] `26401` - `AES-128-ECB NOKDF (PT = $salt, key = $pass)`
-- [ ] `26402` - `AES-192-ECB NOKDF (PT = $salt, key = $pass)`
-- [ ] `26403` - `AES-256-ECB NOKDF (PT = $salt, key = $pass)`
 - [ ] `26500` - `iPhone passcode (UID key + System Keybag)`
 - [ ] `26600` - `MetaMask Wallet (needs all data, checks AES-GCM tag)`
 - [ ] `26610` - `MetaMask Wallet (short hash, plaintext check)`
@@ -320,7 +309,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `27000` - `NetNTLMv1 / NetNTLMv1+ESS (NT)`
 - [ ] `27100` - `NetNTLMv2 (NT)`
-- [ ] `27200` - `Ruby on Rails Restful Auth (one round, no sitekey)`
 - [ ] `27300` - `SNMPv3 HMAC-SHA512-384`
 - [ ] `27400` - `VMware VMX (PBKDF2-HMAC-SHA1 + AES-256-CBC)`
 - [ ] `27500` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-128-XTS)`
@@ -410,7 +398,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `30000` - `Python Werkzeug MD5 (HMAC-MD5 (key = $salt))`
 - [ ] `30120` - `Python Werkzeug SHA256 (HMAC-SHA256 (key = $salt))`
 - [ ] `30420` - `DANE RFC7929/RFC8162 SHA2-256`
-- [ ] `30500` - `md5(md5($salt).md5(md5($pass)))`
 - [ ] `30600` - `bcrypt(sha256($pass))`
 - [ ] `30601` - `bcrypt(HMAC-SHA256($pass))`
 - [ ] `30700` - `Anope IRC Services (enc_sha256)`
@@ -428,7 +415,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `31200` - `Veeam VBK`
 - [ ] `31300` - `MS SNTP`
 - [ ] `31400` - `SecureCRT MasterPassphrase v2`
-- [ ] `31500` - `Domain Cached Credentials (DCC), MS Cache (NT)`
 - [ ] `31600` - `Domain Cached Credentials 2 (DCC2), MS Cache 2, (NT)`
 - [ ] `31700` - `md5(md5(md5($pass).$salt1).$salt2)`
 - [ ] `31800` - `1Password, mobilekeychain (1Password 8)`
@@ -458,7 +444,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `34000` - `Argon2`
 - [ ] `34100` - `LUKS v2 argon2 + SHA-256 + AES`
-- [ ] `34200` - `MurmurHash64A`
 - [ ] `34201` - `MurmurHash64A (zero seed)`
 - [ ] `34211` - `MurmurHash64A truncated (zero seed)`
 - [ ] `34300` - `KeePass Argon2 (KDBX v4)`
@@ -477,7 +462,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `35400` - `Kerberos 5, etype 23, AS-REP (NT)`
 - [ ] `35500` - `Wordpress bcrypt(hmac-sha384($pass))`
 - [ ] `35600` - `gost12512crypt [$gost12512hash$] (Unix)`
-- [ ] `35800` - `Symfony Legacy SHA256`
 
 ### 36000-36999
 

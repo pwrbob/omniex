@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Domain Cached Credentials",
     slug = "dcc",
-    hashcat = [1100],
+    hashcat = [1100, 31500],
     modes_fn = dcc_modes,
 )]
 pub struct Dcc {

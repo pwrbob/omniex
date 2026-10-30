@@ -305,7 +305,10 @@ pub const VECTORS: &[Vector] = &[
     },
     Vector {
         slug: "dcc",
-        hashcat: &[hc!(1100, "c896b3c6963e03c86ade3a38370bbb09:54161084332")],
+        hashcat: &[
+            hc!(1100, "c896b3c6963e03c86ade3a38370bbb09:54161084332"),
+            hc_ambiguous!(31500, "c896b3c6963e03c86ade3a38370bbb09:54161084332"),
+        ],
         john: &[],
     },
     Vector {
@@ -2152,6 +2155,111 @@ pub const VECTORS: &[Vector] = &[
         hashcat: &[hc!(
             40006,
             "$mysqlsha2$336a0e5d214b713776503223785a39014c6d3842*1087166c986227f1ab6cfc071e7392b95a869ba94456a7429620614095b01be2"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "coldfusion10",
+        hashcat: &[hc!(
+            12600,
+            "3f3473a071b1fb955544e80c81853ca0f1e4f9ee4ca3bf4d2a8a10b5ef5be1f6:6058321484538505215534207835727413038041028036676832416353152201"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "peoplesoft-ps-token",
+        hashcat: &[hc!(
+            13500,
+            "24eea51b53d02b4c5ff99bcb05a6847fdb2d9308:4f10a0de76e242040c28e9d3dd15c903343489c79765f9118c098c266b9ff505c95bd75bbe406ff3404849eea73930ad17937c0ba6fc3e7bb6d37362941318938b8af96d1292a310b3fd29a67e411ecb10d30247c99183a16951b3859054d4eba9dcd50709c7b21dee836d7ed195cc6b33317aeb557cc56392dc551faa8d5a0fb42212"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "windows-phone-pin",
+        hashcat: &[hc!(
+            13800,
+            "060a4a94cb2263bcefe74705bd0efe7643d09c2bc25fc69f6a32c1b8d5a5d0d9:4647316184156410832507278642444030512402463246148636510356103432440257733102761444262383653100802140838605535187005586063548643765207865344068042278454875021452355870320020868064506248840047414683714173748364871633802572014845467035357710118327480707136422"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "opencart",
+        hashcat: &[hc!(
+            13900,
+            "058c1c3773340c8563421e2b17e60eb7c916787e:827500576"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-double-salt-md5",
+        hashcat: &[hc!(30500, "e13bb4b8e5a98db7277df344aa3363cf:28945624531")],
+        john: &[],
+    },
+    Vector {
+        slug: "symfony-legacy-sha256",
+        hashcat: &[hc!(
+            35800,
+            "e65e9e4f3cd2f28dd8f18de72a465b3a8cd982ba615fada61842ecea05ca0c9c:3fd6486e7c9d4eb920275412198bb7f8ed7eacd53ba953dd50f1e481952c15b5"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha1-cx",
+        hashcat: &[hc!(
+            14400,
+            "fcdc7ec700b887e8eaebf94c2ec52aebb5521223:63038426024388230227"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "skip32",
+        hashcat: &[hc!(14900, "7090b6b9:04223875")],
+        john: &[],
+    },
+    Vector {
+        slug: "rails-restful-auth",
+        hashcat: &[hc!(
+            27200,
+            "3999d08db95797891ec77f07223ca81bf43e1be2:5dcc47b04c49d3c8e1b9e4ec367fddeed21b7b85"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "murmurhash64a",
+        hashcat: &[hc!(34200, "ef3014941bf1102d:837163b2348dfae1")],
+        john: &[],
+    },
+    Vector {
+        slug: "des-plaintext",
+        hashcat: &[hc!(14000, "53b325182924b356:1412781058343178")],
+        john: &[],
+    },
+    Vector {
+        slug: "des3-plaintext",
+        hashcat: &[hc!(14100, "4c29eea59d8db1e7:7428288455525516")],
+        john: &[],
+    },
+    Vector {
+        slug: "aes128-ecb-nokdf",
+        hashcat: &[hc!(
+            26401,
+            "e7a32f3210455cc044f26117c4612aab:86046627772965328523223752173724"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "aes192-ecb-nokdf",
+        hashcat: &[hc!(
+            26402,
+            "2995e91b798ef51232a91579edb1d176:49869364034411376791729962721320"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "aes256-ecb-nokdf",
+        hashcat: &[hc!(
+            26403,
+            "264a4248c9522cb74d33fe26cb596895:61270210011294880287232432636227"
         )],
         john: &[],
     },
