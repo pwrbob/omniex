@@ -1,16 +1,17 @@
-//! MetaMask short hash, rendered as `$metamask-short$<salt>$<iv>$<ciphertext>`.
+//! MetaMask wallets, rendered as `$metamask$<salt>$<iv>$<ciphertext>`.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
-/// MetaMask short wallet hashes.
+/// MetaMask wallet hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "MetaMask Wallet (short hash, plaintext check)",
-    slug = "metamask-short",
-    hashcat = [26610],
+    name = "MetaMask Wallet",
+    slug = "metamask",
+    hashcat = [26600, 26610],
+    modes_fn = metamask_modes,
 )]
-pub struct MetamaskShort {
+pub struct Metamask {
     /// Base64 salt.
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
@@ -19,17 +20,26 @@ pub struct MetamaskShort {
     #[field(role = iv, encoding = base64)]
     pub iv: [u8; 16],
 
-    /// The 64-byte ciphertext.
+    /// Base64 ciphertext.
     #[field(role = ciphertext, encoding = base64)]
-    pub ciphertext: [u8; 64],
+    pub ciphertext: Vec<u8>,
 }
 
-impl Parse for MetamaskShort {
+impl Parse for Metamask {
     fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        let rest = parse::strip_prefix(input, "$metamask-short$", 0)?;
+        let rest = input
+            .strip_prefix("$metamask-short$")
+            .or_else(|| input.strip_prefix("$metamask$"))
+            .ok_or_else(|| {
+                parse::error(
+                    ParseErrorKind::InvalidCharacter,
+                    0,
+                    "expected `$metamask$` or `$metamask-short$`",
+                )
+            })?;
         let fields = parse::split_fields(rest, '$', 3)?;
         let salt = parse::decode_base64(fields[0].0, fields[0].1)?;
         let iv = parse::decode_base64(fields[1].0, fields[1].1)?;
@@ -41,13 +51,6 @@ impl Parse for MetamaskShort {
                 "MetaMask IV must be 16 bytes",
             )
         })?;
-        let ciphertext = ciphertext.as_slice().try_into().map_err(|_| {
-            parse::error(
-                ParseErrorKind::InvalidLength,
-                fields[2].1,
-                "MetaMask ciphertext must be 64 bytes",
-            )
-        })?;
         Ok(Self {
             salt,
             iv,
@@ -56,13 +59,26 @@ impl Parse for MetamaskShort {
     }
 }
 
-impl Render for MetamaskShort {
+pub fn metamask_modes(value: &Metamask) -> Vec<crate::Mode> {
+    if value.ciphertext.len() == 64 {
+        vec![crate::Mode::Hashcat(26610)]
+    } else {
+        vec![crate::Mode::Hashcat(26600)]
+    }
+}
+
+impl Render for Metamask {
     fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
-            "$metamask-short${}${}${}",
+            "{}{}${}${}",
+            if self.ciphertext.len() == 64 {
+                "$metamask-short$"
+            } else {
+                "$metamask$"
+            },
             crate::format::base64(&self.salt),
             crate::format::base64(self.iv),
-            crate::format::base64(self.ciphertext)
+            crate::format::base64(&self.ciphertext)
         )
     }
 }

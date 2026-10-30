@@ -957,7 +957,7 @@ fn invalid_inputs_return_stable_error_kinds() {
             ParseErrorKind::InvalidLength,
         ),
         (
-            "metamask-short".into(),
+            "metamask".into(),
             "$metamask-short$aaaa$aaaa$aaaa".into(),
             ParseErrorKind::InvalidLength,
         ),

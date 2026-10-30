@@ -76,6 +76,10 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &TrueCrypt::DESCRIPTOR,
     &VeraCrypt::DESCRIPTOR,
     &Diskcryptor::DESCRIPTOR,
+    &Bitwarden::DESCRIPTOR,
+    &MongodbScram::DESCRIPTOR,
+    &Stellar::DESCRIPTOR,
+    &Exodus::DESCRIPTOR,
     &WpaPmkid::DESCRIPTOR,
     &MediaWikiB::DESCRIPTOR,
     &Md5TwoSalts::DESCRIPTOR,
@@ -259,7 +263,7 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &Mojolicious::DESCRIPTOR,
     &AnsibleVault::DESCRIPTOR,
     &KnxIpSecure::DESCRIPTOR,
-    &MetamaskShort::DESCRIPTOR,
+    &Metamask::DESCRIPTOR,
     &Office2016Sheetprotection::DESCRIPTOR,
 ];
 

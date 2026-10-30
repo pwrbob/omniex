@@ -248,6 +248,10 @@ checked against that command in CI.
 | `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
 | `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
 | `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | - |
+| `bitwarden` | Bitwarden | 23400 | - |
+| `mongodb-scram` | MongoDB ServerKey SCRAM-SHA-1 | 24100 | - |
+| `stellar` | Stargazer Stellar Wallet XLM | 25500 | - |
+| `exodus` | Exodus Desktop Wallet (scrypt) | 28200 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
@@ -431,7 +435,7 @@ checked against that command in CI.
 | `mojolicious` | Perl Mojolicious session cookie | 16501 | - |
 | `ansible-vault` | Ansible Vault | 16900 | - |
 | `knx-ip-secure` | KNX IP Secure - Device Authentication Code | 25900 | - |
-| `metamask-short` | MetaMask Wallet (short hash, plaintext check) | 26610 | - |
+| `metamask` | MetaMask Wallet | 26600, 26610 | - |
 | `office2016-sheetprotection` | MS Office 2016 - SheetProtection | 25300 | - |
 
 

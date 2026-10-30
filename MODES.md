@@ -218,7 +218,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `23003` - `SecureZIP AES-256`
 - [ ] `23100` - `Apple Keychain`
 - [ ] `23300` - `Apple iWork`
-- [ ] `23400` - `Bitwarden`
 - [ ] `23500` - `AxCrypt 2 AES-128`
 - [ ] `23600` - `AxCrypt 2 AES-256`
 - [ ] `23700` - `RAR3-p (Uncompressed)`
@@ -228,7 +227,6 @@ Hashcat's plaintext mode is excluded below.
 ### 24000-24999
 
 - [ ] `24000` - `BestCrypt v4 Volume Encryption`
-- [ ] `24100` - `MongoDB ServerKey SCRAM-SHA-1`
 - [ ] `24410` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA1 + 3DES/AES)`
 - [ ] `24420` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA256 + 3DES/AES)`
 - [ ] `24430` - `PKCS#12 (.pfx, .p12) (SHA1 + HMAC-SHA1)`
@@ -238,7 +236,6 @@ Hashcat's plaintext mode is excluded below.
 ### 25000-25999
 
 - [ ] `25400` - `PDF 1.4 - 1.6 (Acrobat 5 - 8) - user and owner pass`
-- [ ] `25500` - `Stargazer Stellar Wallet XLM`
 
 ### 26000-26999
 
@@ -246,7 +243,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `26100` - `Mozilla key4.db`
 - [ ] `26150` - `Mozilla key4.db SHA384`
 - [ ] `26500` - `iPhone passcode (UID key + System Keybag)`
-- [ ] `26600` - `MetaMask Wallet (needs all data, checks AES-GCM tag)`
 
 ### 27000-27999
 
@@ -255,7 +251,6 @@ Hashcat's plaintext mode is excluded below.
 ### 28000-28999
 
 - [ ] `28100` - `Windows Hello PIN/Password`
-- [ ] `28200` - `Exodus Desktop Wallet (scrypt)`
 
 ### 29000-29999
 
