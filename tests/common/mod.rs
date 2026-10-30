@@ -68,7 +68,10 @@ pub const VECTORS: &[Vector] = &[
             hc!(4300, "b8c385461bb9f9d733d3af832cf60b27"),
             hc!(4400, "288496df99b33f8f75a7ce4837d1b480"),
         ],
-        john: &[john!("Raw-MD5", "8743b52063cd84097a65d1633f5c74f5")],
+        john: &[
+            john!("Raw-MD5", "8743b52063cd84097a65d1633f5c74f5"),
+            john!("Raw-MD5u", "16c47151c18ac087cd12b3a70746c790"),
+        ],
     },
     Vector {
         slug: "salted-md5",
@@ -127,10 +130,13 @@ pub const VECTORS: &[Vector] = &[
             hc!(4500, "3db9184f5da4e463832b086211af8d2314919951"),
             hc!(4700, "92d85978d884eb1d99a51652b1139c8279fa8663"),
         ],
-        john: &[john!(
-            "Raw-SHA1",
-            "b89eaac7e61417341b710b727768294d0e6a277b"
-        )],
+        john: &[
+            john!("Raw-SHA1", "b89eaac7e61417341b710b727768294d0e6a277b"),
+            john!(
+                "Raw-SHA1-Linkedin",
+                "000007f070b64a50e9d31ac3f9eda35120e29d6c"
+            ),
+        ],
     },
     Vector {
         slug: "salted-sha1",

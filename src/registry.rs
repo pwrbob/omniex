@@ -369,6 +369,7 @@ mod tests {
                 Mode::Hashcat(4300),
                 Mode::Hashcat(4400),
                 Mode::John("Raw-MD5"),
+                Mode::John("Raw-MD5u"),
             ]
         );
         assert_eq!(descriptor.fields[0].name, "digest");

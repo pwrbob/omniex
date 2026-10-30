@@ -191,10 +191,10 @@ checked against that command in CI.
 | Type (`--type`) | Name | Hashcat modes | John format |
 | --- | --- | --- | --- |
 | `md4` | MD4 | 900 | Raw-MD4 |
-| `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | Raw-MD5 |
+| `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | Raw-MD5, Raw-MD5u |
 | `salted-md5` | Salted MD5 | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430 | - |
 | `hmac-md5` | HMAC-MD5 | 50, 60 | - |
-| `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | Raw-SHA1 |
+| `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | Raw-SHA1, Raw-SHA1-Linkedin |
 | `salted-sha1` | Salted SHA1 | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000 | - |
 | `hmac-sha1` | HMAC-SHA1 | 150, 160 | - |
 | `oracle-sha1` | Oracle 11g SHA1 | 112 | - |

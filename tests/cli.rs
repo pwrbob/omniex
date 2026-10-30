@@ -80,7 +80,7 @@ fn parse_json_has_the_pinned_shape() {
         entry["hashcat"],
         serde_json::json!([0, 70, 2600, 3500, 4300, 4400])
     );
-    assert_eq!(entry["john"], serde_json::json!(["Raw-MD5"]));
+    assert_eq!(entry["john"], serde_json::json!(["Raw-MD5", "Raw-MD5u"]));
     assert_eq!(entry["fields"][0]["name"], "digest");
     assert_eq!(entry["fields"][0]["role"], "digest");
     assert_eq!(entry["fields"][0]["encoding"], "hex");

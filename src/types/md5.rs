@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "MD5",
     slug = "md5",
     hashcat = [0, 70, 2600, 3500, 4300, 4400],
-    john = ["Raw-MD5"],
+    john = ["Raw-MD5", "Raw-MD5u"],
 )]
 pub struct Md5 {
     /// The 16-byte MD5 digest.

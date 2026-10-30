@@ -173,6 +173,7 @@ fn declared_modes_match_the_design() {
             Mode::Hashcat(4300),
             Mode::Hashcat(4400),
             Mode::John("Raw-MD5"),
+            Mode::John("Raw-MD5u"),
         ]
     );
     assert_eq!(

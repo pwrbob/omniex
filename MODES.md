@@ -717,8 +717,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `rar` - OpenCL: `rar-opencl`
 - [ ] `RAR5` - OpenCL: `RAR5-opencl`
 - [ ] `Raw-MD5-flat`
-- [ ] `Raw-MD5u`
-- [ ] `Raw-SHA1-Linkedin`
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
 - [ ] `Raw-SM3`
 - [ ] `restic`

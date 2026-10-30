@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "SHA1",
     slug = "sha1",
     hashcat = [100, 170, 300, 4500, 4700],
-    john = ["Raw-SHA1"],
+    john = ["Raw-SHA1", "Raw-SHA1-Linkedin"],
 )]
 pub struct Sha1 {
     /// The 20-byte SHA-1 digest.
