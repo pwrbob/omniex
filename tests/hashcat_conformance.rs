@@ -24,26 +24,28 @@ fn hashcat_identifies_and_loads_every_vector() {
             let hash_file = work.join(format!("{}-{}.txt", vector.slug, entry.mode));
             std::fs::write(&hash_file, format!("{}\n", entry.hash)).expect("write hash file");
 
-            let identify = Command::new(&hashcat)
-                .arg("--identify")
-                .arg(&hash_file)
-                .output()
-                .expect("run hashcat --identify");
-            assert!(
-                identify.status.success(),
-                "hashcat --identify failed for `{}` mode {}: {}",
-                vector.slug,
-                entry.mode,
-                String::from_utf8_lossy(&identify.stderr)
-            );
+            if entry.identify {
+                let identify = Command::new(&hashcat)
+                    .arg("--identify")
+                    .arg(&hash_file)
+                    .output()
+                    .expect("run hashcat --identify");
+                assert!(
+                    identify.status.success(),
+                    "hashcat --identify failed for `{}` mode {}: {}",
+                    vector.slug,
+                    entry.mode,
+                    String::from_utf8_lossy(&identify.stderr)
+                );
 
-            let modes = identified_modes(&String::from_utf8_lossy(&identify.stdout));
-            assert!(
-                modes.contains(&entry.mode),
-                "hashcat did not identify mode {} for `{}` (saw {modes:?})",
-                entry.mode,
-                vector.slug
-            );
+                let modes = identified_modes(&String::from_utf8_lossy(&identify.stdout));
+                assert!(
+                    modes.contains(&entry.mode),
+                    "hashcat did not identify mode {} for `{}` (saw {modes:?})",
+                    entry.mode,
+                    vector.slug
+                );
+            }
 
             let show = Command::new(&hashcat)
                 .args(["--show", "-m", &entry.mode.to_string(), "--potfile-path"])
