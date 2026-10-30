@@ -63,7 +63,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 7000-7999
 
-- [ ] `7000` - `FortiGate (FortiOS)`
 - [ ] `7300` - `IPMI2 RAKP HMAC-SHA1`
 - [ ] `7350` - `IPMI2 RAKP HMAC-MD5`
 - [ ] `7401` - `MySQL $A$ (sha256crypt)`
@@ -75,7 +74,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 8000-8999
 
-- [ ] `8000` - `Sybase ASE`
 - [ ] `8200` - `1Password, cloudkeychain`
 - [ ] `8300` - `DNSSEC (NSEC3)`
 - [ ] `8500` - `RACF`
@@ -89,7 +87,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `9000` - `Password Safe v2`
 - [ ] `9100` - `Lotus Notes/Domino 8`
-- [ ] `9300` - `Cisco-IOS $9$ (scrypt)`
 - [ ] `9400` - `MS Office 2007`
 - [ ] `9500` - `MS Office 2010`
 - [ ] `9600` - `MS Office 2013`
@@ -99,7 +96,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `9800` - `MS Office <= 2003 $3/$4, SHA1 + RC4`
 - [ ] `9810` - `MS Office <= 2003 $3, SHA1 + RC4, collider #1`
 - [ ] `9820` - `MS Office <= 2003 $3, SHA1 + RC4, collider #2`
-- [ ] `9900` - `Radmin2`
 
 ### 10000-10999
 
@@ -121,7 +117,6 @@ Hashcat's plaintext mode is excluded below.
 ### 12000-12999
 
 - [ ] `12200` - `eCryptfs`
-- [ ] `12400` - `BSDi Crypt, Extended DES`
 - [ ] `12500` - `RAR3-hp`
 - [ ] `12700` - `Blockchain, My Wallet`
 - [ ] `12900` - `Android FDE (Samsung DEK)`
@@ -180,7 +175,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 16000-16999
 
-- [ ] `16000` - `Tripcode`
 - [ ] `16200` - `Apple Secure Notes`
 - [ ] `16300` - `Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256`
 - [ ] `16500` - `JWT (JSON Web Token)`
@@ -214,7 +208,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 19000-19999
 
-- [ ] `19500` - `Ruby on Rails Restful-Authentication`
 
 ### 20000-20999
 
@@ -226,7 +219,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 21000-21999
 
-- [ ] `21000` - `BitShares v0.x - sha512(sha512_bin(pass))`
 - [ ] `21500` - `SolarWinds Orion`
 - [ ] `21501` - `SolarWinds Orion v2`
 - [ ] `21700` - `Electrum Wallet (Salt-Type 4)`
@@ -235,9 +227,7 @@ Hashcat's plaintext mode is excluded below.
 ### 22000-22999
 
 - [ ] `22100` - `BitLocker`
-- [ ] `22200` - `Citrix NetScaler (SHA512)`
 - [ ] `22301` - `Telegram Mobile App Passcode (SHA256)`
-- [ ] `22400` - `AES Crypt (SHA256)`
 - [ ] `22500` - `MultiBit Classic .key (MD5)`
 - [ ] `22600` - `Telegram Desktop < v2.1.14 (PBKDF2-HMAC-SHA1)`
 - [ ] `22700` - `MultiBit HD (scrypt)`
@@ -281,8 +271,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `25300` - `MS Office 2016 - SheetProtection`
 - [ ] `25400` - `PDF 1.4 - 1.6 (Acrobat 5 - 8) - user and owner pass`
 - [ ] `25500` - `Stargazer Stellar Wallet XLM`
-- [ ] `25600` - `bcrypt(md5($pass))`
-- [ ] `25800` - `bcrypt(sha1($pass))`
 - [ ] `25900` - `KNX IP Secure - Device Authentication Code`
 
 ### 26000-26999
@@ -290,7 +278,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `26000` - `Mozilla key3.db`
 - [ ] `26100` - `Mozilla key4.db`
 - [ ] `26150` - `Mozilla key4.db SHA384`
-- [ ] `26200` - `OpenEdge Progress Encode`
 - [ ] `26500` - `iPhone passcode (UID key + System Keybag)`
 - [ ] `26600` - `MetaMask Wallet (needs all data, checks AES-GCM tag)`
 - [ ] `26610` - `MetaMask Wallet (short hash, plaintext check)`
@@ -310,8 +297,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `28100` - `Windows Hello PIN/Password`
 - [ ] `28200` - `Exodus Desktop Wallet (scrypt)`
-- [ ] `28300` - `Teamspeak 3 (channel hash)`
-- [ ] `28400` - `bcrypt(sha512($pass))`
 - [ ] `28501` - `Bitcoin WIF private key (P2PKH), compressed`
 - [ ] `28502` - `Bitcoin WIF private key (P2PKH), uncompressed`
 - [ ] `28503` - `Bitcoin WIF private key (P2WPKH, Bech32), compressed`
@@ -501,7 +486,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `40055` - `PostgreSQL SCRAM-SHA-256`
 - [ ] `40056` - `Flask Session Cookie ($salt.$salt.$pass)`
 - [ ] `40078` - `SAP CODVN H (PWDSALTEDHASH) isSHA512`
-- [ ] `40079` - `phpass(md5($pass))`
 - [ ] `40081` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-256`
 - [ ] `40082` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-384`
 

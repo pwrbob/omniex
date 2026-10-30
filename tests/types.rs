@@ -889,6 +889,56 @@ fn invalid_inputs_return_stable_error_kinds() {
             "short".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "cisco-ios9".into(),
+            "$9$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "bsdi-crypt".into(),
+            "_short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "radmin2".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "fortigate".into(),
+            "AK1AAAA".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sybase-ase".into(),
+            "0xc007abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "citrix-netscaler-sha512".into(),
+            "2short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "rails-restful-authentication".into(),
+            "abcd:salt:key".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "tripcode".into(),
+            "short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "teamspeak3".into(),
+            "$teamspeak$3$short$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "aes-crypt-sha256".into(),
+            "$aescrypt$1*abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

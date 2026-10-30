@@ -299,6 +299,22 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &FilezillaServer::DESCRIPTOR,
     &CitrixNetScalerPbkdf2Sha256::DESCRIPTOR,
     &Fernet::DESCRIPTOR,
+    &BcryptMd5::DESCRIPTOR,
+    &BcryptSha1::DESCRIPTOR,
+    &BcryptSha512::DESCRIPTOR,
+    &PhpassMd5::DESCRIPTOR,
+    &CiscoIos9::DESCRIPTOR,
+    &BsdiCrypt::DESCRIPTOR,
+    &Radmin2::DESCRIPTOR,
+    &Fortigate::DESCRIPTOR,
+    &SybaseAse::DESCRIPTOR,
+    &CitrixNetScalerSha512::DESCRIPTOR,
+    &Bitshares::DESCRIPTOR,
+    &RailsRestfulAuthentication::DESCRIPTOR,
+    &Tripcode::DESCRIPTOR,
+    &OpenedgeProgress::DESCRIPTOR,
+    &Teamspeak3::DESCRIPTOR,
+    &AesCryptSha256::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

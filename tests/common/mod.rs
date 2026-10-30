@@ -2509,6 +2509,116 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "bcrypt-md5",
+        hashcat: &[hc!(
+            25600,
+            "$2a$05$/VT2Xs2dMd8GJKfrXhjYP.DkTjOVrY12yDN7/6I8ZV0q/1lEohLru"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bcrypt-sha1",
+        hashcat: &[hc!(
+            25800,
+            "$2a$05$Uo385Fa0g86uUXHwZxB90.qMMdRFExaXePGka4WGFv.86I45AEjmO"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bcrypt-sha512",
+        hashcat: &[hc!(
+            28400,
+            "$2a$12$KhivLhCuLhSyMBOxLxCyLu78x4z2X/EJdZNfS3Gy36fvRt56P2jbS"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "phpass-md5",
+        hashcat: &[hc!(40079, "$H$9ZtU3uM7Twc8X53ImNRhaec4b3QHJ91")],
+        john: &[],
+    },
+    Vector {
+        slug: "cisco-ios9",
+        hashcat: &[hc!(
+            9300,
+            "$9$87023684531115$phio0TBQwaO7KZ8toQFyGFyDvyOzidaypRWN0uKX0hU"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bsdi-crypt",
+        hashcat: &[hc!(12400, "_GW..8841inaTltazRsQ")],
+        john: &[],
+    },
+    Vector {
+        slug: "radmin2",
+        hashcat: &[hc!(9900, "22527bee5c29ce95373c4e0f359f079b")],
+        john: &[],
+    },
+    Vector {
+        slug: "fortigate",
+        hashcat: &[hc!(7000, "AK1FCIhM0IUIQVFJgcDFwLCMi7GppdwtRzMyDpFOFxdpH8=")],
+        john: &[],
+    },
+    Vector {
+        slug: "sybase-ase",
+        hashcat: &[hc!(
+            8000,
+            "0xc0071808773188715731b69bd4e310b4129913aaf657356c5bdf3c46f249ed42477b5c74af6eaac4d15a"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "citrix-netscaler-sha512",
+        hashcat: &[hc!(
+            22200,
+            "2f9282ade42ce148175dc3b4d8b5916dae5211eee49886c3f7cc768f6b9f2eb982a5ac2f2672a0223999bfd15349093278adf12f6276e8b61dacf5572b3f93d0b4fa886ce"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bitshares",
+        hashcat: &[hc!(
+            21000,
+            "caec04bdf7c17f763a9ec7439f7c9abda112f1bfc9b1bb684fef9b6142636979b9896cfc236896d821a69a961a143dd19c96d59777258201f1bbe5ecc2a2ecf5"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "rails-restful-authentication",
+        hashcat: &[hc!(
+            19500,
+            "d7d5ea3e09391da412b653ae6c8d7431ec273ea2:238769868762:8962783556527653675"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "tripcode",
+        hashcat: &[hc!(16000, "pfaRCwDe0U")],
+        john: &[],
+    },
+    Vector {
+        slug: "openedge-progress",
+        hashcat: &[hc!(26200, "lebVZteiEsdpkncc")],
+        john: &[],
+    },
+    Vector {
+        slug: "teamspeak3",
+        hashcat: &[hc!(
+            28300,
+            "$teamspeak$3$E0aV0IQ29EDyxRfkFoQflUGJ6zo=$mRgDUkNpd0IwUEcTJQBmE0NHYwdDEhFzQ0VgMRcFJUIRYnaHBwNXRZJwk2ZUaURzdXkVYiUROERmI0hYYGFYCDiIJCeIU3N5EhRVcZFnSIRCJlkUFkY4YFMDcheYeTl4RYZEdpKGJYhxAIQJEYGYEA=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "aes-crypt-sha256",
+        hashcat: &[hc!(
+            22400,
+            "$aescrypt$1*efc648908ca7ec727f37f3316dfd885c*eff5c87a35545406a57b56de57bd0554*3a66401271aec08cbd10cf2070332214093a33f36bd0dced4a4bb09fab817184*6a3c49fea0cafb19190dc4bdadb787e73b1df244c51780beef912598bd3bdf7e"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

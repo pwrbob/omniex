@@ -10,35 +10,22 @@ Status: early development. Hashcat mode coverage is tracked in
 ## Goals
 
 - Support hashcat modes and named John formats that can be parsed or extracted.
-
 - Use one strongly typed Rust struct per logical hash type.
-
 - Parse hash strings and extract artifacts into that same struct.
-
 - Render a struct back to hashcat or John format.
-
 - Describe every field in human-readable form.
-
 - Report the modes that work for a concrete hash, not just its broad type.
-
 - Support hash lists.
-
 - Test compatibility against real hashcat and John builds in CI.
 
-## It should not
+## Non-Goals
 
 - Run cracking attacks in CI.
-
 - Link against or vendor hashcat or John.
-
 - Add a C shim, FFI module harness, or long-running server.
-
 - Support John ad-hoc `dynamic=...` formats.
-
 - Merge different algorithms, or merge a salt with an HMAC key.
-
 - Claim compatibility without a conformance test.
-
 - Support Windows or macOS initially.
 
 ## Core model
@@ -484,6 +471,22 @@ checked against that command in CI.
 | `filezilla-server` | FileZilla Server >= 0.9.55 | 15000 | - |
 | `citrix-netscaler-pbkdf2-sha256` | Citrix NetScaler (PBKDF2-HMAC-SHA256) | 40075 | - |
 | `fernet` | Fernet (key = SHA256($pass)) | 40083 | - |
+| `bcrypt-md5` | bcrypt(md5($pass)) | 25600 | - |
+| `bcrypt-sha1` | bcrypt(sha1($pass)) | 25800 | - |
+| `bcrypt-sha512` | bcrypt(sha512($pass)) | 28400 | - |
+| `phpass-md5` | phpass(md5($pass)) | 40079 | - |
+| `cisco-ios9` | Cisco-IOS $9$ (scrypt) | 9300 | - |
+| `bsdi-crypt` | BSDi Crypt, Extended DES | 12400 | - |
+| `radmin2` | Radmin2 | 9900 | - |
+| `fortigate` | FortiGate (FortiOS) | 7000 | - |
+| `sybase-ase` | Sybase ASE | 8000 | - |
+| `citrix-netscaler-sha512` | Citrix NetScaler SHA512 | 22200 | - |
+| `bitshares` | BitShares v0.x | 21000 | - |
+| `rails-restful-authentication` | Ruby on Rails Restful-Authentication | 19500 | - |
+| `tripcode` | Tripcode | 16000 | - |
+| `openedge-progress` | OpenEdge Progress Encode | 26200 | - |
+| `teamspeak3` | Teamspeak 3 (channel hash) | 28300 | - |
+| `aes-crypt-sha256` | AES Crypt (SHA256) | 22400 | - |
 
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
