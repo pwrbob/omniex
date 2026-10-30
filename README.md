@@ -223,6 +223,20 @@ checked against that command in CI.
 | `oracle-h` | Oracle H | 3100 | - |
 | `bcrypt` | bcrypt | 3200 | bcrypt |
 | `sunmd5` | SunMD5 | 3300 | SunMD5 |
+| `racf` | RACF | 8500 | - |
+| `as400-des` | AS/400 DES | 8501 | - |
+| `scrypt` | scrypt | 8900 | - |
+| `racf-kdfaes` | RACF KDFAES | 14200 | - |
+| `linux-cryptoapi` | Linux Kernel Crypto API (2.4) | 14500 | - |
+| `apple-secure-notes` | Apple Secure Notes | 16200 | - |
+| `electrum` | Electrum Wallet | 16600, 21700, 21800 | - |
+| `telegram` | Telegram | 22301, 22600, 24500 | - |
+| `multibit` | MultiBit Classic .key (MD5) | 22500 | - |
+| `sqlcipher` | SQLCipher | 24600 | - |
+| `vmware-vmx` | VMware VMX | 27400 | - |
+| `aws-sigv4` | Amazon AWS Signature Version 4 | 28700 | - |
+| `radmin3` | Radmin3 | 29200 | - |
+| `wpa-pmkid-legacy` | WPA-PMKID (legacy) | 16800, 16801 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |

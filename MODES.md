@@ -76,12 +76,9 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `8200` - `1Password, cloudkeychain`
 - [ ] `8300` - `DNSSEC (NSEC3)`
-- [ ] `8500` - `RACF`
-- [ ] `8501` - `AS/400 DES`
 - [ ] `8600` - `Lotus Notes/Domino 5`
 - [ ] `8700` - `Lotus Notes/Domino 6`
 - [ ] `8800` - `Android FDE <= 4.3`
-- [ ] `8900` - `scrypt`
 
 ### 9000-9999
 
@@ -155,8 +152,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 14000-14999
 
-- [ ] `14200` - `RACF KDFAES`
-- [ ] `14500` - `Linux Kernel Crypto API (2.4)`
 - [ ] `14600` - `LUKS v1 (legacy)`
 - [ ] `14700` - `iTunes backup < 10.0`
 - [ ] `14800` - `iTunes backup >= 10.0`
@@ -175,12 +170,8 @@ Hashcat's plaintext mode is excluded below.
 
 ### 16000-16999
 
-- [ ] `16200` - `Apple Secure Notes`
 - [ ] `16300` - `Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256`
-- [ ] `16600` - `Electrum Wallet (Salt-Type 1-3)`
 - [ ] `16700` - `FileVault 2`
-- [ ] `16800` - `WPA-PMKID-PBKDF2`
-- [ ] `16801` - `WPA-PMKID-PMK`
 
 ### 17000-17999
 
@@ -218,15 +209,10 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `21500` - `SolarWinds Orion`
 - [ ] `21501` - `SolarWinds Orion v2`
-- [ ] `21700` - `Electrum Wallet (Salt-Type 4)`
-- [ ] `21800` - `Electrum Wallet (Salt-Type 5)`
 
 ### 22000-22999
 
 - [ ] `22100` - `BitLocker`
-- [ ] `22301` - `Telegram Mobile App Passcode (SHA256)`
-- [ ] `22500` - `MultiBit Classic .key (MD5)`
-- [ ] `22600` - `Telegram Desktop < v2.1.14 (PBKDF2-HMAC-SHA1)`
 - [ ] `22700` - `MultiBit HD (scrypt)`
 - [ ] `22911` - `RSA/DSA/EC/OpenSSH Private Keys ($0$)`
 - [ ] `22921` - `RSA/DSA/EC/OpenSSH Private Keys ($6$)`
@@ -256,8 +242,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `24420` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA256 + 3DES/AES)`
 - [ ] `24430` - `PKCS#12 (.pfx, .p12) (SHA1 + HMAC-SHA1)`
 - [ ] `24440` - `PKCS#12 (.pfx, .p12) (SHA256 + HMAC-SHA256)`
-- [ ] `24500` - `Telegram Desktop >= v2.1.14 (PBKDF2-HMAC-SHA512)`
-- [ ] `24600` - `SQLCipher`
 - [ ] `24700` - `Stuffit5`
 
 ### 25000-25999
@@ -282,7 +266,6 @@ Hashcat's plaintext mode is excluded below.
 ### 27000-27999
 
 - [ ] `27300` - `SNMPv3 HMAC-SHA512-384`
-- [ ] `27400` - `VMware VMX (PBKDF2-HMAC-SHA1 + AES-256-CBC)`
 - [ ] `27500` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-128-XTS)`
 - [ ] `27600` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-256-XTS)`
 - [ ] `27700` - `MultiBit Classic .wallet (scrypt)`
@@ -297,11 +280,9 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `28504` - `Bitcoin WIF private key (P2WPKH, Bech32), uncompressed`
 - [ ] `28505` - `Bitcoin WIF private key (P2SH(P2WPKH)), compressed`
 - [ ] `28506` - `Bitcoin WIF private key (P2SH(P2WPKH)), uncompressed`
-- [ ] `28700` - `Amazon AWS Signature Version 4`
 
 ### 29000-29999
 
-- [ ] `29200` - `Radmin3`
 - [ ] `29311` - `TrueCrypt RIPEMD160 + XTS 512 bit`
 - [ ] `29312` - `TrueCrypt RIPEMD160 + XTS 1024 bit`
 - [ ] `29313` - `TrueCrypt RIPEMD160 + XTS 1536 bit`
