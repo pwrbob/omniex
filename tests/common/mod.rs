@@ -787,6 +787,701 @@ pub const VECTORS: &[Vector] = &[
             "2fbf5c9080f0a704de2e915ba8fdae6ab00bbc026b2c1c8fa07da1239381c6b7f4dfd399bf9652500da723694a4c719587dd0219cb30eabe61210a8ae4dc0b03"
         )],
     },
+    Vector {
+        slug: "md2",
+        hashcat: &[hc_ambiguous!(40084, "742fd7197420380cf5bb80b9c85a117d")],
+        john: &[],
+    },
+    Vector {
+        slug: "sha0",
+        hashcat: &[hc_ambiguous!(
+            40085,
+            "d288d613d6945bd9acb2dba2fcf4f5d27d40e0f4"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "ripemd-128",
+        hashcat: &[hc_ambiguous!(40086, "c79c5eefc7c8e629c12aa936f1bda9a9")],
+        john: &[],
+    },
+    Vector {
+        slug: "ripemd-256",
+        hashcat: &[hc_ambiguous!(
+            40087,
+            "33d5166e2930db590e82d3a855564acc526568c39679d778844ebf9b5be75738"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "gost94-cryptopro",
+        hashcat: &[hc_ambiguous!(
+            40088,
+            "256f021ad5729ca0a89fcb8377027f2f3a769748c8cdcb469cffab9aa2fac60b"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "tiger",
+        hashcat: &[hc_ambiguous!(
+            40089,
+            "6e2d24e09a70a02bdd9c4885ea199b064982130432331b44"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "tiger-128",
+        hashcat: &[hc_ambiguous!(40090, "6e2d24e09a70a02bdd9c4885ea199b06")],
+        john: &[],
+    },
+    Vector {
+        slug: "tiger-160",
+        hashcat: &[hc_ambiguous!(
+            40091,
+            "6e2d24e09a70a02bdd9c4885ea199b0649821304"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "tiger2",
+        hashcat: &[hc_ambiguous!(
+            40092,
+            "6ff6a5dc0f02836902a17fe15816fad45d6d39de1d14b240"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "tth",
+        hashcat: &[hc_ambiguous!(
+            40093,
+            "4f5e0dc524eaf4c41fe58b74aa23d7e74db94153073c09cb"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "snefru-128",
+        hashcat: &[hc_ambiguous!(40094, "ba1d02bbc8eb20ace9162b1653da8483")],
+        john: &[],
+    },
+    Vector {
+        slug: "snefru-256",
+        hashcat: &[hc_ambiguous!(
+            40095,
+            "7f224f9a530d90acae8c051c87e9f2dfd60232c6529aee3aec16e0578d625f7e"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "skein-512-224",
+        hashcat: &[hc_ambiguous!(
+            40096,
+            "24a3df2fc779538c1c8f2372b9b87f9176922086fefd099bf9efca6f"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "skein-512-256",
+        hashcat: &[hc_ambiguous!(
+            40097,
+            "45e91567c3263a5fb2bcb4a4e403c3b776c087be7176335b2b4d97d3ef47614c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "skein-512-384",
+        hashcat: &[hc_ambiguous!(
+            40098,
+            "ae07ebdbdc899f2e0fdd8ec11378ed673ed407eb4d947b334fc8ff4ae0da0b4b0505e43a5efe143cb33167bf3bac0e1e"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "skein-512-512",
+        hashcat: &[hc_ambiguous!(
+            40099,
+            "67a6caf6e02968509ea3893d65eda0d8ffcaf22c6c5466357d3fd1e34c9a9e8c2b349b6ba6f8b2c2ee672f30c2ee982e5da7ee20509125830af88ff57169a742"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "panama",
+        hashcat: &[hc_ambiguous!(
+            40100,
+            "ec3600d769166760e905fd928fd1172ea4e706eb23aff9dea91e052a6c699b7c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mdc2",
+        hashcat: &[hc_ambiguous!(40101, "5da8fead05e8cd9d4d5424957b5bb4d6")],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-128-3",
+        hashcat: &[hc_ambiguous!(40102, "7bdb3946de69fa2bbd719b97f4472b4c")],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-128-4",
+        hashcat: &[hc_ambiguous!(40103, "6e2f70e6b9f2dd69cc6b85f6e4098292")],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-128-5",
+        hashcat: &[hc_ambiguous!(40104, "c339c70717f3448624ed14bf5e4c7784")],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-160-3",
+        hashcat: &[hc_ambiguous!(
+            40105,
+            "7e7e7fe1c80992a5183138e3948e4424c4121e6a"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-160-4",
+        hashcat: &[hc_ambiguous!(
+            40106,
+            "0a51a5fd18e4e288ae1a9234634af9df1b2a5b44"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-160-5",
+        hashcat: &[hc_ambiguous!(
+            40107,
+            "5d91ae221d22b2a9a4eba549fd6b3743ea2ca8d5"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-192-3",
+        hashcat: &[hc_ambiguous!(
+            40108,
+            "5d97366a5be117a571a6e0541397c2e3d051aab557a224b0"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-192-4",
+        hashcat: &[hc_ambiguous!(
+            40109,
+            "31fd78faba008a0dab71adc7d2acb60c43c34cb5ccc4f84c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-192-5",
+        hashcat: &[hc_ambiguous!(
+            40110,
+            "2b0836388e3b8fbc0b2a675ac3668c6fe14e2957cc3f3084"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-224-3",
+        hashcat: &[hc_ambiguous!(
+            40111,
+            "fa9f54ea58a54f14bc9592e27b8aea42f21e3851a3d724be32e5813d"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-224-4",
+        hashcat: &[hc_ambiguous!(
+            40112,
+            "62c10f8cdb079d349e5d6af1c78c22e84beb332ba750a6c257c6177d"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-224-5",
+        hashcat: &[hc_ambiguous!(
+            40113,
+            "ce7053168ec92d0bb83e6039ada7477fef6eecfc3116d93278c0f36a"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-256-3",
+        hashcat: &[hc_ambiguous!(
+            40114,
+            "9ddb8d41435015df7caf22cbe436f512f90008a119fb7836c79af30a15e61e37"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-256-4",
+        hashcat: &[hc_ambiguous!(
+            40115,
+            "b5f791bf79336c8d34efceb2adf89550261640a122b05c3620740967c64e84aa"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval-256-5",
+        hashcat: &[hc_ambiguous!(
+            40116,
+            "72f72ddb75c084e6bfe4b939299c55f3d1c1d79f5ec5a9cc3470e0fa56914e9a"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "blake-224",
+        hashcat: &[hc_ambiguous!(
+            40117,
+            "b97223695a40301e703fde4f93c7e376635f5545b36302dff81e7f44"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "blake-256",
+        hashcat: &[hc_ambiguous!(
+            40118,
+            "5cc8cc69c778c46c5a27790a887addda9b7b155e12adfbba7e97c5c1a6eac3dd"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "blake-384",
+        hashcat: &[hc_ambiguous!(
+            40119,
+            "665ce5461d27a7a3d7b907b5d7822ed08ef5be964d4e46a550abf63fe08b0bfa0ac52357c3ac3903492d38dcb882e531"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "blake-512",
+        hashcat: &[hc_ambiguous!(
+            40120,
+            "dbe858c23dc30b73d4df036696ce3189dbf971070bddebdd76004c9fbc0bf010d18aa1448212b098b569ef0b08ceedfe50f0899b4162d7c2115be3f7a725713c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bmw-224",
+        hashcat: &[hc_ambiguous!(
+            40121,
+            "e307f60003a3440b5a324e3cbff297d752ccf07ec8474062f7030b1e"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bmw-256",
+        hashcat: &[hc_ambiguous!(
+            40122,
+            "94a9c07402d39d630c9d301d3ab3aa8a7d55493ab8417412d103a1212b0c5170"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bmw-384",
+        hashcat: &[hc_ambiguous!(
+            40123,
+            "7dc6a952dc1b116958198cf1d1ca9e972549a5558464e6ffe51b18f237d08ab43487e5a76288647cb18bb1c49cfe7f04"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bmw-512",
+        hashcat: &[hc_ambiguous!(
+            40124,
+            "1eaf35f8c9ccb48d6305f10df3f220bdffb416fc5b7335630a27f77f251f54e20933d8bcc784703ce2eafa1856df8879664d8d2a18f22ecb3cd40646b3c6c006"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cubehash-224",
+        hashcat: &[hc_ambiguous!(
+            40125,
+            "4b87a448b4ec677c4748cf8d00efac7662933807c37e3f837b5f9c57"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cubehash-256",
+        hashcat: &[hc_ambiguous!(
+            40126,
+            "83197263f83cd8665bd7aa75f3df2a569559a79a8eefe3057d30259b55334dc7"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cubehash-384",
+        hashcat: &[hc_ambiguous!(
+            40127,
+            "312a0146534d4ad452d696d8a44fb2d3fb4739cc83eb217a8a04620cfeac43a4c83ccdbd9a8c0cbe2a22aeb884dbc878"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cubehash-512",
+        hashcat: &[hc_ambiguous!(
+            40128,
+            "8884ea07f9b0a33433c734caaa28db1eb662958e0f7594f7199a336467ffe99711c6d0951c2f0ce717bdc9f757d979b360c4199b984a55a30147cc4cd3fb029b"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "echo-224",
+        hashcat: &[hc_ambiguous!(
+            40129,
+            "dda4e7ebdab515a590e23a0160debb6467ddb124a3a4620f7511673d"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "echo-256",
+        hashcat: &[hc_ambiguous!(
+            40130,
+            "4d8ab56039659b602c114b58688a8151f5f78b016b882e95b4c8ba0198d1c6c3"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "echo-384",
+        hashcat: &[hc_ambiguous!(
+            40131,
+            "313332f8ddf5fbb4bbf34485cfc74c179ecb3fc0e8df1c82efdb4092859632bd2542e61f87a6a187c4f591226a6ccdd2"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "echo-512",
+        hashcat: &[hc_ambiguous!(
+            40132,
+            "94d8804c8eb3de22edd238e80a74d6b91284853121fae4a78dc8c0f658e2a202d8eab1d266bc5fa99e81feef96c3d71e84be1e30b213354d52f1b9f0f22d4eb9"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "fugue-224",
+        hashcat: &[hc_ambiguous!(
+            40133,
+            "0b1aaf18cd6cd949867b99aa28e7f19d368b064269e753e8c5ee01c6"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "fugue-256",
+        hashcat: &[hc_ambiguous!(
+            40134,
+            "e545a4d7a9252cccd07152377af7326b262f43ce0a83eb447cbb82713b307e78"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "fugue-384",
+        hashcat: &[hc_ambiguous!(
+            40135,
+            "adde0faf0065af5c2b5c41b177142870e4add47b54651f09bdf940c1a654c771f2c7908e486e5cb5b8cd2488a0f2ebeb"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "fugue-512",
+        hashcat: &[hc_ambiguous!(
+            40136,
+            "920e968668a8a3aacff1c855449e7db1572fcbaa5d16a1ae7973a5868c95bddeae9551e6fc7d98760f23d320f614d175fd0e52068654bca17ca27080c68e9180"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "groestl-224",
+        hashcat: &[hc_ambiguous!(
+            40137,
+            "088233a104bb48b9fbc22e96267488207f0520c102a5bbc3fbc5caa9"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "groestl-256",
+        hashcat: &[hc_ambiguous!(
+            40138,
+            "fd032bc81a0ffed5201add8209a80c4f8d06c2b96a17ae5e1452e1a78ff3a31a"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "groestl-384",
+        hashcat: &[hc_ambiguous!(
+            40139,
+            "1a66a7e00890353567076161c13f20a180ebda13b5bc9185cdbaeab28ba07c818b860e71fa1a9344c7978bf5ccbbf757"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "groestl-512",
+        hashcat: &[hc_ambiguous!(
+            40140,
+            "a579375673904bf1cd42a7776744e7ff596e4896830aa441867795b4bf372d0a7567003dba016ae6f5f838eafc940f87367897c1578f3c31d274877cf5174ec2"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hamsi-224",
+        hashcat: &[hc_ambiguous!(
+            40141,
+            "56b7c2cd4d31621bb5350f7b915e3a534582285a7bd25845950449d5"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hamsi-256",
+        hashcat: &[hc_ambiguous!(
+            40142,
+            "23992c5687d75482dc8ccd8873f51fa597da826f777941e0ae19c11582592305"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hamsi-384",
+        hashcat: &[hc_ambiguous!(
+            40143,
+            "0b7fb3ab0059dab2664f896182e48b1b6b711bf87bc737aa4539b24a15078d8309b74f33112bec9b57b1ff6391c455b3"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hamsi-512",
+        hashcat: &[hc_ambiguous!(
+            40144,
+            "6086c74b28820775e4ab101a521ced7680985b43abe586d97096beaf87e89a5ebc0d4923decd9449c5226299e8f10961aff44747d088d98a47c662a137b543bf"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "jh-224",
+        hashcat: &[hc_ambiguous!(
+            40145,
+            "69ff0662d2eb9ca2819fd714e14cad1ae1a3e8dffd6f56ac61e3db7f"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "jh-256",
+        hashcat: &[hc_ambiguous!(
+            40146,
+            "d9a369b52c209dd119397326b8a16b0aca7dad7ada830bcba2a9e8739f1337f0"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "jh-384",
+        hashcat: &[hc_ambiguous!(
+            40147,
+            "f3f78e8b52b7c24d49938d91ad406bae1b7879662f0acf95bf8bb93710bdf603f594e90292fdb135f130ad71206e0a42"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "jh-512",
+        hashcat: &[hc_ambiguous!(
+            40148,
+            "824904b6ebd86ba610043d2e69f7e0755de4178a21a56960c39a26ec1b8046c48b2363b92c5de090ab4100c80703a3fc81cb75711057369541ed529b46770ad5"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "luffa-224",
+        hashcat: &[hc_ambiguous!(
+            40149,
+            "22f54680de2d223b759198c33907627fd2f77aabf6888d37532b3000"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "luffa-256",
+        hashcat: &[hc_ambiguous!(
+            40150,
+            "22f54680de2d223b759198c33907627fd2f77aabf6888d37532b300073c6d069"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "luffa-384",
+        hashcat: &[hc_ambiguous!(
+            40151,
+            "8dd83061ff0d2fa32a84c98a360b3f1a509e5186fa64895e812decd9112cff72cfb450f8ef51c8264d3ef3307284b4d6"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "luffa-512",
+        hashcat: &[hc_ambiguous!(
+            40152,
+            "a2d33bd8e84794c6bf3fefe2019c6af5ccf25a19b96e1a0ca83260812bf1f56a882d3e554710668b79ab886b3463245994ab70bc59765f285a0bbfc714745725"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shabal-224",
+        hashcat: &[hc_ambiguous!(
+            40153,
+            "3262dad883ed99f43a344fb2c5045253ce935fe36bb461826e27f09f"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shabal-256",
+        hashcat: &[hc_ambiguous!(
+            40154,
+            "69f72ed7674889359266a38a602f900505944cde9b9341e42018eb797a69cfdf"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shabal-384",
+        hashcat: &[hc_ambiguous!(
+            40155,
+            "c795ef512476e7dd3e9df347196ceadf0e5c34122ee092468941fa2ee96c904332e1d2764c74789b4f3bfe9edc8f5559"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shabal-512",
+        hashcat: &[hc_ambiguous!(
+            40156,
+            "d3d3b8e1030607bea0b49558e5e4a583a0365a611d615823895766b0449580228edf9c8c396cb0bb62c5ee8b589431640d9fc6e1f546d9921b37f2651e807ae8"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shavite3-224",
+        hashcat: &[hc_ambiguous!(
+            40157,
+            "dcd131d53b576e0615fd3c68e8d7bf32e4a70669e41b727db7f218ca"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shavite3-256",
+        hashcat: &[hc_ambiguous!(
+            40158,
+            "4822be4d566dc19f8c8cd67290eeeeeebd7579ba84a1a4a3fa0d58840a113b44"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shavite3-384",
+        hashcat: &[hc_ambiguous!(
+            40159,
+            "80d57b047711a509e9444c769e65c258e2feacdab7c4970cbb3e66f96a726c307f135e86022d270e26c8b92a6f186cca"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shavite3-512",
+        hashcat: &[hc_ambiguous!(
+            40160,
+            "6fc6c372cbbc8dfddab17b65ada3818795282ae5da4162ce4b2724c3b67636a494c15972792eb155106cbb2cc53d559c7fdd0f5937a3935ac55fbf25080acfc9"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "simd-224",
+        hashcat: &[hc_ambiguous!(
+            40161,
+            "2f74b6bf688efcf84af322aaae9d520c14c73a7c2f23a950990b61b6"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "simd-256",
+        hashcat: &[hc_ambiguous!(
+            40162,
+            "7cb7c2409260124fa0b3738b0dc42183d57fc92abf36e077bcb553bf493d9a12"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "simd-384",
+        hashcat: &[hc_ambiguous!(
+            40163,
+            "6f6c2f83b43a3fe173ba9b58aaccee8e5e3fc2e4f191514c485acf79db9932edba23034f69530eb91a059bda05545ef9"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "simd-512",
+        hashcat: &[hc_ambiguous!(
+            40164,
+            "fc4623e13134947b85f567426734c80f65d2c7cfd9ff410c4a26058731aed3d1efd3709d8a31ec1e10b4c38f587aa43740ab52ec6dae8dd8ead0818e808ef87f"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "has-160",
+        hashcat: &[hc_ambiguous!(
+            40165,
+            "f070541c734597e89e371337bd82d7ebec8fe096"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "edon-r-256",
+        hashcat: &[hc_ambiguous!(
+            40166,
+            "31b2db8e815040dd1cc7b632fbe7cca6b9acc8e2045076fe27e9105015d418f0"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "edon-r-512",
+        hashcat: &[hc_ambiguous!(
+            40167,
+            "3f27d20214108d30863c32e73d64b1d51041fe478dbdb3c16e9b4c280472a7c1373efd6bdd81b530217e2f58c5f981ff244b50587fc528fca61023066f4a0e20"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "md6-128",
+        hashcat: &[hc_ambiguous!(40168, "387369565c845fffaa4e8c56d79f245d")],
+        john: &[],
+    },
+    Vector {
+        slug: "md6-512",
+        hashcat: &[hc_ambiguous!(
+            40170,
+            "06bb86c04bb969f9057a034f0024b1b7a25f8378938d61e594f9a5b4dfb9fc122c8641eaf75d7b7c07de63cb7870822b8793c0e10b8177da56700bf2131eba75"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "radiogatun-32",
+        hashcat: &[hc_ambiguous!(40171, "d013f6fde4161f6260784ac0940ab1d0")],
+        john: &[],
+    },
+    Vector {
+        slug: "radiogatun-64",
+        hashcat: &[hc_ambiguous!(
+            40172,
+            "f972538913e4a99b318236833101e312c4922d83b40c8301ab3d81e0c82460a7"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "ripemd-original",
+        hashcat: &[hc_ambiguous!(40173, "540a38d3ed9357f8f331867815733fae")],
+        john: &[],
+    },
+    Vector {
+        slug: "whirlpool-0",
+        hashcat: &[hc_ambiguous!(
+            40174,
+            "21d9e5d0674ea7bfa40f2bdcae869cdccc2a2771481a1c08e084775a1424011a1c42149b2db396bc19ab2844b0cbcf9bf4043dd12bb6a91c12111f585f322dce"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "whirlpool-t",
+        hashcat: &[hc_ambiguous!(
+            40175,
+            "e57fc143265bf3a566290cd59f7cd31ffe607e0acffe5a98bc7bb104e3f5bbd1fe047b42d054737a1adf37a626064bf6bba271e2b4dbaeab9e14c6d824a9246b"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

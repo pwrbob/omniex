@@ -265,6 +265,97 @@ checked against that command in CI.
 | `keccak-256` | Keccak-256 | 17800 | `Raw-Keccak-256` |
 | `keccak-384` | Keccak-384 | 17900 | - |
 | `keccak-512` | Keccak-512 | 18000 | `Raw-Keccak` |
+| `md2` | MD2 | 40084 | - |
+| `sha0` | SHA-0 | 40085 | - |
+| `ripemd-128` | RIPEMD-128 | 40086 | - |
+| `ripemd-256` | RIPEMD-256 | 40087 | - |
+| `gost94-cryptopro` | GOST R 34.11-94 (CryptoPro) | 40088 | - |
+| `tiger` | Tiger | 40089 | - |
+| `tiger-128` | Tiger-128 | 40090 | - |
+| `tiger-160` | Tiger-160 | 40091 | - |
+| `tiger2` | Tiger2 | 40092 | - |
+| `tth` | TTH (Tiger Tree Hash, single leaf) | 40093 | - |
+| `snefru-128` | Snefru-128 | 40094 | - |
+| `snefru-256` | Snefru-256 | 40095 | - |
+| `skein-512-224` | Skein-512-224 | 40096 | - |
+| `skein-512-256` | Skein-512-256 | 40097 | - |
+| `skein-512-384` | Skein-512-384 | 40098 | - |
+| `skein-512-512` | Skein-512-512 | 40099 | - |
+| `panama` | PANAMA | 40100 | - |
+| `mdc2` | MDC-2 | 40101 | - |
+| `haval-128-3` | HAVAL-128 (3 passes) | 40102 | - |
+| `haval-128-4` | HAVAL-128 (4 passes) | 40103 | - |
+| `haval-128-5` | HAVAL-128 (5 passes) | 40104 | - |
+| `haval-160-3` | HAVAL-160 (3 passes) | 40105 | - |
+| `haval-160-4` | HAVAL-160 (4 passes) | 40106 | - |
+| `haval-160-5` | HAVAL-160 (5 passes) | 40107 | - |
+| `haval-192-3` | HAVAL-192 (3 passes) | 40108 | - |
+| `haval-192-4` | HAVAL-192 (4 passes) | 40109 | - |
+| `haval-192-5` | HAVAL-192 (5 passes) | 40110 | - |
+| `haval-224-3` | HAVAL-224 (3 passes) | 40111 | - |
+| `haval-224-4` | HAVAL-224 (4 passes) | 40112 | - |
+| `haval-224-5` | HAVAL-224 (5 passes) | 40113 | - |
+| `haval-256-3` | HAVAL-256 (3 passes) | 40114 | - |
+| `haval-256-4` | HAVAL-256 (4 passes) | 40115 | - |
+| `haval-256-5` | HAVAL-256 (5 passes) | 40116 | - |
+| `blake-224` | BLAKE-224 | 40117 | - |
+| `blake-256` | BLAKE-256 | 40118 | - |
+| `blake-384` | BLAKE-384 | 40119 | - |
+| `blake-512` | BLAKE-512 | 40120 | - |
+| `bmw-224` | BMW-224 | 40121 | - |
+| `bmw-256` | BMW-256 | 40122 | - |
+| `bmw-384` | BMW-384 | 40123 | - |
+| `bmw-512` | BMW-512 | 40124 | - |
+| `cubehash-224` | CubeHash-224 | 40125 | - |
+| `cubehash-256` | CubeHash-256 | 40126 | - |
+| `cubehash-384` | CubeHash-384 | 40127 | - |
+| `cubehash-512` | CubeHash-512 | 40128 | - |
+| `echo-224` | ECHO-224 | 40129 | - |
+| `echo-256` | ECHO-256 | 40130 | - |
+| `echo-384` | ECHO-384 | 40131 | - |
+| `echo-512` | ECHO-512 | 40132 | - |
+| `fugue-224` | Fugue-224 | 40133 | - |
+| `fugue-256` | Fugue-256 | 40134 | - |
+| `fugue-384` | Fugue-384 | 40135 | - |
+| `fugue-512` | Fugue-512 | 40136 | - |
+| `groestl-224` | Groestl-224 | 40137 | - |
+| `groestl-256` | Groestl-256 | 40138 | - |
+| `groestl-384` | Groestl-384 | 40139 | - |
+| `groestl-512` | Groestl-512 | 40140 | - |
+| `hamsi-224` | Hamsi-224 | 40141 | - |
+| `hamsi-256` | Hamsi-256 | 40142 | - |
+| `hamsi-384` | Hamsi-384 | 40143 | - |
+| `hamsi-512` | Hamsi-512 | 40144 | - |
+| `jh-224` | JH-224 | 40145 | - |
+| `jh-256` | JH-256 | 40146 | - |
+| `jh-384` | JH-384 | 40147 | - |
+| `jh-512` | JH-512 | 40148 | - |
+| `luffa-224` | Luffa-224 | 40149 | - |
+| `luffa-256` | Luffa-256 | 40150 | - |
+| `luffa-384` | Luffa-384 | 40151 | - |
+| `luffa-512` | Luffa-512 | 40152 | - |
+| `shabal-224` | Shabal-224 | 40153 | - |
+| `shabal-256` | Shabal-256 | 40154 | - |
+| `shabal-384` | Shabal-384 | 40155 | - |
+| `shabal-512` | Shabal-512 | 40156 | - |
+| `shavite3-224` | SHAvite-3-224 | 40157 | - |
+| `shavite3-256` | SHAvite-3-256 | 40158 | - |
+| `shavite3-384` | SHAvite-3-384 | 40159 | - |
+| `shavite3-512` | SHAvite-3-512 | 40160 | - |
+| `simd-224` | SIMD-224 | 40161 | - |
+| `simd-256` | SIMD-256 | 40162 | - |
+| `simd-384` | SIMD-384 | 40163 | - |
+| `simd-512` | SIMD-512 | 40164 | - |
+| `has-160` | HAS-160 | 40165 | - |
+| `edon-r-256` | EDON-R-256 | 40166 | - |
+| `edon-r-512` | EDON-R-512 | 40167 | - |
+| `md6-128` | MD6-128 | 40168 | - |
+| `md6-512` | MD6-512 | 40170 | - |
+| `radiogatun-32` | RadioGatun[32] (first 128 bits) | 40171 | - |
+| `radiogatun-64` | RadioGatun[64] | 40172 | - |
+| `ripemd-original` | RIPEMD (original) | 40173 | - |
+| `whirlpool-0` | Whirlpool-0 | 40174 | - |
+| `whirlpool-t` | Whirlpool-T | 40175 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.
