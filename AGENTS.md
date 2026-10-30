@@ -21,15 +21,22 @@ Before calling an iteration finished:
 2. If a conformance tool is not available, record that explicitly rather than
    claiming it passed.
 3. Update `MODES.md` by removing every mode the iteration now covers.
-4. Commit the result. Do not push.
+4. Before committing, review the registry for grouping opportunities. Try to
+   merge types whose algorithm, fields, and serialization match, with the
+   varying parameter (output size, round count, variant, or similar) selected
+   by the mode and filtered through `modes_fn`. This keeps the type count
+   driven by logical hash types rather than hashcat mode numbers.
+5. Commit the result. Do not push.
 
 ## Adding a hash type
 
 1. Decide whether an existing type already has the same algorithm, field
    meanings, and serialization. If it does, add the mode to its `#[hash(...)]`
    metadata and, when compatibility depends on the values, add or update
-   `modes_fn`. Do not merge different algorithms, and do not merge a salt with
-   an HMAC key.
+   `modes_fn`. Group algorithm families whose only difference is a parameter
+   such as output size or pass count; the serialized hash cannot distinguish
+   those parameters, so one type can expose all matching modes. Do not merge a
+   salt with an HMAC key.
 2. Otherwise add a module under `src/types/`, a struct with a doc comment on
    every field, manual `Parse` and `Render`, and the derive for metadata.
 3. Register the descriptor in `src/registry.rs`.
