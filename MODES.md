@@ -65,7 +65,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `7300` - `IPMI2 RAKP HMAC-SHA1`
 - [ ] `7350` - `IPMI2 RAKP HMAC-MD5`
-- [ ] `7401` - `MySQL $A$ (sha256crypt)`
 - [ ] `7500` - `Kerberos 5, etype 23, AS-REQ Pre-Auth`
 - [ ] `7700` - `SAP CODVN B (BCODE)`
 - [ ] `7701` - `SAP CODVN B (BCODE) from RFC_READ_TABLE`
@@ -75,7 +74,6 @@ Hashcat's plaintext mode is excluded below.
 ### 8000-8999
 
 - [ ] `8200` - `1Password, cloudkeychain`
-- [ ] `8300` - `DNSSEC (NSEC3)`
 - [ ] `8600` - `Lotus Notes/Domino 5`
 - [ ] `8700` - `Lotus Notes/Domino 6`
 - [ ] `8800` - `Android FDE <= 4.3`
@@ -163,8 +161,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `15310` - `DPAPI masterkey file v1 (context 3)`
 - [ ] `15400` - `ChaCha20`
 - [ ] `15500` - `JKS Java Key Store Private Keys (SHA1)`
-- [ ] `15600` - `Ethereum Wallet, PBKDF2-HMAC-SHA256`
-- [ ] `15700` - `Ethereum Wallet, SCRYPT`
 - [ ] `15900` - `DPAPI masterkey file v2 (context 1 and 2)`
 - [ ] `15910` - `DPAPI masterkey file v2 (context 3)`
 
@@ -207,8 +203,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 21000-21999
 
-- [ ] `21500` - `SolarWinds Orion`
-- [ ] `21501` - `SolarWinds Orion v2`
 
 ### 22000-22999
 
@@ -246,9 +240,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 25000-25999
 
-- [ ] `25000` - `SNMPv3 HMAC-MD5-96/HMAC-SHA1-96`
-- [ ] `25100` - `SNMPv3 HMAC-MD5-96`
-- [ ] `25200` - `SNMPv3 HMAC-SHA1-96`
 - [ ] `25400` - `PDF 1.4 - 1.6 (Acrobat 5 - 8) - user and owner pass`
 - [ ] `25500` - `Stargazer Stellar Wallet XLM`
 
@@ -259,27 +250,15 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `26150` - `Mozilla key4.db SHA384`
 - [ ] `26500` - `iPhone passcode (UID key + System Keybag)`
 - [ ] `26600` - `MetaMask Wallet (needs all data, checks AES-GCM tag)`
-- [ ] `26700` - `SNMPv3 HMAC-SHA224-128`
-- [ ] `26800` - `SNMPv3 HMAC-SHA256-192`
-- [ ] `26900` - `SNMPv3 HMAC-SHA384-256`
 
 ### 27000-27999
 
-- [ ] `27300` - `SNMPv3 HMAC-SHA512-384`
-- [ ] `27500` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-128-XTS)`
-- [ ] `27600` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-256-XTS)`
 - [ ] `27700` - `MultiBit Classic .wallet (scrypt)`
 
 ### 28000-28999
 
 - [ ] `28100` - `Windows Hello PIN/Password`
 - [ ] `28200` - `Exodus Desktop Wallet (scrypt)`
-- [ ] `28501` - `Bitcoin WIF private key (P2PKH), compressed`
-- [ ] `28502` - `Bitcoin WIF private key (P2PKH), uncompressed`
-- [ ] `28503` - `Bitcoin WIF private key (P2WPKH, Bech32), compressed`
-- [ ] `28504` - `Bitcoin WIF private key (P2WPKH, Bech32), uncompressed`
-- [ ] `28505` - `Bitcoin WIF private key (P2SH(P2WPKH)), compressed`
-- [ ] `28506` - `Bitcoin WIF private key (P2SH(P2WPKH)), uncompressed`
 
 ### 29000-29999
 

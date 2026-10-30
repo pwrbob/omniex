@@ -237,6 +237,14 @@ checked against that command in CI.
 | `aws-sigv4` | Amazon AWS Signature Version 4 | 28700 | - |
 | `radmin3` | Radmin3 | 29200 | - |
 | `wpa-pmkid-legacy` | WPA-PMKID (legacy) | 16800, 16801 | - |
+| `mysql-a` | MySQL $A$ (sha256crypt) | 7401 | - |
+| `nsec3` | DNSSEC (NSEC3) | 8300 | - |
+| `ethereum-pbkdf2` | Ethereum Wallet, PBKDF2-HMAC-SHA256 | 15600 | - |
+| `ethereum-scrypt` | Ethereum Wallet, SCRYPT | 15700 | - |
+| `solarwinds` | SolarWinds Orion | 21500, 21501 | - |
+| `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | - |
+| `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506 | - |
+| `virtualbox` | VirtualBox | 27500, 27600 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
