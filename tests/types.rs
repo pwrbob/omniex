@@ -969,6 +969,7 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$office$2016$0$100000$aaaa$aaaa".into(),
             ParseErrorKind::InvalidLength,
         ),
+        ("haval".into(), "abcd".into(), ParseErrorKind::InvalidLength),
     ];
 
     for (slug, input, kind) in cases {

@@ -959,117 +959,6 @@ pub const VECTORS: &[Vector] = &[
         john: &[],
     },
     Vector {
-        slug: "haval-128-3",
-        hashcat: &[hc_ambiguous!(40102, "7bdb3946de69fa2bbd719b97f4472b4c")],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-128-4",
-        hashcat: &[hc_ambiguous!(40103, "6e2f70e6b9f2dd69cc6b85f6e4098292")],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-128-5",
-        hashcat: &[hc_ambiguous!(40104, "c339c70717f3448624ed14bf5e4c7784")],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-160-3",
-        hashcat: &[hc_ambiguous!(
-            40105,
-            "7e7e7fe1c80992a5183138e3948e4424c4121e6a"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-160-4",
-        hashcat: &[hc_ambiguous!(
-            40106,
-            "0a51a5fd18e4e288ae1a9234634af9df1b2a5b44"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-160-5",
-        hashcat: &[hc_ambiguous!(
-            40107,
-            "5d91ae221d22b2a9a4eba549fd6b3743ea2ca8d5"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-192-3",
-        hashcat: &[hc_ambiguous!(
-            40108,
-            "5d97366a5be117a571a6e0541397c2e3d051aab557a224b0"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-192-4",
-        hashcat: &[hc_ambiguous!(
-            40109,
-            "31fd78faba008a0dab71adc7d2acb60c43c34cb5ccc4f84c"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-192-5",
-        hashcat: &[hc_ambiguous!(
-            40110,
-            "2b0836388e3b8fbc0b2a675ac3668c6fe14e2957cc3f3084"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-224-3",
-        hashcat: &[hc_ambiguous!(
-            40111,
-            "fa9f54ea58a54f14bc9592e27b8aea42f21e3851a3d724be32e5813d"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-224-4",
-        hashcat: &[hc_ambiguous!(
-            40112,
-            "62c10f8cdb079d349e5d6af1c78c22e84beb332ba750a6c257c6177d"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-224-5",
-        hashcat: &[hc_ambiguous!(
-            40113,
-            "ce7053168ec92d0bb83e6039ada7477fef6eecfc3116d93278c0f36a"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-256-3",
-        hashcat: &[hc_ambiguous!(
-            40114,
-            "9ddb8d41435015df7caf22cbe436f512f90008a119fb7836c79af30a15e61e37"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-256-4",
-        hashcat: &[hc_ambiguous!(
-            40115,
-            "b5f791bf79336c8d34efceb2adf89550261640a122b05c3620740967c64e84aa"
-        )],
-        john: &[],
-    },
-    Vector {
-        slug: "haval-256-5",
-        hashcat: &[hc_ambiguous!(
-            40116,
-            "72f72ddb75c084e6bfe4b939299c55f3d1c1d79f5ec5a9cc3470e0fa56914e9a"
-        )],
-        john: &[],
-    },
-    Vector {
         slug: "blake-224",
         hashcat: &[hc_ambiguous!(
             40117,
@@ -2665,6 +2554,45 @@ pub const VECTORS: &[Vector] = &[
             25300,
             "$office$2016$0$100000$876MLoKTq42+/DLp415iZQ==$TNDvpvYyvlSUy97UOLKNhXynhUDDA7H8kLql0ISH5SxcP6hbthdjaTo4Z3/MU0dcR2SAd+AduYb3TB5CLZ8+ow=="
         )],
+        john: &[],
+    },
+    Vector {
+        slug: "haval",
+        hashcat: &[
+            hc_ambiguous!(40102, "7bdb3946de69fa2bbd719b97f4472b4c"),
+            hc_ambiguous!(40103, "6e2f70e6b9f2dd69cc6b85f6e4098292"),
+            hc_ambiguous!(40104, "c339c70717f3448624ed14bf5e4c7784"),
+            hc_ambiguous!(40105, "7e7e7fe1c80992a5183138e3948e4424c4121e6a"),
+            hc_ambiguous!(40106, "0a51a5fd18e4e288ae1a9234634af9df1b2a5b44"),
+            hc_ambiguous!(40107, "5d91ae221d22b2a9a4eba549fd6b3743ea2ca8d5"),
+            hc_ambiguous!(40108, "5d97366a5be117a571a6e0541397c2e3d051aab557a224b0"),
+            hc_ambiguous!(40109, "31fd78faba008a0dab71adc7d2acb60c43c34cb5ccc4f84c"),
+            hc_ambiguous!(40110, "2b0836388e3b8fbc0b2a675ac3668c6fe14e2957cc3f3084"),
+            hc_ambiguous!(
+                40111,
+                "fa9f54ea58a54f14bc9592e27b8aea42f21e3851a3d724be32e5813d"
+            ),
+            hc_ambiguous!(
+                40112,
+                "62c10f8cdb079d349e5d6af1c78c22e84beb332ba750a6c257c6177d"
+            ),
+            hc_ambiguous!(
+                40113,
+                "ce7053168ec92d0bb83e6039ada7477fef6eecfc3116d93278c0f36a"
+            ),
+            hc_ambiguous!(
+                40114,
+                "9ddb8d41435015df7caf22cbe436f512f90008a119fb7836c79af30a15e61e37"
+            ),
+            hc_ambiguous!(
+                40115,
+                "b5f791bf79336c8d34efceb2adf89550261640a122b05c3620740967c64e84aa"
+            ),
+            hc_ambiguous!(
+                40116,
+                "72f72ddb75c084e6bfe4b939299c55f3d1c1d79f5ec5a9cc3470e0fa56914e9a"
+            ),
+        ],
         john: &[],
     },
 ];

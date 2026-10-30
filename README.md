@@ -241,6 +241,7 @@ checked against that command in CI.
 | `ripemd-160` | RIPEMD-160 | 6000 | - |
 | `whirlpool` | Whirlpool | 6100 | - |
 | `gost` | GOST R 34.11-94 | 6900 | gost |
+| `haval` | HAVAL | 40102, 40103, 40104, 40105, 40106, 40107, 40108, 40109, 40110, 40111, 40112, 40113, 40114, 40115, 40116 | - |
 | `sha384` | SHA2-384 | 10800 | Raw-SHA384 |
 | `salted-sha384` | Salted SHA2-384 | 10810, 10820, 10830, 10840 | - |
 | `sha384-utf16` | SHA2-384 (UTF-16LE) | 10870 | - |
@@ -270,21 +271,6 @@ checked against that command in CI.
 | `skein-512-512` | Skein-512-512 | 40099 | - |
 | `panama` | PANAMA | 40100 | Panama |
 | `mdc2` | MDC-2 | 40101 | - |
-| `haval-128-3` | HAVAL-128 (3 passes) | 40102 | - |
-| `haval-128-4` | HAVAL-128 (4 passes) | 40103 | - |
-| `haval-128-5` | HAVAL-128 (5 passes) | 40104 | - |
-| `haval-160-3` | HAVAL-160 (3 passes) | 40105 | - |
-| `haval-160-4` | HAVAL-160 (4 passes) | 40106 | - |
-| `haval-160-5` | HAVAL-160 (5 passes) | 40107 | - |
-| `haval-192-3` | HAVAL-192 (3 passes) | 40108 | - |
-| `haval-192-4` | HAVAL-192 (4 passes) | 40109 | - |
-| `haval-192-5` | HAVAL-192 (5 passes) | 40110 | - |
-| `haval-224-3` | HAVAL-224 (3 passes) | 40111 | - |
-| `haval-224-4` | HAVAL-224 (4 passes) | 40112 | - |
-| `haval-224-5` | HAVAL-224 (5 passes) | 40113 | - |
-| `haval-256-3` | HAVAL-256 (3 passes) | 40114 | - |
-| `haval-256-4` | HAVAL-256 (4 passes) | 40115 | - |
-| `haval-256-5` | HAVAL-256 (5 passes) | 40116 | - |
 | `blake-224` | BLAKE-224 | 40117 | - |
 | `blake-256` | BLAKE-256 | 40118 | - |
 | `blake-384` | BLAKE-384 | 40119 | - |
