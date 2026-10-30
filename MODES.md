@@ -168,7 +168,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 15000-15999
 
-- [ ] `15000` - `FileZilla Server >= 0.9.55`
 - [ ] `15200` - `Blockchain, My Wallet, V2`
 - [ ] `15300` - `DPAPI masterkey file v1 (context 1 and 2)`
 - [ ] `15310` - `DPAPI masterkey file v1 (context 3)`
@@ -301,8 +300,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 27000-27999
 
-- [ ] `27000` - `NetNTLMv1 / NetNTLMv1+ESS (NT)`
-- [ ] `27100` - `NetNTLMv2 (NT)`
 - [ ] `27300` - `SNMPv3 HMAC-SHA512-384`
 - [ ] `27400` - `VMware VMX (PBKDF2-HMAC-SHA1 + AES-256-CBC)`
 - [ ] `27500` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-128-XTS)`
@@ -503,12 +500,10 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `40053` - `MongoDB ServerKey SCRAM-SHA-256`
 - [ ] `40055` - `PostgreSQL SCRAM-SHA-256`
 - [ ] `40056` - `Flask Session Cookie ($salt.$salt.$pass)`
-- [ ] `40075` - `Citrix NetScaler (PBKDF2-HMAC-SHA256)`
 - [ ] `40078` - `SAP CODVN H (PWDSALTEDHASH) isSHA512`
 - [ ] `40079` - `phpass(md5($pass))`
 - [ ] `40081` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-256`
 - [ ] `40082` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-384`
-- [ ] `40083` - `Fernet (key = SHA256($pass))`
 
 ### 40100-40199
 

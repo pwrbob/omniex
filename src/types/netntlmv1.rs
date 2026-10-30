@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "NetNTLMv1",
     slug = "netntlmv1",
-    hashcat = [5500],
+    hashcat = [5500, 27000],
 )]
 pub struct NetNtlmV1 {
     /// User name from the authentication exchange.

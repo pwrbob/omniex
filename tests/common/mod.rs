@@ -646,18 +646,30 @@ pub const VECTORS: &[Vector] = &[
     },
     Vector {
         slug: "netntlmv1",
-        hashcat: &[hc!(
-            5500,
-            "user::DOMAIN:ada06359242920a500000000000000000000000000000000:0556d5297b5daa70eaffde82ef99293a3f3bb59b7c9704ea:9c23f6c094853920"
-        )],
+        hashcat: &[
+            hc!(
+                5500,
+                "user::DOMAIN:ada06359242920a500000000000000000000000000000000:0556d5297b5daa70eaffde82ef99293a3f3bb59b7c9704ea:9c23f6c094853920"
+            ),
+            hc_ambiguous!(
+                27000,
+                "::5V4T:ada06359242920a500000000000000000000000000000000:0556d5297b5daa70eaffde82ef99293a3f3bb59b7c9704ea:9c23f6c094853920"
+            ),
+        ],
         john: &[],
     },
     Vector {
         slug: "netntlmv2",
-        hashcat: &[hc!(
-            5600,
-            "0UL5G37JOI0SX::6VB1IS0KA74:ebe1afa18b7fbfa6:aab8bf8675658dd2a939458a1077ba08:010100000000000031c8aa092510945398b9f7b7dde1a9fb00000000f7876f2b04b700"
-        )],
+        hashcat: &[
+            hc!(
+                5600,
+                "0UL5G37JOI0SX::6VB1IS0KA74:ebe1afa18b7fbfa6:aab8bf8675658dd2a939458a1077ba08:010100000000000031c8aa092510945398b9f7b7dde1a9fb00000000f7876f2b04b700"
+            ),
+            hc_ambiguous!(
+                27100,
+                "0UL5G37JOI0SX::6VB1IS0KA74:ebe1afa18b7fbfa6:aab8bf8675658dd2a939458a1077ba08:010100000000000031c8aa092510945398b9f7b7dde1a9fb00000000f7876f2b04b700"
+            ),
+        ],
         john: &[john!(
             "netntlmv2",
             "0UL5G37JOI0SX::6VB1IS0KA74:ebe1afa18b7fbfa6:aab8bf8675658dd2a939458a1077ba08:010100000000000031c8aa092510945398b9f7b7dde1a9fb00000000f7876f2b04b700"
@@ -2470,6 +2482,30 @@ pub const VECTORS: &[Vector] = &[
         hashcat: &[hc!(
             40066,
             "$pbkdf2-hmac-sha512$100000.0211258841559010919749469547425215185689838310218571790549787198.1659e40e64daf84d635a5f1ed2f5708f6735233bed471994bdc0307b3c5f77597f79bdcdd088d1e79357b383809ddfd84379006b49e14f4ff45c449071478777"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "filezilla-server",
+        hashcat: &[hc!(
+            15000,
+            "bfa9fe5a404faff8b0d200385e26b783a163e475869336029d3ebaccaf02b5f16e4949279e8a33b942ab647f8f19a83dbe89a6d39dd6d8f84812de7d2e556767:6422386434050716105781561510557063652302782465168686858312232148"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "citrix-netscaler-pbkdf2-sha256",
+        hashcat: &[hc!(
+            40075,
+            "5567243c55099b6b10a714a350db53beea8be6ac9c247fd40fea7e96d206a9f11fd1c45735556ac2004138640de206d0e1522607ab3c3f92816156d2d7845068e"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "fernet",
+        hashcat: &[hc!(
+            40083,
+            "gAAAAABpVS3xV437a0DY_zbCoSrtML-DrLC6xSi-9CLArB06FXVZNbNmnp-4EfrJ6RplpoNb3VEhyHnDLdYjbtVpfvuqw42KoZ1KKsUoor--DAXjjBOR0TY="
         )],
         john: &[],
     },

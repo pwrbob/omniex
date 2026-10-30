@@ -296,6 +296,9 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &SsprPbkdf2Sha1::DESCRIPTOR,
     &SsprPbkdf2Sha256::DESCRIPTOR,
     &SsprPbkdf2Sha512::DESCRIPTOR,
+    &FilezillaServer::DESCRIPTOR,
+    &CitrixNetScalerPbkdf2Sha256::DESCRIPTOR,
+    &Fernet::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

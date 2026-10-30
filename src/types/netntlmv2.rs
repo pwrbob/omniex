@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "NetNTLMv2",
     slug = "netntlmv2",
-    hashcat = [5600],
+    hashcat = [5600, 27100],
     john = ["netntlmv2"],
 )]
 pub struct NetNtlmV2 {

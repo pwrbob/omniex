@@ -874,6 +874,21 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$pbkdf2-hmac-sha512$1000.salt".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "filezilla-server".into(),
+            "abcd:123".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "citrix-netscaler-pbkdf2-sha256".into(),
+            "5abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "fernet".into(),
+            "short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

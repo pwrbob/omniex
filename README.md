@@ -247,8 +247,8 @@ checked against that command in CI.
 | `half-md5` | Half MD5 | 5100 | - |
 | `ike-psk-md5` | IKE-PSK MD5 | 5300 | - |
 | `ike-psk-sha1` | IKE-PSK SHA1 | 5400 | - |
-| `netntlmv1` | NetNTLMv1 | 5500 | - |
-| `netntlmv2` | NetNTLMv2 | 5600 | netntlmv2 |
+| `netntlmv1` | NetNTLMv1 | 5500, 27000 | - |
+| `netntlmv2` | NetNTLMv2 | 5600, 27100 | netntlmv2 |
 | `cisco-ios4` | Cisco-IOS type 4 | 5700 | - |
 | `samsung-android` | Samsung Android | 5800 | - |
 | `ripemd-160` | RIPEMD-160 | 6000 | - |
@@ -481,6 +481,9 @@ checked against that command in CI.
 | `sspr-pbkdf2-sha1` | NetIQ SSPR (PBKDF2WithHmacSHA1) | 40064 | - |
 | `sspr-pbkdf2-sha256` | NetIQ SSPR (PBKDF2WithHmacSHA256) | 40065 | - |
 | `sspr-pbkdf2-sha512` | NetIQ SSPR (PBKDF2WithHmacSHA512) | 40066 | - |
+| `filezilla-server` | FileZilla Server >= 0.9.55 | 15000 | - |
+| `citrix-netscaler-pbkdf2-sha256` | Citrix NetScaler (PBKDF2-HMAC-SHA256) | 40075 | - |
+| `fernet` | Fernet (key = SHA256($pass)) | 40083 | - |
 
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
