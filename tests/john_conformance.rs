@@ -19,14 +19,20 @@ fn john_loads_every_vector() {
     let work = work_dir("john-conformance");
     let mut checked_formats = Vec::new();
     let selected = selected_modes();
+    let subset = std::env::var("OMNIEX_CONFORMANCE_SUBSET").as_deref() == Ok("1");
 
     for vector in VECTORS {
+        let mut included = 0;
         for entry in vector.john {
             if let Some(labels) = &selected
                 && !labels.iter().any(|label| label == entry.format)
             {
                 continue;
             }
+            if subset && included > 0 {
+                continue;
+            }
+            included += 1;
 
             let hash_file = work.join(format!("{}-{}.txt", vector.slug, entry.format));
             std::fs::write(&hash_file, format!("{}\n", entry.hash)).expect("write hash file");

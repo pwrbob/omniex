@@ -471,6 +471,16 @@ checked against that command in CI.
 | `krb5tgs3` | Kerberos 5, etype 3, TGS-REP | 38500 | - |
 | `krb5asrep23` | Kerberos 5, etype 23, AS-REP | 18200 | - |
 | `krb5asrep3` | Kerberos 5, etype 3, AS-REP | 38600 | - |
+| `sspr-md5` | NetIQ SSPR (MD5) | 40057 | - |
+| `sspr-sha1` | NetIQ SSPR (SHA1) | 40058 | - |
+| `sspr-sha1-salt` | NetIQ SSPR (SHA-1 with Salt) | 40059 | - |
+| `sspr-sha256-salt` | NetIQ SSPR (SHA-256 with Salt) | 40060 | - |
+| `adobe-aem-sha256-salt` | Adobe AEM (SSPR, SHA-256 with Salt) | 40061 | - |
+| `sspr-sha512-salt` | NetIQ SSPR (SHA-512 with Salt) | 40062 | - |
+| `adobe-aem-sha512-salt` | Adobe AEM (SSPR, SHA-512 with Salt) | 40063 | - |
+| `sspr-pbkdf2-sha1` | NetIQ SSPR (PBKDF2WithHmacSHA1) | 40064 | - |
+| `sspr-pbkdf2-sha256` | NetIQ SSPR (PBKDF2WithHmacSHA256) | 40065 | - |
+| `sspr-pbkdf2-sha512` | NetIQ SSPR (PBKDF2WithHmacSHA512) | 40066 | - |
 
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes

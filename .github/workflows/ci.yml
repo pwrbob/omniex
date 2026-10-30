@@ -19,10 +19,10 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
-  lint:
-    name: Lint and docs
+  checks:
+    name: Format, lint, docs, and tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
@@ -34,6 +34,8 @@ jobs:
 
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: stable-checks
 
       - name: Check formatting
         run: cargo fmt --all --check
@@ -45,6 +47,12 @@ jobs:
         run: cargo doc --workspace --no-deps --locked
         env:
           RUSTDOCFLAGS: -D warnings
+
+      - name: Run tests
+        run: cargo test --workspace --all-targets --locked
+
+      - name: Run doc tests
+        run: cargo test --workspace --doc --locked
 
   msrv:
     name: Minimum Rust version
@@ -62,26 +70,6 @@ jobs:
 
       - name: Check workspace
         run: cargo check --workspace --all-targets --locked
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
-
-      - name: Run tests
-        run: cargo test --workspace --all-targets --locked
-
-      - name: Run doc tests
-        run: cargo test --workspace --doc --locked
 
   hashcat:
     name: Hashcat conformance
@@ -113,6 +101,8 @@ jobs:
       - name: Run hashcat conformance
         env:
           OMNIEX_HASHCAT: ${{ github.workspace }}/tmp/reference/hashcat-8.0.0/hashcat
+          OMNIEX_CONFORMANCE_SUBSET: ${{ github.event_name == 'pull_request' && '1' || '0' }}
+          OMNIEX_CONFORMANCE_WORKERS: 8
         run: cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
 
   john:
@@ -150,4 +140,5 @@ jobs:
       - name: Run John conformance
         env:
           OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
+          OMNIEX_CONFORMANCE_SUBSET: ${{ github.event_name == 'pull_request' && '1' || '0' }}
         run: cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture

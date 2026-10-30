@@ -2,6 +2,8 @@
 //!
 //! The first sweep covers hashcat modes below 1000.
 
+mod adobe_aem_sha256_salt;
+mod adobe_aem_sha512_salt;
 mod aes128_ecb_nokdf;
 mod aes192_ecb_nokdf;
 mod aes256_ecb_nokdf;
@@ -262,6 +264,14 @@ mod skein_512_512;
 mod skip32;
 mod snefru_128;
 mod snefru_256;
+mod sspr_md5;
+mod sspr_pbkdf2_sha1;
+mod sspr_pbkdf2_sha256;
+mod sspr_pbkdf2_sha512;
+mod sspr_sha1;
+mod sspr_sha1_salt;
+mod sspr_sha256_salt;
+mod sspr_sha512_salt;
 mod streebog256;
 mod streebog512;
 mod sun_md5;
@@ -284,6 +294,8 @@ mod whirlpool_t;
 mod windows_phone_pin;
 mod wpa_pmkid;
 
+pub use adobe_aem_sha256_salt::AdobeAemSha256Salt;
+pub use adobe_aem_sha512_salt::AdobeAemSha512Salt;
 pub use aes128_ecb_nokdf::Aes128EcbNokdf;
 pub use aes192_ecb_nokdf::Aes192EcbNokdf;
 pub use aes256_ecb_nokdf::Aes256EcbNokdf;
@@ -544,6 +556,14 @@ pub use skein_512_512::Skein512_512;
 pub use skip32::Skip32;
 pub use snefru_128::Snefru128;
 pub use snefru_256::Snefru256;
+pub use sspr_md5::SsprMd5;
+pub use sspr_pbkdf2_sha1::SsprPbkdf2Sha1;
+pub use sspr_pbkdf2_sha256::SsprPbkdf2Sha256;
+pub use sspr_pbkdf2_sha512::SsprPbkdf2Sha512;
+pub use sspr_sha1::SsprSha1;
+pub use sspr_sha1_salt::SsprSha1Salt;
+pub use sspr_sha256_salt::SsprSha256Salt;
+pub use sspr_sha512_salt::SsprSha512Salt;
 pub use streebog256::Streebog256;
 pub use streebog512::Streebog512;
 pub use sun_md5::SunMd5;

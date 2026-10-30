@@ -854,6 +854,26 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$krb5asrep$3$user$realm$abcd$abcd".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "sspr-md5".into(),
+            "$sspr$0$100000$NONE$abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sspr-sha1-salt".into(),
+            "$sspr$2$abc$salt$abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "sspr-pbkdf2-sha256".into(),
+            "$pbkdf2-sha256$abc$salt$digest".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "sspr-pbkdf2-sha512".into(),
+            "$pbkdf2-hmac-sha512$1000.salt".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

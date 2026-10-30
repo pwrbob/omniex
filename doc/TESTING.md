@@ -45,7 +45,11 @@ Macro tests use `trybuild`:
 
 ### 2. Hashcat conformance
 
-Run on every PR once the harness exists. Pin hashcat `8.0.0`.
+Run on every PR and push. Pin hashcat `8.0.0`. Pull requests check one
+canonical vector per hash type; pushes to `main` and manual runs check every
+vector. The `--show` checks run in parallel workers; set
+`OMNIEX_CONFORMANCE_WORKERS` to change the worker count. `--identify` remains
+one exact invocation per vector.
 
 For each mode:
 
@@ -183,9 +187,8 @@ tables are enough.
 
 | Job | Contents | Blocking |
 | --- | --- | --- |
-| `lint` | fmt, clippy, docs | yes |
+| `checks` | fmt, clippy, docs, unit, property, CLI, and macro tests | yes |
 | `msrv` | compile check with Rust 1.85 | yes |
-| `test` | unit, property, CLI, macro tests | yes |
 | `hashcat` | conformance against `8.0.0` | yes when implemented |
 | `john` | conformance against pinned jumbo | yes when implemented |
 | `extraction` | extraction fixtures | yes when implemented |
@@ -197,7 +200,9 @@ failure when a conformance test is run; an explicit
 warning.
 
 `cargo check --workspace --all-targets --locked` runs on the declared MSRV.
-Target budgets: fast suite under 5 minutes; PR total under 20 minutes.
+Pull requests run a representative conformance subset; `main` runs the full
+vector set. Target budgets: fast suite under 5 minutes; PR total under 10
+minutes.
 
 ## Definition of done for a mode
 

@@ -2393,6 +2393,86 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "sspr-md5",
+        hashcat: &[hc!(
+            40057,
+            "$sspr$0$100000$NONE$2c8586ef492e3c3dd3795395507dc14f"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sspr-sha1",
+        hashcat: &[hc!(
+            40058,
+            "$sspr$1$100000$NONE$b3485214dfa55b038a606a183a560dab7db4ecf1"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sspr-sha1-salt",
+        hashcat: &[hc!(
+            40059,
+            "$sspr$2$100000$CxCpGqosk9PkCBcoRFp6DLjjRhVEJKK8$a33283d71c2ecaf4f3017b0a89feca2fc879221c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sspr-sha256-salt",
+        hashcat: &[hc!(
+            40060,
+            "$sspr$3$100000$ODk2NDA5Mjc2NDIwMjMwMjQyMTQ1NzMz$7195873d47c7e3627510862e37fe7cab9bc83b91feecb9864841bf80cff92419"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "adobe-aem-sha256-salt",
+        hashcat: &[hc!(
+            40061,
+            "$sspr$3$1000$f9bbf1381f481427$a1b45fd7eb190cc7f0bf831698cb777207eebbb4b7ea2abd6fff84be539aae62"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sspr-sha512-salt",
+        hashcat: &[hc!(
+            40062,
+            "$sspr$4$100000$NzYwNjMyNDc2MTQ2OTE4NTUzODAyODE3$0ce2e8b8efa4280e6e003d77cb45d45300dff3960c5c073f68303565fe62fe4ff3ada8cee7d3b87d0457335ab0df73c5c64ee1f71ccf6b8bd43a316ecb42ecd4"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "adobe-aem-sha512-salt",
+        hashcat: &[hc!(
+            40063,
+            "$sspr$4$1000$9ad596c50a5c9acd$d4cdc3c7d227e3cc57a9c9014b1eff1684808ef40191482cd8ae6e9d7b66211a5f04e4b34f494b0513a5f67b9614c5ff16e95e624a60f41b16b90533f305146e"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sspr-pbkdf2-sha1",
+        hashcat: &[hc!(
+            40064,
+            "$pbkdf2-hmac-sha1$100000$7134180503252384106490944216249411431665011151428170747164626720$990e0c5f62b1384d48cbe3660329b9741c4a8473"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sspr-pbkdf2-sha256",
+        hashcat: &[hc!(
+            40065,
+            "$pbkdf2-sha256$100000$MDUzMTE4NjQyNDc5NTQxMjAwMjg1OTYxNjAxNDgzNzc$bwYpAyQ2g5PqdnMj8mJ46mkwQbyztw8gEQqnhDHj48c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sspr-pbkdf2-sha512",
+        hashcat: &[hc!(
+            40066,
+            "$pbkdf2-hmac-sha512$100000.0211258841559010919749469547425215185689838310218571790549787198.1659e40e64daf84d635a5f1ed2f5708f6735233bed471994bdc0307b3c5f77597f79bdcdd088d1e79357b383809ddfd84379006b49e14f4ff45c449071478777"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

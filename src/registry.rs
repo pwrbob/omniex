@@ -286,6 +286,16 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &Krb5Tgs3::DESCRIPTOR,
     &Krb5AsRep23::DESCRIPTOR,
     &Krb5AsRep3::DESCRIPTOR,
+    &SsprMd5::DESCRIPTOR,
+    &SsprSha1::DESCRIPTOR,
+    &SsprSha1Salt::DESCRIPTOR,
+    &SsprSha256Salt::DESCRIPTOR,
+    &AdobeAemSha256Salt::DESCRIPTOR,
+    &SsprSha512Salt::DESCRIPTOR,
+    &AdobeAemSha512Salt::DESCRIPTOR,
+    &SsprPbkdf2Sha1::DESCRIPTOR,
+    &SsprPbkdf2Sha256::DESCRIPTOR,
+    &SsprPbkdf2Sha512::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.
