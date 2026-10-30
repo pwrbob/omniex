@@ -1,9 +1,9 @@
-//! RadioGatun[32] (first 128 bits), rendered as a bare hexadecimal digest.
+//! RadioGatun\[32\] (first 128 bits), rendered as a bare hexadecimal digest.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
-/// A single RadioGatun[32] (first 128 bits) digest.
+/// A single RadioGatun\[32\] (first 128 bits) digest.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, HashType)]
 #[hash(
     name = "RadioGatun[32] (first 128 bits)",

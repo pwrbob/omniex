@@ -1,9 +1,9 @@
-//! RadioGatun[64], rendered as a bare hexadecimal digest.
+//! RadioGatun\[64\], rendered as a bare hexadecimal digest.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
-/// A single RadioGatun[64] digest.
+/// A single RadioGatun\[64\] digest.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, HashType)]
 #[hash(
     name = "RadioGatun[64]",
