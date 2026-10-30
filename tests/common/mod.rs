@@ -853,7 +853,7 @@ pub const VECTORS: &[Vector] = &[
         john: &[],
     },
     Vector {
-        slug: "gost94-cryptopro",
+        slug: "gost-cryptopro",
         hashcat: &[hc_ambiguous!(
             40088,
             "256f021ad5729ca0a89fcb8377027f2f3a769748c8cdcb469cffab9aa2fac60b"
@@ -2046,7 +2046,10 @@ pub const VECTORS: &[Vector] = &[
             11100,
             "$postgres$postgres*74402844*4e7fabaaf34d780c4a5822d28ee1c83e"
         )],
-        john: &[],
+        john: &[john!(
+            "postgres",
+            "$postgres$postgres*74402844*4e7fabaaf34d780c4a5822d28ee1c83e"
+        )],
     },
     Vector {
         slug: "mysql-cram-sha1",
@@ -2054,7 +2057,10 @@ pub const VECTORS: &[Vector] = &[
             11200,
             "$mysqlna$2576670568531371763643101056213751754328*5e4be686a3149a12847caa9898247dcc05739601"
         )],
-        john: &[],
+        john: &[john!(
+            "mysqlna",
+            "$mysqlna$2576670568531371763643101056213751754328*5e4be686a3149a12847caa9898247dcc05739601"
+        )],
     },
     Vector {
         slug: "cram-md5-dovecot",
@@ -2438,7 +2444,7 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "bsdi-crypt",
         hashcat: &[hc!(12400, "_GW..8841inaTltazRsQ")],
-        john: &[],
+        john: &[john!("bsdicrypt", "_J9..CCCCXBrJUJV154M")],
     },
     Vector {
         slug: "radmin2",
@@ -2448,7 +2454,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "fortigate",
         hashcat: &[hc!(7000, "AK1FCIhM0IUIQVFJgcDFwLCMi7GppdwtRzMyDpFOFxdpH8=")],
-        john: &[],
+        john: &[john!(
+            "Fortigate",
+            "AK1wTiFOMv7mZOTvQNmKQBAY98hZZjSRLxAY8vZp8NlDWU="
+        )],
     },
     Vector {
         slug: "sybase-ase",

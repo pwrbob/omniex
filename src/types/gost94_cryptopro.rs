@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, Copy, PartialEq, Eq, HashType)]
 #[hash(
     name = "GOST R 34.11-94 (CryptoPro)",
-    slug = "gost94-cryptopro",
+    slug = "gost-cryptopro",
     hashcat = [40088],
 )]
 pub struct Gost94CryptoPro {

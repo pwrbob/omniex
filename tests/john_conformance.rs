@@ -24,10 +24,10 @@ fn john_loads_every_vector() {
     for vector in VECTORS {
         let mut included = 0;
         for entry in vector.john {
-            if let Some(labels) = &selected
-                && !labels.iter().any(|label| label == entry.format)
-            {
-                continue;
+            if let Some(labels) = &selected {
+                if !labels.iter().any(|label| label == entry.format) {
+                    continue;
+                }
             }
             if subset && included > 0 {
                 continue;

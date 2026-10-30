@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "MySQL CRAM (SHA1)",
     slug = "mysql-cram-sha1",
     hashcat = [11200],
+    john = ["mysqlna"],
 )]
 pub struct MysqlCramSha1 {
     /// Decimal challenge value.

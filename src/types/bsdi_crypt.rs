@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "BSDi Crypt, Extended DES",
     slug = "bsdi-crypt",
     hashcat = [12400],
+    john = ["bsdicrypt"],
 )]
 pub struct BsdiCrypt {
     /// Twenty crypt characters.

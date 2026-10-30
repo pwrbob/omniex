@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "FortiGate (FortiOS)",
     slug = "fortigate",
     hashcat = [7000],
+    john = ["Fortigate"],
 )]
 pub struct Fortigate {
     /// The 12-byte salt.

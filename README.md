@@ -257,7 +257,7 @@ checked against that command in CI.
 | `sha0` | SHA-0 | 40085 | - |
 | `ripemd-128` | RIPEMD-128 | 40086 | - |
 | `ripemd-256` | RIPEMD-256 | 40087 | - |
-| `gost94-cryptopro` | GOST R 34.11-94 (CryptoPro) | 40088 | - |
+| `gost-cryptopro` | GOST R 34.11-94 (CryptoPro) | 40088 | - |
 | `tiger` | Tiger | 40089 | - |
 | `tiger-128` | Tiger-128 | 40090 | - |
 | `tiger-160` | Tiger-160 | 40091 | - |
@@ -410,8 +410,8 @@ checked against that command in CI.
 | `umbraco-hmac-sha1` | Umbraco HMAC-SHA1 | 24800 | - |
 | `dahua-md5` | Dahua Authentication MD5 | 24900 | - |
 | `besder-md5` | Besder Authentication MD5 | 24901 | - |
-| `postgres-cram-md5` | PostgreSQL CRAM (MD5) | 11100 | - |
-| `mysql-cram-sha1` | MySQL CRAM (SHA1) | 11200 | - |
+| `postgres-cram-md5` | PostgreSQL CRAM (MD5) | 11100 | postgres |
+| `mysql-cram-sha1` | MySQL CRAM (SHA1) | 11200 | mysqlna |
 | `cram-md5-dovecot` | CRAM-MD5 Dovecot | 16400 | - |
 | `tacacs-plus` | TACACS+ | 16100 | tacacs-plus |
 | `pop3-apop` | POP3 APOP | 37601 | - |
@@ -462,9 +462,9 @@ checked against that command in CI.
 | `bcrypt-sha512` | bcrypt(sha512($pass)) | 28400 | - |
 | `phpass-md5` | phpass(md5($pass)) | 40079 | - |
 | `cisco-ios9` | Cisco-IOS $9$ (scrypt) | 9300 | - |
-| `bsdi-crypt` | BSDi Crypt, Extended DES | 12400 | - |
+| `bsdi-crypt` | BSDi Crypt, Extended DES | 12400 | bsdicrypt |
 | `radmin2` | Radmin2 | 9900 | - |
-| `fortigate` | FortiGate (FortiOS) | 7000 | - |
+| `fortigate` | FortiGate (FortiOS) | 7000 | Fortigate |
 | `sybase-ase` | Sybase ASE | 8000 | - |
 | `citrix-netscaler-sha512` | Citrix NetScaler SHA512 | 22200 | - |
 | `bitshares` | BitShares v0.x | 21000 | - |

@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "PostgreSQL CRAM (MD5)",
     slug = "postgres-cram-md5",
     hashcat = [11100],
+    john = ["postgres"],
 )]
 pub struct PostgresCramMd5 {
     /// Database username.

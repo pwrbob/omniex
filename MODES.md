@@ -525,7 +525,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `BKS`
 - [ ] `Blackberry-ES10`
 - [ ] `Blockchain` - OpenCL: `blockchain-opencl`
-- [ ] `bsdicrypt`
 - [ ] `cardano`
 - [ ] `chap`
 - [ ] `Clipperz`
@@ -557,7 +556,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `ethereum-presale-opencl` - OpenCL only
 - [ ] `fde`
 - [ ] `FormSpring`
-- [ ] `Fortigate`
 - [ ] `FVDE` - OpenCL: `FVDE-opencl`
 
 ### G-I
@@ -619,7 +617,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `mschapv2-naive`
 - [ ] `multibit`
 - [ ] `mysql-sha1` - OpenCL: `mysql-sha1-opencl`
-- [ ] `mysqlna`
 - [ ] `net-ah`
 - [ ] `net-md5`
 - [ ] `net-sha1`
@@ -666,7 +663,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `PHPS2`
 - [ ] `PKZIP`
 - [ ] `po`
-- [ ] `postgres`
 - [ ] `PST`
 - [ ] `PuTTY`
 - [ ] `pwsafe` - OpenCL: `pwsafe-opencl`
