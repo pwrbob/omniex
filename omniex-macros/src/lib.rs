@@ -417,7 +417,7 @@ fn compact_type(ty: &syn::Type) -> String {
 
     for current in rendered.chars() {
         if current.is_whitespace() {
-            if out.is_empty() || previous == Some(' ') {
+            if out.is_empty() || previous == Some(' ') || previous.is_some_and(no_space_after) {
                 continue;
             }
             out.push(' ');
@@ -441,4 +441,30 @@ fn space_sensitive(character: char) -> bool {
         character,
         '[' | ']' | '<' | '>' | ',' | ';' | '&' | '(' | ')' | ':' | '\''
     )
+}
+
+fn no_space_after(character: char) -> bool {
+    matches!(
+        character,
+        '[' | ']' | '<' | '>' | '(' | ')' | '&' | ':' | '\''
+    )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::compact_type;
+
+    fn render(source: &str) -> String {
+        let ty: syn::Type = syn::parse_str(source).expect("type parses");
+        compact_type(&ty)
+    }
+
+    #[test]
+    fn compacts_generic_and_array_types() {
+        assert_eq!(render("Vec<u8>"), "Vec<u8>");
+        assert_eq!(render("Vec<Vec<u8>>"), "Vec<Vec<u8>>");
+        assert_eq!(render("[u8; 16]"), "[u8; 16]");
+        assert_eq!(render("&'static str"), "&'static str");
+        assert_eq!(render("Option<[u8; 4]>"), "Option<[u8; 4]>");
+    }
 }
