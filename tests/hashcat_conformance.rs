@@ -7,7 +7,7 @@ mod common;
 
 use std::process::Command;
 
-use common::{VECTORS, reference, work_dir};
+use common::{VECTORS, reference, selected_modes, work_dir};
 
 #[test]
 #[ignore = "requires a hashcat build"]
@@ -18,9 +18,16 @@ fn hashcat_identifies_and_loads_every_vector() {
     let work = work_dir("hashcat-conformance");
     let potfile = work.join("empty.pot");
     let _ = std::fs::remove_file(&potfile);
+    let selected = selected_modes();
 
     for vector in VECTORS {
         for entry in vector.hashcat {
+            if let Some(labels) = &selected
+                && !labels.iter().any(|label| label == &entry.mode.to_string())
+            {
+                continue;
+            }
+
             let hash_file = work.join(format!("{}-{}.txt", vector.slug, entry.mode));
             std::fs::write(&hash_file, format!("{}\n", entry.hash)).expect("write hash file");
 

@@ -1482,6 +1482,210 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "sha256-md5",
+        hashcat: &[hc_ambiguous!(
+            20800,
+            "74ee1fae245edd6f27bf36efc3604942479fceefbadab5dc5c0b538c196eb0f1"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-sha1-md5-sha1",
+        hashcat: &[hc_ambiguous!(20900, "100b3a4fc1dc8d60d9bf40688d8b740a")],
+        john: &[],
+    },
+    Vector {
+        slug: "sha256-double",
+        hashcat: &[hc_ambiguous!(
+            21400,
+            "0cc1b58a543f372327aa0281e97ab56e345267ee46feabf7709515debb7ec43c"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha1-double-md5",
+        hashcat: &[hc_ambiguous!(
+            40039,
+            "888a2ffcb3854fba0321110c5d0d434ad1aa2880"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha224-double",
+        hashcat: &[hc_ambiguous!(
+            40076,
+            "b7d9a0e57e6e94e8b87996b81ffa64b05d237c58fff1d7a4e4fe2a77"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha224-sha1",
+        hashcat: &[hc_ambiguous!(
+            40077,
+            "10d302483c927df95abba98d69dcd9608365241d1523a8cc5fcbcedc"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "ntlm-double",
+        hashcat: &[hc_ambiguous!(40080, "7f30a0c84b2a806d93c39cea3b760716")],
+        john: &[],
+    },
+    Vector {
+        slug: "sha256-double-salt",
+        hashcat: &[hc!(
+            20710,
+            "bfede293ecf6539211a7305ea218b9f3f608953130405cda9eaba6fb6250f824:7218532375810603"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha1-md5",
+        hashcat: &[hc!(21100, "aade80a61c6e3cd3cac614f47c1991e0a87dd028:6")],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-sha1-md5",
+        hashcat: &[hc!(
+            21200,
+            "e69b7a7fe1bf2ad9ef116f79551ee919:baa038987e582431a6d"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha256-sandwich-salt",
+        hashcat: &[hc!(
+            22300,
+            "755a8ce4e0cf0baee41d714aa35c9fca803106608f718f973eab006578285007:11265"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha1-nested-salt",
+        hashcat: &[hc!(
+            24300,
+            "94520b02c04e79e08a75a84c2a6e3ed4e3874fe8:ThisIsATestSalt"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha256-salt-sha256",
+        hashcat: &[hc!(
+            40046,
+            "bae9edada8358fcebcd811f7d362f46277fb9d488379869fba65d79701d48b8b:869dc2ed80187919"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha256-nested-salted",
+        hashcat: &[hc!(
+            40047,
+            "ad66bdc0841d7e08d96c03de271ce14e77de078746b535adbf9d4b6ccbf2a517:7218532375810603"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-salt-sha1-salt",
+        hashcat: &[hc!(
+            40048,
+            "799dc7d9aa4d3f404cc21a4936dbdcde:68617368636174"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha256-salt-sha256-bin",
+        hashcat: &[hc!(
+            40049,
+            "5934ea4d670c13a71155faba42056b2525f71bdc9215d31108990c11bf3d98e3:9269771356270099311432765354522635185291064175409115041569"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-simpla",
+        hashcat: &[hc!(
+            40051,
+            "86d173f13213d1e48bce9647bdc306d5:8e86a279d6e182b3c811c559e6b15484"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha512-double-salt",
+        hashcat: &[hc!(
+            40067,
+            "25d509824028a999f4ee851b5de404bb316b78ae8e974874376484018f58520e082747a7ce9f769bcaccb5f63878356c780f602e23393f12b650a6931e4b9338:21881837027919828109608"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha512-double-bin-salt",
+        hashcat: &[hc!(
+            40068,
+            "c1bade2bd4ebc8db841ac6ab3e0a5035a29619e5b1a6135782b77da5d7cfaccee096f3ddb9ee23b9866378cfc2fb19f2c013fed1b7e1fffd18340a4f39238412:789"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "whirlpool-cubecart",
+        hashcat: &[hc!(
+            40069,
+            "a2c0342a2617026fbaeed01130c826cc3f58242799894b3ecc1abfa811ede03fd712efd14a886af6fa74045502f22c9feb1c45a291cf2d7bbe9bb94c388b6403:deadbeef"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-sandwich-salt",
+        hashcat: &[hc!(40071, "866244ca1d318292a6f40b60e03fd29c:72219426709")],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-two-nested-salts",
+        hashcat: &[hc!(
+            21310,
+            "dc91b5a658ef4b7d859e90742f340e24:708237:d270e9eea5802e346bcaa9b229f37766"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "md5-triple-two-salts",
+        hashcat: &[hc!(
+            21900,
+            "2c749af6c65cf3e82e5837e3056727f5:59331674906582121215362940957615121466283616005471:17254656838978443692786064919357750120910718779182716907569266"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha1-two-salts",
+        hashcat: &[hc!(
+            19300,
+            "630d2e918ab98e5fad9c61c0e4697654c4c16d73:18463812876898603420835420139870031762867:4449516425193605979760642927684590668549584534278112685644182848763890902699756869283142014018311837025441092624864168514500447147373198033271040848851687108629922695275682773136540885737874252666804716579965812709728589952868736177317883550827482248620334"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "authme-sha256",
+        hashcat: &[hc!(
+            20711,
+            "$SHA$7218532375810603$bfede293ecf6539211a7305ea218b9f3f608953130405cda9eaba6fb6250f824"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "netwitness-sha256",
+        hashcat: &[hc!(
+            20712,
+            "6F48F44C46F5ADC534597687B086278F0AAF7D262ADDB3978562A7D55BBDF467:MDAwMzY1NzYwODI4MQ=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha1-utf16-username-salt",
+        hashcat: &[hc!(
+            29000,
+            "339b5eaa53f28516008e9ca710857d3a4785b6fc:8ca064ff42fcab5a8f0692544b8dd3d3054bd73fe9afaa08c6b6b310538cc9a7:757365726e616d65"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {
@@ -1533,6 +1737,25 @@ pub fn work_dir(name: &str) -> PathBuf {
     let path = Path::new(env!("CARGO_TARGET_TMPDIR")).join(name);
     std::fs::create_dir_all(&path).expect("create conformance work directory");
     path
+}
+
+/// Restricts conformance runs to the labels in `OMNIEX_CONFORMANCE_MODES`.
+///
+/// An unset or empty variable means every vector is checked.
+pub fn selected_modes() -> Option<Vec<String>> {
+    let value = std::env::var("OMNIEX_CONFORMANCE_MODES").ok()?;
+    let labels = value
+        .split(',')
+        .map(str::trim)
+        .filter(|label| !label.is_empty())
+        .map(str::to_owned)
+        .collect::<Vec<_>>();
+
+    if labels.is_empty() {
+        None
+    } else {
+        Some(labels)
+    }
 }
 
 fn find_on_path(name: &str) -> Option<PathBuf> {

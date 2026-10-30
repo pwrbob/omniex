@@ -241,7 +241,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `19000` - `QNX /etc/shadow (MD5)`
 - [ ] `19100` - `QNX /etc/shadow (SHA256)`
 - [ ] `19200` - `QNX /etc/shadow (SHA512)`
-- [ ] `19300` - `sha1($salt1.$pass.$salt2)`
 - [ ] `19500` - `Ruby on Rails Restful-Authentication`
 - [ ] `19600` - `Kerberos 5, etype 17, TGS-REP`
 - [ ] `19700` - `Kerberos 5, etype 18, TGS-REP`
@@ -255,30 +254,19 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `20013` - `DiskCryptor SHA512 + XTS 1536 bit`
 - [ ] `20500` - `PKZIP Master Key`
 - [ ] `20510` - `PKZIP Master Key (6 byte optimization)`
-- [ ] `20710` - `sha256(sha256($pass).$salt)`
-- [ ] `20711` - `AuthMe sha256`
-- [ ] `20712` - `RSA Security Analytics / NetWitness (sha256)`
-- [ ] `20800` - `sha256(md5($pass))`
-- [ ] `20900` - `md5(sha1($pass).md5($pass).sha1($pass))`
 
 ### 21000-21999
 
 - [ ] `21000` - `BitShares v0.x - sha512(sha512_bin(pass))`
-- [ ] `21100` - `sha1(md5($pass.$salt))`
-- [ ] `21200` - `md5(sha1($salt).md5($pass))`
-- [ ] `21310` - `md5($salt1.sha1($salt2.$pass))`
-- [ ] `21400` - `sha256(sha256_bin($pass))`
 - [ ] `21500` - `SolarWinds Orion`
 - [ ] `21501` - `SolarWinds Orion v2`
 - [ ] `21700` - `Electrum Wallet (Salt-Type 4)`
 - [ ] `21800` - `Electrum Wallet (Salt-Type 5)`
-- [ ] `21900` - `md5(md5(md5($pass.$salt1)).$salt2)`
 
 ### 22000-22999
 
 - [ ] `22100` - `BitLocker`
 - [ ] `22200` - `Citrix NetScaler (SHA512)`
-- [ ] `22300` - `sha256($salt.$pass.$salt)`
 - [ ] `22301` - `Telegram Mobile App Passcode (SHA256)`
 - [ ] `22400` - `AES Crypt (SHA256)`
 - [ ] `22500` - `MultiBit Classic .key (MD5)`
@@ -308,7 +296,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `24000` - `BestCrypt v4 Volume Encryption`
 - [ ] `24100` - `MongoDB ServerKey SCRAM-SHA-1`
-- [ ] `24300` - `sha1($salt.sha1($pass.$salt))`
 - [ ] `24410` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA1 + 3DES/AES)`
 - [ ] `24420` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA256 + 3DES/AES)`
 - [ ] `24430` - `PKCS#12 (.pfx, .p12) (SHA1 + HMAC-SHA1)`
@@ -381,7 +368,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 29000-29999
 
-- [ ] `29000` - `sha1($salt.sha1(utf16le($username).':'.utf16le($pass)))`
 - [ ] `29200` - `Radmin3`
 - [ ] `29311` - `TrueCrypt RIPEMD160 + XTS 512 bit`
 - [ ] `29312` - `TrueCrypt RIPEMD160 + XTS 1024 bit`
@@ -591,19 +577,13 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `40036` - `Oracle T: Type (Oracle 12+)`
 - [ ] `40037` - `MS-AzureSync PBKDF2-HMAC-SHA256`
 - [ ] `40038` - `Juniper/NetBSD sha1crypt`
-- [ ] `40039` - `sha1(md5(md5($pass)))`
 - [ ] `40040` - `Blockchain, My Wallet, Second Password (SHA256)`
 - [ ] `40041` - `QNX 7 /etc/shadow (SHA512)`
 - [ ] `40042` - `Python passlib pbkdf2-sha512`
 - [ ] `40043` - `Python passlib pbkdf2-sha256`
 - [ ] `40044` - `Python passlib pbkdf2-sha1`
 - [ ] `40045` - `Oracle Transportation Management (SHA256)`
-- [ ] `40046` - `sha256($salt.sha256($pass))`
-- [ ] `40047` - `sha256(sha256($pass.$salt))`
-- [ ] `40048` - `md5($salt.sha1($salt.$pass))`
-- [ ] `40049` - `sha256($salt.sha256_bin($pass))`
 - [ ] `40050` - `Web2py pbkdf2-sha512`
-- [ ] `40051` - `Simpla CMS - md5($salt.$pass.md5($pass))`
 - [ ] `40052` - `XMPP SCRAM PBKDF2-SHA1`
 - [ ] `40053` - `MongoDB ServerKey SCRAM-SHA-256`
 - [ ] `40054` - `FortiGate256 (FortiOS256)`
@@ -619,20 +599,13 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `40064` - `NetIQ SSPR (PBKDF2WithHmacSHA1)`
 - [ ] `40065` - `NetIQ SSPR (PBKDF2WithHmacSHA256)`
 - [ ] `40066` - `NetIQ SSPR (PBKDF2WithHmacSHA512)`
-- [ ] `40067` - `sha512(sha512($pass).$salt)`
-- [ ] `40068` - `sha512(sha512_bin($pass).$salt)`
-- [ ] `40069` - `CubeCart (whirlpool($salt.$pass.$salt))`
 - [ ] `40070` - `PBKDF1-SHA1`
-- [ ] `40071` - `md5($salt.md5($pass).$salt)`
 - [ ] `40072` - `HMAC-BLAKE2S (key = $pass)`
 - [ ] `40073` - `HMAC-RIPEMD320 (key = $pass)`
 - [ ] `40074` - `HMAC-RIPEMD320 (key = $salt)`
 - [ ] `40075` - `Citrix NetScaler (PBKDF2-HMAC-SHA256)`
-- [ ] `40076` - `sha224(sha224($pass))`
-- [ ] `40077` - `sha224(sha1($pass))`
 - [ ] `40078` - `SAP CODVN H (PWDSALTEDHASH) isSHA512`
 - [ ] `40079` - `phpass(md5($pass))`
-- [ ] `40080` - `NTLM(NTLM_bin($pass))`
 - [ ] `40081` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-256`
 - [ ] `40082` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-384`
 - [ ] `40083` - `Fernet (key = SHA256($pass))`

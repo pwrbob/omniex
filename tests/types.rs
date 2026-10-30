@@ -644,6 +644,31 @@ fn invalid_inputs_return_stable_error_kinds() {
             "abc".into(),
             ParseErrorKind::InvalidCharacter,
         ),
+        (
+            "authme-sha256".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "netwitness-sha256".into(),
+            "abcd:00".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sha1-utf16-username-salt".into(),
+            format!("{}:salt:zz", zeros(40)),
+            ParseErrorKind::InvalidHex,
+        ),
+        (
+            "md5-two-nested-salts".into(),
+            format!("{}:only-one", zeros(32)),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "md5-two-nested-salts".into(),
+            format!("{}:a:b:c", zeros(32)),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {
@@ -1087,7 +1112,16 @@ fn unicode_salts_use_byte_lengths_for_mode_limits() {
 
 #[test]
 fn digest_only_types_reject_invalid_input() {
-    for slug in ["ripemd-160", "whirlpool", "gost"] {
+    for slug in [
+        "ripemd-160",
+        "whirlpool",
+        "gost",
+        "md2",
+        "sha0",
+        "tiger",
+        "skein-512-512",
+        "md6-512",
+    ] {
         let descriptor = registry::by_slug(slug).expect("registered");
         for input in ["", "abc", "zz"] {
             assert!(

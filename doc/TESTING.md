@@ -136,6 +136,10 @@ tool. Run them explicitly with `--ignored`. `scripts/build-hashcat.sh` and
 The conformance tests are table-driven. Small vectors stay inline. Use a fixture
 file only when the case is too large or binary.
 
+Set `OMNIEX_CONFORMANCE_MODES` to a comma-separated list of hashcat mode numbers
+or John format labels to check only those modes. It is useful while adding a
+group of related types; CI leaves it unset and checks everything.
+
 ## Fixtures
 
 ```text

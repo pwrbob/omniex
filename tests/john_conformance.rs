@@ -8,7 +8,7 @@ mod common;
 
 use std::process::Command;
 
-use common::{VECTORS, reference, work_dir};
+use common::{VECTORS, reference, selected_modes, work_dir};
 
 #[test]
 #[ignore = "requires a John jumbo build"]
@@ -18,9 +18,16 @@ fn john_loads_every_vector() {
     };
     let work = work_dir("john-conformance");
     let mut checked_formats = Vec::new();
+    let selected = selected_modes();
 
     for vector in VECTORS {
         for entry in vector.john {
+            if let Some(labels) = &selected
+                && !labels.iter().any(|label| label == entry.format)
+            {
+                continue;
+            }
+
             let hash_file = work.join(format!("{}-{}.txt", vector.slug, entry.format));
             std::fs::write(&hash_file, format!("{}\n", entry.hash)).expect("write hash file");
 

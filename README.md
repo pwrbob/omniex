@@ -356,6 +356,33 @@ checked against that command in CI.
 | `ripemd-original` | RIPEMD (original) | 40173 | - |
 | `whirlpool-0` | Whirlpool-0 | 40174 | - |
 | `whirlpool-t` | Whirlpool-T | 40175 | - |
+| `sha256-md5` | SHA2-256 of MD5 | 20800 | - |
+| `md5-sha1-md5-sha1` | MD5 of SHA1, MD5, and SHA1 | 20900 | - |
+| `sha256-double` | SHA2-256 applied twice | 21400 | - |
+| `sha1-double-md5` | SHA1 of MD5 applied twice | 40039 | - |
+| `sha224-double` | SHA2-224 applied twice | 40076 | - |
+| `sha224-sha1` | SHA2-224 of SHA1 | 40077 | - |
+| `ntlm-double` | NTLM applied twice | 40080 | - |
+| `sha256-double-salt` | SHA2-256 of SHA2-256 and salt | 20710 | - |
+| `sha1-md5` | SHA1 of MD5 | 21100 | - |
+| `md5-sha1-md5` | MD5 of SHA1 and MD5 | 21200 | - |
+| `sha256-sandwich-salt` | SHA2-256 with salt on both sides | 22300 | - |
+| `sha1-nested-salt` | SHA1 nested around a salted SHA1 | 24300 | - |
+| `sha256-salt-sha256` | SHA2-256 of salt and SHA2-256 | 40046 | - |
+| `sha256-nested-salted` | SHA2-256 of a salted SHA2-256 | 40047 | - |
+| `md5-salt-sha1-salt` | MD5 of a salt and a salted SHA1 | 40048 | - |
+| `sha256-salt-sha256-bin` | SHA2-256 of salt and binary SHA2-256 | 40049 | - |
+| `md5-simpla` | Simpla CMS salted MD5 | 40051 | - |
+| `sha512-double-salt` | SHA2-512 of SHA2-512 and salt | 40067 | - |
+| `sha512-double-bin-salt` | SHA2-512 of binary SHA2-512 and salt | 40068 | - |
+| `whirlpool-cubecart` | CubeCart salted Whirlpool | 40069 | - |
+| `md5-sandwich-salt` | MD5 with salt on both sides | 40071 | - |
+| `md5-two-nested-salts` | MD5 with two nested salts | 21310 | - |
+| `md5-triple-two-salts` | Triple MD5 with two salts | 21900 | - |
+| `sha1-two-salts` | SHA1 with two salts | 19300 | - |
+| `authme-sha256` | AuthMe SHA2-256 | 20711 | - |
+| `netwitness-sha256` | NetWitness SHA2-256 | 20712 | - |
+| `sha1-utf16-username-salt` | SHA1 (UTF-16LE username, salted) | 29000 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.
