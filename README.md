@@ -4,9 +4,56 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-Status: early development. The first sweep covers every hashcat mode below
-1000. Higher modes are listed in [`MODES.md`](MODES.md); extraction is not
-implemented yet.
+Status: early development. Hashcat mode coverage is tracked in
+[`MODES.md`](MODES.md); extraction is not implemented yet.
+
+## Goals
+
+- Support hashcat modes and named John formats that can be parsed or extracted.
+
+- Use one strongly typed Rust struct per logical hash type.
+
+- Parse hash strings and extract artifacts into that same struct.
+
+- Render a struct back to hashcat or John format.
+
+- Describe every field in human-readable form.
+
+- Report the modes that work for a concrete hash, not just its broad type.
+
+- Support hash lists.
+
+- Test compatibility against real hashcat and John builds in CI.
+
+## It should not
+
+- Run cracking attacks in CI.
+
+- Link against or vendor hashcat or John.
+
+- Add a C shim, FFI module harness, or long-running server.
+
+- Support John ad-hoc `dynamic=...` formats.
+
+- Merge different algorithms, or merge a salt with an HMAC key.
+
+- Claim compatibility without a conformance test.
+
+- Support Windows or macOS initially.
+
+## Core model
+
+`instance` is the common representation in both directions:
+
+```text
+                   parse
+hash string ─────────────┐
+                         ▼
+artifact ────extract──▶ instance ────render──▶ hash string
+```
+
+`--type <slug>` always names the same hash type. A slug is not an extractor
+slug or a hash-mode number; it identifies the struct.
 
 ## Features
 

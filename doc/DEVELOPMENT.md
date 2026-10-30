@@ -1,36 +1,8 @@
 # Development
 
-Status: describes the goal and the workflow for building `omniex`. The
-normative data model and CLI behavior are in `DESIGN.md`; macro details are in
-`MACROS.md`; testing is in `TESTING.md`.
-
-## Goal
-
-`omniex` extracts hashes from many file types for password forensics. It
-replaces the loose collection of unmaintained extraction scripts with one
-strongly typed tool. It should:
-
-- support hashcat modes and named John formats whose hashes can be extracted or
-  reverse-parsed; John's ad-hoc `dynamic=...` compiler is out of scope,
-- use one strongly typed Rust struct per logical hash type,
-- parse hash strings and extract hashes into that same struct,
-- render that struct back to hashcat or John format,
-- show a human-readable description of every field,
-- report the modes that work for a concrete hash, not just its broad type,
-- support hash lists,
-- test compatibility against real hashcat and John builds in CI.
-
-## Core model
-
-A hash type instance is the common representation in both directions:
-
-```text
-artifact -> extract -> instance -> render -> hash string
-hash string -> parse -> instance
-```
-
-`--type <slug>` always names that same hash type. A slug is not an extractor
-slug or a hash-mode number; it identifies the struct.
+Status: describes the layout and workflow for building `omniex`. The project
+goals are in `README.md`; the normative data model and CLI behavior are in
+`DESIGN.md`; macro details are in `MACROS.md`; testing is in `TESTING.md`.
 
 ## Layout
 
@@ -91,14 +63,6 @@ Then remove covered entries from `MODES.md` and commit. Do not push.
 
 ## Scope
 
-The first sweep covers hashcat modes below 1000. Later work covers extraction,
-the remaining mode sweep, version-specific format changes, base64 flavors on
-other serializations, and optional/repeated fields.
-
-## Non-goals
-
-- No cracking in CI.
-- No C shim, FFI module harness, or long-running server.
-- No vendoring of hashcat or John.
-- No John ad-hoc `dynamic=...` formats.
-- No Windows/macOS support initially.
+Hashcat and John coverage is tracked in `MODES.md`. Extraction, version-specific
+format changes, custom base64 alphabets, and optional/repeated fields are
+future work.
