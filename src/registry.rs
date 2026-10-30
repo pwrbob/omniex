@@ -66,6 +66,9 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &NetNtlmV2::DESCRIPTOR,
     &CiscoIos4::DESCRIPTOR,
     &SamsungAndroid::DESCRIPTOR,
+    &Ripemd160::DESCRIPTOR,
+    &Whirlpool::DESCRIPTOR,
+    &Gost::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

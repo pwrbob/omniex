@@ -652,6 +652,27 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "ripemd-160",
+        hashcat: &[hc!(6000, "012cb9b334ec1aeb71a9c8ce85586082467f7eb6")],
+        john: &[],
+    },
+    Vector {
+        slug: "whirlpool",
+        hashcat: &[hc!(
+            6100,
+            "7ca8eaaaa15eaa4c038b4c47b9313e92da827c06940e69947f85bc0fbef3eb8fd254da220ad9e208b6b28f6bb9be31dd760f1fdb26112d83f87d96b416a4d258"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "gost",
+        hashcat: &[hc!(
+            6900,
+            "df226c2c6dcb1d995c0299a33a084b201544293c31fc3d279530121d36bbcea9"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

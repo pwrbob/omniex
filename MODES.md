@@ -46,8 +46,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 6000-6999
 
-- [ ] `6000` - `RIPEMD-160`
-- [ ] `6100` - `Whirlpool`
 - [ ] `6211` - `TrueCrypt RIPEMD160 + XTS 512 bit (legacy)`
 - [ ] `6212` - `TrueCrypt RIPEMD160 + XTS 1024 bit (legacy)`
 - [ ] `6213` - `TrueCrypt RIPEMD160 + XTS 1536 bit (legacy)`
@@ -63,7 +61,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `6300` - `AIX {smd5}`
 - [ ] `6600` - `1Password, agilekeychain`
 - [ ] `6800` - `LastPass + LastPass sniffed`
-- [ ] `6900` - `GOST R 34.11-94`
 
 ### 7000-7999
 

@@ -83,6 +83,9 @@ fn every_type_describes_every_field() {
         ("netntlmv2", &["blob"]),
         ("cisco-ios4", &["signature"]),
         ("samsung-android", &["digest", "salt"]),
+        ("ripemd-160", &["digest"]),
+        ("whirlpool", &["digest"]),
+        ("gost", &["digest"]),
     ];
 
     for (slug, names) in expected {

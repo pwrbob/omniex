@@ -130,6 +130,9 @@ Run `omniex types` for the full list in a given build.
 | `netntlmv2` | 5600 | - |
 | `cisco-ios4` | 5700 | - |
 | `samsung-android` | 5800 | - |
+| `ripemd-160` | 6000 | - |
+| `whirlpool` | 6100 | - |
+| `gost` | 6900 | - |
 | `wpa-pmkid` | 22000, 22001 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
