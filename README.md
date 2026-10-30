@@ -95,11 +95,13 @@ There are no release binaries yet.
 
 ## Usage
 
-List registered types:
+List registered types, or inspect one type without a hash:
 
 ```bash
 omniex types
 omniex types --json
+omniex show oracle-h
+omniex show oracle-h --json
 ```
 
 Parse and re-render a hash. Use `--type` when more than one type matches:

@@ -37,6 +37,8 @@ enum Command {
     Extract(ExtractArgs),
     /// List the hash types available in this build.
     Types(TypesArgs),
+    /// Show the descriptor for one hash type.
+    Show(ShowArgs),
 }
 
 #[derive(Args)]
@@ -92,6 +94,16 @@ struct IdentifyArgs {
 #[derive(Args)]
 struct TypesArgs {
     /// Print a JSON array instead of a table.
+    #[arg(long)]
+    json: bool,
+}
+
+#[derive(Args)]
+struct ShowArgs {
+    /// Hash type slug.
+    slug: String,
+
+    /// Print one JSON object.
     #[arg(long)]
     json: bool,
 }
@@ -166,7 +178,55 @@ fn run(cli: Cli) -> Result<(), CliError> {
         Command::Identify(args) => run_identify(args),
         Command::Extract(args) => run_extract(args),
         Command::Types(args) => run_types(args),
+        Command::Show(args) => run_show(args),
     }
+}
+
+fn run_show(args: ShowArgs) -> Result<(), CliError> {
+    let descriptor = registry::by_slug(&args.slug)
+        .ok_or_else(|| CliError::Usage(format!("unknown hash type `{}`", args.slug)))?;
+
+    if args.json {
+        print_json(&descriptor_json(descriptor));
+        return Ok(());
+    }
+
+    let context = human_context()?;
+    let (hashcat, john) = mode_columns(descriptor.all_modes);
+    let mut block = ui::title(
+        &context,
+        &format!("{} ({})", descriptor.name, descriptor.slug),
+    );
+    block.push('\n');
+    block.push_str(&ui::key_values(
+        &context,
+        &[("Hashcat", hashcat), ("John", john)],
+    ));
+    block.push('\n');
+    block.push_str(&context.bold("Fields"));
+    block.push('\n');
+
+    let rows = descriptor
+        .fields
+        .iter()
+        .map(|field| {
+            vec![
+                field.name.to_owned(),
+                role_name(field.role).to_owned(),
+                encoding_name(field.encoding).to_owned(),
+                field.ty.to_owned(),
+                field.description.to_owned(),
+            ]
+        })
+        .collect::<Vec<_>>();
+    block.push_str(&ui::table(
+        &context,
+        &["Name", "Role", "Encoding", "Type", "Description"],
+        &rows,
+    ));
+
+    println!("{block}");
+    Ok(())
 }
 
 fn run_types(args: TypesArgs) -> Result<(), CliError> {

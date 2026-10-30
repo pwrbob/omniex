@@ -178,6 +178,7 @@ The CLI is intentionally small:
 omniex parse <hash> [--type <slug>] [--format hashcat|john] [--hc-version <release>] [--verbose|--json]
 omniex identify <hash> [--json]
 omniex types [--json]
+omniex show <slug> [--json]
 omniex extract <artifact> [--type <slug>] [--format hashcat|john]
 ```
 
@@ -188,6 +189,7 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
   not an error; the user disambiguates with `--type`.
 - `types` lists the hash types registered in this build. It is separate from
   `identify`, which is always input-driven.
+- `show` prints one type's fields and modes without requiring a hash.
 - `extract` uses the extractor registered for the selected hash type. Without
   `--type`, it auto-detects when exactly one type matches; otherwise it lists
   candidates.

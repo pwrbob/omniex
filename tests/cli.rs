@@ -275,3 +275,43 @@ fn parse_json_is_an_array_for_multiple_inputs() {
     assert_eq!(entries[0]["line"], 1);
     assert_eq!(entries[1]["line"], 2);
 }
+
+#[test]
+fn show_reports_one_type_without_a_hash() {
+    omniex()
+        .args(["show", "oracle-h"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("Oracle H (oracle-h)"))
+        .stdout(predicate::str::contains("Hashcat"))
+        .stdout(predicate::str::contains("3100"))
+        .stdout(predicate::str::contains("Fields"))
+        .stdout(predicate::str::contains("digest"))
+        .stdout(predicate::str::contains("salt"))
+        .stdout(predicate::str::contains("Decimal salt."));
+}
+
+#[test]
+fn show_json_is_one_descriptor_object() {
+    let output = omniex()
+        .args(["show", "oracle-h", "--json"])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    assert!(value.is_object());
+    assert_eq!(value["slug"], "oracle-h");
+    assert_eq!(value["hashcat"], serde_json::json!([3100]));
+    assert_eq!(value["fields"][0]["name"], "digest");
+    assert_eq!(value["fields"][1]["name"], "salt");
+}
+
+#[test]
+fn show_rejects_an_unknown_type_as_usage_error() {
+    omniex()
+        .args(["show", "not-a-type"])
+        .assert()
+        .code(2)
+        .stderr(predicate::str::contains("unknown hash type"));
+}
