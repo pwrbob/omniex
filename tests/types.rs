@@ -75,6 +75,7 @@ fn every_type_describes_every_field() {
         ("sunmd5", &["rounds", "salt", "digest"]),
         ("mediawiki-b", &["salt", "digest"]),
         ("md5-two-salts", &["digest", "salt1", "salt2"]),
+        ("iscsi-chap", &["digest", "challenge", "chap_id"]),
     ];
 
     for (slug, names) in expected {
@@ -549,6 +550,16 @@ fn invalid_inputs_return_stable_error_kinds() {
             "md5-two-salts".into(),
             format!("{}:a", zeros(32)),
             ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "iscsi-chap".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "iscsi-chap".into(),
+            format!("{}:zz:00", zeros(32)),
+            ParseErrorKind::InvalidHex,
         ),
     ];
 

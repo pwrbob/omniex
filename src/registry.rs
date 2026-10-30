@@ -2,11 +2,12 @@
 
 use crate::types::{
     Apr1, ArubaSha1, Bcrypt, Blake2b512, CiscoAsa, CiscoPix, Dcc, Dcc2, DesCrypt, DjangoSha1,
-    Episerver, EpiserverNet4, HmacMd5, HmacSha1, HmacSha256, HmacSha512, HmailServer, JuniperIve,
-    JuniperScreenos, LdapSha1, LdapSsha1, LdapSsha256, LdapSsha512, Lm, MacosSha1, MacosSha512,
-    Md4, Md5, Md5Crypt, Md5TwoSalts, MediaWikiB, Mssql2000, Mssql2005, Mssql2012, Mysql323, Ntlm,
-    OracleH, OracleSha1, PeoplesoftSha1, Phpass, Phps, SaltedBlake2b512, SaltedMd5, SaltedSha1,
-    SaltedSha256, SaltedSha512, Sha1, Sha224, Sha256, Sha512, Sha512Crypt, SunMd5, WpaPmkid,
+    Episerver, EpiserverNet4, HmacMd5, HmacSha1, HmacSha256, HmacSha512, HmailServer, IscsiChap,
+    JuniperIve, JuniperScreenos, LdapSha1, LdapSsha1, LdapSsha256, LdapSsha512, Lm, MacosSha1,
+    MacosSha512, Md4, Md5, Md5Crypt, Md5TwoSalts, MediaWikiB, Mssql2000, Mssql2005, Mssql2012,
+    Mysql323, Ntlm, OracleH, OracleSha1, PeoplesoftSha1, Phpass, Phps, SaltedBlake2b512, SaltedMd5,
+    SaltedSha1, SaltedSha256, SaltedSha512, Sha1, Sha224, Sha256, Sha512, Sha512Crypt, SunMd5,
+    WpaPmkid,
 };
 use crate::{HashTypeDescriptor, ParseError, ParseFn, ParseOptions};
 
@@ -65,6 +66,7 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &WpaPmkid::DESCRIPTOR,
     &MediaWikiB::DESCRIPTOR,
     &Md5TwoSalts::DESCRIPTOR,
+    &IscsiChap::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.
@@ -145,6 +147,8 @@ mod tests {
                 Mode::Hashcat(70),
                 Mode::Hashcat(2600),
                 Mode::Hashcat(3500),
+                Mode::Hashcat(4300),
+                Mode::Hashcat(4400),
                 Mode::John("Raw-MD5"),
             ]
         );

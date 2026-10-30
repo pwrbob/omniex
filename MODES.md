@@ -40,24 +40,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 4000-4999
 
-- [ ] `4000` - `Hash Recipe, see --hash-recipe`
-- [ ] `4010` - `md5($salt.md5($salt.$pass))`
-- [ ] `4110` - `md5($salt.md5($pass.$salt))`
-- [ ] `4300` - `md5(strtoupper(md5($pass)))`
-- [ ] `4400` - `md5(sha1($pass))`
-- [ ] `4410` - `md5(sha1($pass).$salt)`
-- [ ] `4420` - `md5(sha1($pass.$salt))`
-- [ ] `4430` - `md5(sha1($salt.$pass))`
-- [ ] `4500` - `sha1(sha1($pass))`
-- [ ] `4510` - `sha1(sha1($pass).$salt)`
-- [ ] `4520` - `sha1($salt.sha1($pass))`
-- [ ] `4521` - `Redmine`
-- [ ] `4522` - `PunBB`
-- [ ] `4700` - `sha1(md5($pass))`
-- [ ] `4710` - `sha1(md5($pass).$salt)`
-- [ ] `4711` - `Huawei sha1(md5($pass).$salt)`
-- [ ] `4800` - `iSCSI CHAP authentication, MD5(CHAP)`
-- [ ] `4900` - `sha1($salt.$pass.$salt)`
 
 ### 5000-5999
 
@@ -1069,5 +1051,6 @@ Remove each entry together with the base mode it duplicates.
 - hashcat `99999` - `Plaintext`: not a hash.
 - John `plaintext`: not a hash.
 - hashcat `2000` - `STDOUT`: not a hash.
+- hashcat `4000` - `Hash Recipe`: not a hash.
 - hashcat `2500`/`2501`: deprecated in hashcat 8.0.0 and replaced by `22000`/`22001`.
 - John `dynamic` and `dynamic=`: dynamic compiler support is out of scope.

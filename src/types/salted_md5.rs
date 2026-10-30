@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Salted MD5",
     slug = "salted-md5",
-    hashcat = [10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910],
+    hashcat = [10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430],
     modes_fn = salted_md5_modes,
 )]
 pub struct SaltedMd5 {
@@ -73,7 +73,9 @@ pub fn salted_md5_modes(value: &SaltedMd5) -> Vec<crate::Mode> {
             crate::Mode::Hashcat(30 | 40) => length <= 27,
             crate::Mode::Hashcat(2611 | 3610 | 3710) => length <= 223,
             crate::Mode::Hashcat(2711) => length == 30,
-            crate::Mode::Hashcat(2630 | 2811 | 3910) => length <= 256,
+            crate::Mode::Hashcat(2630 | 2811 | 3910 | 4010 | 4110 | 4410 | 4420 | 4430) => {
+                length <= 256
+            }
             crate::Mode::Hashcat(10 | 20 | 3800) => length <= 256,
             _ => false,
         })

@@ -165,6 +165,8 @@ fn declared_modes_match_the_design() {
             Mode::Hashcat(70),
             Mode::Hashcat(2600),
             Mode::Hashcat(3500),
+            Mode::Hashcat(4300),
+            Mode::Hashcat(4400),
             Mode::John("Raw-MD5"),
         ]
     );
@@ -188,6 +190,11 @@ fn declared_modes_match_the_design() {
             Mode::Hashcat(3710),
             Mode::Hashcat(3800),
             Mode::Hashcat(3910),
+            Mode::Hashcat(4010),
+            Mode::Hashcat(4110),
+            Mode::Hashcat(4410),
+            Mode::Hashcat(4420),
+            Mode::Hashcat(4430),
         ]
     );
 }

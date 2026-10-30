@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[hash(
     name = "SHA1",
     slug = "sha1",
-    hashcat = [100, 170, 300],
+    hashcat = [100, 170, 300, 4500, 4700],
     john = ["Raw-SHA1"],
 )]
 pub struct Sha1 {
