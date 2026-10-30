@@ -216,10 +216,7 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `23001` - `SecureZIP AES-128`
 - [ ] `23002` - `SecureZIP AES-192`
 - [ ] `23003` - `SecureZIP AES-256`
-- [ ] `23100` - `Apple Keychain`
 - [ ] `23300` - `Apple iWork`
-- [ ] `23500` - `AxCrypt 2 AES-128`
-- [ ] `23600` - `AxCrypt 2 AES-256`
 - [ ] `23700` - `RAR3-p (Uncompressed)`
 - [ ] `23800` - `RAR3-p (Compressed)` (no test module)
 - [ ] `23900` - `BestCrypt v3 Volume Encryption`
@@ -231,7 +228,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `24420` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA256 + 3DES/AES)`
 - [ ] `24430` - `PKCS#12 (.pfx, .p12) (SHA1 + HMAC-SHA1)`
 - [ ] `24440` - `PKCS#12 (.pfx, .p12) (SHA256 + HMAC-SHA256)`
-- [ ] `24700` - `Stuffit5`
 
 ### 25000-25999
 
@@ -266,7 +262,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `29541` - `LUKS v1 RIPEMD-160 + AES`
 - [ ] `29542` - `LUKS v1 RIPEMD-160 + Serpent`
 - [ ] `29543` - `LUKS v1 RIPEMD-160 + Twofish`
-- [ ] `29600` - `Terra Station Wallet (AES256-CBC(PBKDF2($pass)))`
 - [ ] `29700` - `KeePass (KDBX v2/v3) - keyfile only`
 - [ ] `29800` - `Bisq .wallet (scrypt)`
 - [ ] `29910` - `ENCsecurity Datavault (PBKDF2/no keychain)`

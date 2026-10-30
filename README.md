@@ -252,6 +252,10 @@ checked against that command in CI.
 | `mongodb-scram` | MongoDB ServerKey SCRAM-SHA-1 | 24100 | - |
 | `stellar` | Stargazer Stellar Wallet XLM | 25500 | - |
 | `exodus` | Exodus Desktop Wallet (scrypt) | 28200 | - |
+| `axcrypt2` | AxCrypt 2 | 23500, 23600 | - |
+| `apple-keychain` | Apple Keychain | 23100 | - |
+| `stuffit5` | Stuffit5 | 24700 | - |
+| `terra` | Terra Station Wallet | 29600 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
