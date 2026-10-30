@@ -1766,6 +1766,131 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "pbkdf2-hmac-md5",
+        hashcat: &[hc!(
+            40031,
+            "md5:1000:NjAxMDY4MQ==:a00DtIW9hP9voC85fmEA5uVhgdDx67nSPSm9yADHjkI="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "pbkdf2-hmac-sha1",
+        hashcat: &[hc!(
+            40032,
+            "sha1:1000:MTYwNTM4MDU4Mzc4MzA=:aGghFQBtQ8+WVlMk5GEaMw=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "pbkdf2-hmac-sha256",
+        hashcat: &[hc!(
+            40024,
+            "sha256:1000:NjI3MDM3:vVfavLQL9ZWjg8BUMq6/FB8FtpkIGWYk"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "pbkdf2-hmac-sha512",
+        hashcat: &[hc!(40034, "sha512:1000:NzY2:DNWohLbdIWIt4Npk9gpTvA==")],
+        john: &[],
+    },
+    Vector {
+        slug: "passlib-pbkdf2-sha512",
+        hashcat: &[hc!(
+            40042,
+            "$pbkdf2-sha512$25000$LyWE0HrP2RsjZCxlDGFMKQ$1vC5Ohk2mCS9b6akqsEfgeb4l74SF8XjH.SljXf3dMLHdlY1GK9ojcCKts6/asR4aPqBmk74nCDddU3tvSCJvw"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "passlib-pbkdf2-sha256",
+        hashcat: &[hc!(
+            40043,
+            "$pbkdf2-sha256$29000$x9h7j/Ge8x6DMEao1VqrdQ$kra3R1wEnY8mPdDWOpTqOTINaAmZvRMcYd8u5OBQP9A"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "passlib-pbkdf2-sha1",
+        hashcat: &[hc!(
+            40044,
+            "$pbkdf2$131000$r5WythYixPgfQ2jt3buXcg$8Kdr.QQEOaZIXNOrrru36I/.6Po"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "django-pbkdf2-sha256",
+        hashcat: &[hc!(
+            40022,
+            "pbkdf2_sha256$10000$1135411628$bFYX62rfJobJ07VwrUMXfuffLfj2RDM2G6/BrTrUWkE="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "atlassian-pbkdf2-sha1",
+        hashcat: &[hc!(
+            40033,
+            "{PKCS5S2}NTczNTY0NDY2NjQyNzU1Mx8gGiRGobaZYwumctGHbn2ZOHB8LkwzH+Z1gkWfy1zD"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "prestashop",
+        hashcat: &[hc!(
+            40026,
+            "f22cade043e7214200206dbffca49fd9:27167508161455764247627144160038845437138252877014827848"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sha1crypt",
+        hashcat: &[hc!(
+            40038,
+            "$sha1$20000$75552156$HhYMDdaEHiK3eMIzTldOFPnw.s2Q"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "drupal7",
+        hashcat: &[hc!(
+            40020,
+            "$S$C20340258nzjDWpoQthrdNTR02f0pmev0K/5/Nx80WSkOQcPEQRh"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cisco-ios8",
+        hashcat: &[hc!(
+            40021,
+            "$8$84486783037343$pYNyVrtyMalQrZLxRi7ZLQS1Fl.jkYCgASUi5P8JNb2"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "macos-pbkdf2-sha512",
+        hashcat: &[hc!(
+            40018,
+            "$ml$1024$2484380731132131624506271467162123576077004878124365203837706482$89a3a979ee186c0c837ca4551f32e951e6564c7ac6798aa35baf4427fbf6bd1d630642c12cfd5c236c7b0104782237db95e895f7c0e372cd81d58f0448daf958"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "pbkdf1-sha1",
+        hashcat: &[hc!(
+            40070,
+            "PBKDF1:sha1:1000:cGVuZ3VpbmtlZXBlcg==:J4BrIhXDUHNQ9lPPrWKn4V7Of9Y="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "web2py-pbkdf2-sha512",
+        hashcat: &[hc!(
+            40050,
+            "pbkdf2(1000,20,sha512)$744943$c5f8cdef76e3327c908d8d96d4abdb3d8caba14c"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

@@ -393,6 +393,22 @@ checked against that command in CI.
 | `qnx-md5` | QNX MD5 | 19000 | - |
 | `qnx-sha256` | QNX SHA2-256 | 19100 | - |
 | `qnx-sha512` | QNX SHA2-512 | 19200 | - |
+| `pbkdf2-hmac-md5` | PBKDF2-HMAC-MD5 | 40031 | - |
+| `pbkdf2-hmac-sha1` | PBKDF2-HMAC-SHA1 | 40032 | - |
+| `pbkdf2-hmac-sha256` | PBKDF2-HMAC-SHA256 | 40024 | - |
+| `pbkdf2-hmac-sha512` | PBKDF2-HMAC-SHA512 | 40034 | - |
+| `passlib-pbkdf2-sha512` | Python passlib pbkdf2-sha512 | 40042 | - |
+| `passlib-pbkdf2-sha256` | Python passlib pbkdf2-sha256 | 40043 | - |
+| `passlib-pbkdf2-sha1` | Python passlib pbkdf2-sha1 | 40044 | - |
+| `django-pbkdf2-sha256` | Django (PBKDF2-SHA256) | 40022 | - |
+| `atlassian-pbkdf2-sha1` | Atlassian (PBKDF2-HMAC-SHA1) | 40033 | - |
+| `prestashop` | PrestaShop | 40026 | - |
+| `sha1crypt` | Juniper/NetBSD sha1crypt | 40038 | - |
+| `drupal7` | Drupal7 | 40020 | - |
+| `cisco-ios8` | Cisco-IOS $8$ (PBKDF2-SHA256) | 40021 | - |
+| `macos-pbkdf2-sha512` | macOS v10.8+ (PBKDF2-SHA512) | 40018 | - |
+| `pbkdf1-sha1` | PBKDF1-SHA1 | 40070 | - |
+| `web2py-pbkdf2-sha512` | Web2py pbkdf2-sha512 | 40050 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

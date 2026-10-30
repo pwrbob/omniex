@@ -208,6 +208,22 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &QnxMd5::DESCRIPTOR,
     &QnxSha256::DESCRIPTOR,
     &QnxSha512::DESCRIPTOR,
+    &Pbkdf2HmacMd5::DESCRIPTOR,
+    &Pbkdf2HmacSha1::DESCRIPTOR,
+    &Pbkdf2HmacSha256::DESCRIPTOR,
+    &Pbkdf2HmacSha512::DESCRIPTOR,
+    &PasslibPbkdf2Sha512::DESCRIPTOR,
+    &PasslibPbkdf2Sha256::DESCRIPTOR,
+    &PasslibPbkdf2Sha1::DESCRIPTOR,
+    &DjangoPbkdf2Sha256::DESCRIPTOR,
+    &AtlassianPbkdf2Sha1::DESCRIPTOR,
+    &Prestashop::DESCRIPTOR,
+    &Sha1crypt::DESCRIPTOR,
+    &Drupal7::DESCRIPTOR,
+    &CiscoIos8::DESCRIPTOR,
+    &MacosPbkdf2Sha512::DESCRIPTOR,
+    &Pbkdf1Sha1::DESCRIPTOR,
+    &Web2pyPbkdf2Sha512::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

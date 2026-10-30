@@ -699,6 +699,46 @@ fn invalid_inputs_return_stable_error_kinds() {
             "@m@abcd@12345678".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "pbkdf2-hmac-sha256".into(),
+            "sha256:not-a-number:AAAA:AAAA".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "django-pbkdf2-sha256".into(),
+            "pbkdf2_sha256$1000$x$!!!".into(),
+            ParseErrorKind::InvalidBase64,
+        ),
+        (
+            "passlib-pbkdf2-sha256".into(),
+            "$pbkdf2-sha256$1000$salt".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "atlassian-pbkdf2-sha1".into(),
+            "{PKCS5S2}AAAA".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sha1crypt".into(),
+            "$sha1$1000$salt$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "drupal7".into(),
+            "$S$short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "macos-pbkdf2-sha512".into(),
+            "$ml$1000$abcd$abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "web2py-pbkdf2-sha512".into(),
+            "pbkdf2(1000,20,sha1)$salt$abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
     ];
 
     for (slug, input, kind) in cases {
