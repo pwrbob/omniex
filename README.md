@@ -46,10 +46,10 @@ Status: early development. Hashcat mode coverage is tracked in
 `instance` is the common representation in both directions:
 
 ```text
-                   parse
-hash string ─────────────┐
-                         ▼
-artifact ────extract──▶ instance ────render──▶ hash string
+             extract              render
+artifact ─────────────▶ instance ─────────────▶ hash string
+                          ▲                          │
+                          └────────── parse ─────────┘
 ```
 
 `--type <slug>` always names the same hash type. A slug is not an extractor
@@ -133,6 +133,17 @@ Run `omniex types` for the full list in a given build.
 | `ripemd-160` | 6000 | - |
 | `whirlpool` | 6100 | - |
 | `gost` | 6900 | - |
+| `sha384` | 10800 | `Raw-SHA384` |
+| `salted-sha384` | 10810, 10820, 10830, 10840 | - |
+| `sha384-utf16` | 10870 | - |
+| `sha3-224` | 17300 | - |
+| `sha3-256` | 17400 | - |
+| `sha3-384` | 17500 | - |
+| `sha3-512` | 17600 | `Raw-SHA3` |
+| `keccak-224` | 17700 | - |
+| `keccak-256` | 17800 | `Raw-Keccak-256` |
+| `keccak-384` | 17900 | - |
+| `keccak-512` | 18000 | `Raw-Keccak` |
 | `wpa-pmkid` | 22000, 22001 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
