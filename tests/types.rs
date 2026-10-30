@@ -76,6 +76,13 @@ fn every_type_describes_every_field() {
         ("mediawiki-b", &["salt", "digest"]),
         ("md5-two-salts", &["digest", "salt1", "salt2"]),
         ("iscsi-chap", &["digest", "challenge", "chap_id"]),
+        ("half-md5", &["digest"]),
+        ("ike-psk-md5", &["blob"]),
+        ("ike-psk-sha1", &["blob"]),
+        ("netntlmv1", &["blob"]),
+        ("netntlmv2", &["blob"]),
+        ("cisco-ios4", &["signature"]),
+        ("samsung-android", &["digest", "salt"]),
     ];
 
     for (slug, names) in expected {
@@ -560,6 +567,41 @@ fn invalid_inputs_return_stable_error_kinds() {
             "iscsi-chap".into(),
             format!("{}:zz:00", zeros(32)),
             ParseErrorKind::InvalidHex,
+        ),
+        (
+            "half-md5".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "ike-psk-md5".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "ike-psk-sha1".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "netntlmv1".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "netntlmv2".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "cisco-ios4".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "samsung-android".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
         ),
     ];
 

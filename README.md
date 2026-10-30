@@ -75,7 +75,7 @@ Run `omniex types` for the full list in a given build.
 | `salted-md5` | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430 | - |
 | `hmac-md5` | 50, 60 | - |
 | `sha1` | 100, 170, 300, 4500, 4700 | `Raw-SHA1` |
-| `salted-sha1` | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900 | - |
+| `salted-sha1` | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000 | - |
 | `hmac-sha1` | 150, 160 | - |
 | `oracle-sha1` | 112 | - |
 | `ldap-sha1` | 101 | - |
@@ -123,6 +123,13 @@ Run `omniex types` for the full list in a given build.
 | `mediawiki-b` | 3711 | `MediaWiki` |
 | `md5-two-salts` | 3730 | - |
 | `iscsi-chap` | 4800 | - |
+| `half-md5` | 5100 | - |
+| `ike-psk-md5` | 5300 | - |
+| `ike-psk-sha1` | 5400 | - |
+| `netntlmv1` | 5500 | - |
+| `netntlmv2` | 5600 | - |
+| `cisco-ios4` | 5700 | - |
+| `samsung-android` | 5800 | - |
 | `wpa-pmkid` | 22000, 22001 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes

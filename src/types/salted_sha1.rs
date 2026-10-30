@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Salted SHA1",
     slug = "salted-sha1",
-    hashcat = [110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900],
+    hashcat = [110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000],
     modes_fn = salted_sha1_modes,
 )]
 pub struct SaltedSha1 {
@@ -64,6 +64,7 @@ pub fn salted_sha1_modes(value: &SaltedSha1) -> Vec<crate::Mode> {
             crate::Mode::Hashcat(4522) => length == 12,
             crate::Mode::Hashcat(4711) => length == 8,
             crate::Mode::Hashcat(4900) => length <= 127,
+            crate::Mode::Hashcat(5000) => length <= 256,
             crate::Mode::Hashcat(110 | 120 | 121 | 4510 | 4520 | 4710) => length <= 256,
             _ => false,
         })

@@ -1,14 +1,6 @@
 //! Static registry of every concrete hash type.
 
-use crate::types::{
-    Apr1, ArubaSha1, Bcrypt, Blake2b512, CiscoAsa, CiscoPix, Dcc, Dcc2, DesCrypt, DjangoSha1,
-    Episerver, EpiserverNet4, HmacMd5, HmacSha1, HmacSha256, HmacSha512, HmailServer, IscsiChap,
-    JuniperIve, JuniperScreenos, LdapSha1, LdapSsha1, LdapSsha256, LdapSsha512, Lm, MacosSha1,
-    MacosSha512, Md4, Md5, Md5Crypt, Md5TwoSalts, MediaWikiB, Mssql2000, Mssql2005, Mssql2012,
-    Mysql323, Ntlm, OracleH, OracleSha1, PeoplesoftSha1, Phpass, Phps, SaltedBlake2b512, SaltedMd5,
-    SaltedSha1, SaltedSha256, SaltedSha512, Sha1, Sha224, Sha256, Sha512, Sha512Crypt, SunMd5,
-    WpaPmkid,
-};
+use crate::types::*;
 use crate::{HashTypeDescriptor, ParseError, ParseFn, ParseOptions};
 
 /// Every hash type known to this build.
@@ -67,6 +59,13 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &MediaWikiB::DESCRIPTOR,
     &Md5TwoSalts::DESCRIPTOR,
     &IscsiChap::DESCRIPTOR,
+    &HalfMd5::DESCRIPTOR,
+    &IkePskMd5::DESCRIPTOR,
+    &IkePskSha1::DESCRIPTOR,
+    &NetNtlmV1::DESCRIPTOR,
+    &NetNtlmV2::DESCRIPTOR,
+    &CiscoIos4::DESCRIPTOR,
+    &SamsungAndroid::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

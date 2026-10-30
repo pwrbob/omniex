@@ -43,14 +43,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 5000-5999
 
-- [ ] `5000` - `sha1(sha1($salt.$pass.$salt))`
-- [ ] `5100` - `Half MD5`
-- [ ] `5300` - `IKE-PSK MD5`
-- [ ] `5400` - `IKE-PSK SHA1`
-- [ ] `5500` - `NetNTLMv1 / NetNTLMv1+ESS`
-- [ ] `5600` - `NetNTLMv2`
-- [ ] `5700` - `Cisco-IOS type 4 (SHA256)`
-- [ ] `5800` - `Samsung Android Password/PIN`
 
 ### 6000-6999
 
