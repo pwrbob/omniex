@@ -409,6 +409,31 @@ checked against that command in CI.
 | `macos-pbkdf2-sha512` | macOS v10.8+ (PBKDF2-SHA512) | 40018 | - |
 | `pbkdf1-sha1` | PBKDF1-SHA1 | 40070 | - |
 | `web2py-pbkdf2-sha512` | Web2py pbkdf2-sha512 | 40050 | - |
+| `crc32` | CRC32 | 11500 | - |
+| `crc32c` | CRC32C | 27900 | - |
+| `murmurhash` | MurmurHash | 25700 | - |
+| `murmurhash3` | MurmurHash3 | 27800 | - |
+| `crc64jones` | CRC64Jones | 28000 | - |
+| `java-hashcode` | Java Object hashCode() | 18700 | - |
+| `siphash` | SipHash | 10100 | - |
+| `streebog-256` | GOST R 34.11-2012 (Streebog) 256-bit | 11700 | - |
+| `streebog-512` | GOST R 34.11-2012 (Streebog) 512-bit | 11800 | - |
+| `hmac-ripemd160-pass` | HMAC-RIPEMD160 (key = $pass) | 40013 | - |
+| `hmac-ripemd160-salt` | HMAC-RIPEMD160 (key = $salt) | 40014 | - |
+| `hmac-streebog256-pass` | HMAC-Streebog-256 (key = $pass) | 40027 | - |
+| `hmac-streebog256-salt` | HMAC-Streebog-256 (key = $salt) | 40028 | - |
+| `hmac-streebog512-pass` | HMAC-Streebog-512 (key = $pass) | 40029 | - |
+| `hmac-streebog512-salt` | HMAC-Streebog-512 (key = $salt) | 40030 | - |
+| `hmac-blake2s-pass` | HMAC-BLAKE2S (key = $pass) | 40072 | - |
+| `hmac-ripemd320-pass` | HMAC-RIPEMD320 (key = $pass) | 40073 | - |
+| `hmac-ripemd320-salt` | HMAC-RIPEMD320 (key = $salt) | 40074 | - |
+| `salted-sha224` | Salted SHA2-224 | 40009, 40010 | - |
+| `uuid-v3` | UUID v3 (RFC 4122 name-based, MD5) | 40004 | - |
+| `uuid-v5` | UUID v5 (RFC 4122 name-based, SHA-1) | 40005 | - |
+| `modx-evolution` | MODX Evolution (uncrypt) | 40007 | - |
+| `cisco-ise-sha256` | Cisco-ISE Hashed Password (SHA256) | 40012 | - |
+| `fortigate256` | FortiGate256 (FortiOS256) | 40054 | - |
+| `qnx7-sha512` | QNX 7 /etc/shadow (SHA512) | 40041 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

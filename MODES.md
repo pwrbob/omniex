@@ -103,7 +103,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 10000-10999
 
-- [ ] `10100` - `SipHash`
 - [ ] `10200` - `CRAM-MD5`
 - [ ] `10400` - `PDF 1.1 - 1.3 (Acrobat 2 - 4)`
 - [ ] `10410` - `PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #1`
@@ -119,10 +118,7 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `11200` - `MySQL CRAM (SHA1)`
 - [ ] `11300` - `Bitcoin/Litecoin wallet.dat`
 - [ ] `11400` - `SIP digest authentication (MD5)`
-- [ ] `11500` - `CRC32`
 - [ ] `11600` - `7-Zip`
-- [ ] `11700` - `GOST R 34.11-2012 (Streebog) 256-bit, big-endian`
-- [ ] `11800` - `GOST R 34.11-2012 (Streebog) 512-bit, big-endian`
 
 ### 12000-12999
 
@@ -229,7 +225,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `18300` - `Apple File System (APFS)`
 - [ ] `18400` - `Open Document Format (ODF) 1.2 (SHA-256, AES)`
 - [ ] `18600` - `Open Document Format (ODF) 1.1 (SHA-1, Blowfish)`
-- [ ] `18700` - `Java Object hashCode()`
 - [ ] `18900` - `Android Backup`
 
 ### 19000-19999
@@ -309,7 +304,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `25400` - `PDF 1.4 - 1.6 (Acrobat 5 - 8) - user and owner pass`
 - [ ] `25500` - `Stargazer Stellar Wallet XLM`
 - [ ] `25600` - `bcrypt(md5($pass))`
-- [ ] `25700` - `MurmurHash`
 - [ ] `25800` - `bcrypt(sha1($pass))`
 - [ ] `25900` - `KNX IP Secure - Device Authentication Code`
 
@@ -339,12 +333,9 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `27500` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-128-XTS)`
 - [ ] `27600` - `VirtualBox (PBKDF2-HMAC-SHA256 & AES-256-XTS)`
 - [ ] `27700` - `MultiBit Classic .wallet (scrypt)`
-- [ ] `27800` - `MurmurHash3`
-- [ ] `27900` - `CRC32C`
 
 ### 28000-28999
 
-- [ ] `28000` - `CRC64Jones`
 - [ ] `28100` - `Windows Hello PIN/Password`
 - [ ] `28200` - `Exodus Desktop Wallet (scrypt)`
 - [ ] `28300` - `Teamspeak 3 (channel hash)`
@@ -536,32 +527,18 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `40000` - `XCA database password`
 - [ ] `40001` - `OSPFv2/RIPv2 MD5 authentication`
 - [ ] `40002` - `Huawei / H3C / HPE Comware $h$6$`
-- [ ] `40004` - `UUID v3 (RFC 4122 name-based, MD5)`
-- [ ] `40005` - `UUID v5 (RFC 4122 name-based, SHA-1)`
 - [ ] `40006` - `MySQL caching_sha2_password challenge-response (fast auth)`
-- [ ] `40007` - `MODX Evolution (uncrypt)`
-- [ ] `40009` - `sha224($pass.$salt)`
-- [ ] `40010` - `sha224($salt.$pass)`
 - [ ] `40011` - `Password Safe v3`
-- [ ] `40012` - `Cisco-ISE Hashed Password (SHA256)`
-- [ ] `40013` - `HMAC-RIPEMD160 (key = $pass)`
-- [ ] `40014` - `HMAC-RIPEMD160 (key = $salt)`
 - [ ] `40019` - `GRUB 2`
 - [ ] `40023` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-1`
 - [ ] `40025` - `RedHat 389-DS LDAP (PBKDF2-HMAC-SHA256)`
-- [ ] `40027` - `HMAC-Streebog-256 (key = $pass), big-endian`
-- [ ] `40028` - `HMAC-Streebog-256 (key = $salt), big-endian`
-- [ ] `40029` - `HMAC-Streebog-512 (key = $pass), big-endian`
-- [ ] `40030` - `HMAC-Streebog-512 (key = $salt), big-endian`
 - [ ] `40035` - `Apache Shiro 1 SHA-512`
 - [ ] `40036` - `Oracle T: Type (Oracle 12+)`
 - [ ] `40037` - `MS-AzureSync PBKDF2-HMAC-SHA256`
 - [ ] `40040` - `Blockchain, My Wallet, Second Password (SHA256)`
-- [ ] `40041` - `QNX 7 /etc/shadow (SHA512)`
 - [ ] `40045` - `Oracle Transportation Management (SHA256)`
 - [ ] `40052` - `XMPP SCRAM PBKDF2-SHA1`
 - [ ] `40053` - `MongoDB ServerKey SCRAM-SHA-256`
-- [ ] `40054` - `FortiGate256 (FortiOS256)`
 - [ ] `40055` - `PostgreSQL SCRAM-SHA-256`
 - [ ] `40056` - `Flask Session Cookie ($salt.$salt.$pass)`
 - [ ] `40057` - `NetIQ SSPR (MD5)`
@@ -574,9 +551,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `40064` - `NetIQ SSPR (PBKDF2WithHmacSHA1)`
 - [ ] `40065` - `NetIQ SSPR (PBKDF2WithHmacSHA256)`
 - [ ] `40066` - `NetIQ SSPR (PBKDF2WithHmacSHA512)`
-- [ ] `40072` - `HMAC-BLAKE2S (key = $pass)`
-- [ ] `40073` - `HMAC-RIPEMD320 (key = $pass)`
-- [ ] `40074` - `HMAC-RIPEMD320 (key = $salt)`
 - [ ] `40075` - `Citrix NetScaler (PBKDF2-HMAC-SHA256)`
 - [ ] `40078` - `SAP CODVN H (PWDSALTEDHASH) isSHA512`
 - [ ] `40079` - `phpass(md5($pass))`

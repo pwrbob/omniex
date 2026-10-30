@@ -1891,6 +1891,194 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "crc32",
+        hashcat: &[hc!(11500, "c762de4a:00000000")],
+        john: &[],
+    },
+    Vector {
+        slug: "crc32c",
+        hashcat: &[hc!(27900, "5e23d60f:00000000")],
+        john: &[],
+    },
+    Vector {
+        slug: "murmurhash",
+        hashcat: &[hc!(25700, "b69e7687:05094309")],
+        john: &[],
+    },
+    Vector {
+        slug: "murmurhash3",
+        hashcat: &[hc!(27800, "23e93f65:00000000")],
+        john: &[],
+    },
+    Vector {
+        slug: "crc64jones",
+        hashcat: &[hc!(28000, "65c1f848fe38cce6:4260950400318054")],
+        john: &[],
+    },
+    Vector {
+        slug: "java-hashcode",
+        hashcat: &[hc!(18700, "29937c08")],
+        john: &[],
+    },
+    Vector {
+        slug: "siphash",
+        hashcat: &[hc!(
+            10100,
+            "583e6f51e52ba296:2:4:47356410265714355482333327356688"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "streebog-256",
+        hashcat: &[hc!(
+            11700,
+            "57e9e50caec93d72e9498c211d6dc4f4d328248b48ecf46ba7abfa874f666e36"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "streebog-512",
+        hashcat: &[hc!(
+            11800,
+            "5d5bdba48c8f89ee6c0a0e11023540424283e84902de08013aeeb626e819950bb32842903593a1d2e8f71897ff7fe72e17ac9ba8ce1d1d2f7e9c4359ea63bdc3"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-ripemd160-pass",
+        hashcat: &[hc!(
+            40013,
+            "4f5edca01734e03dd7e735362625a76e6bcb61b2:52355614946067"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-ripemd160-salt",
+        hashcat: &[hc!(
+            40014,
+            "34d8e55a2ae1e9549a291326ce2f0a8dcdc75c5c:08523202563542341"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-streebog256-pass",
+        hashcat: &[hc!(
+            40027,
+            "0f71c7c82700c9094ca95eee3d804cc283b538bec49428a9ef8da7b34effb3ba:08151337"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-streebog256-salt",
+        hashcat: &[hc!(
+            40028,
+            "d5c6b874338a492ac57ddc6871afc3c70dcfd264185a69d84cf839a07ef92b2c:08151337"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-streebog512-pass",
+        hashcat: &[hc!(
+            40029,
+            "be4555415af4a05078dcf260bb3c0a35948135df3dbf93f7c8b80574ceb0d71ea4312127f839b7707bf39ccc932d9e7cb799671183455889e8dde3738dfab5b6:08151337"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-streebog512-salt",
+        hashcat: &[hc!(
+            40030,
+            "bebf6831b3f9f958acb345a88cb98f30cb0374cff13e6012818487c8dc8d5857f23bca2caed280195ad558b8ce393503e632e901e8d1eb2ccb349a544ac195fd:08151337"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-blake2s-pass",
+        hashcat: &[hc!(
+            40072,
+            "0d541ae24d30aff2627c4d1a910f766088a64809edb46a05d29649a9b944da6c:1234"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-ripemd320-pass",
+        hashcat: &[hc!(
+            40073,
+            "e740440e7bd65056a90f1aa4eb00e00308a9f1788866b4eacbd46cfc8032301d4e5b3a9d179be044:95454599772294521162217"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "hmac-ripemd320-salt",
+        hashcat: &[hc!(
+            40074,
+            "345136b13b3a6e52901e2a414efa0cf5fca2fecf8b03279656d3b0f42c30df3006c5ad186494996b:2436077107013929602"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "salted-sha224",
+        hashcat: &[
+            hc!(
+                40009,
+                "0cf361904f4b0234cf4ade8496d8c11c04e5982db967603e82f22b2f:89452466460220844541730694146873525188525677"
+            ),
+            hc!(
+                40010,
+                "4258a61d3d0d5a5b6796f0ab02d081e998fe657d55d22091d3b51409:36669207"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "uuid-v3",
+        hashcat: &[hc!(
+            40004,
+            "ab419066-13e0-3b0a-81e2-78d838da75dc:6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "uuid-v5",
+        hashcat: &[hc!(
+            40005,
+            "1cc9c588-793e-5098-a328-1dcf2519d238:6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "modx-evolution",
+        hashcat: &[hc!(
+            40007,
+            "uncrypt>3b406c893a8ee69e02f80c771a420717061499aa:1"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cisco-ise-sha256",
+        hashcat: &[hc!(
+            40012,
+            "465865d4226c4d9696e601f2c99b25ae2c194ec01806bafc93933331acfc1a60e8bdcca8be9fa245a5fa16029bb52480915746f47d1c539d01da7ec6f37468d1"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "fortigate256",
+        hashcat: &[hc!(
+            40054,
+            "SH2lpcpFXM5QRlWYwY5vL9+5svfYyb+c79qENpxEoB3NtZpVxKwHjuq/9TH88U="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "qnx7-sha512",
+        hashcat: &[hc!(
+            40041,
+            "@S@vm2nBGHes6QkXra0f74XmouSiRzjYD3r/0py+txv0Kr8A4hCPMGFHoZqr41JFiYcJPPOeIheqFseMyLyw/15Pw==@NDY2MDEwNjk3YjBjYzM2MzliMzc3Mzc0ZTNiMTAzNzE="
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

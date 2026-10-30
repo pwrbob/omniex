@@ -739,6 +739,36 @@ fn invalid_inputs_return_stable_error_kinds() {
             "pbkdf2(1000,20,sha1)$salt$abcd".into(),
             ParseErrorKind::InvalidCharacter,
         ),
+        (
+            "crc32".into(),
+            "abcd:00000000".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "siphash".into(),
+            "00:2".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "hmac-ripemd160-pass".into(),
+            "abcd:key".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "salted-sha224".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "fortigate256".into(),
+            "SH2AAAA".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "qnx7-sha512".into(),
+            "@S@abcd@abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {
