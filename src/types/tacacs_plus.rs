@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "TACACS+",
     slug = "tacacs-plus",
     hashcat = [16100],
+    john = ["tacacs-plus"],
 )]
 pub struct TacacsPlus {
     /// Protocol version byte.

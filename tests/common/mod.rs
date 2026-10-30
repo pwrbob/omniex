@@ -187,7 +187,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "ldap-ssha1",
         hashcat: &[hc!(111, "{SSHA}FLzWcQqyle6Mo7NvrwXCMAmRzXQxNjYxMTYzNw==")],
-        john: &[],
+        john: &[john!(
+            "Salted-SHA1",
+            "{SSHA}bPXG4M1KkwZh2Hbgnuoszvpat0T/OS86"
+        )],
     },
     Vector {
         slug: "macos-sha1",
@@ -301,7 +304,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "ntlm",
         hashcat: &[hc!(1000, "b4b9b02e6f09a9bd760f388b67351e2b")],
-        john: &[john!("NT", "b4b9b02e6f09a9bd760f388b67351e2b")],
+        john: &[
+            john!("NT", "b4b9b02e6f09a9bd760f388b67351e2b"),
+            john!("NT-long", "b4b9b02e6f09a9bd760f388b67351e2b"),
+        ],
     },
     Vector {
         slug: "dcc",
@@ -458,7 +464,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "descrypt",
         hashcat: &[hc!(1500, "24leDr0hHfb3A")],
-        john: &[john!("descrypt", "24leDr0hHfb3A")],
+        john: &[
+            john!("descrypt", "24leDr0hHfb3A"),
+            john!("crypt", "24leDr0hHfb3A"),
+        ],
     },
     Vector {
         slug: "apr1",
@@ -533,7 +542,10 @@ pub const VECTORS: &[Vector] = &[
             2612,
             "$PHPS$30353031383437363132$f02b0b2f25e5754edb04522c346ba243"
         )],
-        john: &[],
+        john: &[john!(
+            "PHPS",
+            "$PHPS$433925$5d756853cd63acee76e6dcd6d3728447"
+        )],
     },
     Vector {
         slug: "lm",
@@ -640,7 +652,10 @@ pub const VECTORS: &[Vector] = &[
             5600,
             "0UL5G37JOI0SX::6VB1IS0KA74:ebe1afa18b7fbfa6:aab8bf8675658dd2a939458a1077ba08:010100000000000031c8aa092510945398b9f7b7dde1a9fb00000000f7876f2b04b700"
         )],
-        john: &[],
+        john: &[john!(
+            "netntlmv2",
+            "0UL5G37JOI0SX::6VB1IS0KA74:ebe1afa18b7fbfa6:aab8bf8675658dd2a939458a1077ba08:010100000000000031c8aa092510945398b9f7b7dde1a9fb00000000f7876f2b04b700"
+        )],
     },
     Vector {
         slug: "cisco-ios4",
@@ -674,7 +689,10 @@ pub const VECTORS: &[Vector] = &[
             6900,
             "df226c2c6dcb1d995c0299a33a084b201544293c31fc3d279530121d36bbcea9"
         )],
-        john: &[],
+        john: &[john!(
+            "gost",
+            "ce85b99cc46752fffee35cab9a7b0278abb4c2d2055cff685af4912c49490f8d"
+        )],
     },
     Vector {
         slug: "sha384",
@@ -912,7 +930,10 @@ pub const VECTORS: &[Vector] = &[
             40100,
             "ec3600d769166760e905fd928fd1172ea4e706eb23aff9dea91e052a6c699b7c"
         )],
-        john: &[],
+        john: &[john!(
+            "Panama",
+            "049d698307d8541f22870dfa0a551099d3d02bc6d57c610a06a4585ed8d35ff8"
+        )],
     },
     Vector {
         slug: "mdc2",
@@ -1420,7 +1441,7 @@ pub const VECTORS: &[Vector] = &[
             40165,
             "f070541c734597e89e371337bd82d7ebec8fe096"
         )],
-        john: &[],
+        john: &[john!("has-160", "307964ef34151d37c8047adec7ab50f4ff89762d")],
     },
     Vector {
         slug: "edon-r-256",
@@ -1735,7 +1756,10 @@ pub const VECTORS: &[Vector] = &[
             8100,
             "1130725275da09ca13254957f2314a639818d44c37ef6d558"
         )],
-        john: &[],
+        john: &[john!(
+            "Citrix_NS10",
+            "100000000f1dc96f425971ba590a076fd0f8bccbf25c1ba0c"
+        )],
     },
     Vector {
         slug: "wbb3",
@@ -1751,7 +1775,10 @@ pub const VECTORS: &[Vector] = &[
             19000,
             "@m@75f6f129f9c9e77b6b1b78f791ed764a@8741857532330050"
         )],
-        john: &[],
+        john: &[john!(
+            "qnx",
+            "@m@bde10f1a1119328c64594c52df3165cf@6e1f9a390d50a85c"
+        )],
     },
     Vector {
         slug: "qnx-sha256",
@@ -1852,7 +1879,10 @@ pub const VECTORS: &[Vector] = &[
             40038,
             "$sha1$20000$75552156$HhYMDdaEHiK3eMIzTldOFPnw.s2Q"
         )],
-        john: &[],
+        john: &[john!(
+            "sha1crypt",
+            "$sha1$20000$75552156$HhYMDdaEHiK3eMIzTldOFPnw.s2Q"
+        )],
     },
     Vector {
         slug: "drupal7",
@@ -1860,7 +1890,10 @@ pub const VECTORS: &[Vector] = &[
             40020,
             "$S$C20340258nzjDWpoQthrdNTR02f0pmev0K/5/Nx80WSkOQcPEQRh"
         )],
-        john: &[],
+        john: &[john!(
+            "Drupal7",
+            "$S$CwkjgAKeSx2imSiN3SyBEg8e0sgE2QOx4a/VIfCHN0BZUNAWCr1X"
+        )],
     },
     Vector {
         slug: "cisco-ios8",
@@ -2072,7 +2105,10 @@ pub const VECTORS: &[Vector] = &[
             40054,
             "SH2lpcpFXM5QRlWYwY5vL9+5svfYyb+c79qENpxEoB3NtZpVxKwHjuq/9TH88U="
         )],
-        john: &[],
+        john: &[john!(
+            "Fortigate256",
+            "SH2+n+OiTlautpJQF1NBcMU2H1otOvlAz9g5wzxwHw+4il3Aiixv9oPtKnRgCc="
+        )],
     },
     Vector {
         slug: "qnx7-sha512",
@@ -2124,7 +2160,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "tacacs-plus",
         hashcat: &[hc!(16100, "$tacacs-plus$0$5fde8e68$4e13e8fb33df$c006")],
-        john: &[],
+        john: &[john!(
+            "tacacs-plus",
+            "$tacacs-plus$0$6d0e1631$db7c01e77499$c006"
+        )],
     },
     Vector {
         slug: "pop3-apop",

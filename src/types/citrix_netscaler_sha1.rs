@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "Citrix NetScaler SHA1",
     slug = "citrix-netscaler-sha1",
     hashcat = [8100],
+    john = ["Citrix_NS10"],
 )]
 pub struct CitrixNetScalerSha1 {
     /// Eight salt characters.

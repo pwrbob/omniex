@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "QNX MD5",
     slug = "qnx-md5",
     hashcat = [19000],
+    john = ["qnx"],
 )]
 pub struct QnxMd5 {
     /// The 16-byte digest.
@@ -27,11 +28,11 @@ impl Parse for QnxMd5 {
         }
         let rest = parse::strip_prefix(input, "@m@", 0)?;
         let (digest, salt, salt_offset) = parse::split_once(rest, '@', 3)?;
-        if salt.len() < 8 || salt.len() > 16 || !salt.bytes().all(|byte| byte.is_ascii_digit()) {
+        if salt.len() < 8 || salt.len() > 16 || !salt.bytes().all(|byte| byte.is_ascii_hexdigit()) {
             return Err(parse::error(
                 ParseErrorKind::InvalidCharacter,
                 3 + salt_offset,
-                "QNX salt must be 8 to 16 decimal digits",
+                "QNX salt must be 8 to 16 hexadecimal digits",
             ));
         }
         Ok(Self {

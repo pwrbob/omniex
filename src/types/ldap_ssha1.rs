@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "LDAP SSHA1 (Base64)",
     slug = "ldap-ssha1",
     hashcat = [111],
+    john = ["Salted-SHA1"],
 )]
 pub struct LdapSsha1 {
     /// The 20-byte SHA-1 digest.

@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "HAS-160",
     slug = "has-160",
     hashcat = [40165],
+    john = ["has-160"],
 )]
 pub struct Has160 {
     /// The 20-byte digest.

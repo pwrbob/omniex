@@ -565,12 +565,10 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `bsdicrypt`
 - [ ] `cardano`
 - [ ] `chap`
-- [ ] `Citrix_NS10`
 - [ ] `Clipperz`
 - [ ] `cloudkeychain` - OpenCL: `cloudkeychain-opencl`
 - [ ] `cq`
 - [ ] `CRC32`
-- [ ] `crypt`
 - [ ] `cryptoSafe` - OpenCL: `cryptosafe-opencl`
 
 ### D-F
@@ -586,30 +584,25 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `dominosec`
 - [ ] `dominosec8`
 - [ ] `DPAPImk`
-- [ ] `Drupal7`
 - [ ] `eCryptfs`
 - [ ] `eigrp`
 - [ ] `electrum`
 - [ ] `electrum-modern-opencl` - OpenCL only
 - [ ] `EncFS` - OpenCL: `EncFS-opencl`
 - [ ] `enpass` - OpenCL: `enpass-opencl`
-- [ ] `EPiServer`
 - [ ] `ethereum` - OpenCL: `ethereum-opencl`
 - [ ] `ethereum-presale-opencl` - OpenCL only
 - [ ] `fde`
 - [ ] `FormSpring`
 - [ ] `Fortigate`
-- [ ] `Fortigate256`
 - [ ] `FVDE` - OpenCL: `FVDE-opencl`
 
 ### G-I
 
 - [ ] `geli` - OpenCL: `geli-opencl`
-- [ ] `gost`
 - [ ] `gost94crypt` - OpenCL: `gost94crypt-opencl`
 - [ ] `gpg` - OpenCL: `gpg-opencl`
 - [ ] `h3c`
-- [ ] `has-160`
 - [ ] `hdaa`
 - [ ] `HMAC-MD5`
 - [ ] `HMAC-SHA1`
@@ -671,11 +664,9 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `netlm`
 - [ ] `netlmv2`
 - [ ] `netntlm-naive`
-- [ ] `netntlmv2`
 - [ ] `nk`
 - [ ] `notes` - OpenCL: `notes-opencl`
 - [ ] `nsec3`
-- [ ] `NT-long`
 - [ ] `ntlmv2-opencl` - OpenCL only
 - [ ] `o10glogon`
 - [ ] `o3logon`
@@ -698,7 +689,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 - [ ] `Padlock`
 - [ ] `Palshop`
-- [ ] `Panama`
 - [ ] `PBKDF2-HMAC-MD4` - OpenCL: `PBKDF2-HMAC-MD4-opencl`
 - [ ] `PBKDF2-HMAC-MD5` - OpenCL: `PBKDF2-HMAC-MD5-opencl`
 - [ ] `PBKDF2-HMAC-SHA1` - OpenCL: `PBKDF2-HMAC-SHA1-opencl`
@@ -710,7 +700,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `pgpdisk` - OpenCL: `pgpdisk-opencl`
 - [ ] `pgpsda` - OpenCL: `pgpsda-opencl`
 - [ ] `pgpwde` - OpenCL: `pgpwde-opencl`
-- [ ] `PHPS`
 - [ ] `PHPS2`
 - [ ] `PKZIP`
 - [ ] `po`
@@ -718,7 +707,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `PST`
 - [ ] `PuTTY`
 - [ ] `pwsafe` - OpenCL: `pwsafe-opencl`
-- [ ] `qnx`
 - [ ] `RACF`
 - [ ] `RACF-KDFAES`
 - [ ] `radius`
@@ -739,7 +727,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### S-U
 
-- [ ] `Salted-SHA1` - OpenCL: `salted-SHA1-opencl`
 - [ ] `sapb`
 - [ ] `sapg`
 - [ ] `saph`
@@ -749,7 +736,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `SCRAM-PBKDF2-SHA256`
 - [ ] `scrypt`
 - [ ] `securezip`
-- [ ] `sha1crypt` - OpenCL: `sha1crypt-opencl`
 - [ ] `Siemens-S7`
 - [ ] `Signal`
 - [ ] `SIP`
@@ -767,7 +753,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `STRIP` - OpenCL: `strip-opencl`
 - [ ] `Sybase-PROP`
 - [ ] `SybaseASE`
-- [ ] `tacacs-plus`
 - [ ] `tcp-md5`
 - [ ] `telegram` - OpenCL: `telegram-opencl`
 - [ ] `tezos` - OpenCL: `tezos-opencl`
@@ -787,12 +772,15 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `WoWSRP`
 - [ ] `wpapsk` - OpenCL: `wpapsk-opencl`
 - [ ] `wpapsk-pmk` - OpenCL: `wpapsk-pmk-opencl`
-- [ ] `xsha`
-- [ ] `xsha512`
 - [ ] `XSHA512-free-opencl` - OpenCL only
 - [ ] `zed` - OpenCL: `zed-opencl`
 - [ ] `ZIP` - OpenCL: `ZIP-opencl`
 - [ ] `ZipMonster`
+
+- [ ] `xsha`
+- [ ] `xsha512`
+
+- [ ] `EPiServer`
 
 ## hashcat bridged modes
 

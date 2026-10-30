@@ -27,11 +27,11 @@ impl Parse for QnxSha256 {
         }
         let rest = parse::strip_prefix(input, "@s@", 0)?;
         let (digest, salt, salt_offset) = parse::split_once(rest, '@', 3)?;
-        if salt.len() < 8 || salt.len() > 16 || !salt.bytes().all(|byte| byte.is_ascii_digit()) {
+        if salt.len() < 8 || salt.len() > 16 || !salt.bytes().all(|byte| byte.is_ascii_hexdigit()) {
             return Err(parse::error(
                 ParseErrorKind::InvalidCharacter,
                 3 + salt_offset,
-                "QNX salt must be 8 to 16 decimal digits",
+                "QNX salt must be 8 to 16 hexadecimal digits",
             ));
         }
         Ok(Self {

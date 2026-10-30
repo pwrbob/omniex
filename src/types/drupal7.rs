@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "Drupal7",
     slug = "drupal7",
     hashcat = [40020],
+    john = ["Drupal7"],
 )]
 pub struct Drupal7 {
     /// Drupal iteration-count character.

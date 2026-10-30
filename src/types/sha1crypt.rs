@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "Juniper/NetBSD sha1crypt",
     slug = "sha1crypt",
     hashcat = [40038],
+    john = ["sha1crypt"],
 )]
 pub struct Sha1crypt {
     /// Iteration count.

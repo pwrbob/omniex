@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "PHPS",
     slug = "phps",
     hashcat = [2612],
+    john = ["PHPS"],
 )]
 pub struct Phps {
     /// Decimal salt.

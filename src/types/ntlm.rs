@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "NTLM",
     slug = "ntlm",
     hashcat = [1000],
-    john = ["NT"],
+    john = ["NT", "NT-long"],
 )]
 pub struct Ntlm {
     /// The 16-byte NTLM digest.

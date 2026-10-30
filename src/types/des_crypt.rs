@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "descrypt",
     slug = "descrypt",
     hashcat = [1500],
-    john = ["descrypt"],
+    john = ["descrypt", "crypt"],
 )]
 pub struct DesCrypt {
     /// The 13-character crypt string.

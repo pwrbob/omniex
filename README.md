@@ -190,81 +190,81 @@ checked against that command in CI.
 
 | Type (`--type`) | Name | Hashcat modes | John format |
 | --- | --- | --- | --- |
-| `md4` | MD4 | 900 | `Raw-MD4` |
-| `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | `Raw-MD5` |
+| `md4` | MD4 | 900 | Raw-MD4 |
+| `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | Raw-MD5 |
 | `salted-md5` | Salted MD5 | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430 | - |
 | `hmac-md5` | HMAC-MD5 | 50, 60 | - |
-| `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | `Raw-SHA1` |
+| `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | Raw-SHA1 |
 | `salted-sha1` | Salted SHA1 | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000 | - |
 | `hmac-sha1` | HMAC-SHA1 | 150, 160 | - |
 | `oracle-sha1` | Oracle 11g SHA1 | 112 | - |
 | `ldap-sha1` | LDAP SHA1 (Base64) | 101 | - |
-| `ldap-ssha1` | LDAP SSHA1 (Base64) | 111 | - |
+| `ldap-ssha1` | LDAP SSHA1 (Base64) | 111 | Salted-SHA1 |
 | `macos-sha1` | macOS SHA1 | 122 | - |
 | `django-sha1` | Django SHA1 | 124 | - |
 | `aruba-sha1` | ArubaOS SHA1 | 125 | - |
-| `mssql-2000` | MSSQL (2000) | 131 | `mssql` |
-| `mssql-2005` | MSSQL (2005) | 132 | `mssql05` |
+| `mssql-2000` | MSSQL (2000) | 131 | mssql |
+| `mssql-2005` | MSSQL (2005) | 132 | mssql05 |
 | `peoplesoft-sha1` | PeopleSoft SHA1 | 133 | - |
 | `episerver` | EPiServer (< .NET 4) | 141 | - |
-| `mysql323` | MySQL323 | 200 | `mysql` |
-| `phpass` | phpass | 400 | `phpass` |
-| `md5crypt` | md5crypt | 500 | `md5crypt` |
+| `mysql323` | MySQL323 | 200 | mysql |
+| `phpass` | phpass | 400 | phpass |
+| `md5crypt` | md5crypt | 500 | md5crypt |
 | `juniper-ive` | Juniper IVE | 501 | - |
 | `juniper-screenos` | Juniper ScreenOS | 22 | - |
-| `blake2b-512` | BLAKE2b-512 | 600 | `Raw-Blake2` |
+| `blake2b-512` | BLAKE2b-512 | 600 | Raw-Blake2 |
 | `salted-blake2b-512` | Salted BLAKE2b-512 | 610, 620 | - |
-| `ntlm` | NTLM | 1000 | `NT` |
+| `ntlm` | NTLM | 1000 | NT, NT-long |
 | `dcc` | Domain Cached Credentials | 1100, 31500 | - |
-| `sha224` | SHA2-224 | 1300 | `Raw-SHA224` |
-| `sha256` | SHA2-256 | 1400, 1470 | `Raw-SHA256` |
+| `sha224` | SHA2-224 | 1300 | Raw-SHA224 |
+| `sha256` | SHA2-256 | 1400, 1470 | Raw-SHA256 |
 | `salted-sha256` | Salted SHA2-256 | 1410, 1420, 1430, 1440 | - |
 | `hmac-sha256` | HMAC-SHA256 | 1450, 1460 | - |
-| `hmailserver` | hMailServer | 1421 | `hMailServer` |
-| `sha512` | SHA2-512 | 1700, 1770 | `Raw-SHA512` |
+| `hmailserver` | hMailServer | 1421 | hMailServer |
+| `sha512` | SHA2-512 | 1700, 1770 | Raw-SHA512 |
 | `salted-sha512` | Salted SHA2-512 | 1710, 1720, 1730, 1740 | - |
 | `hmac-sha512` | HMAC-SHA512 | 1750, 1760 | - |
 | `ldap-ssha256` | LDAP SSHA256 (Base64) | 1411 | - |
-| `ldap-ssha512` | LDAP SSHA512 (Base64) | 1711 | `SSHA512` |
+| `ldap-ssha512` | LDAP SSHA512 (Base64) | 1711 | SSHA512 |
 | `episerver-net4` | EPiServer (>= .NET 4) | 1441 | - |
-| `descrypt` | descrypt | 1500 | `descrypt` |
-| `apr1` | Apache MD5 (apr1) | 1600 | `md5crypt` |
+| `descrypt` | descrypt | 1500 | descrypt, crypt |
+| `apr1` | Apache MD5 (apr1) | 1600 | md5crypt |
 | `macos-sha512` | macOS SHA512 | 1722 | - |
-| `mssql-2012` | MSSQL (2012, 2014) | 1731 | `mssql12` |
-| `sha512crypt` | sha512crypt | 1800 | `sha512crypt` |
-| `dcc2` | Domain Cached Credentials 2 | 2100 | `mscash2` |
-| `cisco-pix` | Cisco-PIX MD5 | 2400 | `pix-md5` |
+| `mssql-2012` | MSSQL (2012, 2014) | 1731 | mssql12 |
+| `sha512crypt` | sha512crypt | 1800 | sha512crypt |
+| `dcc2` | Domain Cached Credentials 2 | 2100 | mscash2 |
+| `cisco-pix` | Cisco-PIX MD5 | 2400 | pix-md5 |
 | `cisco-asa` | Cisco-ASA MD5 | 2410 | - |
-| `phps` | PHPS | 2612 | - |
+| `phps` | PHPS | 2612 | PHPS |
 | `lm` | LM | 3000 | - |
 | `oracle-h` | Oracle H | 3100 | - |
-| `bcrypt` | bcrypt | 3200 | `bcrypt` |
-| `sunmd5` | SunMD5 | 3300 | `SunMD5` |
+| `bcrypt` | bcrypt | 3200 | bcrypt |
+| `sunmd5` | SunMD5 | 3300 | SunMD5 |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
-| `mediawiki-b` | MediaWiki B | 3711 | `MediaWiki` |
+| `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
 | `iscsi-chap` | iSCSI CHAP | 4800 | - |
 | `half-md5` | Half MD5 | 5100 | - |
 | `ike-psk-md5` | IKE-PSK MD5 | 5300 | - |
 | `ike-psk-sha1` | IKE-PSK SHA1 | 5400 | - |
 | `netntlmv1` | NetNTLMv1 | 5500 | - |
-| `netntlmv2` | NetNTLMv2 | 5600 | - |
+| `netntlmv2` | NetNTLMv2 | 5600 | netntlmv2 |
 | `cisco-ios4` | Cisco-IOS type 4 | 5700 | - |
 | `samsung-android` | Samsung Android | 5800 | - |
 | `ripemd-160` | RIPEMD-160 | 6000 | - |
 | `whirlpool` | Whirlpool | 6100 | - |
-| `gost` | GOST R 34.11-94 | 6900 | - |
-| `sha384` | SHA2-384 | 10800 | `Raw-SHA384` |
+| `gost` | GOST R 34.11-94 | 6900 | gost |
+| `sha384` | SHA2-384 | 10800 | Raw-SHA384 |
 | `salted-sha384` | Salted SHA2-384 | 10810, 10820, 10830, 10840 | - |
 | `sha384-utf16` | SHA2-384 (UTF-16LE) | 10870 | - |
 | `sha3-224` | SHA3-224 | 17300 | - |
 | `sha3-256` | SHA3-256 | 17400 | - |
 | `sha3-384` | SHA3-384 | 17500 | - |
-| `sha3-512` | SHA3-512 | 17600 | `Raw-SHA3` |
+| `sha3-512` | SHA3-512 | 17600 | Raw-SHA3 |
 | `keccak-224` | Keccak-224 | 17700 | - |
-| `keccak-256` | Keccak-256 | 17800 | `Raw-Keccak-256` |
+| `keccak-256` | Keccak-256 | 17800 | Raw-Keccak-256 |
 | `keccak-384` | Keccak-384 | 17900 | - |
-| `keccak-512` | Keccak-512 | 18000 | `Raw-Keccak` |
+| `keccak-512` | Keccak-512 | 18000 | Raw-Keccak |
 | `md2` | MD2 | 40084 | - |
 | `sha0` | SHA-0 | 40085 | - |
 | `ripemd-128` | RIPEMD-128 | 40086 | - |
@@ -281,7 +281,7 @@ checked against that command in CI.
 | `skein-512-256` | Skein-512-256 | 40097 | - |
 | `skein-512-384` | Skein-512-384 | 40098 | - |
 | `skein-512-512` | Skein-512-512 | 40099 | - |
-| `panama` | PANAMA | 40100 | - |
+| `panama` | PANAMA | 40100 | Panama |
 | `mdc2` | MDC-2 | 40101 | - |
 | `haval-128-3` | HAVAL-128 (3 passes) | 40102 | - |
 | `haval-128-4` | HAVAL-128 (4 passes) | 40103 | - |
@@ -346,7 +346,7 @@ checked against that command in CI.
 | `simd-256` | SIMD-256 | 40162 | - |
 | `simd-384` | SIMD-384 | 40163 | - |
 | `simd-512` | SIMD-512 | 40164 | - |
-| `has-160` | HAS-160 | 40165 | - |
+| `has-160` | HAS-160 | 40165 | has-160 |
 | `edon-r-256` | EDON-R-256 | 40166 | - |
 | `edon-r-512` | EDON-R-512 | 40167 | - |
 | `md6-128` | MD6-128 | 40168 | - |
@@ -387,10 +387,10 @@ checked against that command in CI.
 | `ssha1-aix` | AIX {ssha1} | 40017 | - |
 | `ssha256-aix` | AIX {ssha256} | 40015 | - |
 | `ssha512-aix` | AIX {ssha512} | 40016 | - |
-| `sha256crypt` | sha256crypt | 7400 | `sha256crypt` |
-| `citrix-netscaler-sha1` | Citrix NetScaler SHA1 | 8100 | - |
+| `sha256crypt` | sha256crypt | 7400 | sha256crypt |
+| `citrix-netscaler-sha1` | Citrix NetScaler SHA1 | 8100 | Citrix_NS10 |
 | `wbb3` | WBB3 | 8400 | - |
-| `qnx-md5` | QNX MD5 | 19000 | - |
+| `qnx-md5` | QNX MD5 | 19000 | qnx |
 | `qnx-sha256` | QNX SHA2-256 | 19100 | - |
 | `qnx-sha512` | QNX SHA2-512 | 19200 | - |
 | `pbkdf2-hmac-md5` | PBKDF2-HMAC-MD5 | 40031 | - |
@@ -403,8 +403,8 @@ checked against that command in CI.
 | `django-pbkdf2-sha256` | Django (PBKDF2-SHA256) | 40022 | - |
 | `atlassian-pbkdf2-sha1` | Atlassian (PBKDF2-HMAC-SHA1) | 40033 | - |
 | `prestashop` | PrestaShop | 40026 | - |
-| `sha1crypt` | Juniper/NetBSD sha1crypt | 40038 | - |
-| `drupal7` | Drupal7 | 40020 | - |
+| `sha1crypt` | Juniper/NetBSD sha1crypt | 40038 | sha1crypt |
+| `drupal7` | Drupal7 | 40020 | Drupal7 |
 | `cisco-ios8` | Cisco-IOS $8$ (PBKDF2-SHA256) | 40021 | - |
 | `macos-pbkdf2-sha512` | macOS v10.8+ (PBKDF2-SHA512) | 40018 | - |
 | `pbkdf1-sha1` | PBKDF1-SHA1 | 40070 | - |
@@ -432,7 +432,7 @@ checked against that command in CI.
 | `uuid-v5` | UUID v5 (RFC 4122 name-based, SHA-1) | 40005 | - |
 | `modx-evolution` | MODX Evolution (uncrypt) | 40007 | - |
 | `cisco-ise-sha256` | Cisco-ISE Hashed Password (SHA256) | 40012 | - |
-| `fortigate256` | FortiGate256 (FortiOS256) | 40054 | - |
+| `fortigate256` | FortiGate256 (FortiOS256) | 40054 | Fortigate256 |
 | `qnx7-sha512` | QNX 7 /etc/shadow (SHA512) | 40041 | - |
 | `umbraco-hmac-sha1` | Umbraco HMAC-SHA1 | 24800 | - |
 | `dahua-md5` | Dahua Authentication MD5 | 24900 | - |
@@ -440,7 +440,7 @@ checked against that command in CI.
 | `postgres-cram-md5` | PostgreSQL CRAM (MD5) | 11100 | - |
 | `mysql-cram-sha1` | MySQL CRAM (SHA1) | 11200 | - |
 | `cram-md5-dovecot` | CRAM-MD5 Dovecot | 16400 | - |
-| `tacacs-plus` | TACACS+ | 16100 | - |
+| `tacacs-plus` | TACACS+ | 16100 | tacacs-plus |
 | `pop3-apop` | POP3 APOP | 37601 | - |
 | `sasl-digest-md5` | SASL DIGEST-MD5 | 37600 | - |
 | `ospf-md5` | OSPFv2/RIPv2 MD5 authentication | 40001 | - |
@@ -471,6 +471,7 @@ checked against that command in CI.
 | `krb5tgs3` | Kerberos 5, etype 3, TGS-REP | 38500 | - |
 | `krb5asrep23` | Kerberos 5, etype 23, AS-REP | 18200 | - |
 | `krb5asrep3` | Kerberos 5, etype 3, AS-REP | 38600 | - |
+
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

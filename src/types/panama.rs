@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "PANAMA",
     slug = "panama",
     hashcat = [40100],
+    john = ["Panama"],
 )]
 pub struct Panama {
     /// The 32-byte digest.
