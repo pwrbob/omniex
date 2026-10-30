@@ -39,16 +39,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 3000-3999
 
-- [ ] `3000` - `LM`
-- [ ] `3100` - `Oracle H: Type (Oracle 7+)`
-- [ ] `3200` - `bcrypt $2*$, Blowfish (Unix)`
-- [ ] `3300` - `MD5(Sun), SunMD5`
-- [ ] `3500` - `md5(md5(md5($pass)))`
-- [ ] `3610` - `md5(md5(md5($pass)).$salt)`
-- [ ] `3710` - `md5($salt.md5($pass))`
-- [ ] `3711` - `MediaWiki B type`
-- [ ] `3730` - `md5($salt1.strtoupper(md5($salt2.$pass)))`
-- [ ] `3910` - `md5(md5($pass).md5($salt))`
 
 ### 4000-4999
 
@@ -817,7 +807,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `AxCrypt` - OpenCL: `axcrypt-opencl`
 - [ ] `axcrypt2-opencl` - OpenCL only
 - [ ] `AzureAD`
-- [ ] `bcrypt` - OpenCL: `bcrypt-opencl`
 - [ ] `BestCrypt`
 - [ ] `BestCryptVE4`
 - [ ] `bfegg`
@@ -909,7 +898,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `kwallet`
 - [ ] `LastPass`
 - [ ] `leet`
-- [ ] `LM`
 - [ ] `lotus5` - OpenCL: `lotus5-opencl`
 - [ ] `lotus85`
 - [ ] `lp` - OpenCL: `lp-opencl`
@@ -922,7 +910,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `md5crypt-long`
 - [ ] `md5ns`
 - [ ] `mdc2`
-- [ ] `MediaWiki`
 - [ ] `Monero`
 - [ ] `money`
 - [ ] `MongoDB`
@@ -1039,7 +1026,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `streebog256crypt` - OpenCL: `streebog256crypt-opencl`
 - [ ] `streebog512crypt` - OpenCL: `streebog512crypt-opencl`
 - [ ] `STRIP` - OpenCL: `strip-opencl`
-- [ ] `SunMD5`
 - [ ] `Sybase-PROP`
 - [ ] `SybaseASE`
 - [ ] `tacacs-plus`

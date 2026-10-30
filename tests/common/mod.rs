@@ -52,6 +52,7 @@ pub const VECTORS: &[Vector] = &[
             hc!(0, "8743b52063cd84097a65d1633f5c74f5"),
             hc!(70, "2303b15bfa48c74a74758135a0df1201"),
             hc!(2600, "a936af92b0ae20b1ff6c3347a72e5fbe"),
+            hc!(3500, "9882d0778518b095917eb589f6998441"),
         ],
         john: &[john!("Raw-MD5", "8743b52063cd84097a65d1633f5c74f5")],
     },
@@ -80,7 +81,10 @@ pub const VECTORS: &[Vector] = &[
                 "0844fbb2fdeda31884a7a45ec2010bb6:324410183853308365427804872426"
             ),
             hc!(2811, "022f7e02b3314f7d0968f73c00ba759f:67588"),
+            hc!(3610, "a0ab79f9e2b5a4434d2da61673b56362:1234"),
+            hc!(3710, "a3aa0ae2b4a102a9974cdf40edeabee0:242812778074"),
             hc!(3800, "78274b1105fb8a7c415b43ffe35ec4a9:6"),
+            hc!(3910, "d8281daba5da597503d12fe31808b4a7:283053"),
         ],
         john: &[],
     },
@@ -481,6 +485,54 @@ pub const VECTORS: &[Vector] = &[
         hashcat: &[hc!(
             2612,
             "$PHPS$30353031383437363132$f02b0b2f25e5754edb04522c346ba243"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "lm",
+        hashcat: &[hc!(3000, "299bd128c1101fd6")],
+        john: &[],
+    },
+    Vector {
+        slug: "oracle-h",
+        hashcat: &[hc!(3100, "792fcb0ae31d8489:7284616727")],
+        john: &[],
+    },
+    Vector {
+        slug: "bcrypt",
+        hashcat: &[hc!(
+            3200,
+            "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
+        )],
+        john: &[john!(
+            "bcrypt",
+            "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
+        )],
+    },
+    Vector {
+        slug: "sunmd5",
+        hashcat: &[hc!(
+            3300,
+            "$md5,rounds=904$4ol8A9yh$$DrANxVf9omze48HtDkwHQ0"
+        )],
+        john: &[john!(
+            "SunMD5",
+            "$md5,rounds=904$4ol8A9yh$$DrANxVf9omze48HtDkwHQ0"
+        )],
+    },
+    Vector {
+        slug: "mediawiki-b",
+        hashcat: &[hc!(3711, "$B$2152187716$8c8b39c3602b194eeeb6cac78eea2742")],
+        john: &[john!(
+            "MediaWiki",
+            "$B$2152187716$8c8b39c3602b194eeeb6cac78eea2742"
+        )],
+    },
+    Vector {
+        slug: "md5-two-salts",
+        hashcat: &[hc!(
+            3730,
+            "0e1484eb061b8e9cfd81868bba1dc4a0:229381927:182719643"
         )],
         john: &[],
     },

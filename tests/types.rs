@@ -58,6 +58,12 @@ fn every_type_describes_every_field() {
         ("cisco-pix", &["crypt"]),
         ("cisco-asa", &["crypt", "salt"]),
         ("phps", &["salt", "digest"]),
+        ("lm", &["digest"]),
+        ("oracle-h", &["digest", "salt"]),
+        ("bcrypt", &["prefix", "cost", "salt", "digest"]),
+        ("sunmd5", &["rounds", "salt", "digest"]),
+        ("mediawiki-b", &["salt", "digest"]),
+        ("md5-two-salts", &["digest", "salt1", "salt2"]),
     ];
 
     for (slug, names) in expected {
@@ -474,6 +480,53 @@ fn invalid_inputs_return_stable_error_kinds() {
         (
             "phps".into(),
             "$PHPS$abc$00".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        ("lm".into(), "abcd".into(), ParseErrorKind::InvalidLength),
+        (
+            "oracle-h".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "oracle-h".into(),
+            "abcd:12".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        ("bcrypt".into(), "abc".into(), ParseErrorKind::InvalidLength),
+        (
+            "bcrypt".into(),
+            "$2z$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "sunmd5".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "sunmd5".into(),
+            "$md5,rounds=x$salt$$hash".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "mediawiki-b".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "mediawiki-b".into(),
+            "$B$abc$00".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "md5-two-salts".into(),
+            "abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "md5-two-salts".into(),
+            format!("{}:a", zeros(32)),
             ParseErrorKind::InvalidCharacter,
         ),
     ];

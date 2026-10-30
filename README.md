@@ -24,8 +24,8 @@ Run `omniex types` for the full list in a given build.
 | Type (`--type`) | Hashcat modes | John format |
 | --- | --- | --- |
 | `md4` | 900 | `Raw-MD4` |
-| `md5` | 0, 70, 2600 | `Raw-MD5` |
-| `salted-md5` | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3800 | - |
+| `md5` | 0, 70, 2600, 3500 | `Raw-MD5` |
+| `salted-md5` | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910 | - |
 | `hmac-md5` | 50, 60 | - |
 | `sha1` | 100, 170, 300 | `Raw-SHA1` |
 | `salted-sha1` | 110, 120, 121, 130, 140 | - |
@@ -69,6 +69,12 @@ Run `omniex types` for the full list in a given build.
 | `cisco-pix` | 2400 | `pix-md5` |
 | `cisco-asa` | 2410 | - |
 | `phps` | 2612 | - |
+| `lm` | 3000 | - |
+| `oracle-h` | 3100 | - |
+| `bcrypt` | 3200 | `bcrypt` |
+| `sunmd5` | 3300 | `SunMD5` |
+| `mediawiki-b` | 3711 | `MediaWiki` |
+| `md5-two-salts` | 3730 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.
