@@ -249,6 +249,17 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &CiscoIseSha256::DESCRIPTOR,
     &Fortigate256::DESCRIPTOR,
     &Qnx7Sha512::DESCRIPTOR,
+    &UmbracoHmacSha1::DESCRIPTOR,
+    &DahuaMd5::DESCRIPTOR,
+    &BesderMd5::DESCRIPTOR,
+    &PostgresCramMd5::DESCRIPTOR,
+    &MysqlCramSha1::DESCRIPTOR,
+    &CramMd5Dovecot::DESCRIPTOR,
+    &TacacsPlus::DESCRIPTOR,
+    &Pop3Apop::DESCRIPTOR,
+    &SaslDigestMd5::DESCRIPTOR,
+    &OspfMd5::DESCRIPTOR,
+    &MysqlCachingSha2::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.

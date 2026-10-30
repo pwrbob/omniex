@@ -434,6 +434,17 @@ checked against that command in CI.
 | `cisco-ise-sha256` | Cisco-ISE Hashed Password (SHA256) | 40012 | - |
 | `fortigate256` | FortiGate256 (FortiOS256) | 40054 | - |
 | `qnx7-sha512` | QNX 7 /etc/shadow (SHA512) | 40041 | - |
+| `umbraco-hmac-sha1` | Umbraco HMAC-SHA1 | 24800 | - |
+| `dahua-md5` | Dahua Authentication MD5 | 24900 | - |
+| `besder-md5` | Besder Authentication MD5 | 24901 | - |
+| `postgres-cram-md5` | PostgreSQL CRAM (MD5) | 11100 | - |
+| `mysql-cram-sha1` | MySQL CRAM (SHA1) | 11200 | - |
+| `cram-md5-dovecot` | CRAM-MD5 Dovecot | 16400 | - |
+| `tacacs-plus` | TACACS+ | 16100 | - |
+| `pop3-apop` | POP3 APOP | 37601 | - |
+| `sasl-digest-md5` | SASL DIGEST-MD5 | 37600 | - |
+| `ospf-md5` | OSPFv2/RIPv2 MD5 authentication | 40001 | - |
+| `mysql-caching-sha2` | MySQL caching_sha2_password challenge-response | 40006 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

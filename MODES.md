@@ -114,8 +114,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 11000-11999
 
-- [ ] `11100` - `PostgreSQL CRAM (MD5)`
-- [ ] `11200` - `MySQL CRAM (SHA1)`
 - [ ] `11300` - `Bitcoin/Litecoin wallet.dat`
 - [ ] `11400` - `SIP digest authentication (MD5)`
 - [ ] `11600` - `7-Zip`
@@ -193,10 +191,8 @@ Hashcat's plaintext mode is excluded below.
 ### 16000-16999
 
 - [ ] `16000` - `Tripcode`
-- [ ] `16100` - `TACACS+`
 - [ ] `16200` - `Apple Secure Notes`
 - [ ] `16300` - `Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256`
-- [ ] `16400` - `CRAM-MD5 Dovecot`
 - [ ] `16500` - `JWT (JSON Web Token)`
 - [ ] `16501` - `Perl Mojolicious session cookie (HMAC-SHA256, >= v9.19)`
 - [ ] `16600` - `Electrum Wallet (Salt-Type 1-3)`
@@ -291,9 +287,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `24500` - `Telegram Desktop >= v2.1.14 (PBKDF2-HMAC-SHA512)`
 - [ ] `24600` - `SQLCipher`
 - [ ] `24700` - `Stuffit5`
-- [ ] `24800` - `Umbraco HMAC-SHA1`
-- [ ] `24900` - `Dahua Authentication MD5`
-- [ ] `24901` - `Besder Authentication MD5`
 
 ### 25000-25999
 
@@ -505,8 +498,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `37000` - `MIFARE Ultralight C 3DES Key Recovery`
 - [ ] `37400` - `RACF DES Passphrase`
 - [ ] `37500` - `RACF KDFAES Passphrase`
-- [ ] `37600` - `SASL DIGEST-MD5`
-- [ ] `37601` - `POP3 APOP`
 - [ ] `37700` - `Cardano Eternl Wallet (PBKDF2-HMAC-SHA512, ChaCha20)`
 
 ### 38000-38999
@@ -525,9 +516,7 @@ Hashcat's plaintext mode is excluded below.
 ### 40000-40099
 
 - [ ] `40000` - `XCA database password`
-- [ ] `40001` - `OSPFv2/RIPv2 MD5 authentication`
 - [ ] `40002` - `Huawei / H3C / HPE Comware $h$6$`
-- [ ] `40006` - `MySQL caching_sha2_password challenge-response (fast auth)`
 - [ ] `40011` - `Password Safe v3`
 - [ ] `40019` - `GRUB 2`
 - [ ] `40023` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-1`

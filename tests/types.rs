@@ -769,6 +769,41 @@ fn invalid_inputs_return_stable_error_kinds() {
             "@S@abcd@abcd".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "postgres-cram-md5".into(),
+            "$postgres$user*1234*abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "mysql-cram-sha1".into(),
+            "$mysqlna$notdecimal*abcd".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "tacacs-plus".into(),
+            "$tacacs-plus$x$00$00$00".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "pop3-apop".into(),
+            "$apop$challenge$abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sasl-digest-md5".into(),
+            "$sasl$too$few".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "ospf-md5".into(),
+            "$netmd5$abcd$abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "mysql-caching-sha2".into(),
+            "$mysqlsha2$abcd*abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

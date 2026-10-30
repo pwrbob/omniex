@@ -1,0 +1,41 @@
+//! Dahua Authentication MD5, rendered as an eight-character digest.
+
+use crate::parse;
+use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
+
+/// Dahua Authentication MD5 hashes.
+#[derive(Debug, Clone, PartialEq, Eq, HashType)]
+#[hash(
+    name = "Dahua Authentication MD5",
+    slug = "dahua-md5",
+    hashcat = [24900],
+)]
+pub struct DahuaMd5 {
+    /// Eight digest characters.
+    #[field(role = digest, encoding = ascii)]
+    pub digest: String,
+}
+
+impl Parse for DahuaMd5 {
+    fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
+        if input.is_empty() {
+            return Err(parse::empty());
+        }
+        if input.len() != 8 {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                input.len(),
+                "Dahua Authentication MD5 digests are eight characters",
+            ));
+        }
+        Ok(Self {
+            digest: input.to_owned(),
+        })
+    }
+}
+
+impl Render for DahuaMd5 {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
+        self.digest.clone()
+    }
+}

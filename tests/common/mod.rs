@@ -2079,6 +2079,82 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "umbraco-hmac-sha1",
+        hashcat: &[hc!(24800, "8uigXlGMNI7BzwLCJlDbcKR2FP4=")],
+        john: &[],
+    },
+    Vector {
+        slug: "dahua-md5",
+        hashcat: &[hc!(24900, "GRuHbyVp")],
+        john: &[],
+    },
+    Vector {
+        slug: "besder-md5",
+        hashcat: &[hc!(24901, "GRmHbqVh")],
+        john: &[],
+    },
+    Vector {
+        slug: "postgres-cram-md5",
+        hashcat: &[hc!(
+            11100,
+            "$postgres$postgres*74402844*4e7fabaaf34d780c4a5822d28ee1c83e"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mysql-cram-sha1",
+        hashcat: &[hc!(
+            11200,
+            "$mysqlna$2576670568531371763643101056213751754328*5e4be686a3149a12847caa9898247dcc05739601"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cram-md5-dovecot",
+        hashcat: &[hc!(
+            16400,
+            "{CRAM-MD5}5389b33b9725e5657cb631dc50017ff100000000000000000000000000000000"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "tacacs-plus",
+        hashcat: &[hc!(16100, "$tacacs-plus$0$5fde8e68$4e13e8fb33df$c006")],
+        john: &[],
+    },
+    Vector {
+        slug: "pop3-apop",
+        hashcat: &[hc!(
+            37601,
+            "$apop$<1234.1234567890@DESKTOP-RESPONDER>$2a4fe2feddb704ea75cd7c773509dcb0"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sasl-digest-md5",
+        hashcat: &[hc!(
+            37600,
+            "$sasl$DIGEST-MD5$WORKGROUP$admin$OA9BSXrbuRhWay$YDgMb0MHFhY9LOl9Tg5hH4GD8JHF8MaZ$00000001$auth$ldap/dc01.workgroup.local$ce9c97bcd0f0bf9d00c456514496814f"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "ospf-md5",
+        hashcat: &[hc!(
+            40001,
+            "$netmd5$0201002c0a0a0afe0000000000000002000001106225f41bffffff00000a1201000000280a0a0afe00000000$46ab0f2c7f0a65102bcc25b1c4ea445b"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mysql-caching-sha2",
+        hashcat: &[hc!(
+            40006,
+            "$mysqlsha2$336a0e5d214b713776503223785a39014c6d3842*1087166c986227f1ab6cfc071e7392b95a869ba94456a7429620614095b01be2"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {
