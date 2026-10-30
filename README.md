@@ -487,6 +487,12 @@ checked against that command in CI.
 | `openedge-progress` | OpenEdge Progress Encode | 26200 | - |
 | `teamspeak3` | Teamspeak 3 (channel hash) | 28300 | - |
 | `aes-crypt-sha256` | AES Crypt (SHA256) | 22400 | - |
+| `jwt` | JWT (JSON Web Token) | 16500 | - |
+| `mojolicious` | Perl Mojolicious session cookie | 16501 | - |
+| `ansible-vault` | Ansible Vault | 16900 | - |
+| `knx-ip-secure` | KNX IP Secure - Device Authentication Code | 25900 | - |
+| `metamask-short` | MetaMask Wallet (short hash, plaintext check) | 26610 | - |
+| `office2016-sheetprotection` | MS Office 2016 - SheetProtection | 25300 | - |
 
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes

@@ -939,6 +939,36 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$aescrypt$1*abcd".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "jwt".into(),
+            "header.payload.short".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "mojolicious".into(),
+            "mojolicious=payload".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "ansible-vault".into(),
+            "$ansible$0*0*abcd*abcd*abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "knx-ip-secure".into(),
+            "$knx-ip-secure-device-authentication-code$*abcd*00*00".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "metamask-short".into(),
+            "$metamask-short$aaaa$aaaa$aaaa".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "office2016-sheetprotection".into(),
+            "$office$2016$0$100000$aaaa$aaaa".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

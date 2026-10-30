@@ -177,13 +177,10 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `16200` - `Apple Secure Notes`
 - [ ] `16300` - `Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256`
-- [ ] `16500` - `JWT (JSON Web Token)`
-- [ ] `16501` - `Perl Mojolicious session cookie (HMAC-SHA256, >= v9.19)`
 - [ ] `16600` - `Electrum Wallet (Salt-Type 1-3)`
 - [ ] `16700` - `FileVault 2`
 - [ ] `16800` - `WPA-PMKID-PBKDF2`
 - [ ] `16801` - `WPA-PMKID-PMK`
-- [ ] `16900` - `Ansible Vault`
 
 ### 17000-17999
 
@@ -268,10 +265,8 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `25000` - `SNMPv3 HMAC-MD5-96/HMAC-SHA1-96`
 - [ ] `25100` - `SNMPv3 HMAC-MD5-96`
 - [ ] `25200` - `SNMPv3 HMAC-SHA1-96`
-- [ ] `25300` - `MS Office 2016 - SheetProtection`
 - [ ] `25400` - `PDF 1.4 - 1.6 (Acrobat 5 - 8) - user and owner pass`
 - [ ] `25500` - `Stargazer Stellar Wallet XLM`
-- [ ] `25900` - `KNX IP Secure - Device Authentication Code`
 
 ### 26000-26999
 
@@ -280,7 +275,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `26150` - `Mozilla key4.db SHA384`
 - [ ] `26500` - `iPhone passcode (UID key + System Keybag)`
 - [ ] `26600` - `MetaMask Wallet (needs all data, checks AES-GCM tag)`
-- [ ] `26610` - `MetaMask Wallet (short hash, plaintext check)`
 - [ ] `26700` - `SNMPv3 HMAC-SHA224-128`
 - [ ] `26800` - `SNMPv3 HMAC-SHA256-192`
 - [ ] `26900` - `SNMPv3 HMAC-SHA384-256`

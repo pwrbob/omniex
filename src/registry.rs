@@ -315,6 +315,12 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &OpenedgeProgress::DESCRIPTOR,
     &Teamspeak3::DESCRIPTOR,
     &AesCryptSha256::DESCRIPTOR,
+    &Jwt::DESCRIPTOR,
+    &Mojolicious::DESCRIPTOR,
+    &AnsibleVault::DESCRIPTOR,
+    &KnxIpSecure::DESCRIPTOR,
+    &MetamaskShort::DESCRIPTOR,
+    &Office2016Sheetprotection::DESCRIPTOR,
 ];
 
 /// Returns every registered descriptor.
