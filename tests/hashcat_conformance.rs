@@ -132,8 +132,10 @@ fn check_item(hashcat: &Path, potfile: &Path, item: &WorkItem) -> Result<(), Str
         .map_err(|error| format!("run hashcat --show: {error}"))?;
     if !show.status.success() {
         return Err(format!(
-            "hashcat --show -m {} failed for `{}`",
-            item.mode, item.slug
+            "hashcat --show -m {} failed for `{}`: {}",
+            item.mode,
+            item.slug,
+            String::from_utf8_lossy(&show.stderr)
         ));
     }
 
