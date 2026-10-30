@@ -80,11 +80,15 @@ jobs:
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
 
+      - name: Fingerprint CPU features
+        id: cpu
+        run: echo "flags=$(grep -m1 '^flags' /proc/cpuinfo | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
       - name: Cache reference hashcat
         uses: actions/cache@v4
         with:
           path: tmp/reference
-          key: reference-hashcat-8.0.0
+          key: reference-hashcat-8.0.0-${{ steps.cpu.outputs.flags }}
 
       - name: Build hashcat 8.0.0
         run: scripts/build-hashcat.sh
@@ -113,11 +117,15 @@ jobs:
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
 
+      - name: Fingerprint CPU features
+        id: cpu
+        run: echo "flags=$(grep -m1 '^flags' /proc/cpuinfo | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
       - name: Cache reference John
         uses: actions/cache@v4
         with:
           path: tmp/reference
-          key: reference-john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
+          key: reference-john-5184bc0b8c105f8c5978b112e723d65b2de3e63e-${{ steps.cpu.outputs.flags }}
 
       - name: Build John jumbo
         run: scripts/build-john.sh
