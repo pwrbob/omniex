@@ -53,7 +53,7 @@ fn hashcat_identifies_and_loads_every_vector() {
                 slug: vector.slug,
                 mode: entry.mode,
                 path,
-                session: format!("omniex-{index}"),
+                session: format!("omniex-{}-{index}", std::process::id()),
                 identify: entry.identify,
             });
             index += 1;
