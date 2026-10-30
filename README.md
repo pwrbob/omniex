@@ -43,6 +43,15 @@ Status: early development. Hashcat mode coverage is tracked in
 
 ## Core model
 
+A hash type is one logical hash format: the algorithm, the fields needed to
+describe or attack it, and one serialization per target tool. Each hash type is
+represented by one Rust struct, and every hash string parsed from that format
+becomes an instance of it.
+
+Every hash type has a stable slug, such as `md5` or `salted-md5`. Use
+`--type <slug>` to name the same type when parsing or extracting. A slug
+identifies the struct; it is not a hashcat mode number or an extractor slug.
+
 `instance` is the common representation in both directions:
 
 ```text
@@ -51,9 +60,6 @@ artifact ─────────────▶ instance ──────�
                           ▲                          │
                           └────────── parse ─────────┘
 ```
-
-`--type <slug>` always names the same hash type. A slug is not an extractor
-slug or a hash-mode number; it identifies the struct.
 
 ## Features
 
