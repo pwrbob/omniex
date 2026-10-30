@@ -129,7 +129,6 @@ Hashcat's plaintext mode is excluded below.
 ### 13000-13999
 
 - [ ] `13000` - `RAR5`
-- [ ] `13100` - `Kerberos 5, etype 23, TGS-REP`
 - [ ] `13200` - `AxCrypt 1`
 - [ ] `13300` - `AxCrypt 1 in-memory SHA1`
 - [ ] `13400` - `KeePass (KDBX v2/v3)`
@@ -209,7 +208,6 @@ Hashcat's plaintext mode is excluded below.
 ### 18000-18999
 
 - [ ] `18100` - `TOTP (HMAC-SHA1)`
-- [ ] `18200` - `Kerberos 5, etype 23, AS-REP`
 - [ ] `18300` - `Apple File System (APFS)`
 - [ ] `18400` - `Open Document Format (ODF) 1.2 (SHA-256, AES)`
 - [ ] `18600` - `Open Document Format (ODF) 1.1 (SHA-1, Blowfish)`
@@ -218,10 +216,6 @@ Hashcat's plaintext mode is excluded below.
 ### 19000-19999
 
 - [ ] `19500` - `Ruby on Rails Restful-Authentication`
-- [ ] `19600` - `Kerberos 5, etype 17, TGS-REP`
-- [ ] `19700` - `Kerberos 5, etype 18, TGS-REP`
-- [ ] `19800` - `Kerberos 5, etype 17, Pre-Auth`
-- [ ] `19900` - `Kerberos 5, etype 18, Pre-Auth`
 
 ### 20000-20999
 
@@ -328,8 +322,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `28505` - `Bitcoin WIF private key (P2SH(P2WPKH)), compressed`
 - [ ] `28506` - `Bitcoin WIF private key (P2SH(P2WPKH)), uncompressed`
 - [ ] `28700` - `Amazon AWS Signature Version 4`
-- [ ] `28800` - `Kerberos 5, etype 17, DB`
-- [ ] `28900` - `Kerberos 5, etype 18, DB`
 
 ### 29000-29999
 
@@ -489,9 +481,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `38000` - `Mikrotik RouterOS EC-SRP5 (Curve25519)`
 - [ ] `38200` - `Cisco-IOS $14$ (MD5 (Type 5) + scrypt, Convoluted)`
 - [ ] `38300` - `Apple DMG (encrcdsa v2, PBKDF2-HMAC-SHA1 + AES-192 key)`
-- [ ] `38400` - `Kerberos 5, etype 1/2/3, DB`
-- [ ] `38500` - `Kerberos 5, etype 3, TGS-REP`
-- [ ] `38600` - `Kerberos 5, etype 3, AS-REP`
 - [ ] `38700` - `FreeBSD GELI`
 - [ ] `38800` - `OpenBSD softraid FDE (PBKDF2-HMAC-SHA1)`
 - [ ] `38810` - `OpenBSD softraid FDE (bcrypt-pbkdf)`

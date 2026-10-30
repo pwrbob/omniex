@@ -829,6 +829,31 @@ fn invalid_inputs_return_stable_error_kinds() {
             "abcd:00".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "krb5pa17".into(),
+            "$krb5pa$17$user$realm".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "krb5db17".into(),
+            "$krb5db$17$user$realm$abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "krb5db-old".into(),
+            "$krb5db$9$user$realm$0011223344556677".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "krb5tgs23".into(),
+            "$krb5tgs$23$user$realm$00$00".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "krb5asrep3".into(),
+            "$krb5asrep$3$user$realm$abcd$abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

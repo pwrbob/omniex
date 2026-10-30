@@ -460,6 +460,17 @@ checked against that command in CI.
 | `aes128-ecb-nokdf` | AES-128-ECB NOKDF (PT = $salt, key = $pass) | 26401 | - |
 | `aes192-ecb-nokdf` | AES-192-ECB NOKDF (PT = $salt, key = $pass) | 26402 | - |
 | `aes256-ecb-nokdf` | AES-256-ECB NOKDF (PT = $salt, key = $pass) | 26403 | - |
+| `krb5pa17` | Kerberos 5, etype 17, Pre-Auth | 19800 | - |
+| `krb5pa18` | Kerberos 5, etype 18, Pre-Auth | 19900 | - |
+| `krb5db17` | Kerberos 5, etype 17, DB | 28800 | - |
+| `krb5db18` | Kerberos 5, etype 18, DB | 28900 | - |
+| `krb5db-old` | Kerberos 5, etype 1/2/3, DB | 38400 | - |
+| `krb5tgs17` | Kerberos 5, etype 17, TGS-REP | 19600 | - |
+| `krb5tgs18` | Kerberos 5, etype 18, TGS-REP | 19700 | - |
+| `krb5tgs23` | Kerberos 5, etype 23, TGS-REP | 13100 | - |
+| `krb5tgs3` | Kerberos 5, etype 3, TGS-REP | 38500 | - |
+| `krb5asrep23` | Kerberos 5, etype 23, AS-REP | 18200 | - |
+| `krb5asrep3` | Kerberos 5, etype 3, AS-REP | 38600 | - |
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.
