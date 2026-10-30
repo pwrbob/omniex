@@ -32,7 +32,7 @@ impl Parse for Blake2b512 {
 }
 
 impl Render for Blake2b512 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("$BLAKE2${}", crate::format::hex(self.digest))
     }
 }

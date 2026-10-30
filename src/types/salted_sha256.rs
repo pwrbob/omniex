@@ -22,7 +22,7 @@ pub struct SaltedSha256 {
 }
 
 pub fn salted_sha256_modes(value: &SaltedSha256) -> Vec<crate::Mode> {
-    let length = value.salt.chars().count();
+    let length = value.salt.len();
 
     SaltedSha256::DESCRIPTOR
         .all_modes
@@ -67,7 +67,7 @@ impl Parse for SaltedSha256 {
 }
 
 impl Render for SaltedSha256 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", crate::format::hex(self.digest), self.salt)
     }
 }

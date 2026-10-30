@@ -28,7 +28,7 @@ impl Parse for HalfMd5 {
 }
 
 impl Render for HalfMd5 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         crate::format::hex(self.digest)
     }
 }

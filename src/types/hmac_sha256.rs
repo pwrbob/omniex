@@ -22,7 +22,7 @@ pub struct HmacSha256 {
 }
 
 pub fn hmac_sha256_modes(value: &HmacSha256) -> Vec<crate::Mode> {
-    if value.key.chars().count() > 256 {
+    if value.key.len() > 256 {
         return Vec::new();
     }
 
@@ -60,7 +60,7 @@ impl Parse for HmacSha256 {
 }
 
 impl Render for HmacSha256 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", crate::format::hex(self.digest), self.key)
     }
 }

@@ -9,7 +9,9 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cache="${OMNIEX_REFERENCE_DIR:-$root/tmp/reference}"
 dest="$cache/hashcat-$version"
 
-if [[ -x "$dest/hashcat" ]]; then
+stamp="$dest/.omniex-build"
+script_hash="$(sha256sum "${BASH_SOURCE[0]}" | cut -d' ' -f1)"
+if [[ -x "$dest/hashcat" && -f "$stamp" && "$(cat "$stamp")" == "$script_hash" ]]; then
     echo "$dest/hashcat"
     exit 0
 fi
@@ -31,4 +33,5 @@ jobs="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)"
 make -C "$dest" -j"$jobs"
 
 test -x "$dest/hashcat"
+printf '%s\n' "$script_hash" > "$stamp"
 echo "$dest/hashcat"

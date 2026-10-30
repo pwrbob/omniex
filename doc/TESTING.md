@@ -23,7 +23,8 @@ For each hash type:
 - parse a canonical line,
 - render it again and compare byte for byte,
 - round-trip by parsing the rendered string and rendering it again,
-- exercise every field's minimum, maximum, and one invalid value,
+- exercise one invalid value and the boundary values of length- or
+  syntax-constrained fields,
 - assert `modes()` is a subset of `DESCRIPTOR.all_modes`,
 - assert `describe()` has one entry per field and non-empty descriptions.
 
@@ -48,20 +49,14 @@ Run on every PR once the harness exists. Pin hashcat `8.0.0`.
 
 For each mode:
 
-1. Generate canonical lines with hashcat's `test_module_runner.py` using
-   `passthrough` or `potthrough`. Set `HCTEST_SEED` for reproducibility.
-2. Feed each line to omniex, parse, render, and compare byte for byte.
+1. Use a canonical line from hashcat's example hashes.
+2. Feed each line to omniex, parse it, render it, and compare byte for byte.
 3. Run `hashcat --identify` and assert the expected mode is present.
 4. Run `hashcat --show -m <mode>` with an empty pot and assert the line loads.
-5. Run `test_module_runner.py verify` with the rendered lines and known
-   `hash:password` pairs. Assert every expected pair is in the outfile. Do not
-   rely on its exit status.
-6. For modes without a test module, use `hashcat --example-hashes` and the CLI
-   checks only.
 
-This does not compare against hashcat's C encoder. The Python test module
-generates and verifies the line; the real binary checks acceptance and
-identification.
+Conformance proves that the serialization is accepted and identified by the
+reference tool. It does not crack the hash or prove password equivalence; that
+is outside this project's scope.
 
 Hashcat master may be run later as a non-blocking drift signal. It is not part
 of v0.
@@ -72,9 +67,10 @@ Run on every PR once the harness exists. Pin one stable John jumbo build.
 
 For each named format:
 
-1. Take a vector from John's `--list=format-tests`.
+1. Use a canonical line from John's `--list=format-tests`.
 2. Parse it, render it, and compare with the expected line.
-3. Run `john --show --format=<format>` and assert the line loads.
+3. Run `john --show=formats --format=<format>` and assert the format label is
+   reported for the line.
 4. Where a `*2john` tool exists, compare its output with our rendering or parsed
    fields. If they differ because the tool emits a different format version,
    record the difference in the test case.
@@ -129,7 +125,6 @@ Use `assert_cmd` or `trycmd` plus `insta` for snapshots:
 cargo test --workspace
 cargo test --test hashcat_conformance -- --ignored
 cargo test --test john_conformance -- --ignored
-cargo test --test extraction
 ```
 
 Conformance tests are `#[ignore]`d so the fast suite never needs a reference
@@ -185,7 +180,8 @@ tables are enough.
 | Job | Contents | Blocking |
 | --- | --- | --- |
 | `lint` | fmt, clippy, docs | yes |
-| `test-fast` | unit, property, CLI, macro tests | yes |
+| `msrv` | compile check with Rust 1.85 | yes |
+| `test` | unit, property, CLI, macro tests | yes |
 | `hashcat` | conformance against `8.0.0` | yes when implemented |
 | `john` | conformance against pinned jumbo | yes when implemented |
 | `extraction` | extraction fixtures | yes when implemented |
@@ -196,6 +192,7 @@ failure when a conformance test is run; an explicit
 `OMNIEX_ALLOW_MISSING_REFERENCE=1` turns that into a skipped test with a printed
 warning.
 
+`cargo check --workspace --all-targets --locked` runs on the declared MSRV.
 Target budgets: fast suite under 5 minutes; PR total under 20 minutes.
 
 ## Definition of done for a mode

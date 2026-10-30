@@ -44,7 +44,7 @@ impl Parse for DesCrypt {
 }
 
 impl Render for DesCrypt {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         self.crypt.clone()
     }
 }

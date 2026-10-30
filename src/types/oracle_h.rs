@@ -43,7 +43,7 @@ impl Parse for OracleH {
 }
 
 impl Render for OracleH {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", crate::format::hex(self.digest), self.salt)
     }
 }

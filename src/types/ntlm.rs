@@ -30,7 +30,7 @@ impl Parse for Ntlm {
 }
 
 impl Render for Ntlm {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         crate::format::hex(self.digest)
     }
 }

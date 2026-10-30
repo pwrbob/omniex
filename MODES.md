@@ -883,7 +883,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `Mozilla`
 - [ ] `mscash` - OpenCL: `mscash-opencl`
 - [ ] `mschapv2-naive`
-- [ ] `mssql12`
 - [ ] `multibit`
 - [ ] `mysql-sha1` - OpenCL: `mysql-sha1-opencl`
 - [ ] `mysqlna`

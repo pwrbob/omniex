@@ -57,7 +57,7 @@ impl Parse for CiscoAsa {
 }
 
 impl Render for CiscoAsa {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", self.crypt, self.salt)
     }
 }

@@ -8,6 +8,8 @@ use std::env;
 use std::fmt;
 use std::io::{self, IsTerminal};
 
+use unicode_width::UnicodeWidthStr;
+
 /// Smallest terminal this UI will render into.
 pub const MIN_WIDTH: usize = 40;
 /// Smallest terminal height this UI will render into.
@@ -99,7 +101,7 @@ pub fn titled_table(
     let title_lines = wrap_text(title, context.width);
     let rule_width = title_lines
         .iter()
-        .map(|line| line.chars().count())
+        .map(|line| line.width())
         .max()
         .unwrap_or(1)
         .min(context.width)
@@ -120,7 +122,7 @@ pub fn title(context: &Context, title: &str) -> String {
     let title_lines = wrap_text(title, context.width);
     let rule_width = title_lines
         .iter()
-        .map(|line| line.chars().count())
+        .map(|line| line.width())
         .max()
         .unwrap_or(1)
         .min(context.width)
@@ -145,11 +147,11 @@ pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> Strin
     let mut widths = vec![0usize; columns];
 
     for (index, header) in headers.iter().enumerate() {
-        widths[index] = header.chars().count();
+        widths[index] = header.width();
     }
     for row in rows {
         for (index, cell) in row.iter().enumerate().take(columns) {
-            widths[index] = widths[index].max(cell.chars().count());
+            widths[index] = widths[index].max(cell.width());
         }
     }
 
@@ -158,7 +160,7 @@ pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> Strin
         .map(|header| {
             header
                 .split_whitespace()
-                .map(|word| word.chars().count())
+                .map(|word| word.width())
                 .max()
                 .unwrap_or(1)
                 .max(1)
@@ -208,7 +210,7 @@ pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> Strin
 pub fn key_values(context: &Context, pairs: &[(&str, String)]) -> String {
     let label_width = pairs
         .iter()
-        .map(|(label, _)| label.chars().count())
+        .map(|(label, _)| label.width())
         .max()
         .unwrap_or(0);
     let value_width = context.width.saturating_sub(label_width + GAP).max(1);
@@ -217,7 +219,7 @@ pub fn key_values(context: &Context, pairs: &[(&str, String)]) -> String {
     for (label, value) in pairs {
         for (index, line) in wrap_text(value, value_width).into_iter().enumerate() {
             if index == 0 {
-                let padding = " ".repeat(label_width - label.chars().count());
+                let padding = " ".repeat(label_width - label.width());
                 output.push(format!(
                     "{}{padding}{}{line}",
                     context.bold(label),
@@ -240,7 +242,7 @@ pub fn wrap_text(text: &str, width: usize) -> Vec<String> {
     let mut current = String::new();
 
     for word in text.split_whitespace() {
-        if word.chars().count() > width {
+        if word.width() > width {
             if !current.is_empty() {
                 lines.push(std::mem::take(&mut current));
             }
@@ -248,7 +250,7 @@ pub fn wrap_text(text: &str, width: usize) -> Vec<String> {
             let mut chunk = String::new();
             for character in word.chars() {
                 chunk.push(character);
-                if chunk.chars().count() == width {
+                if chunk.width() == width {
                     lines.push(std::mem::take(&mut chunk));
                 }
             }
@@ -256,8 +258,7 @@ pub fn wrap_text(text: &str, width: usize) -> Vec<String> {
             continue;
         }
 
-        let candidate =
-            current.chars().count() + usize::from(!current.is_empty()) + word.chars().count();
+        let candidate = current.width() + usize::from(!current.is_empty()) + word.width();
         if candidate <= width {
             if !current.is_empty() {
                 current.push(' ');
@@ -302,7 +303,7 @@ fn render_cells(
         let mut parts = Vec::new();
         for (index, cell) in cells.iter().enumerate() {
             let text = cell.get(line).map_or("", String::as_str);
-            let padding = " ".repeat(widths[index].saturating_sub(text.chars().count()));
+            let padding = " ".repeat(widths[index].saturating_sub(text.width()));
             if bold {
                 parts.push(format!("{}{padding}", context.bold(text)));
             } else {
@@ -346,7 +347,7 @@ mod tests {
             ]],
         );
 
-        assert!(output.lines().all(|line| line.chars().count() <= 40));
+        assert!(output.lines().all(|line| line.width() <= 40));
     }
 
     #[test]
@@ -383,6 +384,20 @@ mod tests {
             Err(UiError::TooSmall { .. })
         ));
         assert!(Context::from_parts(20, 5, false, false).is_ok());
+    }
+
+    #[test]
+    fn wide_characters_count_toward_display_width() {
+        let context = Context::from_parts(20, 20, false, false).unwrap();
+        let output = table(
+            &context,
+            &["Slug", "Name"],
+            &[vec![
+                "md5".to_owned(),
+                "\u{1f600}\u{1f600}\u{1f600}".repeat(10),
+            ]],
+        );
+        assert!(output.lines().all(|line| line.width() <= 20));
     }
 
     #[test]

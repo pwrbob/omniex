@@ -48,7 +48,7 @@ impl Parse for LdapSha1 {
 }
 
 impl Render for LdapSha1 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{{SHA}}{}", crate::format::base64(self.digest))
     }
 }

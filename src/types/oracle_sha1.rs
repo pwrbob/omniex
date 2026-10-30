@@ -36,7 +36,7 @@ impl Parse for OracleSha1 {
 }
 
 impl Render for OracleSha1 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "{}:{}",
             crate::format::hex(self.digest),

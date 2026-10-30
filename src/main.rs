@@ -1,16 +1,13 @@
 //! `omniex` command-line interface.
 
 use std::fmt;
-use std::io::Read;
+use std::io::{Read, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use omniex::registry;
-use omniex::{
-    Encoding, FieldRole, HashValue, HashcatVersion, Mode, ParseOptions, ReleaseVersion,
-    RenderOptions, Tool,
-};
+use omniex::{Encoding, FieldRole, HashValue, Mode, ParseOptions, RenderOptions, Tool};
 use serde_json::{Value, json};
 
 mod ui;
@@ -68,15 +65,11 @@ struct ParseArgs {
     #[arg(long, value_enum, default_value = "hashcat")]
     format: FormatArg,
 
-    /// Hashcat release used for parsing and rendering.
-    #[arg(long, value_name = "RELEASE", default_value = "8.0.0", value_parser = parse_hc_version)]
-    hc_version: HashcatVersion,
-
     /// Print the descriptor and field values.
     #[arg(long, conflicts_with = "json")]
     verbose: bool,
 
-    /// Print one JSON object per input.
+    /// Print one JSON array containing every input.
     #[arg(long, conflicts_with = "verbose")]
     json: bool,
 }
@@ -187,8 +180,11 @@ fn run_show(args: ShowArgs) -> Result<(), CliError> {
         .ok_or_else(|| CliError::Usage(format!("unknown hash type `{}`", args.slug)))?;
 
     if args.json {
-        print_json(&descriptor_json(descriptor));
-        return Ok(());
+        return write_stdout(&format!(
+            "{}\n",
+            serde_json::to_string_pretty(&descriptor_json(descriptor))
+                .expect("JSON values serialize")
+        ));
     }
 
     let context = human_context()?;
@@ -225,8 +221,7 @@ fn run_show(args: ShowArgs) -> Result<(), CliError> {
         &rows,
     ));
 
-    println!("{block}");
-    Ok(())
+    write_stdout(&format!("{block}\n"))
 }
 
 fn run_types(args: TypesArgs) -> Result<(), CliError> {
@@ -235,8 +230,7 @@ fn run_types(args: TypesArgs) -> Result<(), CliError> {
             .iter()
             .map(|descriptor| descriptor_json(descriptor))
             .collect::<Vec<_>>();
-        print_json(&Value::Array(entries));
-        return Ok(());
+        return print_json(&Value::Array(entries));
     }
 
     let context = human_context()?;
@@ -246,28 +240,26 @@ fn run_types(args: TypesArgs) -> Result<(), CliError> {
         .collect::<Vec<_>>();
     let title = format!("Hash types ({})", rows.len());
 
-    println!(
-        "{}",
+    write_stdout(&format!(
+        "{}\n",
         ui::titled_table(
             &context,
             &title,
             &["Slug", "Name", "Hashcat", "John"],
             &rows
         )
-    );
-
-    Ok(())
+    ))
 }
 
 fn run_parse(args: ParseArgs) -> Result<(), CliError> {
     let tool = Tool::from(args.format);
     let parse_opts = ParseOptions {
         tool,
-        hc_version: args.hc_version,
+        ..ParseOptions::default()
     };
     let render_opts = RenderOptions {
         tool,
-        hc_version: args.hc_version,
+        ..RenderOptions::default()
     };
     let selected = select_type(args.type_slug.as_deref())?;
     let lines = args.input.read()?;
@@ -323,17 +315,19 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
                 text,
             ));
         } else {
-            output.push(value.render(&render_opts));
+            output.push(
+                value
+                    .render(&render_opts)
+                    .map_err(|error| line_error(*line, total, error.to_string()))?,
+            );
         }
     }
 
     if args.json {
-        print_json(&Value::Array(json_output));
+        print_json(&Value::Array(json_output))
     } else {
-        print_lines(&output);
+        print_lines(&output)
     }
-
-    Ok(())
 }
 
 fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
@@ -358,8 +352,8 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
         }
 
         if args.json {
-            for (descriptor, _) in matches {
-                json_output.push(identify_json(descriptor, *line, text));
+            for (descriptor, value) in &matches {
+                json_output.push(identify_json(descriptor, value.as_ref(), *line, text));
             }
             continue;
         }
@@ -367,7 +361,7 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
         let context = context.expect("human context");
         let rows = matches
             .into_iter()
-            .map(|(descriptor, _)| table_row(descriptor, descriptor.all_modes))
+            .map(|(descriptor, value)| table_row(descriptor, &value.modes()))
             .collect::<Vec<_>>();
         let mut block = ui::title(&context, &format!("Input: {text}"));
         block.push('\n');
@@ -380,12 +374,10 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
     }
 
     if args.json {
-        print_json(&Value::Array(json_output));
+        print_json(&Value::Array(json_output))
     } else {
-        println!("{}", blocks.join("\n\n"));
+        write_stdout(&format!("{}\n", blocks.join("\n\n")))
     }
-
-    Ok(())
 }
 
 fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
@@ -477,17 +469,35 @@ fn human_context() -> Result<ui::Context, CliError> {
     ui::Context::detect().map_err(|error| CliError::Input(error.to_string()))
 }
 
-fn print_lines(lines: &[String]) {
-    for line in lines {
-        println!("{line}");
-    }
+fn print_lines(lines: &[String]) -> Result<(), CliError> {
+    let mut text = lines.join("\n");
+    text.push('\n');
+    write_stdout(&text)
 }
 
-fn print_json(value: &Value) {
-    println!(
-        "{}",
+fn print_json(value: &Value) -> Result<(), CliError> {
+    let text = format!(
+        "{}\n",
         serde_json::to_string_pretty(value).expect("JSON values serialize")
     );
+    write_stdout(&text)
+}
+
+fn write_stdout(text: &str) -> Result<(), CliError> {
+    let mut stdout = std::io::stdout().lock();
+    if let Err(error) = stdout.write_all(text.as_bytes()) {
+        if error.kind() == std::io::ErrorKind::BrokenPipe {
+            return Ok(());
+        }
+        return Err(CliError::Input(format!("cannot write output: {error}")));
+    }
+    if let Err(error) = stdout.flush() {
+        if error.kind() == std::io::ErrorKind::BrokenPipe {
+            return Ok(());
+        }
+        return Err(CliError::Input(format!("cannot write output: {error}")));
+    }
+    Ok(())
 }
 
 fn split_modes(modes: &[Mode]) -> (Vec<u32>, Vec<&'static str>) {
@@ -564,8 +574,13 @@ fn descriptor_json(descriptor: &omniex::HashTypeDescriptor) -> Value {
     })
 }
 
-fn identify_json(descriptor: &omniex::HashTypeDescriptor, line: usize, input: &str) -> Value {
-    let (hashcat, john) = split_modes(descriptor.all_modes);
+fn identify_json(
+    descriptor: &omniex::HashTypeDescriptor,
+    value: &dyn HashValue,
+    line: usize,
+    input: &str,
+) -> Value {
+    let (hashcat, john) = split_modes(&value.modes());
     json!({
         "line": line,
         "input": input,
@@ -678,32 +693,4 @@ fn encoding_name(encoding: Encoding) -> &'static str {
         Encoding::Decimal => "decimal",
         Encoding::Ascii => "ascii",
     }
-}
-
-fn parse_hc_version(value: &str) -> Result<HashcatVersion, String> {
-    let mut parts = value.split('.');
-    let major = next_version_part(&mut parts, value)?;
-    let minor = next_version_part(&mut parts, value)?;
-    let patch = next_version_part(&mut parts, value)?;
-
-    if parts.next().is_some() {
-        return Err(format!(
-            "invalid release `{value}`; expected MAJOR.MINOR.PATCH"
-        ));
-    }
-
-    Ok(HashcatVersion::Release(ReleaseVersion::new(
-        major, minor, patch,
-    )))
-}
-
-fn next_version_part<'a>(
-    parts: &mut impl Iterator<Item = &'a str>,
-    value: &str,
-) -> Result<u16, String> {
-    parts
-        .next()
-        .ok_or_else(|| format!("invalid release `{value}`; expected MAJOR.MINOR.PATCH"))?
-        .parse()
-        .map_err(|_| format!("invalid release `{value}`; expected MAJOR.MINOR.PATCH"))
 }

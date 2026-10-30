@@ -186,12 +186,67 @@ impl Default for RenderOptions {
     }
 }
 
+/// A rendering request that cannot be satisfied.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RenderError {
+    /// The value has no mode for the requested tool.
+    UnsupportedTool(Tool),
+    /// The requested hashcat release predates support.
+    UnsupportedRelease(ReleaseVersion),
+}
+
+impl core::fmt::Display for RenderError {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        match self {
+            Self::UnsupportedTool(Tool::Hashcat) => {
+                f.write_str("no compatible hashcat mode for this value")
+            }
+            Self::UnsupportedTool(Tool::John) => {
+                f.write_str("no compatible John format for this value")
+            }
+            Self::UnsupportedRelease(version) => write!(
+                f,
+                "hashcat {}.{}.{} is older than the first supported release",
+                version.major, version.minor, version.patch
+            ),
+        }
+    }
+}
+
+impl core::error::Error for RenderError {}
+
 /// Serializes a hash type into the string consumed by hashcat or John.
 ///
-/// Implemented manually per hash type.
-pub trait Render {
+/// Implemented manually per hash type. `render_value` performs the
+/// serialization; callers should prefer `render`, which first verifies that the
+/// value supports the requested tool and release.
+pub trait Render: ModeCompat {
+    /// Serialize without checking tool or version compatibility.
+    fn render_value(&self, opts: &RenderOptions) -> String;
+
     /// Render the type using the given options.
-    fn render(&self, opts: &RenderOptions) -> String;
+    fn render(&self, opts: &RenderOptions) -> Result<String, RenderError> {
+        if let Some(version) = opts.hc_version.release() {
+            if let Some(first) = HashcatVersion::FIRST_SUPPORTED_RELEASE.release() {
+                if version < first {
+                    return Err(RenderError::UnsupportedRelease(version));
+                }
+            }
+        }
+
+        let supported = self.modes().iter().any(|mode| {
+            matches!(
+                (mode, opts.tool),
+                (Mode::Hashcat(_), Tool::Hashcat) | (Mode::John(_), Tool::John)
+            )
+        });
+
+        if !supported {
+            return Err(RenderError::UnsupportedTool(opts.tool));
+        }
+
+        Ok(self.render_value(opts))
+    }
 }
 
 /// Reports the current values of a hash type's fields.
@@ -315,7 +370,7 @@ mod tests {
     }
 
     impl Render for Example {
-        fn render(&self, _opts: &RenderOptions) -> String {
+        fn render_value(&self, _opts: &RenderOptions) -> String {
             "example".to_owned()
         }
     }
@@ -357,7 +412,7 @@ mod tests {
 
         assert_eq!(value.modes(), vec![Mode::Hashcat(0), Mode::John("raw-md5")]);
         assert!(value.describe().is_empty());
-        assert_eq!(value.render(&RenderOptions::default()), "example");
+        assert_eq!(value.render(&RenderOptions::default()).unwrap(), "example");
     }
 
     #[test]
@@ -365,8 +420,23 @@ mod tests {
         let value = (Example::DESCRIPTOR.parse)("example", &ParseOptions::default())
             .expect("example parses");
 
-        assert_eq!(value.render(&RenderOptions::default()), "example");
+        assert_eq!(value.render(&RenderOptions::default()).unwrap(), "example");
         assert_eq!(value.modes(), vec![Mode::Hashcat(0), Mode::John("raw-md5")]);
+    }
+
+    #[test]
+    fn render_rejects_unsupported_releases() {
+        let opts = RenderOptions {
+            hc_version: HashcatVersion::Release(ReleaseVersion::new(7, 1, 2)),
+            ..RenderOptions::default()
+        };
+
+        assert_eq!(
+            Example.render(&opts),
+            Err(RenderError::UnsupportedRelease(ReleaseVersion::new(
+                7, 1, 2
+            )))
+        );
     }
 
     #[test]

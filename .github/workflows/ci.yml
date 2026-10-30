@@ -46,6 +46,23 @@ jobs:
         env:
           RUSTDOCFLAGS: -D warnings
 
+  msrv:
+    name: Minimum Rust version
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust 1.85
+        uses: dtolnay/rust-toolchain@1.85.0
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check workspace
+        run: cargo check --workspace --all-targets --locked
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -88,7 +105,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: tmp/reference
-          key: reference-hashcat-8.0.0-${{ steps.cpu.outputs.flags }}
+          key: ${{ runner.os }}-reference-hashcat-8.0.0-${{ hashFiles('scripts/build-hashcat.sh') }}-${{ steps.cpu.outputs.flags }}
 
       - name: Build hashcat 8.0.0
         run: scripts/build-hashcat.sh
@@ -125,7 +142,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: tmp/reference
-          key: reference-john-5184bc0b8c105f8c5978b112e723d65b2de3e63e-${{ steps.cpu.outputs.flags }}
+          key: ${{ runner.os }}-reference-john-5184bc0b8c105f8c5978b112e723d65b2de3e63e-${{ hashFiles('scripts/build-john.sh') }}-${{ steps.cpu.outputs.flags }}
 
       - name: Build John jumbo
         run: scripts/build-john.sh

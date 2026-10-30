@@ -26,14 +26,14 @@ fn render_opts(tool: Tool) -> RenderOptions {
 fn md5_parses_and_renders_canonically() {
     for tool in [Tool::Hashcat, Tool::John] {
         let value = Md5::parse(MD5_HASH, &parse_opts(tool)).expect("canonical md5 parses");
-        assert_eq!(value.render(&render_opts(tool)), MD5_HASH);
+        assert_eq!(value.render(&render_opts(tool)).unwrap(), MD5_HASH);
     }
 }
 
 #[test]
 fn md5_round_trips() {
     let value = Md5::parse(MD5_HASH, &ParseOptions::default()).unwrap();
-    let rendered = value.render(&RenderOptions::default());
+    let rendered = value.render(&RenderOptions::default()).unwrap();
     let again = Md5::parse(&rendered, &ParseOptions::default()).unwrap();
     assert_eq!(value, again);
 }
@@ -41,7 +41,7 @@ fn md5_round_trips() {
 #[test]
 fn md5_accepts_uppercase_and_renders_lowercase() {
     let value = Md5::parse(&MD5_HASH.to_uppercase(), &ParseOptions::default()).unwrap();
-    assert_eq!(value.render(&RenderOptions::default()), MD5_HASH);
+    assert_eq!(value.render(&RenderOptions::default()).unwrap(), MD5_HASH);
 }
 
 #[test]
@@ -69,17 +69,22 @@ fn md5_reports_invalid_digit_offset() {
 
 #[test]
 fn salted_md5_parses_and_renders_canonically() {
-    for tool in [Tool::Hashcat, Tool::John] {
-        let value = SaltedMd5::parse(SALTED_MD5_HASH, &parse_opts(tool))
-            .expect("canonical salted md5 parses");
-        assert_eq!(value.render(&render_opts(tool)), SALTED_MD5_HASH);
-    }
+    let value = SaltedMd5::parse(SALTED_MD5_HASH, &parse_opts(Tool::Hashcat))
+        .expect("canonical salted md5 parses");
+    assert_eq!(
+        value.render(&render_opts(Tool::Hashcat)).unwrap(),
+        SALTED_MD5_HASH
+    );
+    assert_eq!(
+        value.render(&render_opts(Tool::John)),
+        Err(omniex::RenderError::UnsupportedTool(Tool::John))
+    );
 }
 
 #[test]
 fn salted_md5_round_trips() {
     let value = SaltedMd5::parse(SALTED_MD5_HASH, &ParseOptions::default()).unwrap();
-    let rendered = value.render(&RenderOptions::default());
+    let rendered = value.render(&RenderOptions::default()).unwrap();
     let again = SaltedMd5::parse(&rendered, &ParseOptions::default()).unwrap();
     assert_eq!(value, again);
 }
@@ -89,7 +94,7 @@ fn salted_md5_allows_empty_salt() {
     let input = format!("{MD5_HASH}:");
     let value = SaltedMd5::parse(&input, &ParseOptions::default()).unwrap();
     assert!(value.salt.is_empty());
-    assert_eq!(value.render(&RenderOptions::default()), input);
+    assert_eq!(value.render(&RenderOptions::default()).unwrap(), input);
 }
 
 #[test]
@@ -104,7 +109,7 @@ fn salted_md5_accepts_non_hex_ascii_salt() {
     let input = format!("{MD5_HASH}:abcXYZ");
     let value = SaltedMd5::parse(&input, &ParseOptions::default()).unwrap();
     assert_eq!(value.salt, "abcXYZ");
-    assert_eq!(value.render(&RenderOptions::default()), input);
+    assert_eq!(value.render(&RenderOptions::default()).unwrap(), input);
 }
 
 #[test]

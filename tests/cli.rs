@@ -165,12 +165,12 @@ fn missing_input_is_a_usage_error() {
 }
 
 #[test]
-fn invalid_release_is_a_usage_error() {
+fn removed_hc_version_option_is_a_usage_error() {
     omniex()
-        .args(["parse", MD5_HASH, "--hc-version", "eight"])
+        .args(["parse", MD5_HASH, "--hc-version", "8.0.0"])
         .assert()
         .code(2)
-        .stderr(predicate::str::contains("invalid release"));
+        .stderr(predicate::str::contains("unexpected argument"));
 }
 
 #[test]
@@ -317,4 +317,50 @@ fn show_rejects_an_unknown_type_as_usage_error() {
         .assert()
         .code(2)
         .stderr(predicate::str::contains("unknown hash type"));
+}
+
+#[test]
+fn parse_reads_files_with_crlf_line_endings() {
+    let path = std::path::Path::new(env!("CARGO_TARGET_TMPDIR")).join("crlf-hashes.txt");
+    std::fs::write(&path, format!("{MD5_HASH}\r\n\r\n{MD5_HASH}\r\n")).expect("write fixture");
+
+    omniex()
+        .args(["parse", "--type", "md5", "--file"])
+        .arg(&path)
+        .assert()
+        .success()
+        .stdout(format!("{MD5_HASH}\n{MD5_HASH}\n"));
+}
+
+#[test]
+fn identify_json_reports_only_modes_valid_for_the_value() {
+    let digest = "0".repeat(32);
+    let salt = "a".repeat(300);
+    let hash = format!("{digest}:{salt}");
+    let output = omniex()
+        .args(["identify", "--json", &hash])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    let entry = &value.as_array().expect("array")[0];
+    assert_eq!(entry["slug"], "salted-md5");
+    assert_eq!(entry["hashcat"], serde_json::json!([]));
+}
+
+#[test]
+fn parse_rejects_rendering_for_an_unsupported_tool() {
+    omniex()
+        .args([
+            "parse",
+            SALTED_MD5_HASH,
+            "--type",
+            "salted-md5",
+            "--format",
+            "john",
+        ])
+        .assert()
+        .code(1)
+        .stdout("")
+        .stderr(predicate::str::contains("no compatible John format"));
 }

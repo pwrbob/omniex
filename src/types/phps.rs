@@ -45,7 +45,7 @@ impl Parse for Phps {
 }
 
 impl Render for Phps {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("$PHPS${}${}", self.salt, crate::format::hex(self.digest))
     }
 }

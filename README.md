@@ -185,12 +185,14 @@ omniex identify 8743b52063cd84097a65d1633f5c74f5
 # ───────────────────────────────────────
 # Slug  Name  Hashcat            John
 # md4   MD4   900                Raw-MD4
-# md5   MD5   0, 70, 2600, 3500  Raw-MD5
+# md5   MD5   0, 70, 2600, 3500, 4300, 4400  Raw-MD5
 # ntlm  NTLM  1000               NT
 ```
 
 Process a hash list. Blank lines are skipped and the first bad line aborts with
-a line number; nothing is printed for a partially valid list:
+a line number; nothing is printed for a partially valid list. Input and output
+are buffered to provide that atomic behavior, so available memory bounds the
+size of a single invocation:
 
 ```bash
 omniex parse --type md5 --file hashes.txt
@@ -202,9 +204,10 @@ Human output is a table with a title, one horizontal rule, and bold headers on a
 terminal. Long mode lists wrap to the terminal width. The minimum supported
 terminal is 40x10; smaller terminals are rejected instead of being rendered.
 
-`--json` is the machine format and always emits one JSON array per invocation.
-`parse` without flags prints only the rendered hash, which keeps it usable in a
-pipeline.
+`--json` is the machine format and normally emits one JSON array per
+invocation. `show --json` emits one descriptor object because it describes a
+single type. `parse` without flags prints only the rendered hash, which keeps it
+usable in a pipeline.
 
 ### Exit codes
 

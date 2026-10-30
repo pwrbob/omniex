@@ -30,7 +30,7 @@ impl Parse for Sha256 {
 }
 
 impl Render for Sha256 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         crate::format::hex(self.digest)
     }
 }

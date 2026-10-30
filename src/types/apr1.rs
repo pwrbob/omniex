@@ -96,7 +96,7 @@ impl Parse for Apr1 {
 }
 
 impl Render for Apr1 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         if self.rounds == 0 {
             format!("$apr1${}${}", self.salt, self.digest)
         } else {

@@ -1,0 +1,5 @@
+error: duplicate `name` key
+ --> tests/ui/duplicate_hash_key.rs:4:26
+  |
+4 | #[hash(name = "Example", name = "Again", slug = "example", hashcat = [0])]
+  |                          ^^^^

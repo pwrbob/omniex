@@ -90,7 +90,7 @@ impl Parse for Phpass {
 }
 
 impl Render for Phpass {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         let setting = ITOA64
             .get(self.iterations as usize)
             .copied()

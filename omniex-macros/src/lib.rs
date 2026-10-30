@@ -188,10 +188,19 @@ fn parse_hash_attrs(attrs: &[Attribute]) -> syn::Result<HashAttrs> {
 
         attr.parse_nested_meta(|meta| {
             if meta.path.is_ident("name") {
+                if name.is_some() {
+                    return Err(meta.error("duplicate `name` key"));
+                }
                 name = Some(meta.value()?.parse()?);
             } else if meta.path.is_ident("slug") {
+                if slug.is_some() {
+                    return Err(meta.error("duplicate `slug` key"));
+                }
                 slug = Some(meta.value()?.parse()?);
             } else if meta.path.is_ident("hashcat") {
+                if hashcat.is_some() {
+                    return Err(meta.error("duplicate `hashcat` key"));
+                }
                 let array: ExprArray = meta.value()?.parse()?;
                 let mut modes = Vec::with_capacity(array.elems.len());
                 for expr in array.elems {
@@ -203,6 +212,9 @@ fn parse_hash_attrs(attrs: &[Attribute]) -> syn::Result<HashAttrs> {
                 }
                 hashcat = Some(modes);
             } else if meta.path.is_ident("john") {
+                if john.is_some() {
+                    return Err(meta.error("duplicate `john` key"));
+                }
                 let array: ExprArray = meta.value()?.parse()?;
                 let mut labels = Vec::with_capacity(array.elems.len());
                 for expr in array.elems {
@@ -214,6 +226,9 @@ fn parse_hash_attrs(attrs: &[Attribute]) -> syn::Result<HashAttrs> {
                 }
                 john = Some(labels);
             } else if meta.path.is_ident("modes_fn") {
+                if modes_fn.is_some() {
+                    return Err(meta.error("duplicate `modes_fn` key"));
+                }
                 modes_fn = Some(meta.value()?.parse()?);
             } else {
                 return Err(meta.error("unknown `#[hash]` key"));
@@ -256,9 +271,9 @@ fn parse_hash_attrs(attrs: &[Attribute]) -> syn::Result<HashAttrs> {
 }
 
 fn parse_field_attrs(field: &Field) -> syn::Result<FieldAttrs> {
-    let mut role = "other".to_owned();
-    let mut encoding = "raw".to_owned();
-    let mut rename = None;
+    let mut role: Option<String> = None;
+    let mut encoding: Option<String> = None;
+    let mut rename: Option<String> = None;
 
     for attr in &field.attrs {
         if !attr.path().is_ident("field") {
@@ -266,12 +281,21 @@ fn parse_field_attrs(field: &Field) -> syn::Result<FieldAttrs> {
         }
         attr.parse_nested_meta(|meta| {
             if meta.path.is_ident("role") {
+                if role.is_some() {
+                    return Err(meta.error("duplicate `role` key"));
+                }
                 let ident: Ident = meta.value()?.parse()?;
-                role = ident.to_string();
+                role = Some(ident.to_string());
             } else if meta.path.is_ident("encoding") {
+                if encoding.is_some() {
+                    return Err(meta.error("duplicate `encoding` key"));
+                }
                 let ident: Ident = meta.value()?.parse()?;
-                encoding = ident.to_string();
+                encoding = Some(ident.to_string());
             } else if meta.path.is_ident("rename") {
+                if rename.is_some() {
+                    return Err(meta.error("duplicate `rename` key"));
+                }
                 let value: LitStr = meta.value()?.parse()?;
                 rename = Some(value.value());
             } else {
@@ -282,8 +306,8 @@ fn parse_field_attrs(field: &Field) -> syn::Result<FieldAttrs> {
     }
 
     Ok(FieldAttrs {
-        role,
-        encoding,
+        role: role.unwrap_or_else(|| "other".to_owned()),
+        encoding: encoding.unwrap_or_else(|| "raw".to_owned()),
         rename,
     })
 }
@@ -295,13 +319,14 @@ fn doc_comment(field: &Field) -> syn::Result<LitStr> {
         if !attr.path().is_ident("doc") {
             continue;
         }
-        if let syn::Meta::NameValue(value) = &attr.meta
-            && let Expr::Lit(ExprLit {
+        if let syn::Meta::NameValue(value) = &attr.meta {
+            if let Expr::Lit(ExprLit {
                 lit: Lit::Str(text),
                 ..
             }) = &value.value
-        {
-            lines.push(text.value().trim().to_owned());
+            {
+                lines.push(text.value().trim().to_owned());
+            }
         }
     }
 

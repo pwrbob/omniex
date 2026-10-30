@@ -30,7 +30,7 @@ impl Parse for Md4 {
 }
 
 impl Render for Md4 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         crate::format::hex(self.digest)
     }
 }

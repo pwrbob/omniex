@@ -57,7 +57,7 @@ impl Parse for LdapSsha1 {
 }
 
 impl Render for LdapSsha1 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         let mut bytes = Vec::with_capacity(20 + self.salt.len());
         bytes.extend_from_slice(&self.digest);
         bytes.extend_from_slice(&self.salt);

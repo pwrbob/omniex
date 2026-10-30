@@ -37,7 +37,7 @@ impl Parse for PeoplesoftSha1 {
 }
 
 impl Render for PeoplesoftSha1 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         crate::format::base64(self.digest)
     }
 }

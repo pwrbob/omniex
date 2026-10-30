@@ -42,7 +42,7 @@ impl Parse for HmailServer {
 }
 
 impl Render for HmailServer {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "{}{}",
             String::from_utf8_lossy(&self.salt),

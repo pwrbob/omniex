@@ -44,7 +44,7 @@ impl Parse for Mssql2012 {
 }
 
 impl Render for Mssql2012 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "0x0200{}{}",
             crate::format::hex(self.salt),

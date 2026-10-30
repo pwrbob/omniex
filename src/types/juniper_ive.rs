@@ -38,7 +38,7 @@ impl Parse for JuniperIve {
 }
 
 impl Render for JuniperIve {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         self.signature.clone()
     }
 }

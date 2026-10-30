@@ -51,7 +51,7 @@ impl omniex::Parse for SaltedMd5 {
 }
 
 impl omniex::Render for SaltedMd5 {
-    fn render(&self, _opts: &omniex::RenderOptions) -> String {
+    fn render_value(&self, _opts: &omniex::RenderOptions) -> String {
         format!("{}:{}", omniex::format::hex(&self.digest), self.salt)
     }
 }
@@ -159,7 +159,7 @@ repeated fields are not part of the derive yet.
 
 For the example above the derive generates:
 
-- `impl HashType` with `NAME`, `SLUG`, `FAMILY`, and `FIELDS`.
+- `impl HashType` with `NAME`, `SLUG`, and `FIELDS`.
 - `impl Describe` using each field's `encoding`.
 - `impl ModeCompat` returning the descriptor's full set, unless `modes_fn` is
   supplied.

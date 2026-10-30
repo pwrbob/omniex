@@ -50,7 +50,7 @@ impl Parse for Md5TwoSalts {
 }
 
 impl Render for Md5TwoSalts {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "{}:{}:{}",
             crate::format::hex(self.digest),

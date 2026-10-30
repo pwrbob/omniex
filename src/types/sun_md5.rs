@@ -60,7 +60,7 @@ impl Parse for SunMd5 {
 }
 
 impl Render for SunMd5 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("$md5,rounds={}${}$${}", self.rounds, self.salt, self.digest)
     }
 }

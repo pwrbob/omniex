@@ -46,7 +46,7 @@ impl Parse for MediaWikiB {
 }
 
 impl Render for MediaWikiB {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("$B${}${}", self.salt, crate::format::hex(self.digest))
     }
 }

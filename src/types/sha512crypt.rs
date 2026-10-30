@@ -87,7 +87,7 @@ impl Parse for Sha512Crypt {
 }
 
 impl Render for Sha512Crypt {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         if self.rounds == 0 {
             format!("$6${}${}", self.salt, self.digest)
         } else {

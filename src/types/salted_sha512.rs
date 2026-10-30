@@ -22,7 +22,7 @@ pub struct SaltedSha512 {
 }
 
 pub fn salted_sha512_modes(value: &SaltedSha512) -> Vec<crate::Mode> {
-    let length = value.salt.chars().count();
+    let length = value.salt.len();
 
     SaltedSha512::DESCRIPTOR
         .all_modes
@@ -67,7 +67,7 @@ impl Parse for SaltedSha512 {
 }
 
 impl Render for SaltedSha512 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", crate::format::hex(self.digest), self.salt)
     }
 }

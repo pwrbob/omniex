@@ -147,6 +147,69 @@ pub fn decode_hex_field<const N: usize>(
     decode_hex_array::<N>(input, base)
 }
 
+/// Splits `input` into exactly `count` fields separated by `separator`.
+///
+/// Each returned field carries its byte offset in the original input.
+pub fn split_fields(
+    input: &str,
+    separator: char,
+    count: usize,
+) -> Result<Vec<(&str, usize)>, ParseError> {
+    let mut fields = Vec::with_capacity(count);
+    let mut offset = 0;
+
+    for (index, field) in input.split(separator).enumerate() {
+        if index >= count {
+            return Err(error(
+                ParseErrorKind::InvalidLength,
+                offset,
+                format!("expected {count} fields separated by `{separator}`"),
+            ));
+        }
+        fields.push((field, offset));
+        offset += field.len() + separator.len_utf8();
+    }
+
+    if fields.len() != count {
+        return Err(error(
+            ParseErrorKind::InvalidLength,
+            input.len(),
+            format!("expected {count} fields separated by `{separator}`"),
+        ));
+    }
+
+    Ok(fields)
+}
+
+/// Validates the byte length of a text field.
+pub fn check_text_length(
+    value: &str,
+    base: usize,
+    max: usize,
+    field: &str,
+) -> Result<(), ParseError> {
+    if value.len() > max {
+        return Err(error(
+            ParseErrorKind::InvalidLength,
+            base,
+            format!("{field} must be at most {max} bytes"),
+        ));
+    }
+    Ok(())
+}
+
+/// Validates that a field is hexadecimal and has an even number of digits.
+pub fn check_hex(value: &str, base: usize, field: &str) -> Result<(), ParseError> {
+    if value.len() % 2 != 0 {
+        return Err(error(
+            ParseErrorKind::InvalidLength,
+            base + value.len(),
+            format!("{field} must have an even number of hexadecimal digits"),
+        ));
+    }
+    decode_hex(value, base).map(|_| ())
+}
+
 fn hex_digit(byte: u8) -> Option<u8> {
     match byte {
         b'0'..=b'9' => Some(byte - b'0'),

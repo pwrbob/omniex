@@ -48,7 +48,7 @@ impl Parse for Episerver {
 }
 
 impl Render for Episerver {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         let digest = crate::format::base64(self.digest);
         format!(
             "$episerver$*0*{}*{}",

@@ -29,7 +29,7 @@ impl Parse for Lm {
 }
 
 impl Render for Lm {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         crate::format::hex(self.digest)
     }
 }

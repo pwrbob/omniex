@@ -52,7 +52,7 @@ impl Parse for HmacSha1 {
 }
 
 pub fn hmac_sha1_modes(value: &HmacSha1) -> Vec<crate::Mode> {
-    if value.key.chars().count() > 256 {
+    if value.key.len() > 256 {
         return Vec::new();
     }
 
@@ -60,7 +60,7 @@ pub fn hmac_sha1_modes(value: &HmacSha1) -> Vec<crate::Mode> {
 }
 
 impl Render for HmacSha1 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", crate::format::hex(self.digest), self.key)
     }
 }

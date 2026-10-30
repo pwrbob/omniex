@@ -58,7 +58,7 @@ impl Parse for SaltedMd5 {
 }
 
 pub fn salted_md5_modes(value: &SaltedMd5) -> Vec<crate::Mode> {
-    let length = value.salt.chars().count();
+    let length = value.salt.len();
     let hex_salt = value.salt.bytes().all(|byte| byte.is_ascii_hexdigit());
 
     SaltedMd5::DESCRIPTOR
@@ -83,7 +83,7 @@ pub fn salted_md5_modes(value: &SaltedMd5) -> Vec<crate::Mode> {
 }
 
 impl Render for SaltedMd5 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", crate::format::hex(self.digest), self.salt)
     }
 }

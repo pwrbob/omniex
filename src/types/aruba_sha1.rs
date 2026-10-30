@@ -48,7 +48,7 @@ impl Parse for ArubaSha1 {
 }
 
 impl Render for ArubaSha1 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "{}01{}",
             crate::format::hex(self.salt),

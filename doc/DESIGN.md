@@ -84,8 +84,9 @@ pub trait Parse: Sized {
     fn parse(input: &str, opts: &ParseOptions) -> Result<Self, ParseError>;
 }
 
-pub trait Render {
-    fn render(&self, opts: &RenderOptions) -> String;
+pub trait Render: ModeCompat {
+    fn render_value(&self, opts: &RenderOptions) -> String;
+    fn render(&self, opts: &RenderOptions) -> Result<String, RenderError>;
 }
 
 pub trait Describe {
@@ -175,7 +176,7 @@ pub enum Mode {
 The CLI is intentionally small:
 
 ```text
-omniex parse <hash> [--type <slug>] [--format hashcat|john] [--hc-version <release>] [--verbose|--json]
+omniex parse <hash> [--type <slug>] [--format hashcat|john] [--verbose|--json]
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
@@ -193,9 +194,8 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
 - `extract` uses the extractor registered for the selected hash type. Without
   `--type`, it auto-detects when exactly one type matches; otherwise it lists
   candidates.
-- `--format` defaults to `hashcat`.
-- `--hc-version` defaults to the newest supported release. It only affects
-  hashcat parsing and rendering.
+- `--format` defaults to `hashcat`. Rendering fails when the concrete value has
+  no mode for the selected tool.
 - Hash lists are one hash per line of the same type. The first bad line aborts
   with its line number and byte offset. Partial output is not written.
 - Exit codes: `0` success, `1` input/parse/extract error, `2` usage error.
@@ -203,10 +203,11 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
   headers on a terminal, and has exactly one horizontal rule below each title.
 - The minimum terminal size is 40x10. Human output is rejected on smaller
   terminals. Columns and mode lists wrap to the terminal width.
-- `--json` always emits one JSON array per invocation. `types` entries contain
-  slug, name, hashcat, john, and field metadata. `identify` entries contain
-  line, input, slug, name, hashcat, and john. `parse` entries add fields with
-  name, role, encoding, description, and value.
+- `--json` emits one JSON array per invocation, except `show --json`, which
+  emits one descriptor object. `types` entries contain slug, name, hashcat,
+  john, and field metadata. `identify` entries contain line, input, slug, name,
+  hashcat, and john. `parse` entries add fields with name, role, encoding,
+  description, and value.
 - `parse` without `--verbose` or `--json` prints only the rendered hash.
 
 ## Extraction

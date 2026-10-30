@@ -60,7 +60,7 @@ impl Parse for Dcc {
 }
 
 impl Render for Dcc {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", crate::format::hex(self.digest), self.username)
     }
 }

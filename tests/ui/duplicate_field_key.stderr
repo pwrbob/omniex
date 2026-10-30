@@ -1,0 +1,5 @@
+error: duplicate `role` key
+ --> tests/ui/duplicate_field_key.rs:7:28
+  |
+7 |     #[field(role = digest, role = salt, encoding = hex)]
+  |                            ^^^^

@@ -95,7 +95,7 @@ impl Parse for WpaPmkid {
 }
 
 impl Render for WpaPmkid {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "WPA*{}*{}*{}*{}*{}*{}",
             self.kind,

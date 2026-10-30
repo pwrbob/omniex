@@ -46,7 +46,7 @@ impl Parse for SaltedBlake2b512 {
 }
 
 pub fn salted_blake2b_modes(value: &SaltedBlake2b512) -> Vec<crate::Mode> {
-    if value.salt.chars().count() > 127 {
+    if value.salt.len() > 127 {
         return Vec::new();
     }
 
@@ -54,7 +54,7 @@ pub fn salted_blake2b_modes(value: &SaltedBlake2b512) -> Vec<crate::Mode> {
 }
 
 impl Render for SaltedBlake2b512 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("$BLAKE2${}:{}", crate::format::hex(self.digest), self.salt)
     }
 }

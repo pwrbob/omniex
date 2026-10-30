@@ -36,7 +36,7 @@ impl Parse for CiscoIos4 {
 }
 
 impl Render for CiscoIos4 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         self.signature.clone()
     }
 }

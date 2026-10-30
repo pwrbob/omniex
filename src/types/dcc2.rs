@@ -51,7 +51,7 @@ impl Parse for Dcc2 {
 }
 
 impl Render for Dcc2 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "$DCC2${}#{}#{}",
             self.iterations,

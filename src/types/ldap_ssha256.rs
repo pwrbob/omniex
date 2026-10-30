@@ -55,7 +55,7 @@ impl Parse for LdapSsha256 {
 }
 
 impl Render for LdapSsha256 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         let mut bytes = Vec::with_capacity(32 + self.salt.len());
         bytes.extend_from_slice(&self.digest);
         bytes.extend_from_slice(&self.salt);

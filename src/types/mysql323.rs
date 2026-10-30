@@ -30,7 +30,7 @@ impl Parse for Mysql323 {
 }
 
 impl Render for Mysql323 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         crate::format::hex(self.digest)
     }
 }

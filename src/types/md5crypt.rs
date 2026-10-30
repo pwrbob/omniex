@@ -87,7 +87,7 @@ impl Parse for Md5Crypt {
 }
 
 impl Render for Md5Crypt {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         if self.rounds == 0 {
             format!("$1${}${}", self.salt, self.digest)
         } else {

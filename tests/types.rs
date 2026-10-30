@@ -77,10 +77,48 @@ fn every_type_describes_every_field() {
         ("md5-two-salts", &["digest", "salt1", "salt2"]),
         ("iscsi-chap", &["digest", "challenge", "chap_id"]),
         ("half-md5", &["digest"]),
-        ("ike-psk-md5", &["blob"]),
-        ("ike-psk-sha1", &["blob"]),
-        ("netntlmv1", &["blob"]),
-        ("netntlmv2", &["blob"]),
+        (
+            "ike-psk-md5",
+            &[
+                "message_0",
+                "message_1",
+                "message_2",
+                "message_3",
+                "message_4",
+                "message_5",
+                "nonce_0",
+                "nonce_1",
+                "digest",
+            ],
+        ),
+        (
+            "ike-psk-sha1",
+            &[
+                "message_0",
+                "message_1",
+                "message_2",
+                "message_3",
+                "message_4",
+                "message_5",
+                "nonce_0",
+                "nonce_1",
+                "digest",
+            ],
+        ),
+        (
+            "netntlmv1",
+            &[
+                "username",
+                "domain",
+                "lm_response",
+                "nt_response",
+                "challenge",
+            ],
+        ),
+        (
+            "netntlmv2",
+            &["username", "domain", "challenge", "nt_proof", "blob"],
+        ),
         ("cisco-ios4", &["signature"]),
         ("samsung-android", &["digest", "salt"]),
         ("ripemd-160", &["digest"]),
@@ -579,22 +617,22 @@ fn invalid_inputs_return_stable_error_kinds() {
         (
             "ike-psk-md5".into(),
             "abc".into(),
-            ParseErrorKind::InvalidCharacter,
+            ParseErrorKind::InvalidLength,
         ),
         (
             "ike-psk-sha1".into(),
             "abc".into(),
-            ParseErrorKind::InvalidCharacter,
+            ParseErrorKind::InvalidLength,
         ),
         (
             "netntlmv1".into(),
             "abc".into(),
-            ParseErrorKind::InvalidCharacter,
+            ParseErrorKind::InvalidLength,
         ),
         (
             "netntlmv2".into(),
             "abc".into(),
-            ParseErrorKind::InvalidCharacter,
+            ParseErrorKind::InvalidLength,
         ),
         (
             "cisco-ios4".into(),
@@ -853,9 +891,9 @@ fn render_is_stable_across_repeated_round_trips() {
         let descriptor = registry::by_slug(vector.slug).expect("registered");
         for entry in vector.hashcat {
             let parsed = registry::parse(descriptor, entry.hash, &ParseOptions::default()).unwrap();
-            let first = parsed.render(&RenderOptions::default());
+            let first = parsed.render(&RenderOptions::default()).unwrap();
             let reparsed = registry::parse(descriptor, &first, &ParseOptions::default()).unwrap();
-            assert_eq!(reparsed.render(&RenderOptions::default()), first);
+            assert_eq!(reparsed.render(&RenderOptions::default()).unwrap(), first);
         }
     }
 }
@@ -943,6 +981,119 @@ fn modes_fn_never_reports_undeclared_modes() {
                     );
                 }
             }
+        }
+    }
+}
+
+#[test]
+fn parsers_never_panic_on_generated_unicode_and_punctuation() {
+    const ALPHABET: &[char] = &[
+        ':',
+        '$',
+        '*',
+        '{',
+        '}',
+        '0',
+        'a',
+        'F',
+        '-',
+        ' ',
+        '\n',
+        '\u{00e9}',
+        '\u{20ac}',
+        '\u{1f600}',
+    ];
+    let mut state = 0x9e37_79b9_u32;
+
+    for length in 0..80 {
+        let mut input = String::new();
+        for _ in 0..length {
+            state = state.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
+            input.push(ALPHABET[(state as usize) % ALPHABET.len()]);
+        }
+        for descriptor in registry::all() {
+            if let Err(error) = registry::parse(descriptor, &input, &ParseOptions::default()) {
+                assert!(
+                    error.offset <= input.len(),
+                    "`{}` reported an out-of-range offset for `{input}`",
+                    descriptor.slug
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn netntlm_and_ike_parsers_require_all_fields() {
+    let cases = [
+        ("netntlmv1", "user:domain:00:00:00"),
+        ("netntlmv2", "user:domain:00:00:00"),
+        ("ike-psk-md5", "00:00:00:00:00:00:00:00"),
+        ("ike-psk-sha1", "00:00:00:00:00:00:00:00"),
+    ];
+    for (slug, input) in cases {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        assert!(
+            registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+            "`{slug}` accepted an incomplete value"
+        );
+    }
+}
+
+#[test]
+fn bcrypt_rejects_malformed_encodings_without_panicking() {
+    let opts = ParseOptions::default();
+    let valid = "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou";
+    assert!(omniex::types::Bcrypt::parse(valid, &opts).is_ok());
+
+    let mut wrong_separator = valid.to_owned();
+    wrong_separator.replace_range(6..7, "X");
+    let mut bad_cost = valid.to_owned();
+    bad_cost.replace_range(4..6, "03");
+    let mut bad_alphabet = valid.to_owned();
+    bad_alphabet.replace_range(7..8, "!");
+    let mut bad_padding = valid.to_owned();
+    bad_padding.replace_range(59..60, "A");
+    let mut multibyte = "é".repeat(30);
+
+    for input in [
+        &wrong_separator,
+        &bad_cost,
+        &bad_alphabet,
+        &bad_padding,
+        &multibyte,
+    ] {
+        assert!(
+            omniex::types::Bcrypt::parse(input, &opts).is_err(),
+            "accepted `{input}`"
+        );
+    }
+
+    multibyte.truncate(58);
+    multibyte.push('é');
+    assert!(omniex::types::Bcrypt::parse(&multibyte, &opts).is_err());
+}
+
+#[test]
+fn unicode_salts_use_byte_lengths_for_mode_limits() {
+    let opts = ParseOptions::default();
+    let digest = "0".repeat(32);
+    let salt = format!("{}é", "a".repeat(27));
+    let value = SaltedMd5::parse(&format!("{digest}:{salt}"), &opts).unwrap();
+    assert!(!value.modes().contains(&omniex::Mode::Hashcat(30)));
+    assert!(!value.modes().contains(&omniex::Mode::Hashcat(40)));
+    assert!(value.modes().contains(&omniex::Mode::Hashcat(10)));
+}
+
+#[test]
+fn digest_only_types_reject_invalid_input() {
+    for slug in ["ripemd-160", "whirlpool", "gost"] {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in ["", "abc", "zz"] {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
         }
     }
 }

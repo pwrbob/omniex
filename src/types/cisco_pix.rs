@@ -44,7 +44,7 @@ impl Parse for CiscoPix {
 }
 
 impl Render for CiscoPix {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         self.crypt.clone()
     }
 }

@@ -41,7 +41,7 @@ impl Parse for MacosSha512 {
 }
 
 impl Render for MacosSha512 {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "{}{}",
             crate::format::hex(self.salt),

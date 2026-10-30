@@ -51,7 +51,7 @@ impl Parse for JuniperScreenos {
 }
 
 impl Render for JuniperScreenos {
-    fn render(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
         format!("{}:{}", self.digest, self.salt)
     }
 }
