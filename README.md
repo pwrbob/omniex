@@ -180,10 +180,8 @@ checked against that command in CI.
 | `md4` | MD4 | 900 | Raw-MD4 |
 | `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | Raw-MD5, Raw-MD5u |
 | `salted-md5` | Salted MD5 | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430 | - |
-| `hmac-md5` | HMAC-MD5 | 50, 60 | - |
 | `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | Raw-SHA1, Raw-SHA1-Linkedin |
 | `salted-sha1` | Salted SHA1 | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000 | - |
-| `hmac-sha1` | HMAC-SHA1 | 150, 160 | - |
 | `oracle-sha1` | Oracle 11g SHA1 | 112 | - |
 | `ldap-sha1` | LDAP SHA1 (Base64) | 101 | - |
 | `ldap-ssha1` | LDAP SSHA1 (Base64) | 111 | Salted-SHA1 |
@@ -206,11 +204,9 @@ checked against that command in CI.
 | `sha224` | SHA2-224 | 1300 | Raw-SHA224 |
 | `sha256` | SHA2-256 | 1400, 1470 | Raw-SHA256 |
 | `salted-sha256` | Salted SHA2-256 | 1410, 1420, 1430, 1440 | - |
-| `hmac-sha256` | HMAC-SHA256 | 1450, 1460 | - |
 | `hmailserver` | hMailServer | 1421 | hMailServer |
 | `sha512` | SHA2-512 | 1700, 1770 | Raw-SHA512 |
 | `salted-sha512` | Salted SHA2-512 | 1710, 1720, 1730, 1740 | - |
-| `hmac-sha512` | HMAC-SHA512 | 1750, 1760 | - |
 | `ldap-ssha256` | LDAP SSHA256 (Base64) | 1411 | - |
 | `ldap-ssha512` | LDAP SSHA512 (Base64) | 1711 | SSHA512 |
 | `episerver-net4` | EPiServer (>= .NET 4) | 1441 | - |
@@ -238,97 +234,41 @@ checked against that command in CI.
 | `netntlmv2` | NetNTLMv2 | 5600, 27100 | netntlmv2 |
 | `cisco-ios4` | Cisco-IOS type 4 | 5700 | - |
 | `samsung-android` | Samsung Android | 5800 | - |
-| `ripemd-160` | RIPEMD-160 | 6000 | - |
-| `whirlpool` | Whirlpool | 6100 | - |
-| `gost` | GOST R 34.11-94 | 6900 | gost |
+| `whirlpool` | Whirlpool | 6100, 40174, 40175 | - |
+| `gost` | GOST R 34.11-94 | 6900, 40088 | gost |
+| `ripemd` | RIPEMD | 40086, 40173, 6000, 40087 | - |
+| `streebog` | Streebog | 11700, 11800 | - |
+| `hmac` | HMAC | 50, 60, 150, 160, 40013, 40014, 1450, 1460, 40027, 40028, 40072, 40073, 40074, 1750, 1760, 40029, 40030 | - |
+| `radiogatun` | RadioGatun | 40171, 40172 | - |
+| `md6` | MD6 | 40168, 40170 | - |
+| `snefru` | Snefru | 40094, 40095 | - |
+| `skein-512` | Skein-512 | 40096, 40097, 40098, 40099 | - |
+| `simd` | SIMD | 40161, 40162, 40163, 40164 | - |
+| `shavite3` | SHAvite-3 | 40157, 40158, 40159, 40160 | - |
+| `sha3` | SHA3 | 17300, 17400, 17500, 17600 | Raw-SHA3 |
+| `shabal` | Shabal | 40153, 40154, 40155, 40156 | - |
+| `luffa` | Luffa | 40149, 40150, 40151, 40152 | - |
+| `keccak` | Keccak | 17700, 17800, 17900, 18000 | Raw-Keccak-256, Raw-Keccak |
+| `jh` | JH | 40145, 40146, 40147, 40148 | - |
+| `hamsi` | Hamsi | 40141, 40142, 40143, 40144 | - |
+| `groestl` | Groestl | 40137, 40138, 40139, 40140 | - |
+| `fugue` | Fugue | 40133, 40134, 40135, 40136 | - |
+| `echo` | ECHO | 40129, 40130, 40131, 40132 | - |
+| `cubehash` | CubeHash | 40125, 40126, 40127, 40128 | - |
+| `bmw` | BMW | 40121, 40122, 40123, 40124 | - |
+| `blake` | BLAKE | 40117, 40118, 40119, 40120 | - |
 | `haval` | HAVAL | 40102, 40103, 40104, 40105, 40106, 40107, 40108, 40109, 40110, 40111, 40112, 40113, 40114, 40115, 40116 | - |
 | `sha384` | SHA2-384 | 10800 | Raw-SHA384 |
 | `salted-sha384` | Salted SHA2-384 | 10810, 10820, 10830, 10840 | - |
 | `sha384-utf16` | SHA2-384 (UTF-16LE) | 10870 | - |
-| `sha3-224` | SHA3-224 | 17300 | - |
-| `sha3-256` | SHA3-256 | 17400 | - |
-| `sha3-384` | SHA3-384 | 17500 | - |
-| `sha3-512` | SHA3-512 | 17600 | Raw-SHA3 |
-| `keccak-224` | Keccak-224 | 17700 | - |
-| `keccak-256` | Keccak-256 | 17800 | Raw-Keccak-256 |
-| `keccak-384` | Keccak-384 | 17900 | - |
-| `keccak-512` | Keccak-512 | 18000 | Raw-Keccak |
 | `md2` | MD2 | 40084 | - |
 | `sha0` | SHA-0 | 40085 | - |
-| `ripemd-128` | RIPEMD-128 | 40086 | - |
-| `ripemd-256` | RIPEMD-256 | 40087 | - |
-| `gost-cryptopro` | GOST R 34.11-94 (CryptoPro) | 40088 | - |
-| `tiger` | Tiger | 40089 | - |
-| `tiger-128` | Tiger-128 | 40090 | - |
-| `tiger-160` | Tiger-160 | 40091 | - |
-| `tiger2` | Tiger2 | 40092 | - |
-| `tth` | TTH (Tiger Tree Hash, single leaf) | 40093 | - |
-| `snefru-128` | Snefru-128 | 40094 | - |
-| `snefru-256` | Snefru-256 | 40095 | - |
-| `skein-512-224` | Skein-512-224 | 40096 | - |
-| `skein-512-256` | Skein-512-256 | 40097 | - |
-| `skein-512-384` | Skein-512-384 | 40098 | - |
-| `skein-512-512` | Skein-512-512 | 40099 | - |
+| `tiger` | Tiger | 40090, 40091, 40089, 40092, 40093 | - |
 | `panama` | PANAMA | 40100 | Panama |
 | `mdc2` | MDC-2 | 40101 | - |
-| `blake-224` | BLAKE-224 | 40117 | - |
-| `blake-256` | BLAKE-256 | 40118 | - |
-| `blake-384` | BLAKE-384 | 40119 | - |
-| `blake-512` | BLAKE-512 | 40120 | - |
-| `bmw-224` | BMW-224 | 40121 | - |
-| `bmw-256` | BMW-256 | 40122 | - |
-| `bmw-384` | BMW-384 | 40123 | - |
-| `bmw-512` | BMW-512 | 40124 | - |
-| `cubehash-224` | CubeHash-224 | 40125 | - |
-| `cubehash-256` | CubeHash-256 | 40126 | - |
-| `cubehash-384` | CubeHash-384 | 40127 | - |
-| `cubehash-512` | CubeHash-512 | 40128 | - |
-| `echo-224` | ECHO-224 | 40129 | - |
-| `echo-256` | ECHO-256 | 40130 | - |
-| `echo-384` | ECHO-384 | 40131 | - |
-| `echo-512` | ECHO-512 | 40132 | - |
-| `fugue-224` | Fugue-224 | 40133 | - |
-| `fugue-256` | Fugue-256 | 40134 | - |
-| `fugue-384` | Fugue-384 | 40135 | - |
-| `fugue-512` | Fugue-512 | 40136 | - |
-| `groestl-224` | Groestl-224 | 40137 | - |
-| `groestl-256` | Groestl-256 | 40138 | - |
-| `groestl-384` | Groestl-384 | 40139 | - |
-| `groestl-512` | Groestl-512 | 40140 | - |
-| `hamsi-224` | Hamsi-224 | 40141 | - |
-| `hamsi-256` | Hamsi-256 | 40142 | - |
-| `hamsi-384` | Hamsi-384 | 40143 | - |
-| `hamsi-512` | Hamsi-512 | 40144 | - |
-| `jh-224` | JH-224 | 40145 | - |
-| `jh-256` | JH-256 | 40146 | - |
-| `jh-384` | JH-384 | 40147 | - |
-| `jh-512` | JH-512 | 40148 | - |
-| `luffa-224` | Luffa-224 | 40149 | - |
-| `luffa-256` | Luffa-256 | 40150 | - |
-| `luffa-384` | Luffa-384 | 40151 | - |
-| `luffa-512` | Luffa-512 | 40152 | - |
-| `shabal-224` | Shabal-224 | 40153 | - |
-| `shabal-256` | Shabal-256 | 40154 | - |
-| `shabal-384` | Shabal-384 | 40155 | - |
-| `shabal-512` | Shabal-512 | 40156 | - |
-| `shavite3-224` | SHAvite-3-224 | 40157 | - |
-| `shavite3-256` | SHAvite-3-256 | 40158 | - |
-| `shavite3-384` | SHAvite-3-384 | 40159 | - |
-| `shavite3-512` | SHAvite-3-512 | 40160 | - |
-| `simd-224` | SIMD-224 | 40161 | - |
-| `simd-256` | SIMD-256 | 40162 | - |
-| `simd-384` | SIMD-384 | 40163 | - |
-| `simd-512` | SIMD-512 | 40164 | - |
 | `has-160` | HAS-160 | 40165 | has-160 |
 | `edon-r-256` | EDON-R-256 | 40166 | - |
 | `edon-r-512` | EDON-R-512 | 40167 | - |
-| `md6-128` | MD6-128 | 40168 | - |
-| `md6-512` | MD6-512 | 40170 | - |
-| `radiogatun-32` | RadioGatun[32] (first 128 bits) | 40171 | - |
-| `radiogatun-64` | RadioGatun[64] | 40172 | - |
-| `ripemd-original` | RIPEMD (original) | 40173 | - |
-| `whirlpool-0` | Whirlpool-0 | 40174 | - |
-| `whirlpool-t` | Whirlpool-T | 40175 | - |
 | `sha256-md5` | SHA2-256 of MD5 | 20800 | - |
 | `md5-sha1-md5-sha1` | MD5 of SHA1, MD5, and SHA1 | 20900 | - |
 | `sha256-double` | SHA2-256 applied twice | 21400 | - |
@@ -389,17 +329,6 @@ checked against that command in CI.
 | `crc64jones` | CRC64Jones | 28000 | - |
 | `java-hashcode` | Java Object hashCode() | 18700 | - |
 | `siphash` | SipHash | 10100 | - |
-| `streebog-256` | GOST R 34.11-2012 (Streebog) 256-bit | 11700 | - |
-| `streebog-512` | GOST R 34.11-2012 (Streebog) 512-bit | 11800 | - |
-| `hmac-ripemd160-pass` | HMAC-RIPEMD160 (key = $pass) | 40013 | - |
-| `hmac-ripemd160-salt` | HMAC-RIPEMD160 (key = $salt) | 40014 | - |
-| `hmac-streebog256-pass` | HMAC-Streebog-256 (key = $pass) | 40027 | - |
-| `hmac-streebog256-salt` | HMAC-Streebog-256 (key = $salt) | 40028 | - |
-| `hmac-streebog512-pass` | HMAC-Streebog-512 (key = $pass) | 40029 | - |
-| `hmac-streebog512-salt` | HMAC-Streebog-512 (key = $salt) | 40030 | - |
-| `hmac-blake2s-pass` | HMAC-BLAKE2S (key = $pass) | 40072 | - |
-| `hmac-ripemd320-pass` | HMAC-RIPEMD320 (key = $pass) | 40073 | - |
-| `hmac-ripemd320-salt` | HMAC-RIPEMD320 (key = $salt) | 40074 | - |
 | `salted-sha224` | Salted SHA2-224 | 40009, 40010 | - |
 | `uuid-v3` | UUID v3 (RFC 4122 name-based, MD5) | 40004 | - |
 | `uuid-v5` | UUID v5 (RFC 4122 name-based, SHA-1) | 40005 | - |

@@ -4,8 +4,8 @@ mod common;
 
 use common::{VECTORS, vector_for};
 use omniex::types::{
-    ArubaSha1, Blake2b512, DjangoSha1, Episerver, HmacMd5, HmacSha1, JuniperScreenos, LdapSha1,
-    LdapSsha1, MacosSha1, Md4, Md5Crypt, Mssql2000, OracleSha1, Phpass, SaltedMd5,
+    ArubaSha1, Blake2b512, DjangoSha1, Episerver, Hmac, JuniperScreenos, LdapSha1, LdapSsha1,
+    MacosSha1, Md4, Md5Crypt, Mssql2000, OracleSha1, Phpass, SaltedMd5,
 };
 use omniex::{ModeCompat, Parse, ParseErrorKind, ParseOptions, RenderOptions, registry};
 
@@ -15,10 +15,9 @@ fn every_type_describes_every_field() {
         ("md4", &["digest"]),
         ("md5", &["digest"]),
         ("salted-md5", &["digest", "salt"]),
-        ("hmac-md5", &["digest", "key"]),
+        ("hmac", &["digest", "key"]),
         ("sha1", &["digest"]),
         ("salted-sha1", &["digest", "salt"]),
-        ("hmac-sha1", &["digest", "key"]),
         ("oracle-sha1", &["digest", "salt"]),
         ("ldap-sha1", &["digest"]),
         ("ldap-ssha1", &["digest", "salt"]),
@@ -41,11 +40,9 @@ fn every_type_describes_every_field() {
         ("sha224", &["digest"]),
         ("sha256", &["digest"]),
         ("salted-sha256", &["digest", "salt"]),
-        ("hmac-sha256", &["digest", "key"]),
         ("hmailserver", &["salt", "digest"]),
         ("sha512", &["digest"]),
         ("salted-sha512", &["digest", "salt"]),
-        ("hmac-sha512", &["digest", "key"]),
         ("ldap-ssha256", &["digest", "salt"]),
         ("episerver-net4", &["salt", "digest"]),
         ("descrypt", &["crypt"]),
@@ -121,7 +118,7 @@ fn every_type_describes_every_field() {
         ),
         ("cisco-ios4", &["signature"]),
         ("samsung-android", &["digest", "salt"]),
-        ("ripemd-160", &["digest"]),
+        ("ripemd", &["digest"]),
         ("whirlpool", &["digest"]),
         ("gost", &["digest"]),
     ];
@@ -170,12 +167,12 @@ fn invalid_inputs_return_stable_error_kinds() {
             ParseErrorKind::InvalidCharacter,
         ),
         (
-            "hmac-md5".into(),
+            "hmac".into(),
             "abc".into(),
             ParseErrorKind::InvalidCharacter,
         ),
         (
-            "hmac-md5".into(),
+            "hmac".into(),
             format!("{}:a:b", zeros(32)),
             ParseErrorKind::InvalidCharacter,
         ),
@@ -186,7 +183,7 @@ fn invalid_inputs_return_stable_error_kinds() {
             ParseErrorKind::InvalidCharacter,
         ),
         (
-            "hmac-sha1".into(),
+            "hmac".into(),
             "abc".into(),
             ParseErrorKind::InvalidCharacter,
         ),
@@ -383,12 +380,12 @@ fn invalid_inputs_return_stable_error_kinds() {
             ParseErrorKind::InvalidCharacter,
         ),
         (
-            "hmac-sha256".into(),
+            "hmac".into(),
             "abcd".into(),
             ParseErrorKind::InvalidCharacter,
         ),
         (
-            "hmac-sha256".into(),
+            "hmac".into(),
             format!("{}:a:b", zeros(64)),
             ParseErrorKind::InvalidCharacter,
         ),
@@ -413,12 +410,12 @@ fn invalid_inputs_return_stable_error_kinds() {
             ParseErrorKind::InvalidCharacter,
         ),
         (
-            "hmac-sha512".into(),
+            "hmac".into(),
             "abcd".into(),
             ParseErrorKind::InvalidCharacter,
         ),
         (
-            "hmac-sha512".into(),
+            "hmac".into(),
             format!("{}:a:b", zeros(128)),
             ParseErrorKind::InvalidCharacter,
         ),
@@ -750,7 +747,7 @@ fn invalid_inputs_return_stable_error_kinds() {
             ParseErrorKind::InvalidLength,
         ),
         (
-            "hmac-ripemd160-pass".into(),
+            "hmac".into(),
             "abcd:key".into(),
             ParseErrorKind::InvalidLength,
         ),
@@ -1073,11 +1070,10 @@ fn structured_fields_are_decoded_not_kept_as_whole_strings() {
     let salted = SaltedMd5::parse("3d83c8e717ff0e7ecfe187f088d69954:343141", &opts).unwrap();
     assert_eq!(salted.salt, "343141");
 
-    let hmac = HmacMd5::parse("e28e4e37e972a945e464b5226053bac0:40", &opts).unwrap();
+    let hmac = Hmac::parse("e28e4e37e972a945e464b5226053bac0:40", &opts).unwrap();
     assert_eq!(hmac.key, "40");
 
-    let hmac_sha1 =
-        HmacSha1::parse("02b256705348a28b1d6c0f063907979f7e0c82f8:10323", &opts).unwrap();
+    let hmac_sha1 = Hmac::parse("02b256705348a28b1d6c0f063907979f7e0c82f8:10323", &opts).unwrap();
     assert_eq!(hmac_sha1.key, "10323");
 
     let md4 = Md4::parse("afe04867ec7a3845145579a95f72eca7", &opts).unwrap();
@@ -1261,7 +1257,7 @@ fn value_dependent_modes_track_salt_and_key_limits() {
     assert!(sha_modes.contains(&omniex::Mode::Hashcat(110)));
     assert!(!sha_modes.contains(&omniex::Mode::Hashcat(130)));
 
-    let hmac = HmacMd5::parse(&format!("{}:{}", "0".repeat(32), "k".repeat(300)), &opts).unwrap();
+    let hmac = Hmac::parse(&format!("{}:{}", "0".repeat(32), "k".repeat(300)), &opts).unwrap();
     assert!(hmac.modes().is_empty());
 
     let sha256 = omniex::types::SaltedSha256::parse(
@@ -1414,14 +1410,14 @@ fn unicode_salts_use_byte_lengths_for_mode_limits() {
 #[test]
 fn digest_only_types_reject_invalid_input() {
     for slug in [
-        "ripemd-160",
+        "ripemd",
         "whirlpool",
         "gost",
         "md2",
         "sha0",
         "tiger",
-        "skein-512-512",
-        "md6-512",
+        "skein-512",
+        "md6",
     ] {
         let descriptor = registry::by_slug(slug).expect("registered");
         for input in ["", "abc", "zz"] {

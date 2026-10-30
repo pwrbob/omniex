@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[hash(
     name = "GOST R 34.11-94",
     slug = "gost",
-    hashcat = [6900],
+    hashcat = [6900, 40088],
     john = ["gost"],
 )]
 pub struct Gost {
