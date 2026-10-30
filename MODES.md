@@ -195,9 +195,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 20000-20999
 
-- [ ] `20011` - `DiskCryptor SHA512 + XTS 512 bit`
-- [ ] `20012` - `DiskCryptor SHA512 + XTS 1024 bit`
-- [ ] `20013` - `DiskCryptor SHA512 + XTS 1536 bit`
 - [ ] `20500` - `PKZIP Master Key`
 - [ ] `20510` - `PKZIP Master Key (6 byte optimization)`
 
@@ -262,45 +259,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 29000-29999
 
-- [ ] `29311` - `TrueCrypt RIPEMD160 + XTS 512 bit`
-- [ ] `29312` - `TrueCrypt RIPEMD160 + XTS 1024 bit`
-- [ ] `29313` - `TrueCrypt RIPEMD160 + XTS 1536 bit`
-- [ ] `29321` - `TrueCrypt SHA512 + XTS 512 bit`
-- [ ] `29322` - `TrueCrypt SHA512 + XTS 1024 bit`
-- [ ] `29323` - `TrueCrypt SHA512 + XTS 1536 bit`
-- [ ] `29331` - `TrueCrypt Whirlpool + XTS 512 bit`
-- [ ] `29332` - `TrueCrypt Whirlpool + XTS 1024 bit`
-- [ ] `29333` - `TrueCrypt Whirlpool + XTS 1536 bit`
-- [ ] `29341` - `TrueCrypt RIPEMD160 + XTS 512 bit + boot-mode`
-- [ ] `29342` - `TrueCrypt RIPEMD160 + XTS 1024 bit + boot-mode`
-- [ ] `29343` - `TrueCrypt RIPEMD160 + XTS 1536 bit + boot-mode`
-- [ ] `29411` - `VeraCrypt RIPEMD160 + XTS 512 bit`
-- [ ] `29412` - `VeraCrypt RIPEMD160 + XTS 1024 bit`
-- [ ] `29413` - `VeraCrypt RIPEMD160 + XTS 1536 bit`
-- [ ] `29421` - `VeraCrypt SHA512 + XTS 512 bit`
-- [ ] `29422` - `VeraCrypt SHA512 + XTS 1024 bit`
-- [ ] `29423` - `VeraCrypt SHA512 + XTS 1536 bit`
-- [ ] `29431` - `VeraCrypt Whirlpool + XTS 512 bit`
-- [ ] `29432` - `VeraCrypt Whirlpool + XTS 1024 bit`
-- [ ] `29433` - `VeraCrypt Whirlpool + XTS 1536 bit`
-- [ ] `29441` - `VeraCrypt RIPEMD160 + XTS 512 bit + boot-mode`
-- [ ] `29442` - `VeraCrypt RIPEMD160 + XTS 1024 bit + boot-mode`
-- [ ] `29443` - `VeraCrypt RIPEMD160 + XTS 1536 bit + boot-mode`
-- [ ] `29451` - `VeraCrypt SHA256 + XTS 512 bit`
-- [ ] `29452` - `VeraCrypt SHA256 + XTS 1024 bit`
-- [ ] `29453` - `VeraCrypt SHA256 + XTS 1536 bit`
-- [ ] `29461` - `VeraCrypt SHA256 + XTS 512 bit + boot-mode`
-- [ ] `29462` - `VeraCrypt SHA256 + XTS 1024 bit + boot-mode`
-- [ ] `29463` - `VeraCrypt SHA256 + XTS 1536 bit + boot-mode`
-- [ ] `29471` - `VeraCrypt Streebog-512 + XTS 512 bit`
-- [ ] `29472` - `VeraCrypt Streebog-512 + XTS 1024 bit`
-- [ ] `29473` - `VeraCrypt Streebog-512 + XTS 1536 bit`
-- [ ] `29481` - `VeraCrypt Streebog-512 + XTS 512 bit + boot-mode`
-- [ ] `29482` - `VeraCrypt Streebog-512 + XTS 1024 bit + boot-mode`
-- [ ] `29483` - `VeraCrypt Streebog-512 + XTS 1536 bit + boot-mode`
-- [ ] `29491` - `VeraCrypt BLAKE2s-256 + XTS 512 bit`
-- [ ] `29492` - `VeraCrypt BLAKE2s-256 + XTS 1024 bit`
-- [ ] `29493` - `VeraCrypt BLAKE2s-256 + XTS 1536 bit`
 - [ ] `29511` - `LUKS v1 SHA-1 + AES`
 - [ ] `29512` - `LUKS v1 SHA-1 + Serpent`
 - [ ] `29513` - `LUKS v1 SHA-1 + Twofish`

@@ -245,6 +245,9 @@ checked against that command in CI.
 | `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | - |
 | `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506 | - |
 | `virtualbox` | VirtualBox | 27500, 27600 | - |
+| `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
+| `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
+| `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
