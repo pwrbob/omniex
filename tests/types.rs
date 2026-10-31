@@ -1032,6 +1032,11 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$oldoffice$9*00*00*00".into(),
             ParseErrorKind::InvalidCharacter,
         ),
+        (
+            "office".into(),
+            "$office$*2007".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

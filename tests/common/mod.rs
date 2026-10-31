@@ -3140,6 +3140,24 @@ pub const VECTORS: &[Vector] = &[
         ],
         john: &[],
     },
+    Vector {
+        slug: "office",
+        hashcat: &[
+            hc!(
+                9400,
+                "$office$*2007*20*128*16*18410007331073848057180885845227*944c70a5ee6e5ab2a6a86ff54b5f621a*e6650f1f2630c27fd8fc0f5e56e2e01f99784b9f"
+            ),
+            hc!(
+                9500,
+                "$office$*2010*100000*128*16*34170046140146368675746031258762*de5bc114991bb3a5679a6e24320bdb09*1b72a4ddffba3dcd5395f6a5ff75b126cb832b733c298e86162028ca47a235a9"
+            ),
+            hc!(
+                9600,
+                "$office$*2013*100000*256*16*67805436882475302087847656644837*0c392d3b9ca889656d1e615c54f9f3c9*612b79e33b96322c3253fc8a0f314463cd76bc4efe1352f7efffca0f374f7e4b"
+            ),
+        ],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

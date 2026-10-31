@@ -69,9 +69,6 @@ Hashcat's plaintext mode is excluded below.
 ### 9000-9999
 
 - [ ] `9000` - `Password Safe v2`
-- [ ] `9400` - `MS Office 2007`
-- [ ] `9500` - `MS Office 2010`
-- [ ] `9600` - `MS Office 2013`
 
 ### 10000-10999
 
