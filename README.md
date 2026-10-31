@@ -276,6 +276,11 @@ checked against that command in CI.
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
 | `blockchain` | Blockchain, My Wallet | 12700, 15200 | - |
 | `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
+| `cram-md5` | CRAM-MD5 | 10200 | - |
+| `ipmi2-rakp-sha1` | IPMI2 RAKP HMAC-SHA1 | 7300 | - |
+| `ipmi2-rakp-md5` | IPMI2 RAKP HMAC-MD5 | 7350 | - |
+| `sap-bcode` | SAP CODVN B | 7700, 7701 | - |
+| `sap-passcode` | SAP CODVN F/G | 7800, 7801 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
@@ -461,7 +466,6 @@ checked against that command in CI.
 | `knx-ip-secure` | KNX IP Secure - Device Authentication Code | 25900 | - |
 | `metamask` | MetaMask Wallet | 26600, 26610 | - |
 | `office2016-sheetprotection` | MS Office 2016 - SheetProtection | 25300 | - |
-
 
 A type is a logical hash type, not a mode. Identity is algorithm-based: modes
 are grouped only when the algorithm, field meanings, and serialization match.

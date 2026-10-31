@@ -61,13 +61,7 @@ Hashcat's plaintext mode is excluded below.
 
 ### 7000-7999
 
-- [ ] `7300` - `IPMI2 RAKP HMAC-SHA1`
-- [ ] `7350` - `IPMI2 RAKP HMAC-MD5`
 - [ ] `7500` - `Kerberos 5, etype 23, AS-REQ Pre-Auth`
-- [ ] `7700` - `SAP CODVN B (BCODE)`
-- [ ] `7701` - `SAP CODVN B (BCODE) from RFC_READ_TABLE`
-- [ ] `7800` - `SAP CODVN F/G (PASSCODE)`
-- [ ] `7801` - `SAP CODVN F/G (PASSCODE) from RFC_READ_TABLE`
 
 ### 8000-8999
 
@@ -88,7 +82,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 10000-10999
 
-- [ ] `10200` - `CRAM-MD5`
 - [ ] `10400` - `PDF 1.1 - 1.3 (Acrobat 2 - 4)`
 - [ ] `10410` - `PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #1`
 - [ ] `10420` - `PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #2`

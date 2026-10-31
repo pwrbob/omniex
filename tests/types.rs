@@ -121,6 +121,11 @@ fn every_type_describes_every_field() {
         ("ripemd", &["digest"]),
         ("whirlpool", &["digest"]),
         ("gost", &["digest"]),
+        ("cram-md5", &["challenge", "user", "digest"]),
+        ("ipmi2-rakp-sha1", &["salt", "digest"]),
+        ("ipmi2-rakp-md5", &["digest", "salt"]),
+        ("sap-bcode", &["user", "digest"]),
+        ("sap-passcode", &["user", "digest"]),
     ];
 
     for (slug, names) in expected {
@@ -967,6 +972,31 @@ fn invalid_inputs_return_stable_error_kinds() {
             ParseErrorKind::InvalidLength,
         ),
         ("haval".into(), "abcd".into(), ParseErrorKind::InvalidLength),
+        (
+            "cram-md5".into(),
+            "$cram_md5$!".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "ipmi2-rakp-sha1".into(),
+            "abcd:zz".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "ipmi2-rakp-md5".into(),
+            "zz:abcd".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sap-bcode".into(),
+            "user$zz".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "sap-passcode".into(),
+            "user$zz".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {
