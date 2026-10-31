@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-734%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-738%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -352,6 +352,10 @@ checked against that command in CI.
 | `mifare` | MIFARE Ultralight C | 37000 | - |
 | `cardano` | Cardano Eternl Wallet | 37700 | - |
 | `mikrotik` | Mikrotik RouterOS | 38000 | - |
+| `totp` | TOTP (HMAC-SHA1) | 18100 | - |
+| `bip39` | BIP39 Passphrase Recovery | 36000 | - |
+| `onepassword-mobile` | 1Password mobile keychain | 31800 | - |
+| `apple-dmg` | Apple DMG | 38300 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | - |

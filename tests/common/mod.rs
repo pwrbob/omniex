@@ -4082,6 +4082,38 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "totp",
+        hashcat: &[hc!(
+            18100,
+            "597056:3600:613004:1234567890:322664:9876543210"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bip39",
+        hashcat: &[hc!(
+            36000,
+            "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about:33747aCmUp8PkWmWWY8epR1Cph8Tf9Aozt:m/49'/0'/0'/0/0"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "onepassword-mobile",
+        hashcat: &[hc!(
+            31800,
+            "$mobilekeychain$31800@hashcat.net$0226802599846590531367298686059042845608249051353268870564348733$fa53b7d424cdd36667dc12e585810729efc8ea9b2f8e5dd7a3ee72f7576a6788$100000$e1fea241e7b7c84535a0d53388bccbb9$dfd5f9ad6da1a72a47a3c04e03b02142b2fc301b3afff610669058527828a0e0388f5a2b0e6909813a5f9653c54f797adf0869107f4b875d4beb736cfbcec428ca19fc28346642fa32ec00f2ca4ad8dcf119af33cb247273e7b7427fd20eae8fb992779979a5e25aa465b3954794f62f4ea85355032efcd4e43ae3db6b14720d1dda963a384c37b521a92cef3494f77580edab210987ebcf2f0f7ed0220c0a4777be693e075b5f1e1302$995f3703b8ea4519f8cdc1cbded4d595"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "apple-dmg",
+        hashcat: &[hc!(
+            38300,
+            "$dmg$3*20*20a528dfdc3dc653d5da26923cd7b07d03eda76e*192*64*17b5d1683f6cd8b076943f1397d96f2d7a966596bd4c816334f444b26c33b6dd1a2f309a375ed9c3a612b5877c75ea6c2f3053fdb4c2b9a477d6291573fcb7cd*384615"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

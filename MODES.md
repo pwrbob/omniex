@@ -125,7 +125,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 18000-18999
 
-- [ ] `18100` - `TOTP (HMAC-SHA1)`
 
 ### 19000-19999
 
@@ -180,7 +179,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 31000-31999
 
-- [ ] `31800` - `1Password, mobilekeychain (1Password 8)`
 
 ### 32000-32999
 
@@ -197,7 +195,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 36000-36999
 
-- [ ] `36000` - `BIP39 Passphrase Recovery (ASCII, P2SH/P2PKH/P2WPKH)`
 - [ ] `36100` - `yescrypt`
 - [ ] `36200` - `gost-yescrypt`
 
@@ -206,7 +203,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 38000-38999
 
-- [ ] `38300` - `Apple DMG (encrcdsa v2, PBKDF2-HMAC-SHA1 + AES-192 key)`
 
 ### 40000-40099
 
