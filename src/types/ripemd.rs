@@ -10,7 +10,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "RIPEMD",
     slug = "ripemd",
-    hashcat = [40086, 40173, 6000, 40087],
+    hashcat = [40086, 40173, 6000, 40087, 33600],
     modes_fn = ripemd_modes,
 )]
 pub struct Ripemd {
@@ -24,6 +24,7 @@ pub fn ripemd_modes(value: &Ripemd) -> Vec<crate::Mode> {
         16 => vec![crate::Mode::Hashcat(40086), crate::Mode::Hashcat(40173)],
         20 => vec![crate::Mode::Hashcat(6000)],
         32 => vec![crate::Mode::Hashcat(40087)],
+        40 => vec![crate::Mode::Hashcat(33600)],
         _ => Vec::new(),
     }
 }
@@ -34,11 +35,11 @@ impl Parse for Ripemd {
             return Err(parse::empty());
         }
         let digest = parse::decode_hex(input, 0)?;
-        if !matches!(digest.len(), 16 | 20 | 32) {
+        if !matches!(digest.len(), 16 | 20 | 32 | 40) {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
                 0,
-                "RIPEMD digests are 16, 20, or 32 bytes",
+                "RIPEMD digests are 16, 20, 32, or 40 bytes",
             ));
         }
         Ok(Self { digest })

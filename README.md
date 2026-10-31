@@ -291,6 +291,11 @@ checked against that command in CI.
 | `multibit-hd` | MultiBit HD (scrypt) | 22700 | - |
 | `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951 | - |
 | `bitlocker` | BitLocker | 22100 | BitLocker |
+| `blake2s-256` | BLAKE2s-256 | 31000 | - |
+| `blake2b-256` | BLAKE2b-256 | 34800 | - |
+| `salted-blake2b-256` | Salted BLAKE2b-256 | 34810, 34820 | - |
+| `sm3` | ShangMi 3 (SM3) | 31100 | - |
+| `as400-ssha1` | AS/400 SSHA1 | 35200 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |
@@ -318,11 +323,11 @@ checked against that command in CI.
 | `samsung-android` | Samsung Android | 5800 | - |
 | `whirlpool` | Whirlpool | 6100, 40174, 40175 | - |
 | `gost` | GOST R 34.11-94 | 6900, 40088 | gost |
-| `ripemd` | RIPEMD | 40086, 40173, 6000, 40087 | - |
+| `ripemd` | RIPEMD | 40086, 40173, 6000, 40087, 33600 | - |
 | `streebog` | Streebog | 11700, 11800 | - |
 | `hmac` | HMAC | 50, 60, 150, 160, 40013, 40014, 1450, 1460, 40027, 40028, 40072, 40073, 40074, 1750, 1760, 40029, 40030 | - |
 | `radiogatun` | RadioGatun | 40171, 40172 | - |
-| `md6` | MD6 | 40168, 40170 | - |
+| `md6` | MD6 | 40168, 40170, 34600 | - |
 | `snefru` | Snefru | 40094, 40095 | - |
 | `skein-512` | Skein-512 | 40096, 40097, 40098, 40099 | - |
 | `simd` | SIMD | 40161, 40162, 40163, 40164 | - |

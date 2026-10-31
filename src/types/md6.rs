@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "MD6",
     slug = "md6",
-    hashcat = [40168, 40170],
+    hashcat = [40168, 40170, 34600],
     modes_fn = md6_modes,
 )]
 pub struct Md6 {
@@ -23,6 +23,7 @@ pub struct Md6 {
 pub fn md6_modes(value: &Md6) -> Vec<crate::Mode> {
     match value.digest.len() {
         16 => vec![crate::Mode::Hashcat(40168)],
+        32 => vec![crate::Mode::Hashcat(34600)],
         64 => vec![crate::Mode::Hashcat(40170)],
         _ => Vec::new(),
     }
@@ -34,7 +35,7 @@ impl Parse for Md6 {
             return Err(parse::empty());
         }
         let digest = parse::decode_hex(input, 0)?;
-        if !matches!(digest.len(), 16 | 64) {
+        if !matches!(digest.len(), 16 | 32 | 64) {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
                 0,

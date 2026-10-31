@@ -202,8 +202,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 31000-31999
 
-- [ ] `31000` - `BLAKE2s-256`
-- [ ] `31100` - `ShangMi 3 (SM3)`
 - [ ] `31200` - `Veeam VBK`
 - [ ] `31300` - `MS SNTP`
 - [ ] `31400` - `SecureCRT MasterPassphrase v2`
@@ -228,7 +226,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `33500` - `RC4 40-bit DropN`
 - [ ] `33501` - `RC4 72-bit DropN`
 - [ ] `33502` - `RC4 104-bit DropN`
-- [ ] `33600` - `RIPEMD-320`
 - [ ] `33700` - `Microsoft Online Account (PBKDF2-HMAC-SHA256 + AES256)`
 - [ ] `33800` - `WBB4 (Woltlab Burning Board) [bcrypt(bcrypt($pass))]`
 
@@ -238,16 +235,11 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `34100` - `LUKS v2 argon2 + SHA-256 + AES`
 - [ ] `34201` - `MurmurHash64A (zero seed)`
 - [ ] `34211` - `MurmurHash64A truncated (zero seed)`
-- [ ] `34600` - `MD6 (256)`
 - [ ] `34700` - `Blockchain, My Wallet, Legacy Wallets`
-- [ ] `34800` - `BLAKE2b-256`
-- [ ] `34810` - `BLAKE2b-256($pass.$salt)`
-- [ ] `34820` - `BLAKE2b-256($salt.$pass)`
 
 ### 35000-35999
 
 - [ ] `35100` - `sm3crypt $sm3$, SM3 (Unix)`
-- [ ] `35200` - `AS/400 SSHA1`
 - [ ] `35300` - `Kerberos 5, etype 23, TGS-REP (NT)`
 - [ ] `35400` - `Kerberos 5, etype 23, AS-REP (NT)`
 - [ ] `35500` - `Wordpress bcrypt(hmac-sha384($pass))`

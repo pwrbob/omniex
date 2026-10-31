@@ -2249,6 +2249,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "md6",
         hashcat: &[
+            hc!(
+                34600,
+                "539a8b63639c94b80e746611c476a684e7cc95235187b2f8b81a188d6dfbf64c"
+            ),
             hc_ambiguous!(40168, "387369565c845fffaa4e8c56d79f245d"),
             hc_ambiguous!(
                 40170,
@@ -2347,6 +2351,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "ripemd",
         hashcat: &[
+            hc_ambiguous!(
+                33600,
+                "8339009b816d4e4c2a6be3c6e1daac6aca69a7670ecdc583adfca0db17cc8f08ce35d6c759b038ab"
+            ),
             hc_ambiguous!(40086, "c79c5eefc7c8e629c12aa936f1bda9a9"),
             hc_ambiguous!(40173, "540a38d3ed9357f8f331867815733fae"),
             hc!(6000, "012cb9b334ec1aeb71a9c8ce85586082467f7eb6"),
@@ -3428,6 +3436,52 @@ pub const VECTORS: &[Vector] = &[
             "BitLocker",
             "$bitlocker$1$16$6f972989ddc209f1eccf07313a7266a2$1048576$12$3a33a8eaff5e6f81d907b591$60$316b0f6d4cb445fb056f0e3e0633c413526ff4481bbf588917b70a4e8f8075f5ceb45958a800b42cb7ff9b7f5e17c6145bf8561ea86f52d3592059fb"
         )],
+    },
+    Vector {
+        slug: "blake2s-256",
+        hashcat: &[hc_ambiguous!(
+            31000,
+            "$BLAKE2$2c719b484789ad5f6fc1739012182169b25484af156adc91d4f64f72400e574a"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "blake2b-256",
+        hashcat: &[hc_ambiguous!(
+            34800,
+            "$BLAKE2$68b163391b3e779dcddba4e6d8fa03e962c29569b430efa5ba014303358557e1"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sm3",
+        hashcat: &[hc!(
+            31100,
+            "51227e48ea74827b77fc142c3ec21d25cc42c794e6ac422825cd47ad4ac7913d"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "as400-ssha1",
+        hashcat: &[hc!(
+            35200,
+            "$as400$ssha1$*QTEST1*7ED7D3694D0A2E40A720D41031B456C09124966E"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "salted-blake2b-256",
+        hashcat: &[
+            hc!(
+                34810,
+                "$BLAKE2$2b51353016a512b60e587bea98d799c2de243468085ca6cd67f983b2e55bfb67:2353288289"
+            ),
+            hc!(
+                34820,
+                "$BLAKE2$a4cad0b026ed24adf13fb70ec31d35b02751dcb33354e2c9d20ef3f968748501:3601"
+            ),
+        ],
+        john: &[],
     },
 ];
 
