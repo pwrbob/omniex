@@ -1218,7 +1218,7 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "crc32",
         hashcat: &[hc!(11500, "c762de4a:00000000")],
-        john: &[],
+        john: &[john!("CRC32", "$crc32$00000000.fa455f6b")],
     },
     Vector {
         slug: "crc32c",
@@ -1326,7 +1326,7 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "dahua-md5",
         hashcat: &[hc!(24900, "GRuHbyVp")],
-        john: &[],
+        john: &[john!("dahua", "$dahua$4WzwxXxM")],
     },
     Vector {
         slug: "besder-md5",
@@ -4207,6 +4207,69 @@ pub const VECTORS: &[Vector] = &[
             "$gy$j9T$HtyOX9cwJ2Dh8LlJV8IJ30$ZCSJt69pE/HLXFfIuxukRc2PlNla.tbqJxUHCp/WHVD"
         )],
         john: &[],
+    },
+    Vector {
+        slug: "john-hmac",
+        hashcat: &[],
+        john: &[
+            john!(
+                "HMAC-MD5",
+                "what do ya want for nothing?#750c783e6ab0b503eaa86e310a5db738"
+            ),
+            john!(
+                "HMAC-SHA1",
+                "The quick brown fox jumps over the lazy dog#de7c9b85b8b78aa6bc8a7a36f70a90701c9db4d9"
+            ),
+            john!(
+                "HMAC-SHA256",
+                "The quick brown fox jumps over the lazy dog#f7bc83f430538424b13298e6aa6fb143ef4d59a14946175997479dbc2d1a3cd8"
+            ),
+            john!(
+                "HMAC-SHA512",
+                "what do ya want for nothing?#164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737"
+            ),
+        ],
+    },
+    Vector {
+        slug: "adxcrypt",
+        hashcat: &[],
+        john: &[john!("adxcrypt", "$adxcrypt$54886955")],
+    },
+    Vector {
+        slug: "afs",
+        hashcat: &[],
+        john: &[john!("AFS", "$K4$e35e9294ecef926d,0123")],
+    },
+    Vector {
+        slug: "bfegg",
+        hashcat: &[],
+        john: &[john!("bfegg", "+9F93o1OxwgK1")],
+    },
+    Vector {
+        slug: "cq",
+        hashcat: &[],
+        john: &[john!("cq", "$cq$admin$a9db7ca6")],
+    },
+    Vector {
+        slug: "ipb2",
+        hashcat: &[],
+        john: &[john!(
+            "ipb2",
+            "$IPB2$2e75504633$d891f03a7327639bc632d62a7f302604"
+        )],
+    },
+    Vector {
+        slug: "iterated-sha1",
+        hashcat: &[],
+        john: &[john!(
+            "Iterated-SHA1",
+            "$sisha1$1024$6f77746f6f77746f5fa823ad3c2dc9b58893df73d52b2108b2efce45"
+        )],
+    },
+    Vector {
+        slug: "mscash",
+        hashcat: &[],
+        john: &[john!("mscash", "root:176a4c2bd45ac73687676c2f09045353")],
     },
 ];
 

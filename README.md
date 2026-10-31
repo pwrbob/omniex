@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-764%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-777%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -359,6 +359,14 @@ checked against that command in CI.
 | `pkzip` | PKZIP | 17200, 17210, 17220, 17225, 17230 | PKZIP |
 | `yescrypt` | yescrypt | 36100 | - |
 | `gost-yescrypt` | gost-yescrypt | 36200 | - |
+| `john-hmac` | HMAC | - | HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512 |
+| `adxcrypt` | adxcrypt | - | adxcrypt |
+| `afs` | AFS | - | AFS |
+| `bfegg` | bfegg | - | bfegg |
+| `cq` | cq | - | cq |
+| `ipb2` | IPB2 | - | ipb2 |
+| `iterated-sha1` | Iterated-SHA1 | - | Iterated-SHA1 |
+| `mscash` | mscash | - | mscash |
 | `rar3hp` | RAR3-hp | 12500 | rar |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | ZIP |
@@ -472,7 +480,7 @@ checked against that command in CI.
 | `macos-pbkdf2-sha512` | macOS v10.8+ (PBKDF2-SHA512) | 40018 | - |
 | `pbkdf1-sha1` | PBKDF1-SHA1 | 40070 | - |
 | `web2py-pbkdf2-sha512` | Web2py pbkdf2-sha512 | 40050 | - |
-| `crc32` | CRC32 | 11500 | - |
+| `crc32` | CRC32 | 11500 | CRC32 |
 | `crc32c` | CRC32C | 27900 | - |
 | `murmurhash` | MurmurHash | 25700 | - |
 | `murmurhash3` | MurmurHash3 | 27800 | - |
@@ -487,7 +495,7 @@ checked against that command in CI.
 | `fortigate256` | FortiGate256 (FortiOS256) | 40054 | Fortigate256 |
 | `qnx7-sha512` | QNX 7 /etc/shadow (SHA512) | 40041 | - |
 | `umbraco-hmac-sha1` | Umbraco HMAC-SHA1 | 24800 | - |
-| `dahua-md5` | Dahua Authentication MD5 | 24900 | - |
+| `dahua-md5` | Dahua Authentication MD5 | 24900 | dahua |
 | `besder-md5` | Besder Authentication MD5 | 24901 | - |
 | `postgres-cram-md5` | PostgreSQL CRAM (MD5) | 11100 | postgres |
 | `mysql-cram-sha1` | MySQL CRAM (SHA1) | 11200 | mysqlna |

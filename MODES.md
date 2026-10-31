@@ -217,8 +217,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### A-C
 
-- [ ] `adxcrypt`
-- [ ] `AFS`
 - [ ] `agilekeychain` - OpenCL: `agilekeychain-opencl`
 - [ ] `andOTP`
 - [ ] `armory`
@@ -228,7 +226,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `axcrypt2-opencl` - OpenCL only
 - [ ] `AzureAD`
 - [ ] `BestCrypt`
-- [ ] `bfegg`
 - [ ] `bitshares`
 - [ ] `Bitwarden` - OpenCL: `bitwarden-opencl`
 - [ ] `BKS`
@@ -237,13 +234,10 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `chap`
 - [ ] `Clipperz`
 - [ ] `cloudkeychain` - OpenCL: `cloudkeychain-opencl`
-- [ ] `cq`
-- [ ] `CRC32`
 - [ ] `cryptoSafe` - OpenCL: `cryptosafe-opencl`
 
 ### D-F
 
-- [ ] `dahua`
 - [ ] `dashlane` - OpenCL: `dashlane-opencl`
 - [ ] `diskcryptor-aes-opencl` - OpenCL only
 - [ ] `Django`
@@ -264,14 +258,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 - [ ] `gost94crypt` - OpenCL: `gost94crypt-opencl`
 - [ ] `hdaa`
-- [ ] `HMAC-MD5`
-- [ ] `HMAC-SHA1`
-- [ ] `HMAC-SHA256`
-- [ ] `HMAC-SHA512`
 - [ ] `hsrp`
 - [ ] `IKE`
-- [ ] `ipb2`
-- [ ] `Iterated-SHA1` - OpenCL: `Iterated-SHA1-opencl`
 - [ ] `Iterated-SHA256` - OpenCL: `Iterated-SHA256-opencl`
 
 ### J-L
@@ -304,7 +292,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `money`
 - [ ] `MongoDB`
 - [ ] `Mozilla`
-- [ ] `mscash` - OpenCL: `mscash-opencl`
 - [ ] `mschapv2-naive`
 - [ ] `multibit`
 - [ ] `mysql-sha1` - OpenCL: `mysql-sha1-opencl`

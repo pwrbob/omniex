@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "CRC32",
     slug = "crc32",
     hashcat = [11500],
+    john = ["CRC32"],
 )]
 pub struct Crc32 {
     /// The 4-byte digest.
@@ -25,6 +26,13 @@ impl Parse for Crc32 {
         if input.is_empty() {
             return Err(parse::empty());
         }
+        if let Some(rest) = input.strip_prefix("$crc32$") {
+            let (initial, digest, digest_offset) = parse::split_once(rest, '.', 7)?;
+            return Ok(Self {
+                digest: parse::decode_hex_field::<4>(digest, digest_offset, "digest")?,
+                initial: parse::decode_hex_field::<4>(initial, 7, "initial")?,
+            });
+        }
         let (digest, initial, initial_offset) = parse::split_once(input, ':', 0)?;
         Ok(Self {
             digest: parse::decode_hex_field::<4>(digest, 0, "digest")?,
@@ -34,11 +42,19 @@ impl Parse for Crc32 {
 }
 
 impl Render for Crc32 {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
-        format!(
-            "{}:{}",
-            crate::format::hex(self.digest),
-            crate::format::hex(self.initial)
-        )
+    fn render_value(&self, opts: &RenderOptions) -> String {
+        if opts.tool == crate::Tool::John {
+            format!(
+                "$crc32${}.{}",
+                crate::format::hex(self.initial),
+                crate::format::hex(self.digest)
+            )
+        } else {
+            format!(
+                "{}:{}",
+                crate::format::hex(self.digest),
+                crate::format::hex(self.initial)
+            )
+        }
     }
 }

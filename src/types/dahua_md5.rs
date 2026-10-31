@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "Dahua Authentication MD5",
     slug = "dahua-md5",
     hashcat = [24900],
+    john = ["dahua"],
 )]
 pub struct DahuaMd5 {
     /// Eight digest characters.
@@ -21,6 +22,7 @@ impl Parse for DahuaMd5 {
         if input.is_empty() {
             return Err(parse::empty());
         }
+        let input = input.strip_prefix("$dahua$").unwrap_or(input);
         if input.len() != 8 {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
@@ -35,7 +37,11 @@ impl Parse for DahuaMd5 {
 }
 
 impl Render for DahuaMd5 {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
-        self.digest.clone()
+    fn render_value(&self, opts: &RenderOptions) -> String {
+        if opts.tool == crate::Tool::John {
+            format!("$dahua${}", self.digest)
+        } else {
+            self.digest.clone()
+        }
     }
 }

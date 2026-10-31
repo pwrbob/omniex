@@ -1299,8 +1299,13 @@ fn render_is_stable_across_repeated_round_trips() {
 fn describe_is_not_empty_for_any_type() {
     for descriptor in registry::all() {
         let vector = vector_for(descriptor).expect("vector");
-        let value =
-            registry::parse(descriptor, vector.hashcat[0].hash, &ParseOptions::default()).unwrap();
+        let hash = vector
+            .hashcat
+            .first()
+            .map(|entry| entry.hash)
+            .or_else(|| vector.john.first().map(|entry| entry.hash))
+            .expect("hashcat or john vector");
+        let value = registry::parse(descriptor, hash, &ParseOptions::default()).unwrap();
         assert!(!value.describe().is_empty());
     }
 }
@@ -1363,7 +1368,11 @@ fn value_dependent_modes_track_salt_and_key_limits() {
 fn modes_fn_never_reports_undeclared_modes() {
     for descriptor in registry::all() {
         let vector = vector_for(descriptor).expect("vector");
-        let mut samples = vec![vector.hashcat[0].hash.to_owned()];
+        let mut samples = vector
+            .hashcat
+            .first()
+            .map(|entry| vec![entry.hash.to_owned()])
+            .unwrap_or_default();
         if let Some(entry) = vector.john.first() {
             samples.push(entry.hash.to_owned());
         }
