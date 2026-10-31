@@ -83,7 +83,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 13000-13999
 
-- [ ] `13400` - `KeePass (KDBX v2/v3)`
 - [ ] `13711` - `VeraCrypt RIPEMD160 + XTS 512 bit (legacy)`
 - [ ] `13712` - `VeraCrypt RIPEMD160 + XTS 1024 bit (legacy)`
 - [ ] `13713` - `VeraCrypt RIPEMD160 + XTS 1536 bit (legacy)`
@@ -194,7 +193,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `29541` - `LUKS v1 RIPEMD-160 + AES`
 - [ ] `29542` - `LUKS v1 RIPEMD-160 + Serpent`
 - [ ] `29543` - `LUKS v1 RIPEMD-160 + Twofish`
-- [ ] `29700` - `KeePass (KDBX v2/v3) - keyfile only`
 - [ ] `29800` - `Bisq .wallet (scrypt)`
 - [ ] `29910` - `ENCsecurity Datavault (PBKDF2/no keychain)`
 - [ ] `29920` - `ENCsecurity Datavault (PBKDF2/keychain)`
@@ -254,8 +252,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `34100` - `LUKS v2 argon2 + SHA-256 + AES`
 - [ ] `34201` - `MurmurHash64A (zero seed)`
 - [ ] `34211` - `MurmurHash64A truncated (zero seed)`
-- [ ] `34300` - `KeePass Argon2 (KDBX v4)`
-- [ ] `34301` - `KeePass AESKDF (KDBX v4)`
 - [ ] `34600` - `MD6 (256)`
 - [ ] `34700` - `Blockchain, My Wallet, Legacy Wallets`
 - [ ] `34800` - `BLAKE2b-256`

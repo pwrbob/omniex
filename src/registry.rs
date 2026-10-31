@@ -109,6 +109,8 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &Pdf::DESCRIPTOR,
     &Gpg::DESCRIPTOR,
     &Dpapi::DESCRIPTOR,
+    &Keepass::DESCRIPTOR,
+    &Keepass4::DESCRIPTOR,
     &Rar3hp::DESCRIPTOR,
     &Rar5::DESCRIPTOR,
     &WinZip::DESCRIPTOR,
