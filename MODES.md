@@ -230,8 +230,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `Bitwarden` - OpenCL: `bitwarden-opencl`
 - [ ] `BKS`
 - [ ] `Blackberry-ES10`
-- [ ] `cardano`
-- [ ] `chap`
 - [ ] `Clipperz`
 - [ ] `cloudkeychain` - OpenCL: `cloudkeychain-opencl`
 - [ ] `cryptoSafe` - OpenCL: `cryptosafe-opencl`
@@ -242,12 +240,10 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `diskcryptor-aes-opencl` - OpenCL only
 - [ ] `Django`
 - [ ] `django-scrypt`
-- [ ] `dmd5`
 - [ ] `dmg` - OpenCL: `dmg-opencl`
 - [ ] `dominosec`
 - [ ] `dominosec8`
 - [ ] `EPiServer`
-- [ ] `eigrp`
 - [ ] `electrum-modern-opencl` - OpenCL only
 - [ ] `EncFS` - OpenCL: `EncFS-opencl`
 - [ ] `enpass` - OpenCL: `enpass-opencl`
@@ -257,17 +253,12 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 ### G-I
 
 - [ ] `gost94crypt` - OpenCL: `gost94crypt-opencl`
-- [ ] `hdaa`
-- [ ] `hsrp`
-- [ ] `IKE`
 - [ ] `Iterated-SHA256` - OpenCL: `Iterated-SHA256-opencl`
 
 ### J-L
 
 - [ ] `keplr`
 - [ ] `keyring` - OpenCL: `keyring-opencl`
-- [ ] `krb4`
-- [ ] `krb5`
 - [ ] `krb5asrep`
 - [ ] `krb5asrep-aes-opencl` - OpenCL only
 - [ ] `krb5pa-md5` - OpenCL: `krb5pa-md5-opencl`
@@ -304,9 +295,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `pfx` - OpenCL: `pfx-opencl`
 - [ ] `po`
 - [ ] `RACF-KDFAES`
-- [ ] `RAKP-MD5` - OpenCL: `RAKP-MD5-opencl`
-- [ ] `RAKP-SHA1` - OpenCL: `RAKP-SHA1-opencl`
-- [ ] `RAKP-SHA256` - OpenCL: `RAKP-SHA256-opencl`
 - [ ] `Raw-MD5-flat`
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
 - [ ] `restic`
@@ -330,7 +318,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `vmx` - OpenCL: `vmx-opencl`
 - [ ] `wbb3`
 - [ ] `Whirpool`
-- [ ] `WoWSRP`
 - [ ] `wpapsk` - OpenCL: `wpapsk-opencl`
 - [ ] `wpapsk-pmk` - OpenCL: `wpapsk-pmk-opencl`
 - [ ] `XSHA512-free-opencl` - OpenCL only

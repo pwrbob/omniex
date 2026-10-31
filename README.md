@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-826%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-839%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -410,6 +410,17 @@ checked against that command in CI.
 | `tezos` | Tezos | - | tezos |
 | `vdi` | VDI | - | vdi |
 | `keystore` | Keystore | - | keystore |
+| `chap` | CHAP | - | chap |
+| `cardano-john` | Cardano (John) | - | cardano |
+| `dmd5` | DIGEST-MD5 (John) | - | dmd5 |
+| `eigrp` | EIGRP | - | eigrp |
+| `hdaa` | HDAA | - | hdaa |
+| `hsrp` | HSRP | - | hsrp |
+| `ike-john` | IKE (John) | - | IKE |
+| `krb4` | Kerberos 4 | - | krb4 |
+| `krb5-john` | Kerberos 5 (John) | - | krb5 |
+| `rakp` | RAKP (John) | - | RAKP-MD5, RAKP-SHA1, RAKP-SHA256 |
+| `wowsrp` | WoWSRP | - | WoWSRP |
 | `signal` | Signal | - | Signal |
 | `sl3` | SL3 | - | SL3 |
 | `vtp` | VTP | - | vtp |
