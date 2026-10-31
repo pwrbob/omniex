@@ -8,7 +8,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "MD5 (two salts)",
     slug = "md5-two-salts",
-    hashcat = [3730],
+    hashcat = [3730, 31700, 33000],
+    modes_fn = md5_two_salts_modes,
 )]
 pub struct Md5TwoSalts {
     /// The 16-byte MD5 digest.
@@ -22,6 +23,14 @@ pub struct Md5TwoSalts {
     /// Second salt, serialized as ASCII.
     #[field(role = salt, encoding = ascii)]
     pub salt2: String,
+}
+
+pub fn md5_two_salts_modes(_value: &Md5TwoSalts) -> Vec<crate::Mode> {
+    vec![
+        crate::Mode::Hashcat(3730),
+        crate::Mode::Hashcat(31700),
+        crate::Mode::Hashcat(33000),
+    ]
 }
 
 impl Parse for Md5TwoSalts {

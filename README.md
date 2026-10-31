@@ -296,6 +296,11 @@ checked against that command in CI.
 | `salted-blake2b-256` | Salted BLAKE2b-256 | 34810, 34820 | - |
 | `sm3` | ShangMi 3 (SM3) | 31100 | - |
 | `as400-ssha1` | AS/400 SSHA1 | 35200 | - |
+| `werkzeug-md5` | Python Werkzeug MD5 | 30000 | - |
+| `werkzeug-sha256` | Python Werkzeug SHA256 | 30120 | - |
+| `anope-sha256` | Anope IRC Services | 30700 | - |
+| `dane-sha256` | DANE RFC7929/RFC8162 SHA2-256 | 30420 | - |
+| `md5-sha1-md5-nested` | md5(sha1(md5($pass))) | 32800 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |
@@ -312,7 +317,7 @@ checked against that command in CI.
 | `sap-passcode` | SAP CODVN F/G | 7800, 7801 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
-| `md5-two-salts` | MD5 (two salts) | 3730 | - |
+| `md5-two-salts` | MD5 (two salts) | 3730, 31700, 33000 | - |
 | `iscsi-chap` | iSCSI CHAP | 4800 | - |
 | `half-md5` | Half MD5 | 5100 | - |
 | `ike-psk-md5` | IKE-PSK MD5 | 5300 | - |

@@ -187,12 +187,8 @@ Hashcat's plaintext mode is excluded below.
 
 ### 30000-30999
 
-- [ ] `30000` - `Python Werkzeug MD5 (HMAC-MD5 (key = $salt))`
-- [ ] `30120` - `Python Werkzeug SHA256 (HMAC-SHA256 (key = $salt))`
-- [ ] `30420` - `DANE RFC7929/RFC8162 SHA2-256`
 - [ ] `30600` - `bcrypt(sha256($pass))`
 - [ ] `30601` - `bcrypt(HMAC-SHA256($pass))`
-- [ ] `30700` - `Anope IRC Services (enc_sha256)`
 - [ ] `30901` - `Bitcoin raw private key (P2PKH), compressed`
 - [ ] `30902` - `Bitcoin raw private key (P2PKH), uncompressed`
 - [ ] `30903` - `Bitcoin raw private key (P2WPKH, Bech32), compressed`
@@ -206,7 +202,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `31300` - `MS SNTP`
 - [ ] `31400` - `SecureCRT MasterPassphrase v2`
 - [ ] `31600` - `Domain Cached Credentials 2 (DCC2), MS Cache 2, (NT)`
-- [ ] `31700` - `md5(md5(md5($pass).$salt1).$salt2)`
 - [ ] `31800` - `1Password, mobilekeychain (1Password 8)`
 - [ ] `31900` - `MetaMask Mobile Wallet`
 
@@ -217,11 +212,9 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `32300` - `Empire CMS (Admin password)`
 - [ ] `32500` - `Dogechain.info Wallet`
 - [ ] `32700` - `Kremlin Encrypt 3.0 w/NewDES`
-- [ ] `32800` - `md5(sha1(md5($pass)))`
 
 ### 33000-33999
 
-- [ ] `33000` - `md5($salt1.$pass.$salt2)`
 - [ ] `33400` - `mega.nz password-protected link (PBKDF2-HMAC-SHA512)`
 - [ ] `33500` - `RC4 40-bit DropN`
 - [ ] `33501` - `RC4 72-bit DropN`
