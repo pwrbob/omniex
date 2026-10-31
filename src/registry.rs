@@ -100,6 +100,8 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &AxcryptSha1::DESCRIPTOR,
     &Bestcrypt::DESCRIPTOR,
     &PkzipMasterKey::DESCRIPTOR,
+    &MozillaKey3::DESCRIPTOR,
+    &MozillaKey4::DESCRIPTOR,
     &WpaPmkid::DESCRIPTOR,
     &MediaWikiB::DESCRIPTOR,
     &Md5TwoSalts::DESCRIPTOR,

@@ -272,6 +272,8 @@ checked against that command in CI.
 | `axcrypt-sha1` | AxCrypt 1 in-memory SHA1 | 13300 | - |
 | `bestcrypt` | BestCrypt | 23900, 24000 | - |
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
+| `mozilla-key3` | Mozilla key3.db | 26000 | - |
+| `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |

@@ -216,9 +216,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 26000-26999
 
-- [ ] `26000` - `Mozilla key3.db`
-- [ ] `26100` - `Mozilla key4.db`
-- [ ] `26150` - `Mozilla key4.db SHA384`
 - [ ] `26500` - `iPhone passcode (UID key + System Keybag)`
 
 ### 27000-27999

@@ -2988,6 +2988,28 @@ pub const VECTORS: &[Vector] = &[
         ],
         john: &[],
     },
+    Vector {
+        slug: "mozilla-key3",
+        hashcat: &[hc!(
+            26000,
+            "$mozilla$*3DES*b735d19e6cadb5136376a98c2369f22819d08c79*2b36961682200a877f7d5550975b614acc9fefe3*f03f3575fd5bdbc9e32232316eab7623"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mozilla-key4",
+        hashcat: &[
+            hc!(
+                26100,
+                "$mozilla$*AES*5add91733b9b13310ea79a4b38de5c3f797c3bf1*54c17e2a8a066cbdc55f2080c5e9f02ea3954d712cb34b4547f5186548f46512*10000*040e4b5a00f993e63f67a34f6cfc5704*eae9c6c003e6d1b2aa8aa21630838808"
+            ),
+            hc!(
+                26150,
+                "$mozilla$*AES*95f6acda22fbfb543226eca01b2e65099730d20cb3114c47536bc33a96b9137ea4a1dcebbcb8d924d20f5784be1fb1f3*b3edd4ec861f2e7a16c72771302a55f11b1504ac1792a4c408c44aa82023ef7f*10000*040eaff904bd66d4f3ba86cbb13ced52*a0b908a87ba816a5cb4d9632f015a972"
+            ),
+        ],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {
