@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-810%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-826%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -394,6 +394,22 @@ checked against that command in CI.
 | `pgpsda` | PGP SDA | - | pgpsda |
 | `pst` | PST | - | PST |
 | `sappse` | SAP PSE | - | sappse |
+| `known-hosts` | known_hosts | - | known_hosts |
+| `krb5-18` | krb5-18 (John) | - | krb5-18 |
+| `leet` | leet | - | leet |
+| `md5ns` | md5ns | - | md5ns |
+| `monero` | Monero | - | Monero |
+| `net-ah` | NetAH | - | net-ah |
+| `net-md5` | NetMD5 | - | net-md5 |
+| `net-sha1` | NetSHA1 | - | net-sha1 |
+| `openssl-enc` | OpenSSL enc | - | openssl-enc |
+| `openvms` | OpenVMS | - | OpenVMS |
+| `pgpwde` | PGP WDE | - | pgpwde |
+| `putty` | PuTTY | - | PuTTY |
+| `sybase-prop` | Sybase-PROP | - | Sybase-PROP |
+| `tezos` | Tezos | - | tezos |
+| `vdi` | VDI | - | vdi |
+| `keystore` | Keystore | - | keystore |
 | `signal` | Signal | - | Signal |
 | `sl3` | SL3 | - | SL3 |
 | `vtp` | VTP | - | vtp |

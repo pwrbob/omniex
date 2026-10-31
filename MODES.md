@@ -266,38 +266,27 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 - [ ] `keplr`
 - [ ] `keyring` - OpenCL: `keyring-opencl`
-- [ ] `keystore` - OpenCL: `keystore-opencl`
-- [ ] `known_hosts`
 - [ ] `krb4`
 - [ ] `krb5`
-- [ ] `krb5-18`
 - [ ] `krb5asrep`
 - [ ] `krb5asrep-aes-opencl` - OpenCL only
 - [ ] `krb5pa-md5` - OpenCL: `krb5pa-md5-opencl`
 - [ ] `krb5pa-sha1` - OpenCL: `krb5pa-sha1-opencl`
 - [ ] `krb5tgs` - OpenCL: `krb5tgs-opencl`
-- [ ] `leet`
 - [ ] `lotus85`
 - [ ] `LUKS`
 
 ### M-O
 
-- [ ] `md5ns`
-- [ ] `Monero`
 - [ ] `Mozilla`
 - [ ] `mschapv2-naive`
 - [ ] `multibit`
-- [ ] `net-ah`
-- [ ] `net-md5`
-- [ ] `net-sha1`
 - [ ] `nethalflm`
 - [ ] `netlmv2`
 - [ ] `netlm`
 - [ ] `netntlm-naive`
 - [ ] `nsec3`
 - [ ] `ntlmv2-opencl` - OpenCL only
-- [ ] `openssl-enc`
-- [ ] `OpenVMS`
 - [ ] `ospf`
 - [ ] `Oubliette-Blowfish`
 - [ ] `Oubliette-IDEA`
@@ -313,9 +302,7 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `PBKDF2-HMAC-SHA512` - OpenCL: `PBKDF2-HMAC-SHA512-opencl`
 - [ ] `PEM` - OpenCL: `pem-opencl`
 - [ ] `pfx` - OpenCL: `pfx-opencl`
-- [ ] `pgpwde` - OpenCL: `pgpwde-opencl`
 - [ ] `po`
-- [ ] `PuTTY`
 - [ ] `RACF-KDFAES`
 - [ ] `RAKP-MD5` - OpenCL: `RAKP-MD5-opencl`
 - [ ] `RAKP-SHA1` - OpenCL: `RAKP-SHA1-opencl`
@@ -336,13 +323,10 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `sspr` - OpenCL: `sspr-opencl`
 - [ ] `streebog256crypt` - OpenCL: `streebog256crypt-opencl`
 - [ ] `streebog512crypt` - OpenCL: `streebog512crypt-opencl`
-- [ ] `Sybase-PROP`
-- [ ] `tezos` - OpenCL: `tezos-opencl`
 - [ ] `TrueCrypt-opencl` - OpenCL only
 
 ### V-Z
 
-- [ ] `vdi`
 - [ ] `vmx` - OpenCL: `vmx-opencl`
 - [ ] `wbb3`
 - [ ] `Whirpool`
