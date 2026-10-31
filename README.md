@@ -261,6 +261,12 @@ checked against that command in CI.
 | `multibit-wallet` | MultiBit Classic .wallet (scrypt) | 27700 | - |
 | `pem-private-key` | PKCS#8 Private Keys | 24410, 24420 | - |
 | `pkcs12` | PKCS#12 | 24430, 24440 | - |
+| `onepassword-agile` | 1Password, agilekeychain | 6600 | - |
+| `onepassword-cloud` | 1Password, cloudkeychain | 8200 | - |
+| `lastpass` | LastPass | 6800 | - |
+| `lotus5` | Lotus Notes/Domino 5 | 8600 | - |
+| `iwork` | Apple iWork | 23300 | - |
+| `windows-hello` | Windows Hello PIN/Password | 28100 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |

@@ -58,8 +58,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `6241` - `TrueCrypt RIPEMD160 + XTS 512 bit + boot-mode (legacy)`
 - [ ] `6242` - `TrueCrypt RIPEMD160 + XTS 1024 bit + boot-mode (legacy)`
 - [ ] `6243` - `TrueCrypt RIPEMD160 + XTS 1536 bit + boot-mode (legacy)`
-- [ ] `6600` - `1Password, agilekeychain`
-- [ ] `6800` - `LastPass + LastPass sniffed`
 
 ### 7000-7999
 
@@ -73,8 +71,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 8000-8999
 
-- [ ] `8200` - `1Password, cloudkeychain`
-- [ ] `8600` - `Lotus Notes/Domino 5`
 - [ ] `8700` - `Lotus Notes/Domino 6`
 - [ ] `8800` - `Android FDE <= 4.3`
 
@@ -214,7 +210,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `23001` - `SecureZIP AES-128`
 - [ ] `23002` - `SecureZIP AES-192`
 - [ ] `23003` - `SecureZIP AES-256`
-- [ ] `23300` - `Apple iWork`
 - [ ] `23700` - `RAR3-p (Uncompressed)`
 - [ ] `23800` - `RAR3-p (Compressed)` (no test module)
 - [ ] `23900` - `BestCrypt v3 Volume Encryption`
@@ -239,7 +234,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 28000-28999
 
-- [ ] `28100` - `Windows Hello PIN/Password`
 
 ### 29000-29999
 
