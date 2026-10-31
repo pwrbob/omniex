@@ -83,12 +83,8 @@ impl Parse for Pdf {
         let (permissions, _) = next(11, "permissions")?;
         let (encrypt_metadata, _) = next(13, "encrypt metadata")?;
         let (salt, _) = next(15, "salt")?;
-        let (data, rc4_key) = match next(17, "data")? {
-            (data, _) => match data.split_once(':') {
-                Some((data, rc4_key)) => (data, rc4_key),
-                None => (data, ""),
-            },
-        };
+        let (data, _) = next(17, "data")?;
+        let (data, rc4_key) = data.split_once(':').unwrap_or((data, ""));
 
         let version = version.parse::<u8>().map_err(|_| {
             parse::error(ParseErrorKind::InvalidCharacter, 5, "invalid PDF version")
