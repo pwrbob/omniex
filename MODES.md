@@ -117,11 +117,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 17000-17999
 
-- [ ] `17200` - `PKZIP (Compressed)`
-- [ ] `17210` - `PKZIP (Uncompressed)`
-- [ ] `17220` - `PKZIP (Compressed Multi-File)`
-- [ ] `17225` - `PKZIP (Mixed Multi-File)`
-- [ ] `17230` - `PKZIP (Mixed Multi-File Checksum-Only)`
 
 ### 18000-18999
 
@@ -195,8 +190,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 36000-36999
 
-- [ ] `36100` - `yescrypt`
-- [ ] `36200` - `gost-yescrypt`
 
 ### 37000-37999
 

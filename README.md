@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-738%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-745%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -356,6 +356,9 @@ checked against that command in CI.
 | `bip39` | BIP39 Passphrase Recovery | 36000 | - |
 | `onepassword-mobile` | 1Password mobile keychain | 31800 | - |
 | `apple-dmg` | Apple DMG | 38300 | - |
+| `pkzip` | PKZIP | 17200, 17210, 17220, 17225, 17230 | - |
+| `yescrypt` | yescrypt | 36100 | - |
+| `gost-yescrypt` | gost-yescrypt | 36200 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | - |
