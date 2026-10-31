@@ -76,18 +76,14 @@ Hashcat's plaintext mode is excluded below.
 ### 11000-11999
 
 - [ ] `11400` - `SIP digest authentication (MD5)`
-- [ ] `11600` - `7-Zip`
 
 ### 12000-12999
 
 - [ ] `12200` - `eCryptfs`
-- [ ] `12500` - `RAR3-hp`
 
 ### 13000-13999
 
-- [ ] `13000` - `RAR5`
 - [ ] `13400` - `KeePass (KDBX v2/v3)`
-- [ ] `13600` - `WinZip`
 - [ ] `13711` - `VeraCrypt RIPEMD160 + XTS 512 bit (legacy)`
 - [ ] `13712` - `VeraCrypt RIPEMD160 + XTS 1024 bit (legacy)`
 - [ ] `13713` - `VeraCrypt RIPEMD160 + XTS 1536 bit (legacy)`
@@ -128,7 +124,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 16000-16999
 
-- [ ] `16700` - `FileVault 2`
 
 ### 17000-17999
 

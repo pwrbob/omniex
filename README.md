@@ -280,6 +280,11 @@ checked against that command in CI.
 | `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | - |
 | `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700 | - |
 | `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | - |
+| `rar3hp` | RAR3-hp | 12500 | - |
+| `rar5` | RAR5 | 13000 | - |
+| `winzip` | WinZip | 13600 | - |
+| `filevault2` | FileVault 2 | 16700 | - |
+| `sevenzip` | 7-Zip | 11600 | - |
 | `android-fde` | Android FDE <= 4.3 | 8800 | - |
 | `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
 | `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | - |

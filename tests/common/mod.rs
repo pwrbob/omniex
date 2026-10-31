@@ -3218,6 +3218,46 @@ pub const VECTORS: &[Vector] = &[
         ],
         john: &[],
     },
+    Vector {
+        slug: "rar3hp",
+        hashcat: &[hc!(
+            12500,
+            "$RAR3$*0*45109af8ab5f297a*adbf6c5385d7a40373e8f77d7b89d317"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "rar5",
+        hashcat: &[hc!(
+            13000,
+            "$rar5$16$38466361001011015181344360681307$15$00000000000000000000000000000000$8$cc7a30583e62676a"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "winzip",
+        hashcat: &[hc!(
+            13600,
+            "$zip2$*0*1*0*0675369741458183*5dc5*0**36b85538918416712640*$/zip2$"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "filevault2",
+        hashcat: &[hc!(
+            16700,
+            "$fvde$1$16$84286044060108438487434858307513$20000$f1620ab93192112f0a23eea89b5d4df065661f974b704191"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sevenzip",
+        hashcat: &[hc!(
+            11600,
+            "$7z$0$14$0$$11$33363437353138333138300000000000$2365089182$16$12$d00321533b483f54a523f624a5f63269"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {
