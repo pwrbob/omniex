@@ -267,6 +267,11 @@ checked against that command in CI.
 | `lotus5` | Lotus Notes/Domino 5 | 8600 | - |
 | `iwork` | Apple iWork | 23300 | - |
 | `windows-hello` | Windows Hello PIN/Password | 28100 | - |
+| `lotus-notes` | Lotus Notes/Domino 6/8 | 8700, 9100 | - |
+| `axcrypt1` | AxCrypt 1 | 13200 | - |
+| `axcrypt-sha1` | AxCrypt 1 in-memory SHA1 | 13300 | - |
+| `bestcrypt` | BestCrypt | 23900, 24000 | - |
+| `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |

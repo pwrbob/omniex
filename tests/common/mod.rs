@@ -2945,6 +2945,49 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "lotus-notes",
+        hashcat: &[
+            hc!(8700, "(GDJ0nDZI8l8RJzlRbemg)"),
+            hc!(9100, "(HC34tD3KtDp4oCZWmCJ4qC30mC30mC3KmC30mCcA5ovrMLH9M)"),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "axcrypt1",
+        hashcat: &[hc!(
+            13200,
+            "$axcrypt$*1*10467*9a7cd609bb262c738d9f0e4977039b94*ecbe0fd05a96fd2099d88a92eebb76c59d6837dfe55b3631"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "axcrypt-sha1",
+        hashcat: &[hc!(13300, "$axcrypt_sha1$b89eaac7e61417341b710b727768294d")],
+        john: &[],
+    },
+    Vector {
+        slug: "bestcrypt",
+        hashcat: &[
+            hc!(
+                23900,
+                "$bcve$3$08$234b8182cee7098b$35c12ef76a1e88175c4c222da3558310a0075bc7a06ecf46746d149c02a81fb8a97637d1103d2e13ddd5deaf982889594b18c12d7ca18a54875c5da4a47f90ae615ab94b8e3ed9e3c793d872a1b5ac35cfdb66c221d6d0853e9ff2e0f4435b43"
+            ),
+            hc!(
+                24000,
+                "$bcve$4$08$323631353538333233323034363039393534383233393530$9f7892b8324b1d8cd36b5f2f8705b407131261620a89370db8369046646f5f82b96780453948db53b04928ae0cc47066f13454b34e31b58ea44ce943bcba14fcbd87f17205a31a896df182629ceea164d87e9e29127e8d865ca0bee52f832723"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "pkzip-master-key",
+        hashcat: &[
+            hc_ambiguous!(20500, "f1eff5c0368d10311dcfc419"),
+            hc_ambiguous!(20510, "f1eff5c0368d10311dcfc419"),
+        ],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {

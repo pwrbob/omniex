@@ -71,13 +71,11 @@ Hashcat's plaintext mode is excluded below.
 
 ### 8000-8999
 
-- [ ] `8700` - `Lotus Notes/Domino 6`
 - [ ] `8800` - `Android FDE <= 4.3`
 
 ### 9000-9999
 
 - [ ] `9000` - `Password Safe v2`
-- [ ] `9100` - `Lotus Notes/Domino 8`
 - [ ] `9400` - `MS Office 2007`
 - [ ] `9500` - `MS Office 2010`
 - [ ] `9600` - `MS Office 2013`
@@ -115,8 +113,6 @@ Hashcat's plaintext mode is excluded below.
 ### 13000-13999
 
 - [ ] `13000` - `RAR5`
-- [ ] `13200` - `AxCrypt 1`
-- [ ] `13300` - `AxCrypt 1 in-memory SHA1`
 - [ ] `13400` - `KeePass (KDBX v2/v3)`
 - [ ] `13600` - `WinZip`
 - [ ] `13711` - `VeraCrypt RIPEMD160 + XTS 512 bit (legacy)`
@@ -189,8 +185,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 20000-20999
 
-- [ ] `20500` - `PKZIP Master Key`
-- [ ] `20510` - `PKZIP Master Key (6 byte optimization)`
 
 ### 21000-21999
 
@@ -212,11 +206,9 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `23003` - `SecureZIP AES-256`
 - [ ] `23700` - `RAR3-p (Uncompressed)`
 - [ ] `23800` - `RAR3-p (Compressed)` (no test module)
-- [ ] `23900` - `BestCrypt v3 Volume Encryption`
 
 ### 24000-24999
 
-- [ ] `24000` - `BestCrypt v4 Volume Encryption`
 
 ### 25000-25999
 
