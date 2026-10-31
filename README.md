@@ -280,6 +280,7 @@ checked against that command in CI.
 | `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | - |
 | `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700 | - |
 | `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | - |
+| `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |

@@ -117,10 +117,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 15000-15999
 
-- [ ] `15300` - `DPAPI masterkey file v1 (context 1 and 2)`
-- [ ] `15310` - `DPAPI masterkey file v1 (context 3)`
-- [ ] `15900` - `DPAPI masterkey file v2 (context 1 and 2)`
-- [ ] `15910` - `DPAPI masterkey file v2 (context 3)`
 
 ### 16000-16999
 
