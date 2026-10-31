@@ -744,7 +744,7 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "md2",
         hashcat: &[hc_ambiguous!(40084, "742fd7197420380cf5bb80b9c85a117d")],
-        john: &[],
+        john: &[john!("MD2", "$md2$ab4f496bfb2a530b219ff33031fe06b0")],
     },
     Vector {
         slug: "sha0",
@@ -768,7 +768,7 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "mdc2",
         hashcat: &[hc_ambiguous!(40101, "5da8fead05e8cd9d4d5424957b5bb4d6")],
-        john: &[],
+        john: &[john!("mdc2", "$mdc2$000ed54e093d61679aefbeae05bfe33a")],
     },
     Vector {
         slug: "has-160",
@@ -4398,6 +4398,99 @@ pub const VECTORS: &[Vector] = &[
         john: &[john!(
             "ZipMonster",
             "$zipmonster$e0f68d6f40c5f157c169e9ca0a6f09fe"
+        )],
+    },
+    Vector {
+        slug: "o3logon",
+        hashcat: &[],
+        john: &[john!(
+            "o3logon",
+            "$o3logon$PASSWORD9$8CF28B36E4F3D2095729CF59510003BF$3078D7DE44385654CC952A9C56E2659B"
+        )],
+    },
+    Vector {
+        slug: "o10glogon",
+        hashcat: &[],
+        john: &[john!(
+            "o10glogon",
+            "$o10glogon$jimf$6DA8BE6D9713B7F9190DC0F87F1BB1BDFFE44EB1892E40915592980ECCE60AA3$1C08586339E5806DD45CF8E6D83CC6EA2B8CDCDE7CC9F00ADF43DA0F07309090$E2F3D778138213BF01FD743F2092FC976FD60AB2C9F4A1B1D9B08439325421B1"
+        )],
+    },
+    Vector {
+        slug: "o5logon",
+        hashcat: &[],
+        john: &[john!(
+            "o5logon",
+            "$o5logon$566499330E8896301A1D2711EFB59E756D41AF7A550488D82FE7C8A418E5BE08B4052C0DC404A805C1D7D43FE3350873*4F739806EBC1D7742BC6"
+        )],
+    },
+    Vector {
+        slug: "nk",
+        hashcat: &[],
+        john: &[john!(
+            "nk",
+            "$nk$*379637b4fcde21b2c5fbc9a00af505e997443267*#17737d3661312121d5ae7d5c6156c0298"
+        )],
+    },
+    Vector {
+        slug: "mysql-sha1",
+        hashcat: &[],
+        john: &[john!(
+            "mysql-sha1",
+            "*5AD8F88516BD021DD43F171E2C785C69F8E54ADB"
+        )],
+    },
+    Vector {
+        slug: "pst",
+        hashcat: &[],
+        john: &[john!("PST", "$pst$a9290513")],
+    },
+    Vector {
+        slug: "pgpdisk",
+        hashcat: &[],
+        john: &[john!(
+            "pgpdisk",
+            "$pgpdisk$0*5*16000*3a1bfe10b9d17cf7b446cd94564fc594*1a1ce4453d81117830934495a2516ebc"
+        )],
+    },
+    Vector {
+        slug: "pgpsda",
+        hashcat: &[],
+        john: &[john!(
+            "pgpsda",
+            "$pgpsda$0*16000*12ad24b8dd12b751*19504b5f4e85c760"
+        )],
+    },
+    Vector {
+        slug: "signal",
+        hashcat: &[],
+        john: &[john!(
+            "Signal",
+            "$signal$1$6024$011d9eedb6367df21532acc22dcbb9b2$c492a9906443732b82ba846a14fad1eb$3f53a1cdff7417f3e576d390986218fc5808ae3a1470ca6c13b1fb0ca18673f7718e7f18cf633cd42841c6305953dd43a243e7fc6bdc2c4483d018d24792b7507d34b01a$a243e7fc6bdc2c4483d018d24792b7507d34b01a"
+        )],
+    },
+    Vector {
+        slug: "sl3",
+        hashcat: &[],
+        john: &[john!(
+            "SL3",
+            "$sl3$35831503698405$d8f6b336a4df3336bf7de58a38b1189f6c5ce1e8"
+        )],
+    },
+    Vector {
+        slug: "vtp",
+        hashcat: &[],
+        john: &[john!(
+            "vtp",
+            "$vtp$2$196$14000107000105dc000186a164656661756c740014000105000505dc000186a56368656e6100000010000103000605dc000186a6666666001800020c03ea05dc00018a8a666464692d64656661756c743000030d03eb117800018a8b74726372662d64656661756c7400000001010ccc040103ed0701000208010007090100072000040f03ec05dc00018a8c666464696e65742d64656661756c7400030100012400050d03ed117800018a8d74726272662d64656661756c740000000201000f03010002$80$0201010c646f6d61696e313233343536000000000000000000000000000000000000000000000015000000003134313030393134333631376010913064949d6f47a53b2ad68ef06b0000000106010002$6010913064949d6f47a53b2ad68ef06b"
+        )],
+    },
+    Vector {
+        slug: "sappse",
+        hashcat: &[],
+        john: &[john!(
+            "sappse",
+            "$pse$1$2048$8$0000000000000000$0$$8$826a5c4189e18b67"
         )],
     },
 ];

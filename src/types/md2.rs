@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "MD2",
     slug = "md2",
     hashcat = [40084],
+    john = ["MD2"],
 )]
 pub struct Md2 {
     /// The 16-byte digest.
@@ -22,6 +23,7 @@ impl Parse for Md2 {
             return Err(parse::empty());
         }
 
+        let input = input.strip_prefix("$md2$").unwrap_or(input);
         Ok(Self {
             digest: parse::decode_hex_field::<16>(input, 0, "digest")?,
         })
@@ -29,7 +31,11 @@ impl Parse for Md2 {
 }
 
 impl Render for Md2 {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
-        crate::format::hex(self.digest)
+    fn render_value(&self, opts: &RenderOptions) -> String {
+        if opts.tool == crate::Tool::John {
+            format!("$md2${}", crate::format::hex(self.digest))
+        } else {
+            crate::format::hex(self.digest)
+        }
     }
 }

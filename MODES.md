@@ -282,14 +282,11 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### M-O
 
-- [ ] `MD2`
 - [ ] `md5ns`
-- [ ] `mdc2`
 - [ ] `Monero`
 - [ ] `Mozilla`
 - [ ] `mschapv2-naive`
 - [ ] `multibit`
-- [ ] `mysql-sha1` - OpenCL: `mysql-sha1-opencl`
 - [ ] `net-ah`
 - [ ] `net-md5`
 - [ ] `net-sha1`
@@ -297,12 +294,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `netlmv2`
 - [ ] `netlm`
 - [ ] `netntlm-naive`
-- [ ] `nk`
 - [ ] `nsec3`
 - [ ] `ntlmv2-opencl` - OpenCL only
-- [ ] `o10glogon`
-- [ ] `o3logon`
-- [ ] `o5logon` - OpenCL: `o5logon-opencl`
 - [ ] `openssl-enc`
 - [ ] `OpenVMS`
 - [ ] `ospf`
@@ -320,11 +313,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `PBKDF2-HMAC-SHA512` - OpenCL: `PBKDF2-HMAC-SHA512-opencl`
 - [ ] `PEM` - OpenCL: `pem-opencl`
 - [ ] `pfx` - OpenCL: `pfx-opencl`
-- [ ] `pgpdisk` - OpenCL: `pgpdisk-opencl`
-- [ ] `pgpsda` - OpenCL: `pgpsda-opencl`
 - [ ] `pgpwde` - OpenCL: `pgpwde-opencl`
 - [ ] `po`
-- [ ] `PST`
 - [ ] `PuTTY`
 - [ ] `RACF-KDFAES`
 - [ ] `RAKP-MD5` - OpenCL: `RAKP-MD5-opencl`
@@ -337,14 +327,11 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### S-U
 
-- [ ] `sappse` - OpenCL: `sappse-opencl`
 - [ ] `SCRAM-PBKDF2-SHA1-MongoDB`
 - [ ] `SCRAM-PBKDF2-SHA256`
 - [ ] `scrypt`
 - [ ] `Siemens-S7`
-- [ ] `Signal`
 - [ ] `Skein`
-- [ ] `SL3` - OpenCL: `SL3-opencl`
 - [ ] `Snefru`
 - [ ] `sspr` - OpenCL: `sspr-opencl`
 - [ ] `streebog256crypt` - OpenCL: `streebog256crypt-opencl`
@@ -357,7 +344,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 - [ ] `vdi`
 - [ ] `vmx` - OpenCL: `vmx-opencl`
-- [ ] `vtp`
 - [ ] `wbb3`
 - [ ] `Whirpool`
 - [ ] `WoWSRP`

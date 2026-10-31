@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-796%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-810%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -385,6 +385,18 @@ checked against that command in CI.
 | `vnc` | VNC | - | VNC |
 | `zed` | Zed | - | zed |
 | `zipmonster` | ZipMonster | - | ZipMonster |
+| `mysql-sha1` | MySQL 4.1+ | - | mysql-sha1 |
+| `nk` | NK | - | nk |
+| `o3logon` | Oracle O3LOGON | - | o3logon |
+| `o5logon` | Oracle O5LOGON | - | o5logon |
+| `o10glogon` | Oracle O10GLOGON | - | o10glogon |
+| `pgpdisk` | PGP Disk | - | pgpdisk |
+| `pgpsda` | PGP SDA | - | pgpsda |
+| `pst` | PST | - | PST |
+| `sappse` | SAP PSE | - | sappse |
+| `signal` | Signal | - | Signal |
+| `sl3` | SL3 | - | SL3 |
+| `vtp` | VTP | - | vtp |
 | `rar3hp` | RAR3-hp | 12500 | rar |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | ZIP |
@@ -437,11 +449,11 @@ checked against that command in CI.
 | `sha384` | SHA2-384 | 10800 | Raw-SHA384 |
 | `salted-sha384` | Salted SHA2-384 | 10810, 10820, 10830, 10840 | - |
 | `sha384-utf16` | SHA2-384 (UTF-16LE) | 10870 | - |
-| `md2` | MD2 | 40084 | - |
+| `md2` | MD2 | 40084 | MD2 |
 | `sha0` | SHA-0 | 40085 | - |
 | `tiger` | Tiger | 40090, 40091, 40089, 40092, 40093 | - |
 | `panama` | PANAMA | 40100 | Panama |
-| `mdc2` | MDC-2 | 40101 | - |
+| `mdc2` | MDC-2 | 40101 | mdc2 |
 | `has-160` | HAS-160 | 40165 | has-160 |
 | `edon-r-256` | EDON-R-256 | 40166 | - |
 | `edon-r-512` | EDON-R-512 | 40167 | - |
