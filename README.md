@@ -215,7 +215,7 @@ checked against that command in CI.
 | `macos-sha512` | macOS SHA512 | 1722 | - |
 | `mssql-2012` | MSSQL (2012, 2014) | 1731 | mssql12 |
 | `sha512crypt` | sha512crypt | 1800 | sha512crypt |
-| `dcc2` | Domain Cached Credentials 2 | 2100 | mscash2 |
+| `dcc2` | Domain Cached Credentials 2 | 2100, 31600 | mscash2 |
 | `cisco-pix` | Cisco-PIX MD5 | 2400 | pix-md5 |
 | `cisco-asa` | Cisco-ASA MD5 | 2410 | - |
 | `phps` | PHPS | 2612 | PHPS |
@@ -312,6 +312,11 @@ checked against that command in CI.
 | `oracle-otm` | Oracle Transportation Management | 40045 | - |
 | `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | - |
 | `krb5asrep-aes` | Kerberos 5, etype 17/18, AS-REP | 32100, 32200 | - |
+| `murmurhash64a-zero` | MurmurHash64A (zero seed) | 34201, 34211 | - |
+| `sm3crypt` | sm3crypt | 35100 | - |
+| `scryptcrypt` | scryptcrypt | 36300 | - |
+| `pbkdf2-sha512-utf16` | PBKDF2-HMAC-SHA512 (UTF-16LE) | 36600 | - |
+| `mssql-2025` | MSSQL (2025) | 36601 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |

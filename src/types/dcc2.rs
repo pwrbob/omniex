@@ -8,7 +8,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Domain Cached Credentials 2",
     slug = "dcc2",
-    hashcat = [2100],
+    hashcat = [2100, 31600],
+    modes_fn = dcc2_modes,
     john = ["mscash2"],
 )]
 pub struct Dcc2 {
@@ -23,6 +24,14 @@ pub struct Dcc2 {
     /// The 16-byte digest.
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
+}
+
+pub fn dcc2_modes(_value: &Dcc2) -> Vec<crate::Mode> {
+    vec![
+        crate::Mode::Hashcat(2100),
+        crate::Mode::Hashcat(31600),
+        crate::Mode::John("mscash2"),
+    ]
 }
 
 impl Parse for Dcc2 {

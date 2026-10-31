@@ -479,10 +479,10 @@ pub const VECTORS: &[Vector] = &[
     },
     Vector {
         slug: "dcc2",
-        hashcat: &[hc!(
-            2100,
-            "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"
-        )],
+        hashcat: &[
+            hc_ambiguous!(31600, "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"),
+            hc!(2100, "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"),
+        ],
         john: &[john!(
             "mscash2",
             "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"
@@ -3639,6 +3639,43 @@ pub const VECTORS: &[Vector] = &[
                 "$krb5asrep$18$user$EXAMPLE.COM$aa4c494f520b27873a4de8f7$ebc9976a77f62e8ccca02d43d68bafcc66a81fcbb44a336b00ce401982f32975a5f9bcdc752643252185866685b0a30aaf50e449e392a5994e6979f23aba25f7704c90b2efa03b703c3c2f9e3617cc588ed226d0417e7742d45407878fd946d046b4a9732b9a203cb857811714b009c195b7c96b9bccb7e48832b11a4e92ecf24c49e54de8d0d5d5351445b5126db90bb7eebc7861db1e61de1175824b0a45023a6fa06c2a9d3035fdcf863bea922648e3dc28b48e39b1dec0869e7fe4de399cb52dfcf2596599da54a4bb0169c72d9496de2e137a4594e0e8a69082fc558ac9ace65d32eae5e260a65ca3f2f5871aaeee7a3b090b50f39321d120c144421e0abe7d"
             ),
         ],
+        john: &[],
+    },
+    Vector {
+        slug: "sm3crypt",
+        hashcat: &[hc!(
+            35100,
+            "$sm3$KTTUB40dW4mRyRFd$ul2xLiIY3FJtbo8sv1R93sAYCkxQCH/6rmS1kD5vJYA"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "scryptcrypt",
+        hashcat: &[hc!(
+            36300,
+            "$7$C6..../....nRiFmykMMn62$SxIhqyA0SkQFM1dimuhCTqWH4zlIFIvfF.1IzSL.Rb/"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "pbkdf2-sha512-utf16",
+        hashcat: &[hc!(
+            36600,
+            "sha512utf16le:1000:NzY2:fFLtxyYSGqaQoUV6LPbVhRBLxzTJSLtHZgUD6Aj7R75dCfAI9OlV5Uqekezy1KW6TEipM7oLIPhjQVbPMsj0RQ=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mssql-2025",
+        hashcat: &[hc!(
+            36601,
+            "0x03004DB403DDD3A508F81058E6AD92A6A20E5C72A06AD0B00C0A733EAD6582BE2443AFA70C9516C2DFDC60EA927B40BD732D7763477484FC014435AAC4D57EA88237B39806C1"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "murmurhash64a-zero",
+        hashcat: &[hc!(34201, "73f8142b4326d36a"), hc!(34211, "73f8142b")],
         john: &[],
     },
 ];

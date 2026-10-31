@@ -201,7 +201,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `31200` - `Veeam VBK`
 - [ ] `31300` - `MS SNTP`
 - [ ] `31400` - `SecureCRT MasterPassphrase v2`
-- [ ] `31600` - `Domain Cached Credentials 2 (DCC2), MS Cache 2, (NT)`
 - [ ] `31800` - `1Password, mobilekeychain (1Password 8)`
 - [ ] `31900` - `MetaMask Mobile Wallet`
 
@@ -224,13 +223,10 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `34000` - `Argon2`
 - [ ] `34100` - `LUKS v2 argon2 + SHA-256 + AES`
-- [ ] `34201` - `MurmurHash64A (zero seed)`
-- [ ] `34211` - `MurmurHash64A truncated (zero seed)`
 - [ ] `34700` - `Blockchain, My Wallet, Legacy Wallets`
 
 ### 35000-35999
 
-- [ ] `35100` - `sm3crypt $sm3$, SM3 (Unix)`
 - [ ] `35500` - `Wordpress bcrypt(hmac-sha384($pass))`
 - [ ] `35600` - `gost12512crypt [$gost12512hash$] (Unix)`
 
@@ -239,11 +235,8 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `36000` - `BIP39 Passphrase Recovery (ASCII, P2SH/P2PKH/P2WPKH)`
 - [ ] `36100` - `yescrypt`
 - [ ] `36200` - `gost-yescrypt`
-- [ ] `36300` - `scryptcrypt, scrypt (Unix)`
 - [ ] `36400` - `KDE KWallet 4.13+ (PBKDF2-HMAC-SHA512, Blowfish)`
 - [ ] `36410` - `KDE KWallet < 4.13 (SHA-1, Blowfish)`
-- [ ] `36600` - `PBKDF2-HMAC-SHA512(utf16le($pass))`
-- [ ] `36601` - `MSSQL (2025)`
 - [ ] `36800` - `OpenSSH Private Keys (bcrypt-pbkdf)`
 - [ ] `36900` - `iClass Standard (DES + hash0 + iClass Cipher, dual-MAC)`
 - [ ] `36901` - `iClass Legacy (partial div_key + iClass Cipher, dual-MAC)`
