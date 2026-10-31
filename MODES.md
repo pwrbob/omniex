@@ -179,27 +179,14 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `29541` - `LUKS v1 RIPEMD-160 + AES`
 - [ ] `29542` - `LUKS v1 RIPEMD-160 + Serpent`
 - [ ] `29543` - `LUKS v1 RIPEMD-160 + Twofish`
-- [ ] `29910` - `ENCsecurity Datavault (PBKDF2/no keychain)`
-- [ ] `29920` - `ENCsecurity Datavault (PBKDF2/keychain)`
-- [ ] `29930` - `ENCsecurity Datavault (MD5/no keychain)`
-- [ ] `29940` - `ENCsecurity Datavault (MD5/keychain)`
 
 ### 30000-30999
 
 - [ ] `30600` - `bcrypt(sha256($pass))`
 - [ ] `30601` - `bcrypt(HMAC-SHA256($pass))`
-- [ ] `30901` - `Bitcoin raw private key (P2PKH), compressed`
-- [ ] `30902` - `Bitcoin raw private key (P2PKH), uncompressed`
-- [ ] `30903` - `Bitcoin raw private key (P2WPKH, Bech32), compressed`
-- [ ] `30904` - `Bitcoin raw private key (P2WPKH, Bech32), uncompressed`
-- [ ] `30905` - `Bitcoin raw private key (P2SH(P2WPKH)), compressed`
-- [ ] `30906` - `Bitcoin raw private key (P2SH(P2WPKH)), uncompressed`
 
 ### 31000-31999
 
-- [ ] `31200` - `Veeam VBK`
-- [ ] `31300` - `MS SNTP`
-- [ ] `31400` - `SecureCRT MasterPassphrase v2`
 - [ ] `31800` - `1Password, mobilekeychain (1Password 8)`
 
 ### 32000-32999
@@ -210,7 +197,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 34000-34999
 
-- [ ] `34000` - `Argon2`
 - [ ] `34100` - `LUKS v2 argon2 + SHA-256 + AES`
 - [ ] `34700` - `Blockchain, My Wallet, Legacy Wallets`
 

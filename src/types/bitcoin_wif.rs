@@ -8,7 +8,9 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Bitcoin WIF private key",
     slug = "bitcoin-wif",
-    hashcat = [28501, 28502, 28503, 28504, 28505, 28506],
+    hashcat = [
+        28501, 28502, 28503, 28504, 28505, 28506, 30901, 30902, 30903, 30904, 30905, 30906,
+    ],
     modes_fn = bitcoin_wif_modes,
 )]
 pub struct BitcoinWif {

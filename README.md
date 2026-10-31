@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-701%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-715%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -245,7 +245,7 @@ checked against that command in CI.
 | `ethereum-scrypt` | Ethereum Wallet, SCRYPT | 15700 | - |
 | `solarwinds` | SolarWinds Orion | 21500, 21501 | solarwinds |
 | `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | - |
-| `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506 | - |
+| `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506, 30901, 30902, 30903, 30904, 30905, 30906 | - |
 | `virtualbox` | VirtualBox | 27500, 27600 | - |
 | `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
 | `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
@@ -334,6 +334,11 @@ checked against that command in CI.
 | `geli` | FreeBSD GELI | 38700 | geli |
 | `openbsd-softraid` | OpenBSD softraid FDE | 38800, 38810 | OpenBSD-SoftRAID |
 | `fscrypt` | Google fscrypt | 38900 | - |
+| `veeam` | Veeam VBK | 31200 | - |
+| `sntp-ms` | MS SNTP | 31300 | - |
+| `argon2` | Argon2 | 34000 | - |
+| `encdv` | ENCsecurity DataVault | 29910, 29920, 29930, 29940 | - |
+| `securecrt` | SecureCRT MasterPassphrase v2 | 31400 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | - |
