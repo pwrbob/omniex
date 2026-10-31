@@ -278,6 +278,7 @@ checked against that command in CI.
 | `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
 | `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | - |
 | `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | - |
+| `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700 | - |
 | `android-fde` | Android FDE <= 4.3 | 8800 | - |
 | `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
 | `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | - |

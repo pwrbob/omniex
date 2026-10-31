@@ -1037,6 +1037,11 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$office$*2007".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "pdf".into(),
+            "$pdf$*1".into(),
+            ParseErrorKind::InvalidLength,
+        ),
     ];
 
     for (slug, input, kind) in cases {

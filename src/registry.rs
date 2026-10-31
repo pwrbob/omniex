@@ -106,6 +106,7 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &Rar3p::DESCRIPTOR,
     &OldOffice::DESCRIPTOR,
     &Office::DESCRIPTOR,
+    &Pdf::DESCRIPTOR,
     &AndroidFde::DESCRIPTOR,
     &AndroidFdeSamsung::DESCRIPTOR,
     &BitcoinWallet::DESCRIPTOR,

@@ -72,13 +72,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 10000-10999
 
-- [ ] `10400` - `PDF 1.1 - 1.3 (Acrobat 2 - 4)`
-- [ ] `10410` - `PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #1`
-- [ ] `10420` - `PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #2`
-- [ ] `10500` - `PDF 1.4 - 1.6 (Acrobat 5 - 8)`
-- [ ] `10510` - `PDF 1.3 - 1.6 (Acrobat 4 - 8) w/ RC4-40`
-- [ ] `10600` - `PDF 1.7 Level 3 (Acrobat 9)`
-- [ ] `10700` - `PDF 1.7 Level 8 (Acrobat 10 - 11)`
 
 ### 11000-11999
 
