@@ -4,6 +4,8 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
+![hash modes](https://img.shields.io/badge/hash_modes-654%2F987-2ea44f)
+
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
 

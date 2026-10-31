@@ -237,3 +237,28 @@ fn readme_type_table_matches_the_types_command() {
         "the README supported-type list must match `omniex types`"
     );
 }
+
+#[test]
+fn readme_mode_badge_matches_the_registry_and_checklist() {
+    let root = env!("CARGO_MANIFEST_DIR");
+    let readme = std::fs::read_to_string(std::path::Path::new(root).join("README.md"))
+        .expect("read README.md");
+    let modes = std::fs::read_to_string(std::path::Path::new(root).join("MODES.md"))
+        .expect("read MODES.md");
+
+    let implemented: usize = registry::all()
+        .iter()
+        .map(|descriptor| descriptor.all_modes.len())
+        .sum();
+    let remaining = modes
+        .lines()
+        .filter(|line| line.starts_with("- [ ] `"))
+        .count();
+    let total = implemented + remaining;
+
+    let expected = format!("hash_modes-{implemented}%2F{total}-");
+    assert!(
+        readme.contains(&expected),
+        "README must advertise `{expected}`; found no matching badge"
+    );
+}
