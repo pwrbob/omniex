@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "PDF",
     slug = "pdf",
-    hashcat = [10400, 10410, 10420, 10500, 10510, 10600, 10700], john = ["PDF"],
+    hashcat = [10400, 10410, 10420, 10500, 10510, 10600, 10700, 25400], john = ["PDF"],
     modes_fn = pdf_modes,
 )]
 pub struct Pdf {
@@ -53,7 +53,7 @@ pub fn pdf_modes(value: &Pdf) -> Vec<crate::Mode> {
         }
         (1, 2) => vec![crate::Mode::Hashcat(10420)],
         (1, 3) => vec![crate::Mode::Hashcat(10510)],
-        (2, 3) => vec![crate::Mode::Hashcat(10500)],
+        (2, 3) => vec![crate::Mode::Hashcat(10500), crate::Mode::Hashcat(25400)],
         (5, 5) => vec![crate::Mode::Hashcat(10600)],
         (5, 6) => vec![crate::Mode::Hashcat(10700)],
         _ => Vec::new(),

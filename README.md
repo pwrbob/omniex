@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-745%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-746%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -280,7 +280,7 @@ checked against that command in CI.
 | `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
 | `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | oldoffice |
 | `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | Office |
-| `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700 | PDF |
+| `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700, 25400 | PDF |
 | `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | gpg |
 | `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | DPAPImk |
 | `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | KeePass |

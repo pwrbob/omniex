@@ -142,7 +142,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 25000-25999
 
-- [ ] `25400` - `PDF 1.4 - 1.6 (Acrobat 5 - 8) - user and owner pass`
 
 ### 26000-26999
 
