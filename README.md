@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-666%2F987-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-675%2F987-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -327,6 +327,13 @@ checked against that command in CI.
 | `microsoft-online` | Microsoft Online Account | 33700 | - |
 | `wordpress-bcrypt` | WordPress bcrypt(hmac-sha384) | 35500 | - |
 | `gost12512crypt` | gost12512crypt | 35600 | - |
+| `mega` | mega.nz | 33400 | - |
+| `kwallet` | KDE KWallet | 36400, 36410 | - |
+| `racf-passphrase` | RACF DES Passphrase | 37400 | - |
+| `racf-kdfaes-passphrase` | RACF KDFAES Passphrase | 37500 | - |
+| `geli` | FreeBSD GELI | 38700 | - |
+| `openbsd-softraid` | OpenBSD softraid FDE | 38800, 38810 | - |
+| `fscrypt` | Google fscrypt | 38900 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |

@@ -207,7 +207,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 33000-33999
 
-- [ ] `33400` - `mega.nz password-protected link (PBKDF2-HMAC-SHA512)`
 
 ### 34000-34999
 
@@ -223,8 +222,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `36000` - `BIP39 Passphrase Recovery (ASCII, P2SH/P2PKH/P2WPKH)`
 - [ ] `36100` - `yescrypt`
 - [ ] `36200` - `gost-yescrypt`
-- [ ] `36400` - `KDE KWallet 4.13+ (PBKDF2-HMAC-SHA512, Blowfish)`
-- [ ] `36410` - `KDE KWallet < 4.13 (SHA-1, Blowfish)`
 - [ ] `36800` - `OpenSSH Private Keys (bcrypt-pbkdf)`
 - [ ] `36900` - `iClass Standard (DES + hash0 + iClass Cipher, dual-MAC)`
 - [ ] `36901` - `iClass Legacy (partial div_key + iClass Cipher, dual-MAC)`
@@ -232,8 +229,6 @@ Hashcat's plaintext mode is excluded below.
 ### 37000-37999
 
 - [ ] `37000` - `MIFARE Ultralight C 3DES Key Recovery`
-- [ ] `37400` - `RACF DES Passphrase`
-- [ ] `37500` - `RACF KDFAES Passphrase`
 - [ ] `37700` - `Cardano Eternl Wallet (PBKDF2-HMAC-SHA512, ChaCha20)`
 
 ### 38000-38999
@@ -241,10 +236,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `38000` - `Mikrotik RouterOS EC-SRP5 (Curve25519)`
 - [ ] `38200` - `Cisco-IOS $14$ (MD5 (Type 5) + scrypt, Convoluted)`
 - [ ] `38300` - `Apple DMG (encrcdsa v2, PBKDF2-HMAC-SHA1 + AES-192 key)`
-- [ ] `38700` - `FreeBSD GELI`
-- [ ] `38800` - `OpenBSD softraid FDE (PBKDF2-HMAC-SHA1)`
-- [ ] `38810` - `OpenBSD softraid FDE (bcrypt-pbkdf)`
-- [ ] `38900` - `Google fscrypt (Argon2id)`
 
 ### 40000-40099
 
