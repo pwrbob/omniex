@@ -65,7 +65,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 8000-8999
 
-- [ ] `8800` - `Android FDE <= 4.3`
 
 ### 9000-9999
 
@@ -92,7 +91,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 11000-11999
 
-- [ ] `11300` - `Bitcoin/Litecoin wallet.dat`
 - [ ] `11400` - `SIP digest authentication (MD5)`
 - [ ] `11600` - `7-Zip`
 
@@ -100,7 +98,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `12200` - `eCryptfs`
 - [ ] `12500` - `RAR3-hp`
-- [ ] `12900` - `Android FDE (Samsung DEK)`
 
 ### 13000-13999
 
@@ -142,7 +139,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `15300` - `DPAPI masterkey file v1 (context 1 and 2)`
 - [ ] `15310` - `DPAPI masterkey file v1 (context 3)`
-- [ ] `15400` - `ChaCha20`
 - [ ] `15900` - `DPAPI masterkey file v2 (context 1 and 2)`
 - [ ] `15910` - `DPAPI masterkey file v2 (context 3)`
 

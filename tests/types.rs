@@ -126,6 +126,16 @@ fn every_type_describes_every_field() {
         ("ipmi2-rakp-md5", &["digest", "salt"]),
         ("sap-bcode", &["user", "digest"]),
         ("sap-passcode", &["user", "digest"]),
+        ("android-fde", &["salt", "digest", "data"]),
+        ("android-fde-samsung", &["salt", "digest", "iv"]),
+        (
+            "chacha20",
+            &["position", "offset", "iv", "plaintext", "ciphertext"],
+        ),
+        (
+            "bitcoin-wallet",
+            &["master", "salt", "rounds", "ckey", "public_key"],
+        ),
     ];
 
     for (slug, names) in expected {
@@ -995,6 +1005,26 @@ fn invalid_inputs_return_stable_error_kinds() {
         (
             "sap-passcode".into(),
             "user$zz".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "android-fde".into(),
+            "x".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
+        (
+            "android-fde-samsung".into(),
+            "abc".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "chacha20".into(),
+            "$chacha20$*".into(),
+            ParseErrorKind::InvalidLength,
+        ),
+        (
+            "bitcoin-wallet".into(),
+            "$bitcoin$".into(),
             ParseErrorKind::InvalidLength,
         ),
     ];

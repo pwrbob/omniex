@@ -276,6 +276,10 @@ checked against that command in CI.
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
 | `blockchain` | Blockchain, My Wallet | 12700, 15200 | - |
 | `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
+| `android-fde` | Android FDE <= 4.3 | 8800 | - |
+| `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
+| `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | - |
+| `chacha20` | ChaCha20 | 15400 | - |
 | `cram-md5` | CRAM-MD5 | 10200 | - |
 | `ipmi2-rakp-sha1` | IPMI2 RAKP HMAC-SHA1 | 7300 | - |
 | `ipmi2-rakp-md5` | IPMI2 RAKP HMAC-MD5 | 7350 | - |
