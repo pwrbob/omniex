@@ -10,7 +10,8 @@ const ALPHABET: &[u8] = b"./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 #[hash(
     name = "bcrypt",
     slug = "bcrypt",
-    hashcat = [3200],
+    hashcat = [3200, 33800],
+    modes_fn = bcrypt_modes,
     john = ["bcrypt"],
 )]
 pub struct Bcrypt {
@@ -29,6 +30,14 @@ pub struct Bcrypt {
     /// Thirty-one base64 digest characters.
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
+}
+
+pub fn bcrypt_modes(_value: &Bcrypt) -> Vec<crate::Mode> {
+    vec![
+        crate::Mode::Hashcat(3200),
+        crate::Mode::Hashcat(33800),
+        crate::Mode::John("bcrypt"),
+    ]
 }
 
 impl Parse for Bcrypt {

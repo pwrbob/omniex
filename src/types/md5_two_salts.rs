@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "MD5 (two salts)",
     slug = "md5-two-salts",
-    hashcat = [3730, 31700, 33000],
+    hashcat = [3730, 31700, 32300, 33000],
     modes_fn = md5_two_salts_modes,
 )]
 pub struct Md5TwoSalts {
@@ -30,6 +30,7 @@ pub fn md5_two_salts_modes(_value: &Md5TwoSalts) -> Vec<crate::Mode> {
         crate::Mode::Hashcat(3730),
         crate::Mode::Hashcat(31700),
         crate::Mode::Hashcat(33000),
+        crate::Mode::Hashcat(32300),
     ]
 }
 

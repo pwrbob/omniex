@@ -521,10 +521,16 @@ pub const VECTORS: &[Vector] = &[
     },
     Vector {
         slug: "bcrypt",
-        hashcat: &[hc!(
-            3200,
-            "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
-        )],
+        hashcat: &[
+            hc!(
+                33800,
+                "$2a$08$hashcatohohohohohohohegk6PN.SFkoXxDIkacAGKFN9AF8nx.Hi"
+            ),
+            hc!(
+                3200,
+                "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
+            ),
+        ],
         john: &[john!(
             "bcrypt",
             "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
@@ -552,6 +558,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "md5-two-salts",
         hashcat: &[
+            hc!(
+                32300,
+                "5962d4ada95d6493379cd9c05ce7a376:726620866134417802643053384570:6056291339665060317728572165496183"
+            ),
             hc!(31700, "c7a971e405313d0ecc22e37e8b2424a1:2316355934:478467"),
             hc!(
                 33000,
@@ -3676,6 +3686,74 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "murmurhash64a-zero",
         hashcat: &[hc!(34201, "73f8142b4326d36a"), hc!(34211, "73f8142b")],
+        john: &[],
+    },
+    Vector {
+        slug: "bisq",
+        hashcat: &[hc!(
+            29800,
+            "$bisq$3*32768*8*6*31d838af87f99cb8*5cfb7bf3228d9e865881156e17b1866589ffa6b757011e25d1319083595236d2"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "metamask-mobile",
+        hashcat: &[hc!(
+            31900,
+            "$metamaskMobile$JV4j2dUDl7n+sujyqW3Wvg==$398f9b04c822d36bfcbdd1e68c82d1e8$auj3J2TwOZ4ev3UIGmNa7VXLh0Nmzr3rDbpXRRrONr4="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "dogechain",
+        hashcat: &[hc!(
+            32500,
+            "$dogechain$0*5000*EEmAkgiMlVrToRhu2suq91R5Frf+VQCvNzv9lj6OwRWIf/3IM31wqhJM7gGQpinXH9kqHkuQ2DMZxspgA7QFAddsUWvZxGdNAkaeKy90EAsTLIuDQnH3plfBQfmL6j5NPaH7Nr7kF1PdvM0pbUw6XHySBYkD/rPHNM6n58NRK4xfO4VVMykeX3+m2LaVyv5s269r/op38svRPT0YFGpRcanY6/U1BeSrvG2IXii1BKXXAcVEN4GFmyEQRWKI0uZE+3M0atf7UEPD4K9tmEKosqdsF4MFLiBtfI4eq0+926ijoezDmUPvHIiyQZ9CH2jZ*6jOgqW/GxL9He1afQiINIg=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "kgb",
+        hashcat: &[hc!(
+            32700,
+            "$kgb$0ab30cf7a52dad93$82a7c454246fc7570224e9f24279791aa2a63bf4"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "microsoft-online",
+        hashcat: &[hc!(
+            33700,
+            "$MSONLINEACCOUNT$0$10000$91869d1d5d3a1df25dd3f0e57bbc226a43641bc03086dcb5b6672941fcabce01"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "wordpress-bcrypt",
+        hashcat: &[hc!(
+            35500,
+            "$wp$2y$10$lzlQrRRhLSjz486bA9CKHuZRPoKz4uviT251Sq/r5OzKUBbrXwnQW"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "gost12512crypt",
+        hashcat: &[hc!(
+            35600,
+            "$gost12512hash$salt$w0TCvk4n0JHA/kPNpHEyf3RR5YuUXReihlrize3NdcPCmtLk/ewG63OUWT.G4bvjegPTeMb/xQ2PK7apsCfC7/"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "rc4-dropn",
+        hashcat: &[
+            hc!(
+                33500,
+                "$rc4$40$0$e9a41693b759cf88929ca31203694f$0$48656c6c6f"
+            ),
+            hc!(33501, "$rc4$72$0$90eaa8d71c$0$48656c6c6f"),
+            hc!(33502, "$rc4$104$0$a04245c3d7$0$48656c6c6f"),
+        ],
         john: &[],
     },
 ];

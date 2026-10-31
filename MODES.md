@@ -179,7 +179,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `29541` - `LUKS v1 RIPEMD-160 + AES`
 - [ ] `29542` - `LUKS v1 RIPEMD-160 + Serpent`
 - [ ] `29543` - `LUKS v1 RIPEMD-160 + Twofish`
-- [ ] `29800` - `Bisq .wallet (scrypt)`
 - [ ] `29910` - `ENCsecurity Datavault (PBKDF2/no keychain)`
 - [ ] `29920` - `ENCsecurity Datavault (PBKDF2/keychain)`
 - [ ] `29930` - `ENCsecurity Datavault (MD5/no keychain)`
@@ -202,22 +201,13 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `31300` - `MS SNTP`
 - [ ] `31400` - `SecureCRT MasterPassphrase v2`
 - [ ] `31800` - `1Password, mobilekeychain (1Password 8)`
-- [ ] `31900` - `MetaMask Mobile Wallet`
 
 ### 32000-32999
 
-- [ ] `32300` - `Empire CMS (Admin password)`
-- [ ] `32500` - `Dogechain.info Wallet`
-- [ ] `32700` - `Kremlin Encrypt 3.0 w/NewDES`
 
 ### 33000-33999
 
 - [ ] `33400` - `mega.nz password-protected link (PBKDF2-HMAC-SHA512)`
-- [ ] `33500` - `RC4 40-bit DropN`
-- [ ] `33501` - `RC4 72-bit DropN`
-- [ ] `33502` - `RC4 104-bit DropN`
-- [ ] `33700` - `Microsoft Online Account (PBKDF2-HMAC-SHA256 + AES256)`
-- [ ] `33800` - `WBB4 (Woltlab Burning Board) [bcrypt(bcrypt($pass))]`
 
 ### 34000-34999
 
@@ -227,8 +217,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 35000-35999
 
-- [ ] `35500` - `Wordpress bcrypt(hmac-sha384($pass))`
-- [ ] `35600` - `gost12512crypt [$gost12512hash$] (Unix)`
 
 ### 36000-36999
 

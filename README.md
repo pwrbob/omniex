@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-654%2F987-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-666%2F987-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -223,7 +223,7 @@ checked against that command in CI.
 | `phps` | PHPS | 2612 | PHPS |
 | `lm` | LM | 3000 | - |
 | `oracle-h` | Oracle H | 3100 | - |
-| `bcrypt` | bcrypt | 3200 | bcrypt |
+| `bcrypt` | bcrypt | 3200, 33800 | bcrypt |
 | `sunmd5` | SunMD5 | 3300 | SunMD5 |
 | `racf` | RACF | 8500 | - |
 | `as400-des` | AS/400 DES | 8501 | - |
@@ -319,6 +319,14 @@ checked against that command in CI.
 | `scryptcrypt` | scryptcrypt | 36300 | - |
 | `pbkdf2-sha512-utf16` | PBKDF2-HMAC-SHA512 (UTF-16LE) | 36600 | - |
 | `mssql-2025` | MSSQL (2025) | 36601 | - |
+| `bisq` | Bisq .wallet (scrypt) | 29800 | - |
+| `metamask-mobile` | MetaMask Mobile Wallet | 31900 | - |
+| `dogechain` | Dogechain.info Wallet | 32500 | - |
+| `kgb` | Kremlin Encrypt 3.0 | 32700 | - |
+| `rc4-dropn` | RC4 DropN | 33500, 33501, 33502 | - |
+| `microsoft-online` | Microsoft Online Account | 33700 | - |
+| `wordpress-bcrypt` | WordPress bcrypt(hmac-sha384) | 35500 | - |
+| `gost12512crypt` | gost12512crypt | 35600 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |
@@ -335,7 +343,7 @@ checked against that command in CI.
 | `sap-passcode` | SAP CODVN F/G | 7800, 7801 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
-| `md5-two-salts` | MD5 (two salts) | 3730, 31700, 33000 | - |
+| `md5-two-salts` | MD5 (two salts) | 3730, 31700, 32300, 33000 | - |
 | `iscsi-chap` | iSCSI CHAP | 4800 | - |
 | `half-md5` | Half MD5 | 5100 | - |
 | `ike-psk-md5` | IKE-PSK MD5 | 5300 | - |
