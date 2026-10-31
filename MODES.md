@@ -217,23 +217,13 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### A-C
 
-- [ ] `agilekeychain` - OpenCL: `agilekeychain-opencl`
 - [ ] `armory`
 - [ ] `asa-md5`
 - [ ] `axcrypt2-opencl` - OpenCL only
-- [ ] `BestCrypt`
-- [ ] `bitshares`
-- [ ] `Bitwarden` - OpenCL: `bitwarden-opencl`
-- [ ] `cloudkeychain` - OpenCL: `cloudkeychain-opencl`
 
 ### D-F
 
 - [ ] `diskcryptor-aes-opencl` - OpenCL only
-- [ ] `Django`
-- [ ] `django-scrypt`
-- [ ] `dmg` - OpenCL: `dmg-opencl`
-- [ ] `dominosec`
-- [ ] `dominosec8`
 - [ ] `EPiServer`
 - [ ] `electrum-modern-opencl` - OpenCL only
 - [ ] `ethereum-presale-opencl` - OpenCL only
@@ -246,67 +236,35 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### J-L
 
-- [ ] `krb5asrep`
 - [ ] `krb5asrep-aes-opencl` - OpenCL only
-- [ ] `krb5pa-md5` - OpenCL: `krb5pa-md5-opencl`
-- [ ] `krb5pa-sha1` - OpenCL: `krb5pa-sha1-opencl`
-- [ ] `krb5tgs` - OpenCL: `krb5tgs-opencl`
 - [ ] `lotus85`
 - [ ] `LUKS`
 
 ### M-O
 
-- [ ] `Mozilla`
-- [ ] `mschapv2-naive`
 - [ ] `multibit`
-- [ ] `nethalflm`
-- [ ] `netlmv2`
-- [ ] `netlm`
-- [ ] `netntlm-naive`
-- [ ] `nsec3`
 - [ ] `ntlmv2-opencl` - OpenCL only
-- [ ] `ospf`
 - [ ] `Oubliette-Blowfish`
 - [ ] `Oubliette-IDEA`
 
 ### P-R
 
-- [ ] `Padlock`
-- [ ] `Palshop`
-- [ ] `PBKDF2-HMAC-MD4` - OpenCL: `PBKDF2-HMAC-MD4-opencl`
-- [ ] `PBKDF2-HMAC-MD5` - OpenCL: `PBKDF2-HMAC-MD5-opencl`
-- [ ] `PBKDF2-HMAC-SHA1` - OpenCL: `PBKDF2-HMAC-SHA1-opencl`
-- [ ] `PBKDF2-HMAC-SHA256` - OpenCL: `PBKDF2-HMAC-SHA256-opencl`
-- [ ] `PBKDF2-HMAC-SHA512` - OpenCL: `PBKDF2-HMAC-SHA512-opencl`
-- [ ] `PEM` - OpenCL: `pem-opencl`
-- [ ] `pfx` - OpenCL: `pfx-opencl`
 - [ ] `po`
-- [ ] `RACF-KDFAES`
 - [ ] `Raw-MD5-flat`
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
-- [ ] `restic`
-- [ ] `rsvp`
 
 ### S-U
 
-- [ ] `SCRAM-PBKDF2-SHA1-MongoDB`
-- [ ] `SCRAM-PBKDF2-SHA256`
 - [ ] `scrypt`
-- [ ] `Siemens-S7`
 - [ ] `Skein`
 - [ ] `Snefru`
 - [ ] `sspr` - OpenCL: `sspr-opencl`
-- [ ] `streebog256crypt` - OpenCL: `streebog256crypt-opencl`
 - [ ] `streebog512crypt` - OpenCL: `streebog512crypt-opencl`
 - [ ] `TrueCrypt-opencl` - OpenCL only
 
 ### V-Z
 
-- [ ] `vmx` - OpenCL: `vmx-opencl`
-- [ ] `wbb3`
 - [ ] `Whirpool`
-- [ ] `wpapsk` - OpenCL: `wpapsk-opencl`
-- [ ] `wpapsk-pmk` - OpenCL: `wpapsk-pmk-opencl`
 - [ ] `XSHA512-free-opencl` - OpenCL only
 
 - [ ] `xsha`

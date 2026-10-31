@@ -1,0 +1,38 @@
+//! Django hashes, rendered as the serialized hash payload.
+
+use crate::parse;
+use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
+
+/// Django hashes.
+#[derive(Debug, Clone, PartialEq, Eq, HashType)]
+#[hash(name = "Django", slug = "django-john", hashcat = [], john = ["Django"])]
+pub struct DjangoJohn {
+    /// Serialized hash payload.
+    #[field(role = other, encoding = ascii)]
+    pub data: String,
+}
+
+impl Parse for DjangoJohn {
+    fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
+        if input.is_empty() {
+            return Err(parse::empty());
+        }
+        let rest = parse::strip_prefix(input, "$django$", 0)?;
+        if rest.is_empty() {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                0,
+                "missing hash payload",
+            ));
+        }
+        Ok(Self {
+            data: rest.to_owned(),
+        })
+    }
+}
+
+impl Render for DjangoJohn {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
+        format!("$django${}", self.data)
+    }
+}

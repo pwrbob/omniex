@@ -1492,6 +1492,83 @@ fn unicode_salts_use_byte_lengths_for_mode_limits() {
 }
 
 #[test]
+fn john_only_serialized_types_require_their_prefix() {
+    let cases = [
+        ("agilekeychain", "$agilekeychain$"),
+        ("cloudkeychain", "$cloudkeychain$"),
+        ("bestcrypt-john", "$BestCrypt$"),
+        ("bitshares-john", "$BitShares$"),
+        ("bitwarden-john", "$bitwarden$"),
+        ("django-john", "$django$"),
+        ("django-scrypt", "scrypt$"),
+        ("dmg-john", "$dmg$"),
+        ("dominosec", "("),
+        ("dominosec8", "("),
+        ("krb5asrep-john", "$krb5asrep$"),
+        ("krb5pa-md5", "$krb5pa$"),
+        ("krb5pa-sha1", "$krb5pa$"),
+        ("krb5tgs-john", "$krb5tgs$"),
+        ("mozilla-john", "$mozilla$"),
+        ("nsec3-john", "$NSEC3$"),
+        ("ospf", "$ospf$"),
+        ("padlock", "$padlock$"),
+        ("palshop", "$palshop$"),
+        ("pbkdf2-hmac-md4", "$pbkdf2-hmac-md4$"),
+        ("pbkdf2-hmac-md5-john", "$pbkdf2-hmac-md5$"),
+        ("pbkdf2-hmac-sha1-john", "$pbkdf2-hmac-sha1$"),
+        ("pbkdf2-hmac-sha256-john", "$pbkdf2-sha256$"),
+        ("pbkdf2-hmac-sha512-john", "$pbkdf2-hmac-sha512$"),
+        ("pem-john", "$PEM$"),
+        ("pfx", "$pfxng$"),
+        ("racf-kdfaes-john", "$racf$"),
+        ("restic", "$restic$"),
+        ("rsvp", "$rsvp$"),
+        ("scram-john", "$scram$"),
+        ("scram-pbkdf2-sha256", "$scram-pbkdf2-sha256$"),
+        ("siemens-s7", "$siemens-s7$"),
+        ("streebog256crypt", "$gost12256hash$"),
+        ("vmx-john", "$vmx$"),
+        ("wbb3-john", "$wbb3$"),
+        ("wpapsk", "$WPAPSK$"),
+        ("wpapsk-pmk", "$WPAPSK$"),
+    ];
+
+    for (slug, prefix) in cases {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in ["", "not-a-hash"] {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
+        }
+        let value = format!("{prefix}payload");
+        assert!(
+            registry::parse(descriptor, &value, &ParseOptions::default()).is_ok(),
+            "`{slug}` rejected `{value}`"
+        );
+    }
+}
+
+#[test]
+fn john_only_plain_serialized_types_reject_empty_input() {
+    for slug in [
+        "mschapv2-naive",
+        "nethalflm",
+        "netlmv2-john",
+        "netlm",
+        "netntlm-naive",
+    ] {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in ["", "user:domain"] {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
+        }
+    }
+}
+
+#[test]
 fn digest_only_types_reject_invalid_input() {
     for slug in [
         "ripemd",

@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-852%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-894%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -431,6 +431,48 @@ checked against that command in CI.
 | `enpass` | Enpass | - | enpass |
 | `keplr` | Keplr | - | keplr |
 | `keyring` | Keyring | - | keyring |
+| `agilekeychain` | agilekeychain | - | agilekeychain |
+| `cloudkeychain` | cloudkeychain | - | cloudkeychain |
+| `bestcrypt-john` | BestCrypt | - | BestCrypt |
+| `bitshares-john` | bitshares | - | bitshares |
+| `bitwarden-john` | Bitwarden | - | Bitwarden |
+| `django-john` | Django | - | Django |
+| `django-scrypt` | django-scrypt | - | django-scrypt |
+| `dmg-john` | dmg | - | dmg |
+| `dominosec` | dominosec | - | dominosec |
+| `dominosec8` | dominosec8 | - | dominosec8 |
+| `krb5asrep-john` | krb5asrep | - | krb5asrep |
+| `krb5pa-md5` | krb5pa-md5 | - | krb5pa-md5 |
+| `krb5pa-sha1` | krb5pa-sha1 | - | krb5pa-sha1 |
+| `krb5tgs-john` | krb5tgs | - | krb5tgs |
+| `mozilla-john` | Mozilla | - | Mozilla |
+| `mschapv2-naive` | mschapv2-naive | - | mschapv2-naive |
+| `nethalflm` | nethalflm | - | nethalflm |
+| `netlmv2-john` | netlmv2 | - | netlmv2 |
+| `netlm` | netlm | - | netlm |
+| `netntlm-naive` | netntlm-naive | - | netntlm-naive |
+| `nsec3-john` | nsec3 | - | nsec3 |
+| `ospf` | ospf | - | ospf |
+| `padlock` | Padlock | - | Padlock |
+| `palshop` | Palshop | - | Palshop |
+| `pbkdf2-hmac-md4` | PBKDF2-HMAC-MD4 | - | PBKDF2-HMAC-MD4 |
+| `pbkdf2-hmac-md5-john` | PBKDF2-HMAC-MD5 | - | PBKDF2-HMAC-MD5 |
+| `pbkdf2-hmac-sha1-john` | PBKDF2-HMAC-SHA1 | - | PBKDF2-HMAC-SHA1 |
+| `pbkdf2-hmac-sha256-john` | PBKDF2-HMAC-SHA256 | - | PBKDF2-HMAC-SHA256 |
+| `pbkdf2-hmac-sha512-john` | PBKDF2-HMAC-SHA512 | - | PBKDF2-HMAC-SHA512 |
+| `pem-john` | PEM | - | PEM |
+| `pfx` | pfx | - | pfx |
+| `racf-kdfaes-john` | RACF-KDFAES | - | RACF-KDFAES |
+| `restic` | restic | - | restic |
+| `rsvp` | rsvp | - | rsvp |
+| `scram-john` | SCRAM-PBKDF2-SHA1-MongoDB | - | SCRAM-PBKDF2-SHA1-MongoDB |
+| `scram-pbkdf2-sha256` | SCRAM-PBKDF2-SHA256 | - | SCRAM-PBKDF2-SHA256 |
+| `siemens-s7` | Siemens-S7 | - | Siemens-S7 |
+| `streebog256crypt` | streebog256crypt | - | streebog256crypt |
+| `vmx-john` | vmx | - | vmx |
+| `wbb3-john` | wbb3 | - | wbb3 |
+| `wpapsk` | wpapsk | - | wpapsk |
+| `wpapsk-pmk` | wpapsk-pmk | - | wpapsk-pmk |
 | `signal` | Signal | - | Signal |
 | `sl3` | SL3 | - | SL3 |
 | `vtp` | VTP | - | vtp |
