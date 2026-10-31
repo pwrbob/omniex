@@ -160,13 +160,11 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `15300` - `DPAPI masterkey file v1 (context 1 and 2)`
 - [ ] `15310` - `DPAPI masterkey file v1 (context 3)`
 - [ ] `15400` - `ChaCha20`
-- [ ] `15500` - `JKS Java Key Store Private Keys (SHA1)`
 - [ ] `15900` - `DPAPI masterkey file v2 (context 1 and 2)`
 - [ ] `15910` - `DPAPI masterkey file v2 (context 3)`
 
 ### 16000-16999
 
-- [ ] `16300` - `Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256`
 - [ ] `16700` - `FileVault 2`
 
 ### 17000-17999
@@ -224,10 +222,6 @@ Hashcat's plaintext mode is excluded below.
 ### 24000-24999
 
 - [ ] `24000` - `BestCrypt v4 Volume Encryption`
-- [ ] `24410` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA1 + 3DES/AES)`
-- [ ] `24420` - `PKCS#8 Private Keys (PBKDF2-HMAC-SHA256 + 3DES/AES)`
-- [ ] `24430` - `PKCS#12 (.pfx, .p12) (SHA1 + HMAC-SHA1)`
-- [ ] `24440` - `PKCS#12 (.pfx, .p12) (SHA256 + HMAC-SHA256)`
 
 ### 25000-25999
 
@@ -242,7 +236,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 27000-27999
 
-- [ ] `27700` - `MultiBit Classic .wallet (scrypt)`
 
 ### 28000-28999
 

@@ -2,8 +2,6 @@
 
 ## Ground rules
 
-- Put all scratch files, downloads, and reference builds under the repository's
-  `./tmp/` directory. Never use the system `/tmp`.
 - Use absolute paths in shell commands.
 - Commit changes when the work is complete. Never push.
 - Never commit `tmp/`, `target/`, credentials, or generated binaries.
@@ -15,7 +13,7 @@
 
 Before calling an iteration finished:
 
-1. Run `scripts/ci.sh` locally. It mirrors the fast CI jobs: formatting, clippy,
+1. Run `scripts/ci.sh` locally. It executes the fast CI jobs: formatting, clippy,
    docs, workspace tests, and doc tests. It also runs hashcat and John
    conformance when the reference binaries are available.
 2. If a conformance tool is not available, record that explicitly rather than

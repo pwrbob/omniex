@@ -256,6 +256,11 @@ checked against that command in CI.
 | `apple-keychain` | Apple Keychain | 23100 | - |
 | `stuffit5` | Stuffit5 | 24700 | - |
 | `terra` | Terra Station Wallet | 29600 | - |
+| `jks-private-key` | JKS Java Key Store Private Keys (SHA1) | 15500 | - |
+| `ethereum-presale` | Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256 | 16300 | - |
+| `multibit-wallet` | MultiBit Classic .wallet (scrypt) | 27700 | - |
+| `pem-private-key` | PKCS#8 Private Keys | 24410, 24420 | - |
+| `pkcs12` | PKCS#12 | 24430, 24440 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
