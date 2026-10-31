@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Apple iWork",
     slug = "iwork",
-    hashcat = [23300],
+    hashcat = [23300], john = ["iwork"],
 )]
 pub struct Iwork {
     /// Hash version.

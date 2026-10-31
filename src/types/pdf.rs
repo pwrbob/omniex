@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "PDF",
     slug = "pdf",
-    hashcat = [10400, 10410, 10420, 10500, 10510, 10600, 10700],
+    hashcat = [10400, 10410, 10420, 10500, 10510, 10600, 10700], john = ["PDF"],
     modes_fn = pdf_modes,
 )]
 pub struct Pdf {

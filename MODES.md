@@ -283,7 +283,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `Bitwarden` - OpenCL: `bitwarden-opencl`
 - [ ] `BKS`
 - [ ] `Blackberry-ES10`
-- [ ] `Blockchain` - OpenCL: `blockchain-opencl`
 - [ ] `cardano`
 - [ ] `chap`
 - [ ] `Clipperz`
@@ -296,7 +295,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 - [ ] `dahua`
 - [ ] `dashlane` - OpenCL: `dashlane-opencl`
-- [ ] `diskcryptor` - OpenCL: `diskcryptor-opencl`
 - [ ] `diskcryptor-aes-opencl` - OpenCL only
 - [ ] `Django`
 - [ ] `django-scrypt`
@@ -304,8 +302,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `dmg` - OpenCL: `dmg-opencl`
 - [ ] `dominosec`
 - [ ] `dominosec8`
+- [ ] `EPiServer`
 - [ ] `eigrp`
-- [ ] `electrum`
 - [ ] `electrum-modern-opencl` - OpenCL only
 - [ ] `EncFS` - OpenCL: `EncFS-opencl`
 - [ ] `enpass` - OpenCL: `enpass-opencl`
@@ -316,7 +314,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### G-I
 
-- [ ] `geli` - OpenCL: `geli-opencl`
 - [ ] `gost94crypt` - OpenCL: `gost94crypt-opencl`
 - [ ] `h3c`
 - [ ] `hdaa`
@@ -329,7 +326,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `ipb2`
 - [ ] `Iterated-SHA1` - OpenCL: `Iterated-SHA1-opencl`
 - [ ] `Iterated-SHA256` - OpenCL: `Iterated-SHA256-opencl`
-- [ ] `iwork` - OpenCL: `iwork-opencl`
 
 ### J-L
 
@@ -347,10 +343,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `krb5pa-sha1` - OpenCL: `krb5pa-sha1-opencl`
 - [ ] `krb5tgs` - OpenCL: `krb5tgs-opencl`
 - [ ] `krb5tgs-sha1` - OpenCL: `krb5tgs-sha1-opencl`
-- [ ] `kwallet`
 - [ ] `LastPass`
 - [ ] `leet`
-- [ ] `lotus5` - OpenCL: `lotus5-opencl`
 - [ ] `lotus85`
 - [ ] `lp` - OpenCL: `lp-opencl`
 - [ ] `lpcli` - OpenCL: `lpcli-opencl`
@@ -384,10 +378,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `o10glogon`
 - [ ] `o3logon`
 - [ ] `o5logon` - OpenCL: `o5logon-opencl`
-- [ ] `ODF` - OpenCL: `ODF-opencl`
-- [ ] `Office` - OpenCL: `office-opencl`
-- [ ] `oldoffice` - OpenCL: `oldoffice-opencl`
-- [ ] `OpenBSD-SoftRAID` - OpenCL: `OpenBSD-SoftRAID-opencl`
 - [ ] `openssl-enc`
 - [ ] `OpenVMS`
 - [ ] `oracle`
@@ -407,7 +397,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `PBKDF2-HMAC-SHA1` - OpenCL: `PBKDF2-HMAC-SHA1-opencl`
 - [ ] `PBKDF2-HMAC-SHA256` - OpenCL: `PBKDF2-HMAC-SHA256-opencl`
 - [ ] `PBKDF2-HMAC-SHA512` - OpenCL: `PBKDF2-HMAC-SHA512-opencl`
-- [ ] `PDF` - OpenCL: `pdf-opencl`
 - [ ] `PEM` - OpenCL: `pem-opencl`
 - [ ] `pfx` - OpenCL: `pfx-opencl`
 - [ ] `pgpdisk` - OpenCL: `pgpdisk-opencl`
@@ -419,7 +408,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `PST`
 - [ ] `PuTTY`
 - [ ] `pwsafe` - OpenCL: `pwsafe-opencl`
-- [ ] `RACF`
 - [ ] `RACF-KDFAES`
 - [ ] `radius`
 - [ ] `RAdmin`
@@ -427,7 +415,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `RAKP-SHA1` - OpenCL: `RAKP-SHA1-opencl`
 - [ ] `RAKP-SHA256` - OpenCL: `RAKP-SHA256-opencl`
 - [ ] `rar` - OpenCL: `rar-opencl`
-- [ ] `RAR5` - OpenCL: `RAR5-opencl`
 - [ ] `Raw-MD5-flat`
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
 - [ ] `Raw-SM3`
@@ -452,23 +439,17 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `Skein`
 - [ ] `skey`
 - [ ] `SL3` - OpenCL: `SL3-opencl`
-- [ ] `sm3crypt` - OpenCL: `sm3crypt-opencl`
 - [ ] `Snefru`
 - [ ] `SNMP`
-- [ ] `solarwinds` - OpenCL: `solarwinds-opencl`
 - [ ] `SSH` - OpenCL: `ssh-opencl`
 - [ ] `sspr` - OpenCL: `sspr-opencl`
 - [ ] `streebog256crypt` - OpenCL: `streebog256crypt-opencl`
 - [ ] `streebog512crypt` - OpenCL: `streebog512crypt-opencl`
 - [ ] `STRIP` - OpenCL: `strip-opencl`
 - [ ] `Sybase-PROP`
-- [ ] `SybaseASE`
 - [ ] `tcp-md5`
-- [ ] `telegram` - OpenCL: `telegram-opencl`
 - [ ] `tezos` - OpenCL: `tezos-opencl`
-- [ ] `Tiger`
 - [ ] `timeroast` - OpenCL: `timeroast-opencl`
-- [ ] `tripcode`
 - [ ] `TrueCrypt-opencl` - OpenCL only
 
 ### V-Z
@@ -490,7 +471,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `xsha`
 - [ ] `xsha512`
 
-- [ ] `EPiServer`
 
 ## hashcat bridged modes
 

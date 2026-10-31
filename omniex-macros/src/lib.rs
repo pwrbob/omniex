@@ -122,7 +122,13 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
     let modes_impl = match &hash_attrs.modes_fn {
         Some(function) => quote! {
             fn modes(&self) -> ::std::vec::Vec<::omniex::Mode> {
-                #function(self)
+                let mut modes = #function(self);
+                for mode in Self::DESCRIPTOR.all_modes {
+                    if matches!(mode, ::omniex::Mode::John(_)) && !modes.contains(mode) {
+                        modes.push(*mode);
+                    }
+                }
+                modes
             }
         },
         None => quote! {

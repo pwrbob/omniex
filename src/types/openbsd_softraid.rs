@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "OpenBSD softraid FDE",
     slug = "openbsd-softraid",
-    hashcat = [38800, 38810],
+    hashcat = [38800, 38810], john = ["OpenBSD-SoftRAID"],
     modes_fn = openbsd_softraid_modes,
 )]
 pub struct OpenbsdSoftraid {

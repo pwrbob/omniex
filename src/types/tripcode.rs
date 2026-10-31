@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Tripcode",
     slug = "tripcode",
-    hashcat = [16000],
+    hashcat = [16000], john = ["tripcode"],
 )]
 pub struct Tripcode {
     /// Ten character tripcode key.

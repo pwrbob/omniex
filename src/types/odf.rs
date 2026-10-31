@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Open Document Format",
     slug = "odf",
-    hashcat = [18400, 18600],
+    hashcat = [18400, 18600], john = ["ODF"],
     modes_fn = odf_modes,
 )]
 pub struct Odf {

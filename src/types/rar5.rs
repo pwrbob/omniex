@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// RAR5 header encryption hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "RAR5", slug = "rar5", hashcat = [13000])]
+#[hash(name = "RAR5", slug = "rar5", hashcat = [13000], john = ["RAR5"])]
 pub struct Rar5 {
     /// Sixteen-byte salt.
     #[field(role = salt, encoding = hex)]

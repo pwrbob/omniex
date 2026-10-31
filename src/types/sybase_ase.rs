@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Sybase ASE",
     slug = "sybase-ase",
-    hashcat = [8000],
+    hashcat = [8000], john = ["SybaseASE"],
 )]
 pub struct SybaseAse {
     /// The 8-byte salt.

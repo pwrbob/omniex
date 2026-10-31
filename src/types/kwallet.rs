@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "KDE KWallet",
     slug = "kwallet",
-    hashcat = [36400, 36410],
+    hashcat = [36400, 36410], john = ["kwallet"],
     modes_fn = kwallet_modes,
 )]
 pub struct Kwallet {

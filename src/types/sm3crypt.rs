@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
 /// sm3crypt (Unix SM3) hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "sm3crypt", slug = "sm3crypt", hashcat = [35100])]
+#[hash(name = "sm3crypt", slug = "sm3crypt", hashcat = [35100], john = ["sm3crypt"])]
 pub struct Sm3crypt {
     /// ASCII salt.
     #[field(role = salt, encoding = ascii)]

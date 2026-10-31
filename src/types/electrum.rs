@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Electrum Wallet",
     slug = "electrum",
-    hashcat = [16600, 21700, 21800],
+    hashcat = [16600, 21700, 21800], john = ["electrum"],
     modes_fn = electrum_modes,
 )]
 pub struct Electrum {

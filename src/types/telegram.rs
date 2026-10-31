@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Telegram",
     slug = "telegram",
-    hashcat = [22301, 22600, 24500],
+    hashcat = [22301, 22600, 24500], john = ["telegram"],
     modes_fn = telegram_modes,
 )]
 pub struct Telegram {

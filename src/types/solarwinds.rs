@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "SolarWinds Orion",
     slug = "solarwinds",
-    hashcat = [21500, 21501],
+    hashcat = [21500, 21501], john = ["solarwinds"],
     modes_fn = solarwinds_modes,
 )]
 pub struct Solarwinds {

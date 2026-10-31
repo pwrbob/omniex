@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "MS Office 2007/2010/2013",
     slug = "office",
-    hashcat = [9400, 9500, 9600],
+    hashcat = [9400, 9500, 9600], john = ["Office"],
     modes_fn = office_modes,
 )]
 pub struct Office {

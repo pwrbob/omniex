@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Blockchain, My Wallet",
     slug = "blockchain",
-    hashcat = [12700, 15200],
+    hashcat = [12700, 15200], john = ["Blockchain"],
     modes_fn = blockchain_modes,
 )]
 pub struct Blockchain {

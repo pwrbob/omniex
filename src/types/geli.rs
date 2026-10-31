@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// FreeBSD GELI hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "FreeBSD GELI", slug = "geli", hashcat = [38700])]
+#[hash(name = "FreeBSD GELI", slug = "geli", hashcat = [38700], john = ["geli"])]
 pub struct Geli {
     /// Version-specific fields, preserved verbatim.
     #[field(role = other, encoding = ascii)]

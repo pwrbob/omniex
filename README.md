@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-675%2F987-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-693%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -225,14 +225,14 @@ checked against that command in CI.
 | `oracle-h` | Oracle H | 3100 | - |
 | `bcrypt` | bcrypt | 3200, 33800 | bcrypt |
 | `sunmd5` | SunMD5 | 3300 | SunMD5 |
-| `racf` | RACF | 8500 | - |
+| `racf` | RACF | 8500 | RACF |
 | `as400-des` | AS/400 DES | 8501 | - |
 | `scrypt` | scrypt | 8900 | - |
 | `racf-kdfaes` | RACF KDFAES | 14200 | - |
 | `linux-cryptoapi` | Linux Kernel Crypto API (2.4) | 14500 | - |
 | `apple-secure-notes` | Apple Secure Notes | 16200 | - |
-| `electrum` | Electrum Wallet | 16600, 21700, 21800 | - |
-| `telegram` | Telegram | 22301, 22600, 24500 | - |
+| `electrum` | Electrum Wallet | 16600, 21700, 21800 | electrum |
+| `telegram` | Telegram | 22301, 22600, 24500 | telegram |
 | `multibit` | MultiBit Classic .key (MD5) | 22500 | - |
 | `sqlcipher` | SQLCipher | 24600 | - |
 | `vmware-vmx` | VMware VMX | 27400 | - |
@@ -243,13 +243,13 @@ checked against that command in CI.
 | `nsec3` | DNSSEC (NSEC3) | 8300 | - |
 | `ethereum-pbkdf2` | Ethereum Wallet, PBKDF2-HMAC-SHA256 | 15600 | - |
 | `ethereum-scrypt` | Ethereum Wallet, SCRYPT | 15700 | - |
-| `solarwinds` | SolarWinds Orion | 21500, 21501 | - |
+| `solarwinds` | SolarWinds Orion | 21500, 21501 | solarwinds |
 | `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | - |
 | `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506 | - |
 | `virtualbox` | VirtualBox | 27500, 27600 | - |
 | `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
 | `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
-| `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | - |
+| `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | diskcryptor |
 | `bitwarden` | Bitwarden | 23400 | - |
 | `mongodb-scram` | MongoDB ServerKey SCRAM-SHA-1 | 24100 | - |
 | `stellar` | Stargazer Stellar Wallet XLM | 25500 | - |
@@ -267,7 +267,7 @@ checked against that command in CI.
 | `onepassword-cloud` | 1Password, cloudkeychain | 8200 | - |
 | `lastpass` | LastPass | 6800 | - |
 | `lotus5` | Lotus Notes/Domino 5 | 8600 | - |
-| `iwork` | Apple iWork | 23300 | - |
+| `iwork` | Apple iWork | 23300 | iwork |
 | `windows-hello` | Windows Hello PIN/Password | 28100 | - |
 | `lotus-notes` | Lotus Notes/Domino 6/8 | 8700, 9100 | - |
 | `axcrypt1` | AxCrypt 1 | 13200 | - |
@@ -276,16 +276,16 @@ checked against that command in CI.
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
 | `mozilla-key3` | Mozilla key3.db | 26000 | - |
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
-| `blockchain` | Blockchain, My Wallet | 12700, 15200 | - |
+| `blockchain` | Blockchain, My Wallet | 12700, 15200 | Blockchain |
 | `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
-| `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | - |
-| `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | - |
-| `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700 | - |
+| `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | oldoffice |
+| `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | Office |
+| `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700 | PDF |
 | `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | gpg |
 | `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | DPAPImk |
 | `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | KeePass |
 | `keepass4` | KeePass KDBX v4 | 34300, 34301 | - |
-| `odf` | Open Document Format | 18400, 18600 | - |
+| `odf` | Open Document Format | 18400, 18600 | ODF |
 | `apfs` | Apple File System (APFS) | 18300 | - |
 | `android-backup` | Android Backup | 18900 | AndroidBackup |
 | `ecryptfs` | eCryptfs | 12200 | eCryptfs |
@@ -315,7 +315,7 @@ checked against that command in CI.
 | `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | - |
 | `krb5asrep-aes` | Kerberos 5, etype 17/18, AS-REP | 32100, 32200 | - |
 | `murmurhash64a-zero` | MurmurHash64A (zero seed) | 34201, 34211 | - |
-| `sm3crypt` | sm3crypt | 35100 | - |
+| `sm3crypt` | sm3crypt | 35100 | sm3crypt |
 | `scryptcrypt` | scryptcrypt | 36300 | - |
 | `pbkdf2-sha512-utf16` | PBKDF2-HMAC-SHA512 (UTF-16LE) | 36600 | - |
 | `mssql-2025` | MSSQL (2025) | 36601 | - |
@@ -328,14 +328,14 @@ checked against that command in CI.
 | `wordpress-bcrypt` | WordPress bcrypt(hmac-sha384) | 35500 | - |
 | `gost12512crypt` | gost12512crypt | 35600 | - |
 | `mega` | mega.nz | 33400 | - |
-| `kwallet` | KDE KWallet | 36400, 36410 | - |
+| `kwallet` | KDE KWallet | 36400, 36410 | kwallet |
 | `racf-passphrase` | RACF DES Passphrase | 37400 | - |
 | `racf-kdfaes-passphrase` | RACF KDFAES Passphrase | 37500 | - |
-| `geli` | FreeBSD GELI | 38700 | - |
-| `openbsd-softraid` | OpenBSD softraid FDE | 38800, 38810 | - |
+| `geli` | FreeBSD GELI | 38700 | geli |
+| `openbsd-softraid` | OpenBSD softraid FDE | 38800, 38810 | OpenBSD-SoftRAID |
 | `fscrypt` | Google fscrypt | 38900 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
-| `rar5` | RAR5 | 13000 | - |
+| `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | - |
 | `filevault2` | FileVault 2 | 16700 | FVDE |
 | `sevenzip` | 7-Zip | 11600 | 7z |
@@ -519,11 +519,11 @@ checked against that command in CI.
 | `bsdi-crypt` | BSDi Crypt, Extended DES | 12400 | bsdicrypt |
 | `radmin2` | Radmin2 | 9900 | - |
 | `fortigate` | FortiGate (FortiOS) | 7000 | Fortigate |
-| `sybase-ase` | Sybase ASE | 8000 | - |
+| `sybase-ase` | Sybase ASE | 8000 | SybaseASE |
 | `citrix-netscaler-sha512` | Citrix NetScaler SHA512 | 22200 | - |
 | `bitshares` | BitShares v0.x | 21000 | - |
 | `rails-restful-authentication` | Ruby on Rails Restful-Authentication | 19500 | - |
-| `tripcode` | Tripcode | 16000 | - |
+| `tripcode` | Tripcode | 16000 | tripcode |
 | `openedge-progress` | OpenEdge Progress Encode | 26200 | - |
 | `teamspeak3` | Teamspeak 3 (channel hash) | 28300 | - |
 | `aes-crypt-sha256` | AES Crypt (SHA256) | 22400 | - |

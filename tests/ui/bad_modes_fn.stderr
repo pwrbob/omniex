@@ -9,6 +9,22 @@ error[E0119]: conflicting implementations of trait `ModeCompat` for type `Exampl
    |
    = note: this error originates in the derive macro `HashType` (in Nightly builds, run with -Z macro-backtrace for more info)
 
+error[E0599]: no method named `contains` found for type `u32` in the current scope
+ --> tests/ui/bad_modes_fn.rs:3:10
+  |
+3 | #[derive(HashType)]
+  |          ^^^^^^^^ method not found in `u32`
+  |
+  = note: this error originates in the derive macro `HashType` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0599]: no method named `push` found for type `u32` in the current scope
+ --> tests/ui/bad_modes_fn.rs:3:10
+  |
+3 | #[derive(HashType)]
+  |          ^^^^^^^^ method not found in `u32`
+  |
+  = note: this error originates in the derive macro `HashType` (in Nightly builds, run with -Z macro-backtrace for more info)
+
 error[E0308]: mismatched types
  --> tests/ui/bad_modes_fn.rs:3:10
   |
