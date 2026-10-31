@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-777%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-796%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -367,6 +367,24 @@ checked against that command in CI.
 | `ipb2` | IPB2 | - | ipb2 |
 | `iterated-sha1` | Iterated-SHA1 | - | Iterated-SHA1 |
 | `mscash` | mscash | - | mscash |
+| `lastpass-john` | LastPass (John) | - | LastPass |
+| `lp` | LP | - | lp |
+| `lpcli` | LastPass CLI | - | lpcli |
+| `mongodb-john` | MongoDB (John) | - | MongoDB |
+| `money` | Money | - | money |
+| `oracle-john` | Oracle (John) | - | oracle |
+| `oracle11` | Oracle 11 | - | oracle11 |
+| `oracle12c` | Oracle 12c | - | Oracle12C |
+| `osc` | OSC | - | osc |
+| `pwsafe` | Password Safe (John) | - | pwsafe |
+| `radius` | RADIUS | - | radius |
+| `rvary` | RVARY | - | RVARY |
+| `skey` | S/Key | - | skey |
+| `strip` | STRIP | - | STRIP |
+| `tcp-md5` | TCP-MD5 | - | tcp-md5 |
+| `vnc` | VNC | - | VNC |
+| `zed` | Zed | - | zed |
+| `zipmonster` | ZipMonster | - | ZipMonster |
 | `rar3hp` | RAR3-hp | 12500 | rar |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | ZIP |
@@ -550,7 +568,7 @@ checked against that command in CI.
 | `phpass-md5` | phpass(md5($pass)) | 40079 | - |
 | `cisco-ios9` | Cisco-IOS $9$ (scrypt) | 9300 | - |
 | `bsdi-crypt` | BSDi Crypt, Extended DES | 12400 | bsdicrypt |
-| `radmin2` | Radmin2 | 9900 | - |
+| `radmin2` | Radmin2 | 9900 | RAdmin |
 | `fortigate` | FortiGate (FortiOS) | 7000 | Fortigate |
 | `sybase-ase` | Sybase ASE | 8000 | SybaseASE |
 | `citrix-netscaler-sha512` | Citrix NetScaler SHA512 | 22200 | - |

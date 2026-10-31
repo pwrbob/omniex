@@ -276,11 +276,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `krb5pa-md5` - OpenCL: `krb5pa-md5-opencl`
 - [ ] `krb5pa-sha1` - OpenCL: `krb5pa-sha1-opencl`
 - [ ] `krb5tgs` - OpenCL: `krb5tgs-opencl`
-- [ ] `LastPass`
 - [ ] `leet`
 - [ ] `lotus85`
-- [ ] `lp` - OpenCL: `lp-opencl`
-- [ ] `lpcli` - OpenCL: `lpcli-opencl`
 - [ ] `LUKS`
 
 ### M-O
@@ -289,8 +286,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `md5ns`
 - [ ] `mdc2`
 - [ ] `Monero`
-- [ ] `money`
-- [ ] `MongoDB`
 - [ ] `Mozilla`
 - [ ] `mschapv2-naive`
 - [ ] `multibit`
@@ -310,10 +305,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `o5logon` - OpenCL: `o5logon-opencl`
 - [ ] `openssl-enc`
 - [ ] `OpenVMS`
-- [ ] `oracle`
-- [ ] `oracle11`
-- [ ] `Oracle12C`
-- [ ] `osc`
 - [ ] `ospf`
 - [ ] `Oubliette-Blowfish`
 - [ ] `Oubliette-IDEA`
@@ -335,10 +326,7 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `po`
 - [ ] `PST`
 - [ ] `PuTTY`
-- [ ] `pwsafe` - OpenCL: `pwsafe-opencl`
 - [ ] `RACF-KDFAES`
-- [ ] `radius`
-- [ ] `RAdmin`
 - [ ] `RAKP-MD5` - OpenCL: `RAKP-MD5-opencl`
 - [ ] `RAKP-SHA1` - OpenCL: `RAKP-SHA1-opencl`
 - [ ] `RAKP-SHA256` - OpenCL: `RAKP-SHA256-opencl`
@@ -346,7 +334,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
 - [ ] `restic`
 - [ ] `rsvp`
-- [ ] `RVARY`
 
 ### S-U
 
@@ -357,15 +344,12 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `Siemens-S7`
 - [ ] `Signal`
 - [ ] `Skein`
-- [ ] `skey`
 - [ ] `SL3` - OpenCL: `SL3-opencl`
 - [ ] `Snefru`
 - [ ] `sspr` - OpenCL: `sspr-opencl`
 - [ ] `streebog256crypt` - OpenCL: `streebog256crypt-opencl`
 - [ ] `streebog512crypt` - OpenCL: `streebog512crypt-opencl`
-- [ ] `STRIP` - OpenCL: `strip-opencl`
 - [ ] `Sybase-PROP`
-- [ ] `tcp-md5`
 - [ ] `tezos` - OpenCL: `tezos-opencl`
 - [ ] `TrueCrypt-opencl` - OpenCL only
 
@@ -373,7 +357,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 - [ ] `vdi`
 - [ ] `vmx` - OpenCL: `vmx-opencl`
-- [ ] `VNC`
 - [ ] `vtp`
 - [ ] `wbb3`
 - [ ] `Whirpool`
@@ -381,8 +364,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `wpapsk` - OpenCL: `wpapsk-opencl`
 - [ ] `wpapsk-pmk` - OpenCL: `wpapsk-pmk-opencl`
 - [ ] `XSHA512-free-opencl` - OpenCL only
-- [ ] `zed` - OpenCL: `zed-opencl`
-- [ ] `ZipMonster`
 
 - [ ] `xsha`
 - [ ] `xsha512`

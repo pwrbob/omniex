@@ -1757,7 +1757,7 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "radmin2",
         hashcat: &[hc!(9900, "22527bee5c29ce95373c4e0f359f079b")],
-        john: &[],
+        john: &[john!("RAdmin", "$radmin2$B137F09CF92F465CABCA06AB1B283C1F")],
     },
     Vector {
         slug: "fortigate",
@@ -4270,6 +4270,135 @@ pub const VECTORS: &[Vector] = &[
         slug: "mscash",
         hashcat: &[],
         john: &[john!("mscash", "root:176a4c2bd45ac73687676c2f09045353")],
+    },
+    Vector {
+        slug: "lastpass-john",
+        hashcat: &[],
+        john: &[john!(
+            "LastPass",
+            "$lastpass$hackme@mailinator.com$500$i+hJCwPOj5eQN4tvHcMguoejx4VEmiqzOXOdWIsZKlk="
+        )],
+    },
+    Vector {
+        slug: "lp",
+        hashcat: &[],
+        john: &[john!(
+            "lp",
+            "$lp$hackme@mailinator.com$6f5d8cec3615fc9ac7ba2e0569bce4f5"
+        )],
+    },
+    Vector {
+        slug: "lpcli",
+        hashcat: &[],
+        john: &[john!(
+            "lpcli",
+            "$lpcli$0$lulu@mailinator.com$1234$3fec6cd2d8c049cbafe9fa6a9343f42f$f21d8e60ad22db53033e431700fb5e0c"
+        )],
+    },
+    Vector {
+        slug: "mongodb-john",
+        hashcat: &[],
+        john: &[john!(
+            "MongoDB",
+            "$mongodb$0$sa$75692b1d11c072c6c79332e248c4f699"
+        )],
+    },
+    Vector {
+        slug: "money",
+        hashcat: &[],
+        john: &[john!("money", "$money$1*fdb51efac3f4e440*bdaa2deb")],
+    },
+    Vector {
+        slug: "oracle-john",
+        hashcat: &[],
+        john: &[john!("oracle", "O$SYSTEM#9EEDFA0AD26C6D52")],
+    },
+    Vector {
+        slug: "oracle11",
+        hashcat: &[],
+        john: &[john!(
+            "oracle11",
+            "5FDAB69F543563582BA57894FE1C1361FB8ED57B903603F2C52ED1B4D642"
+        )],
+    },
+    Vector {
+        slug: "oracle12c",
+        hashcat: &[],
+        john: &[john!(
+            "Oracle12C",
+            "$oracle12c$e3243b98974159cc24fd2c9a8b30ba62e0e83b6ca2fc7c55177c3a7f82602e3bdd17ceb9b9091cf9dad672b8be961a9eac4d344bdba878edc5dcb5899f689ebd8dd1be3f67bff9813a464382381ab36b"
+        )],
+    },
+    Vector {
+        slug: "osc",
+        hashcat: &[],
+        john: &[john!("osc", "$OSC$2020$05de5c963ee6234dc7d52f7589a1922b")],
+    },
+    Vector {
+        slug: "pwsafe",
+        hashcat: &[],
+        john: &[john!(
+            "pwsafe",
+            "$pwsafe$*3*fefc1172093344c9d5577b25f5b4b6e5d2942c94f9fc24c21733e28ae6527521*2048*88cbaf7d8668c1a98263f5dce7cb39c3304c49a3e0d76a7ea475dc02ab2f97a7"
+        )],
+    },
+    Vector {
+        slug: "radius",
+        hashcat: &[],
+        john: &[john!(
+            "radius",
+            "$radius$1*0*Passw0rd2*acf627289be7e214c8e328d0d01fcea2*fe18a76eec4abeeea09eb90e99b359f7"
+        )],
+    },
+    Vector {
+        slug: "rvary",
+        hashcat: &[],
+        john: &[john!("RVARY", "$rvary$5AA70358A9C369E0")],
+    },
+    Vector {
+        slug: "skey",
+        hashcat: &[],
+        john: &[john!("skey", "0096 luky451004  b519dcfe18eb7aab")],
+    },
+    Vector {
+        slug: "strip",
+        hashcat: &[],
+        john: &[john!(
+            "STRIP",
+            "$strip$*66cd7a4ff7716f7b86cf587ce18eb39518e096eb152615ada8d007d9f035c20c711e62cbde96d8c3aad2a4658497a6119addc97ed3c970580cd666f301c63ce041a1748ee5c3861ada3cd6ee75b5d68891f731b3c2e3294b08e10ce3c23c2bfac158f8c45d0332791f64d1e3ad55e936d17a42fef5228e713b8188050c9a61c7f026af6203172cf2fc54c8b439e2260d7a00a4156713f92f8466de5c05cd8701e0d3d9cb3f392ae918e6900d5363886d4e1ed7e90da76b180ef9555c1cd358f6d1ee3755a208fee4d5aa1c776a0888200b21a3da6614d5fe2303e78c09563d862d19deecdc9f0ec7fbc015689a74f4eb477d9f22298b1b3f866ca4cb772d74821a1f8d03fd5fd0d020ffd41dd449b431ddf3bbfba3399311d9827be428202ee56e2c2a4e91f3415b4282c691f16cd447cf877b576ab963ea4ea3dc7d8c433febdc36607fd2372c4165abb59e3e75c28142f1f2575ecca6d97a9f782c3410151f8bbcbc65a42fdc59fdc4ecd8214a2bbd3a4562fac21c48f7fc69a4ecbcf664b4e435d7734fde5494e4d80019a0302e22565ed6a49b29cecf81077fd92f0105d18a421e04ee0deaca6389214abc7182db7003da7e267816531010b236eadfea20509718ff743ed5ad2828b6501dd84a371feed26f0514bbda69118a69048ebb71e3e2c54fb918422f1320724a353fe8d81a562197454d2c67443be8a4008a756aec0998386a5fd48e379befe966b42dfa6684ff049a61b51de5f874a12ab7d9ab33dc84738e036e294c22a07bebcc95be9999ab988a1fa1c944ab95be970045accb661249be8cc34fcc0680cb1aff8dfee21f586c571b1d09bf370c6fc131418201e0414acb2e4005b0b6fda1f3d73b7865823a008d1d3f45492a960dbdd6331d78d9e2e6a368f08ee3456b6d78df1d5630f825c536fff60bad23fb164d151d80a03b0c78edbfdee5c7183d7527e289428cf554ad05c9d75011f6b233744f12cd85fbb62f5d1ae22f43946f24a483a64377bf3fa16bf32cea1ab4363ef36206a5989e97ff847e5d645791571b9ecd1db194119b7663897b9175dd9cc123bcc7192eaf56d4a2779c502700e88c5c20b962943084bcdf024dc4f19ca649a860bdbd8f8f9b4a9d03027ae80f4a3168fc030859acb08a871950b024d27306cdc1a408b2b3799bb8c1f4b6ac3593aab42c962c979cd9e6f59d029f8d392315830cfcf4066bf03e0fc5c0f3630e9c796ddb38f51a2992b0a61d6ef115cb34d36c7d94b6c9d49dfe8d064d92b483f12c14fa10bf1170a575e4571836cef0a1fbf9f8b6968abda5e964bb16fd62fde1d1df0f5ee9c68ce568014f46f1717b6cd948b0da9a6f4128da338960dbbcbc9c9c3b486859c06e5e2338db3458646054ccd59bb940c7fc60cda34f633c26dde83bb717b75fefcbd09163f147d59a6524752a47cd94"
+        )],
+    },
+    Vector {
+        slug: "tcp-md5",
+        hashcat: &[],
+        john: &[john!(
+            "tcp-md5",
+            "$tcpmd5$c0a83814c0a838280006002800b3d10515f72762291b6878a010007300000000$eaf8d1f1da3f03c90b42709e9508fc73"
+        )],
+    },
+    Vector {
+        slug: "vnc",
+        hashcat: &[],
+        john: &[john!(
+            "VNC",
+            "$vnc$*2F7532B3EFD17EEA5DD3A0949FFDF1D8*0EB42D4D9AC1EF1B6EF6647B9594A621"
+        )],
+    },
+    Vector {
+        slug: "zed",
+        hashcat: &[],
+        john: &[john!(
+            "zed",
+            "$zed$2$22$200000$4d05362c7ac3f518$a649427303fae36e"
+        )],
+    },
+    Vector {
+        slug: "zipmonster",
+        hashcat: &[],
+        john: &[john!(
+            "ZipMonster",
+            "$zipmonster$e0f68d6f40c5f157c169e9ca0a6f09fe"
+        )],
     },
 ];
 
