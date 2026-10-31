@@ -79,7 +79,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 12000-12999
 
-- [ ] `12200` - `eCryptfs`
 
 ### 13000-13999
 
@@ -111,8 +110,6 @@ Hashcat's plaintext mode is excluded below.
 ### 14000-14999
 
 - [ ] `14600` - `LUKS v1 (legacy)`
-- [ ] `14700` - `iTunes backup < 10.0`
-- [ ] `14800` - `iTunes backup >= 10.0`
 
 ### 15000-15999
 
@@ -143,13 +140,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 22000-22999
 
-- [ ] `22100` - `BitLocker`
-- [ ] `22700` - `MultiBit HD (scrypt)`
-- [ ] `22911` - `RSA/DSA/EC/OpenSSH Private Keys ($0$)`
-- [ ] `22921` - `RSA/DSA/EC/OpenSSH Private Keys ($6$)`
-- [ ] `22931` - `RSA/DSA/EC/OpenSSH Private Keys ($1, $3$)`
-- [ ] `22941` - `RSA/DSA/EC/OpenSSH Private Keys ($4$)`
-- [ ] `22951` - `RSA/DSA/EC/OpenSSH Private Keys ($5$)`
 
 ### 23000-23999
 

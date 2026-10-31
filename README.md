@@ -286,6 +286,11 @@ checked against that command in CI.
 | `odf` | Open Document Format | 18400, 18600 | - |
 | `apfs` | Apple File System (APFS) | 18300 | - |
 | `android-backup` | Android Backup | 18900 | - |
+| `ecryptfs` | eCryptfs | 12200 | - |
+| `itunes-backup` | iTunes backup | 14700, 14800 | - |
+| `multibit-hd` | MultiBit HD (scrypt) | 22700 | - |
+| `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951 | - |
+| `bitlocker` | BitLocker | 22100 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |
