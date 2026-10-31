@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "GPG",
     slug = "gpg",
-    hashcat = [17010, 17020, 17030, 17040, 17050],
+    hashcat = [17010, 17020, 17030, 17040, 17050], john = ["gpg"],
     modes_fn = gpg_modes,
 )]
 pub struct Gpg {
@@ -64,12 +64,13 @@ pub struct Gpg {
 
 pub fn gpg_modes(value: &Gpg) -> Vec<crate::Mode> {
     match value.cipher {
-        3 => vec![crate::Mode::Hashcat(17040)],
+        3 => vec![crate::Mode::Hashcat(17040), crate::Mode::John("gpg")],
         7 if value.iv.len() == 12 => vec![crate::Mode::Hashcat(17050)],
         7 | 9 => vec![
             crate::Mode::Hashcat(17010),
             crate::Mode::Hashcat(17020),
             crate::Mode::Hashcat(17030),
+            crate::Mode::John("gpg"),
         ],
         _ => Vec::new(),
     }

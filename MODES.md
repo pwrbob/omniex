@@ -319,7 +319,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### 0-9
 
-- [ ] `7z` - OpenCL: `7z-opencl`
 
 ### A-C
 
@@ -327,7 +326,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `AFS`
 - [ ] `agilekeychain` - OpenCL: `agilekeychain-opencl`
 - [ ] `andOTP`
-- [ ] `AndroidBackup` - OpenCL: `AndroidBackup-opencl`
 - [ ] `ansible` - OpenCL: `ansible-opencl`
 - [ ] `Argon2` - OpenCL: `argon2-opencl`
 - [ ] `armory`
@@ -341,7 +339,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `BestCryptVE4`
 - [ ] `bfegg`
 - [ ] `Bitcoin` - OpenCL: `Bitcoin-opencl`
-- [ ] `BitLocker` - OpenCL: `BitLocker-opencl`
 - [ ] `bitshares`
 - [ ] `Bitwarden` - OpenCL: `bitwarden-opencl`
 - [ ] `BKS`
@@ -367,8 +364,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `dmg` - OpenCL: `dmg-opencl`
 - [ ] `dominosec`
 - [ ] `dominosec8`
-- [ ] `DPAPImk`
-- [ ] `eCryptfs`
 - [ ] `eigrp`
 - [ ] `electrum`
 - [ ] `electrum-modern-opencl` - OpenCL only
@@ -378,13 +373,11 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `ethereum-presale-opencl` - OpenCL only
 - [ ] `fde`
 - [ ] `FormSpring`
-- [ ] `FVDE` - OpenCL: `FVDE-opencl`
 
 ### G-I
 
 - [ ] `geli` - OpenCL: `geli-opencl`
 - [ ] `gost94crypt` - OpenCL: `gost94crypt-opencl`
-- [ ] `gpg` - OpenCL: `gpg-opencl`
 - [ ] `h3c`
 - [ ] `hdaa`
 - [ ] `HMAC-MD5`
@@ -396,12 +389,10 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `ipb2`
 - [ ] `Iterated-SHA1` - OpenCL: `Iterated-SHA1-opencl`
 - [ ] `Iterated-SHA256` - OpenCL: `Iterated-SHA256-opencl`
-- [ ] `itunes-backup`
 - [ ] `iwork` - OpenCL: `iwork-opencl`
 
 ### J-L
 
-- [ ] `KeePass` - OpenCL: `KeePass-opencl`
 - [ ] `keplr`
 - [ ] `keychain` - OpenCL: `keychain-opencl`
 - [ ] `keyring` - OpenCL: `keyring-opencl`

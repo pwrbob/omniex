@@ -279,23 +279,23 @@ checked against that command in CI.
 | `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | - |
 | `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | - |
 | `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700 | - |
-| `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | - |
-| `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | - |
-| `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | - |
+| `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | gpg |
+| `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | DPAPImk |
+| `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | KeePass |
 | `keepass4` | KeePass KDBX v4 | 34300, 34301 | - |
 | `odf` | Open Document Format | 18400, 18600 | - |
 | `apfs` | Apple File System (APFS) | 18300 | - |
-| `android-backup` | Android Backup | 18900 | - |
-| `ecryptfs` | eCryptfs | 12200 | - |
-| `itunes-backup` | iTunes backup | 14700, 14800 | - |
+| `android-backup` | Android Backup | 18900 | AndroidBackup |
+| `ecryptfs` | eCryptfs | 12200 | eCryptfs |
+| `itunes-backup` | iTunes backup | 14700, 14800 | itunes-backup |
 | `multibit-hd` | MultiBit HD (scrypt) | 22700 | - |
 | `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951 | - |
-| `bitlocker` | BitLocker | 22100 | - |
+| `bitlocker` | BitLocker | 22100 | BitLocker |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |
-| `filevault2` | FileVault 2 | 16700 | - |
-| `sevenzip` | 7-Zip | 11600 | - |
+| `filevault2` | FileVault 2 | 16700 | FVDE |
+| `sevenzip` | 7-Zip | 11600 | 7z |
 | `android-fde` | Android FDE <= 4.3 | 8800 | - |
 | `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
 | `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | - |

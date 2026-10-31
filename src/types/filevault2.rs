@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// Apple FileVault 2 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "FileVault 2", slug = "filevault2", hashcat = [16700])]
+#[hash(name = "FileVault 2", slug = "filevault2", hashcat = [16700], john = ["FVDE"])]
 pub struct FileVault2 {
     /// Core Data primary key, always `1`.
     #[field(role = other, encoding = decimal)]

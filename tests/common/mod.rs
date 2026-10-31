@@ -3216,7 +3216,10 @@ pub const VECTORS: &[Vector] = &[
                 "$gpg$*1*60*4096*71cdae39dd004b5fd4571575c683a33ecb0d2ea4495655b2544a63397b4f92e1b7d2c5243143398f9d44aba1e7b97c88b7030080b97c811d757264be*1*254*2*7*12*07f4ca8d366ae2e0ab55da75*329368576*199d8afecccd9dd6"
             ),
         ],
-        john: &[],
+        john: &[john!(
+            "gpg",
+            "$gpg$*1*348*1024*8833fa3812b5500aa9eb7e46febfa31a0584b7e4a5b13c198f5c9b0814243895cce45ac3714e79692fb5a130a1c943b9130315ce303cb7e6831be68ce427892858f313fc29f533434dbe0ef26573f2071bbcc1499dc49bda90648221ef3823757e2fba6099a18c0c83386b21d8c9b522ec935ecd540210dbf0f21c859429fd4d35fa056415d8087f27b3e66b16081ea18c544d8b2ea414484f17097bc83b773d92743f76eb2ccb4df8ba5f5ff84a5474a5e8a8e5179a5b0908503c55e428de04b40628325739874e1b4aa004c4cbdf09b0b620990a8479f1c9b4187e33e63fe48a565bc1264bbf4062559631bef9e346a7217f1cabe101a38ac4be9fa94f6dafe6b0301e67792ed51bca04140cddd5cb6e80ac6e95e9a09378c9651588fe360954b622c258a3897f11246c944a588822cc6daf1cb81ccc95098c3bea8432f1ee0c663b193a7c7f1cdfeb91eee0195296bf4783025655cbebd7c70236*3*254*2*7*16*a47ef38987beab0a0b9bfe74b72822e8*65536*1f5c90d9820997db"
+        )],
     },
     Vector {
         slug: "rar3hp",
@@ -3248,7 +3251,10 @@ pub const VECTORS: &[Vector] = &[
             16700,
             "$fvde$1$16$84286044060108438487434858307513$20000$f1620ab93192112f0a23eea89b5d4df065661f974b704191"
         )],
-        john: &[],
+        john: &[john!(
+            "FVDE",
+            "$fvde$1$16$84286044060108438487434858307513$20000$f1620ab93192112f0a23eea89b5d4df065661f974b704191"
+        )],
     },
     Vector {
         slug: "sevenzip",
@@ -3256,7 +3262,10 @@ pub const VECTORS: &[Vector] = &[
             11600,
             "$7z$0$14$0$$11$33363437353138333138300000000000$2365089182$16$12$d00321533b483f54a523f624a5f63269"
         )],
-        john: &[],
+        john: &[john!(
+            "7z",
+            "$7z$128$19$0$1122$8$a264c94f2cd72bec0000000000000000$725883103$112$108$64749c0963e20c74602379ca740165b9511204619859d1914819bc427b7e5f0f8fc67f53a0b53c114f6fcf4542a28e4a9d3914b4bc76baaa616d6a7ec9efc3f051cb330b682691193e6fa48159208329460c3025fb273232b82450645f2c12a9ea38b53a2331a1d0858813c8bf25a831"
+        )],
     },
     Vector {
         slug: "dpapi",
@@ -3278,7 +3287,10 @@ pub const VECTORS: &[Vector] = &[
                 "$DPAPImk$2*3*S-15-21-464497560-472124119-475628788-1088*aes256*sha512*13450*685165fdb6d0627a15100215ec331ed8*288*7e1ea6f7ec3c2111f2a3903c73aefe66e524d8b241dc1482d0bd07cc1f3ccdadd8cebd4263b3b7c2496da48f40d2eb4890513e6624aeefbe6bbc6ea73f2f71fecf9cc5fef3891a2e697a4415ba7a069642069c142335d53cc750d42a4f4d2b0592956b4a0e57a5d5b1bfd27f0a8eac9d0d5fc5c5e5e23af18ce1a8eff442ed335e5db3bad6e89146f71aa9351e132fd9"
             ),
         ],
-        john: &[],
+        john: &[john!(
+            "DPAPImk",
+            "$DPAPImk$1*1*S-15-21-466364039-425773974-453930460-1925*des3*sha1*24000*b038489dee5ad04e3e3cab4d957258b5*208*cb9b5b7d96a0d2a00305ca403d3fd9c47c561e35b4b2cf3aebfd1d3199a6481d56972be7ebd6c291b199e6f1c2ffaee91978706737e9b1209e6c7d3aa3d8c3c3e38ad1ccfa39400d62c2415961c17fd0bd6b0f7bbd49cc1de1a394e64b7237f56244238da8d37d78"
+        )],
     },
     Vector {
         slug: "keepass",
@@ -3292,7 +3304,10 @@ pub const VECTORS: &[Vector] = &[
                 "$keepass$*2*60000*0*02078d460c3c837003f22ee2ba42b3ac2a9ad9e913efb61349b3f91aacd0b004*c901781373cb6806df4b4c7b427ba698440f9e9dd68101e6a198e4a95cb10098*c602f182f8b03671c944a5af357eede7*135443633e6d2b6dba314dee0a1e2b5d0c025ca5fcaf692a20d77fb62cc44f63*51b0b2d19d82c88a0d1a646151be0b68c5e3c841a7a21b4abb2e9be14f298ed1"
             ),
         ],
-        john: &[],
+        john: &[john!(
+            "KeePass",
+            "$keepass$*2*24569*0*c40432355cce7348c48053ceea0a28e7d18859c4ea47e3a799c6300861f64b95*265dafcc42e1537ff42e97e1e283c70014133be0fe2d420b4d24c6d57c9d2207*a00e20a852694c15aabb074d61b902fa*48dd553fb96f7996635f2414bfe6a1a8429ef0ffb71a1752abbef31853172c35*a44ae659958ad7fae8c8952cb83f3cf03fec2371ce22a8bf7fac1e687af2f249*1*64*5a26ea376cc5afc955104c334571d30486acbac512a94b75ca82a9e31dd97bf7"
+        )],
     },
     Vector {
         slug: "keepass4",
@@ -3336,7 +3351,10 @@ pub const VECTORS: &[Vector] = &[
             18900,
             "$ab$5*0*10000*b8900e4885ff9cad8f01ee1957a43bd633fea12491440514ae27aa83f2f5c006ec7e7fa0bce040add619919b4eb60608304b7d571a2ed87fd58c9ad6bc5fcf4c*7d254d93e16be9312fb1ccbfc6265c40cb0c5eab7b605a95a116e2383fb1cf12b688223f96221dcd2bf5410d4ca6f90e0789ee00157fa91658b42665d6b6844c*fc9f6be604d1c59ac32664ec2c5b9b30*00c4972149af3adcc235899e9d20611ea6e8de2212afcb9fcfefde7e35b691c2d0994eb47e4f9a260526ba47f4caea71af9c7fadcd5685d50126276f6acdd59966528b13ccc26036a0eaba2f2451aa64b05766d0edd03c988dcf87e2a9eec52d"
         )],
-        john: &[],
+        john: &[john!(
+            "AndroidBackup",
+            "$ab$5*0*10000*b8900e4885ff9cad8f01ee1957a43bd633fea12491440514ae27aa83f2f5c006ec7e7fa0bce040add619919b4eb60608304b7d571a2ed87fd58c9ad6bc5fcf4c*7d254d93e16be9312fb1ccbfc6265c40cb0c5eab7b605a95a116e2383fb1cf12b688223f96221dcd2bf5410d4ca6f90e0789ee00157fa91658b42665d6b6844c*fc9f6be604d1c59ac32664ec2c5b9b30*00c4972149af3adcc235899e9d20611ea6e8de2212afcb9fcfefde7e35b691c2d0994eb47e4f9a260526ba47f4caea71af9c7fadcd5685d50126276f6acdd59966528b13ccc26036a0eaba2f2451aa64b05766d0edd03c988dcf87e2a9eec52d"
+        )],
     },
     Vector {
         slug: "ecryptfs",
@@ -3344,7 +3362,10 @@ pub const VECTORS: &[Vector] = &[
             12200,
             "$ecryptfs$0$1$4207883745556753$567daa975114206c"
         )],
-        john: &[],
+        john: &[john!(
+            "eCryptfs",
+            "$ecryptfs$0$1$4207883745556753$567daa975114206c"
+        )],
     },
     Vector {
         slug: "multibit-hd",
@@ -3366,7 +3387,10 @@ pub const VECTORS: &[Vector] = &[
                 "$itunes_backup$*10*17a3b858e79bc273be43a9f113b71efe7ec8e7e401396b350180b4592ef45db67ffef7b2d64329a5*10000*2721336781705041205314422175267631184867*1000*99fafc983e732998adb9fadc162a2e382143f115"
             ),
         ],
-        john: &[],
+        john: &[john!(
+            "itunes-backup",
+            "$itunes_backup$*9*ebd7f9b33293b2511f0a4139d5b213feff51476968863cef60ec38d720497b6ff39a0bb63fa9f84e*10000*2202015774208421818002001652122401871832**"
+        )],
     },
     Vector {
         slug: "sshng",
@@ -3400,7 +3424,10 @@ pub const VECTORS: &[Vector] = &[
             22100,
             "$bitlocker$1$16$6f972989ddc209f1eccf07313a7266a2$1048576$12$3a33a8eaff5e6f81d907b591$60$316b0f6d4cb445fb056f0e3e0633c413526ff4481bbf588917b70a4e8f8075f5ceb45958a800b42cb7ff9b7f5e17c6145bf8561ea86f52d3592059fb"
         )],
-        john: &[],
+        john: &[john!(
+            "BitLocker",
+            "$bitlocker$1$16$6f972989ddc209f1eccf07313a7266a2$1048576$12$3a33a8eaff5e6f81d907b591$60$316b0f6d4cb445fb056f0e3e0633c413526ff4481bbf588917b70a4e8f8075f5ceb45958a800b42cb7ff9b7f5e17c6145bf8561ea86f52d3592059fb"
+        )],
     },
 ];
 

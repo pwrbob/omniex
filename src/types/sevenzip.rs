@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// 7-Zip archive hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "7-Zip", slug = "sevenzip", hashcat = [11600])]
+#[hash(name = "7-Zip", slug = "sevenzip", hashcat = [11600], john = ["7z"])]
 pub struct SevenZip {
     /// Data type identifier.
     #[field(role = other, encoding = decimal)]

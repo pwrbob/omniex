@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// BitLocker recovery key hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "BitLocker", slug = "bitlocker", hashcat = [22100])]
+#[hash(name = "BitLocker", slug = "bitlocker", hashcat = [22100], john = ["BitLocker"])]
 pub struct BitLocker {
     /// Verification type, always `1`.
     #[field(role = other, encoding = decimal)]

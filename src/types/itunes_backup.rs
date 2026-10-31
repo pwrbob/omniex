@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "iTunes backup",
     slug = "itunes-backup",
-    hashcat = [14700, 14800],
+    hashcat = [14700, 14800], john = ["itunes-backup"],
     modes_fn = itunes_modes,
 )]
 pub struct ItunesBackup {
@@ -40,8 +40,14 @@ pub struct ItunesBackup {
 
 pub fn itunes_modes(value: &ItunesBackup) -> Vec<crate::Mode> {
     match value.version {
-        9 => vec![crate::Mode::Hashcat(14700)],
-        10 => vec![crate::Mode::Hashcat(14800)],
+        9 => vec![
+            crate::Mode::Hashcat(14700),
+            crate::Mode::John("itunes-backup"),
+        ],
+        10 => vec![
+            crate::Mode::Hashcat(14800),
+            crate::Mode::John("itunes-backup"),
+        ],
         _ => Vec::new(),
     }
 }

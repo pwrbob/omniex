@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// Android Backup encryption hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Android Backup", slug = "android-backup", hashcat = [18900])]
+#[hash(name = "Android Backup", slug = "android-backup", hashcat = [18900], john = ["AndroidBackup"])]
 pub struct AndroidBackup {
     /// Backup format version.
     #[field(role = other, encoding = decimal)]

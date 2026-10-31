@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "DPAPI masterkey",
     slug = "dpapi",
-    hashcat = [15300, 15310, 15900, 15910],
+    hashcat = [15300, 15310, 15900, 15910], john = ["DPAPImk"],
     modes_fn = dpapi_modes,
 )]
 pub struct Dpapi {
@@ -52,10 +52,10 @@ pub struct Dpapi {
 
 pub fn dpapi_modes(value: &Dpapi) -> Vec<crate::Mode> {
     match (value.version, value.context) {
-        (1, 1 | 2) => vec![crate::Mode::Hashcat(15300)],
-        (1, 3) => vec![crate::Mode::Hashcat(15310)],
-        (2, 1 | 2) => vec![crate::Mode::Hashcat(15900)],
-        (2, 3) => vec![crate::Mode::Hashcat(15910)],
+        (1, 1 | 2) => vec![crate::Mode::Hashcat(15300), crate::Mode::John("DPAPImk")],
+        (1, 3) => vec![crate::Mode::Hashcat(15310), crate::Mode::John("DPAPImk")],
+        (2, 1 | 2) => vec![crate::Mode::Hashcat(15900), crate::Mode::John("DPAPImk")],
+        (2, 3) => vec![crate::Mode::Hashcat(15910), crate::Mode::John("DPAPImk")],
         _ => Vec::new(),
     }
 }

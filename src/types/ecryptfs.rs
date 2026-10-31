@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// eCryptfs passphrase hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "eCryptfs", slug = "ecryptfs", hashcat = [12200])]
+#[hash(name = "eCryptfs", slug = "ecryptfs", hashcat = [12200], john = ["eCryptfs"])]
 pub struct Ecryptfs {
     /// Format version, always `0`.
     #[field(role = other, encoding = decimal)]

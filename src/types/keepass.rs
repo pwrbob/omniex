@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "KeePass (KDBX v2/v3)",
     slug = "keepass",
-    hashcat = [13400, 29700],
+    hashcat = [13400, 29700], john = ["KeePass"],
     modes_fn = keepass_modes,
 )]
 pub struct Keepass {
@@ -44,7 +44,11 @@ pub struct Keepass {
 
 pub fn keepass_modes(value: &Keepass) -> Vec<crate::Mode> {
     match value.version {
-        1 | 2 => vec![crate::Mode::Hashcat(13400), crate::Mode::Hashcat(29700)],
+        1 | 2 => vec![
+            crate::Mode::Hashcat(13400),
+            crate::Mode::Hashcat(29700),
+            crate::Mode::John("KeePass"),
+        ],
         _ => Vec::new(),
     }
 }

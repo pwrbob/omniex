@@ -65,12 +65,13 @@ fn hashcat_vectors_round_trip_and_report_their_mode() {
                 )
             });
 
+            let rendered = value
+                .render(&render_opts)
+                .unwrap_or_else(|error| panic!("`{}` failed to render: {error}", vector.slug));
             assert_eq!(
-                value.render(&render_opts).unwrap(),
-                entry.hash,
+                rendered, entry.hash,
                 "`{}` did not round-trip for hashcat mode {}",
-                vector.slug,
-                entry.mode
+                vector.slug, entry.mode
             );
             assert!(
                 value.modes().contains(&Mode::Hashcat(entry.mode)),
@@ -105,12 +106,13 @@ fn john_vectors_round_trip_and_report_their_format() {
                 )
             });
 
+            let rendered = value
+                .render(&render_opts)
+                .unwrap_or_else(|error| panic!("`{}` failed to render: {error}", vector.slug));
             assert_eq!(
-                value.render(&render_opts).unwrap(),
-                entry.hash,
+                rendered, entry.hash,
                 "`{}` did not round-trip for John format {}",
-                vector.slug,
-                entry.format
+                vector.slug, entry.format
             );
             assert!(
                 value.modes().contains(&Mode::John(entry.format)),
