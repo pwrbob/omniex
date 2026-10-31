@@ -4018,6 +4018,70 @@ pub const VECTORS: &[Vector] = &[
         )],
         john: &[],
     },
+    Vector {
+        slug: "securezip",
+        hashcat: &[
+            hc!(
+                23001,
+                "$zip3$*0*1*128*0*b4630625c92b6e7848f6fd86*df2f62611b3d02d2c7e05a48dad57c7d93b0bac1362261ab533807afb69db856676aa6e350320130b5cbf27c55a48c0f75739654ac312f1cf5c37149557fc88a92c7e3dde8d23edd2b839036e88092a708b7e818bf1b6de92f0efb5cce184cceb11db6b3ca0527d0bdf1f1137ee6660d9890928cd80542ac1f439515519147c14d965b5ba107c6227f971e3e115170bf*0*0*0*file.txt"
+            ),
+            hc!(
+                23002,
+                "$zip3$*0*1*192*0*53ff2de8c280778e1e0ab997*603eb37dbab9ea109e2c405e37d8cae1ec89e1e0d0b9ce5bf55d1b571c343b6a3df35fe381c30249cb0738a9b956ba8e52dfc5552894296300446a771032776c811ff8a71d9bb3c4d6c37016c027e41fea2d157d5b0ce17804b1d7c1606b7c1121d37851bd705e001f2cd755bbf305966d129a17c1d48ff8e87cfa41f479090cd456527db7d1d43f9020ad8e73f851a5*0*0*0*file.txt"
+            ),
+            hc!(
+                23003,
+                "$zip3$*0*1*256*0*39bff47df6152a0214d7a967*65ff418ffb3b1198cccdef0327c03750f328d6dd5287e00e4c467f33b92a6ef40a74bb11b5afad61a6c3c9b279d8bd7961e96af7b470c36fc186fd3cfe059107021c9dea0cf206692f727eeca71f18f5b0b6ee1f702b648bba01aa21c7b7f3f0f7d547838aad46868155a04214f22feef7b31d7a15e1abe6dba5e569c62ee640783bb4a54054c2c69e93ece9f1a2af9d*0*0*0*file.txt"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "xca",
+        hashcat: &[hc!(
+            40000,
+            "Tcdf012ed7637ca3b9F579C6659725E28985A90E17E16072D4A371293F233323EAEB302C4A39575DEBDA03053860298920FBA3985F7E1A9B9045E56543B8D05A72BCFFB984FB3EF33"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "iclass",
+        hashcat: &[
+            hc!(
+                36900,
+                "$iclass$75e0cd15feff12e0$fcffffffffffffff00000000$adc8761a$fcffffffffffffff00000000$adc8761a"
+            ),
+            hc!(
+                36901,
+                "$iclass_leg$0003020102060301$feffffffffffffff00000000$1d49c9da$feffffffffffffff00000000$1d49c9da"
+            ),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "mifare",
+        hashcat: &[hc!(
+            37000,
+            "$mfulc$1$3$0$ec9c5cf763244367$2283bfe8debe1780$922327794d0706ef$48444c4a4044524200000000544e5846"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cardano",
+        hashcat: &[hc!(
+            37700,
+            "ETERNL:42391a067b83d88e429c63da8004599b1f8b0e94ed47f1acea9c274b55d8b311b38cc419fd3b63c12ed48cd8b307651fd4e4be4a400f19df778146d7e392d8bb5811e376cff1bd71810f4c92ac973d6eb3e390ade856febd97c067e5cf40e9fe23c3655c25dc406686679e601a544acda56a51553f57305c969a2eb58331db5b215023b0de63e7cc15fe1de0afdb9cc45e45d6e127c20c28c63ccb32c8d6346240e7b81dfe7367a0e3a2f6f9f20c4b6e75a8486d5c052e42a085be2f41817ccbc6c0be5e9518253f7e0a66d33fdea5966aca494d6230a92092349d8659d982e346"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mikrotik",
+        hashcat: &[hc!(
+            38000,
+            "$mikrotik$hashcat$3069ece5c30baced372fb3d64647d42f$25772ddb1fa2e0f13511d7d7dc8c611b6529dd915d10482243dfca38"
+        )],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {
