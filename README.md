@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-715%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-720%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -276,7 +276,7 @@ checked against that command in CI.
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
 | `mozilla-key3` | Mozilla key3.db | 26000 | - |
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
-| `blockchain` | Blockchain, My Wallet | 12700, 15200 | Blockchain |
+| `blockchain` | Blockchain, My Wallet | 12700, 15200, 34700 | Blockchain |
 | `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
 | `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | oldoffice |
 | `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | Office |
@@ -291,7 +291,7 @@ checked against that command in CI.
 | `ecryptfs` | eCryptfs | 12200 | eCryptfs |
 | `itunes-backup` | iTunes backup | 14700, 14800 | itunes-backup |
 | `multibit-hd` | MultiBit HD (scrypt) | 22700 | - |
-| `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951 | - |
+| `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951, 36800 | - |
 | `bitlocker` | BitLocker | 22100 | BitLocker |
 | `blake2s-256` | BLAKE2s-256 | 31000 | - |
 | `blake2b-256` | BLAKE2b-256 | 34800 | - |
@@ -339,6 +339,9 @@ checked against that command in CI.
 | `argon2` | Argon2 | 34000 | - |
 | `encdv` | ENCsecurity DataVault | 29910, 29920, 29930, 29940 | - |
 | `securecrt` | SecureCRT MasterPassphrase v2 | 31400 | - |
+| `postgres-scram-sha256` | PostgreSQL SCRAM-SHA-256 | 40055 | - |
+| `flask-session` | Flask Session Cookie | 40056 | - |
+| `blockchain-second` | Blockchain, My Wallet, Second Password | 40040 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | - |

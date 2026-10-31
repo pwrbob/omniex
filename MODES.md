@@ -198,7 +198,6 @@ Hashcat's plaintext mode is excluded below.
 ### 34000-34999
 
 - [ ] `34100` - `LUKS v2 argon2 + SHA-256 + AES`
-- [ ] `34700` - `Blockchain, My Wallet, Legacy Wallets`
 
 ### 35000-35999
 
@@ -208,7 +207,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `36000` - `BIP39 Passphrase Recovery (ASCII, P2SH/P2PKH/P2WPKH)`
 - [ ] `36100` - `yescrypt`
 - [ ] `36200` - `gost-yescrypt`
-- [ ] `36800` - `OpenSSH Private Keys (bcrypt-pbkdf)`
 - [ ] `36900` - `iClass Standard (DES + hash0 + iClass Cipher, dual-MAC)`
 - [ ] `36901` - `iClass Legacy (partial div_key + iClass Cipher, dual-MAC)`
 
@@ -227,9 +225,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `40000` - `XCA database password`
 - [ ] `40011` - `Password Safe v3`
-- [ ] `40040` - `Blockchain, My Wallet, Second Password (SHA256)`
-- [ ] `40055` - `PostgreSQL SCRAM-SHA-256`
-- [ ] `40056` - `Flask Session Cookie ($salt.$salt.$pass)`
 
 ### 40100-40199
 

@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Blockchain, My Wallet",
     slug = "blockchain",
-    hashcat = [12700, 15200], john = ["Blockchain"],
+    hashcat = [12700, 15200, 34700], john = ["Blockchain"],
     modes_fn = blockchain_modes,
 )]
 pub struct Blockchain {
@@ -33,7 +33,7 @@ pub fn blockchain_modes(value: &Blockchain) -> Vec<crate::Mode> {
     if value.version == "v2" {
         vec![crate::Mode::Hashcat(15200)]
     } else {
-        vec![crate::Mode::Hashcat(12700)]
+        vec![crate::Mode::Hashcat(12700), crate::Mode::Hashcat(34700)]
     }
 }
 
