@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[hash(
     name = "Apple Keychain",
     slug = "apple-keychain",
-    hashcat = [23100],
+    hashcat = [23100], john = ["keychain"],
 )]
 pub struct AppleKeychain {
     /// Hexadecimal salt.

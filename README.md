@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-693%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-701%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -196,7 +196,7 @@ checked against that command in CI.
 | `episerver` | EPiServer (< .NET 4) | 141 | - |
 | `mysql323` | MySQL323 | 200 | mysql |
 | `phpass` | phpass | 400 | phpass |
-| `md5crypt` | md5crypt | 500 | md5crypt |
+| `md5crypt` | md5crypt | 500 | md5crypt, md5crypt-long |
 | `juniper-ive` | Juniper IVE | 501 | - |
 | `juniper-screenos` | Juniper ScreenOS | 22 | - |
 | `blake2b-512` | BLAKE2b-512 | 600 | Raw-Blake2 |
@@ -230,7 +230,7 @@ checked against that command in CI.
 | `scrypt` | scrypt | 8900 | - |
 | `racf-kdfaes` | RACF KDFAES | 14200 | - |
 | `linux-cryptoapi` | Linux Kernel Crypto API (2.4) | 14500 | - |
-| `apple-secure-notes` | Apple Secure Notes | 16200 | - |
+| `apple-secure-notes` | Apple Secure Notes | 16200 | notes |
 | `electrum` | Electrum Wallet | 16600, 21700, 21800 | electrum |
 | `telegram` | Telegram | 22301, 22600, 24500 | telegram |
 | `multibit` | MultiBit Classic .key (MD5) | 22500 | - |
@@ -241,7 +241,7 @@ checked against that command in CI.
 | `wpa-pmkid-legacy` | WPA-PMKID (legacy) | 16800, 16801 | - |
 | `mysql-a` | MySQL $A$ (sha256crypt) | 7401 | - |
 | `nsec3` | DNSSEC (NSEC3) | 8300 | - |
-| `ethereum-pbkdf2` | Ethereum Wallet, PBKDF2-HMAC-SHA256 | 15600 | - |
+| `ethereum-pbkdf2` | Ethereum Wallet, PBKDF2-HMAC-SHA256 | 15600 | ethereum |
 | `ethereum-scrypt` | Ethereum Wallet, SCRYPT | 15700 | - |
 | `solarwinds` | SolarWinds Orion | 21500, 21501 | solarwinds |
 | `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | - |
@@ -255,7 +255,7 @@ checked against that command in CI.
 | `stellar` | Stargazer Stellar Wallet XLM | 25500 | - |
 | `exodus` | Exodus Desktop Wallet (scrypt) | 28200 | - |
 | `axcrypt2` | AxCrypt 2 | 23500, 23600 | - |
-| `apple-keychain` | Apple Keychain | 23100 | - |
+| `apple-keychain` | Apple Keychain | 23100 | keychain |
 | `stuffit5` | Stuffit5 | 24700 | - |
 | `terra` | Terra Station Wallet | 29600 | - |
 | `jks-private-key` | JKS Java Key Store Private Keys (SHA1) | 15500 | - |
@@ -270,7 +270,7 @@ checked against that command in CI.
 | `iwork` | Apple iWork | 23300 | iwork |
 | `windows-hello` | Windows Hello PIN/Password | 28100 | - |
 | `lotus-notes` | Lotus Notes/Domino 6/8 | 8700, 9100 | - |
-| `axcrypt1` | AxCrypt 1 | 13200 | - |
+| `axcrypt1` | AxCrypt 1 | 13200 | AxCrypt |
 | `axcrypt-sha1` | AxCrypt 1 in-memory SHA1 | 13300 | - |
 | `bestcrypt` | BestCrypt | 23900, 24000 | - |
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
@@ -309,7 +309,7 @@ checked against that command in CI.
 | `shiro-sha512` | Apache Shiro 1 SHA-512 | 40035 | - |
 | `huawei-h6` | Huawei Comware $h$6$ | 40002 | - |
 | `redhat-389ds` | RedHat 389-DS LDAP | 40025 | - |
-| `xmpp-scram` | XMPP SCRAM | 40052 | - |
+| `xmpp-scram` | XMPP SCRAM | 40052 | SCRAM-PBKDF2-SHA1 |
 | `mongodb-scram-sha256` | MongoDB SCRAM-SHA-256 | 40053 | - |
 | `oracle-otm` | Oracle Transportation Management | 40045 | - |
 | `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | - |
@@ -341,7 +341,7 @@ checked against that command in CI.
 | `sevenzip` | 7-Zip | 11600 | 7z |
 | `android-fde` | Android FDE <= 4.3 | 8800 | - |
 | `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
-| `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | - |
+| `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | Bitcoin |
 | `chacha20` | ChaCha20 | 15400 | - |
 | `cram-md5` | CRAM-MD5 | 10200 | - |
 | `ipmi2-rakp-sha1` | IPMI2 RAKP HMAC-SHA1 | 7300 | - |
@@ -529,7 +529,7 @@ checked against that command in CI.
 | `aes-crypt-sha256` | AES Crypt (SHA256) | 22400 | - |
 | `jwt` | JWT (JSON Web Token) | 16500 | - |
 | `mojolicious` | Perl Mojolicious session cookie | 16501 | - |
-| `ansible-vault` | Ansible Vault | 16900 | - |
+| `ansible-vault` | Ansible Vault | 16900 | ansible |
 | `knx-ip-secure` | KNX IP Secure - Device Authentication Code | 25900 | - |
 | `metamask` | MetaMask Wallet | 26600, 26610 | - |
 | `office2016-sheetprotection` | MS Office 2016 - SheetProtection | 25300 | - |

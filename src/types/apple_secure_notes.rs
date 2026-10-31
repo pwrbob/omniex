@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Apple Secure Notes",
     slug = "apple-secure-notes",
-    hashcat = [16200],
+    hashcat = [16200], john = ["notes"],
 )]
 pub struct AppleSecureNotes {
     /// Format version.

@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "md5crypt",
     slug = "md5crypt",
     hashcat = [500],
-    john = ["md5crypt"],
+    john = ["md5crypt", "md5crypt-long"],
 )]
 pub struct Md5Crypt {
     /// Explicit round count, or zero for the default.

@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Ansible Vault",
     slug = "ansible-vault",
-    hashcat = [16900],
+    hashcat = [16900], john = ["ansible"],
 )]
 pub struct AnsibleVault {
     /// Vault format version.

@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// XMPP SCRAM-SHA1 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "XMPP SCRAM", slug = "xmpp-scram", hashcat = [40052])]
+#[hash(name = "XMPP SCRAM", slug = "xmpp-scram", hashcat = [40052], john = ["SCRAM-PBKDF2-SHA1"])]
 pub struct XmppScram {
     /// Format version.
     #[field(role = other, encoding = decimal)]

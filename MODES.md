@@ -266,19 +266,16 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `AFS`
 - [ ] `agilekeychain` - OpenCL: `agilekeychain-opencl`
 - [ ] `andOTP`
-- [ ] `ansible` - OpenCL: `ansible-opencl`
 - [ ] `Argon2` - OpenCL: `argon2-opencl`
 - [ ] `armory`
 - [ ] `as400-des`
 - [ ] `as400-ssha1`
 - [ ] `asa-md5`
-- [ ] `AxCrypt` - OpenCL: `axcrypt-opencl`
 - [ ] `axcrypt2-opencl` - OpenCL only
 - [ ] `AzureAD`
 - [ ] `BestCrypt`
 - [ ] `BestCryptVE4`
 - [ ] `bfegg`
-- [ ] `Bitcoin` - OpenCL: `Bitcoin-opencl`
 - [ ] `bitshares`
 - [ ] `Bitwarden` - OpenCL: `bitwarden-opencl`
 - [ ] `BKS`
@@ -307,7 +304,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `electrum-modern-opencl` - OpenCL only
 - [ ] `EncFS` - OpenCL: `EncFS-opencl`
 - [ ] `enpass` - OpenCL: `enpass-opencl`
-- [ ] `ethereum` - OpenCL: `ethereum-opencl`
 - [ ] `ethereum-presale-opencl` - OpenCL only
 - [ ] `fde`
 - [ ] `FormSpring`
@@ -330,7 +326,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 ### J-L
 
 - [ ] `keplr`
-- [ ] `keychain` - OpenCL: `keychain-opencl`
 - [ ] `keyring` - OpenCL: `keyring-opencl`
 - [ ] `keystore` - OpenCL: `keystore-opencl`
 - [ ] `known_hosts`
@@ -353,7 +348,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 ### M-O
 
 - [ ] `MD2`
-- [ ] `md5crypt-long`
 - [ ] `md5ns`
 - [ ] `mdc2`
 - [ ] `Monero`
@@ -372,7 +366,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `netlmv2`
 - [ ] `netntlm-naive`
 - [ ] `nk`
-- [ ] `notes` - OpenCL: `notes-opencl`
 - [ ] `nsec3`
 - [ ] `ntlmv2-opencl` - OpenCL only
 - [ ] `o10glogon`
@@ -428,7 +421,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `sapg`
 - [ ] `saph`
 - [ ] `sappse` - OpenCL: `sappse-opencl`
-- [ ] `SCRAM-PBKDF2-SHA1`
 - [ ] `SCRAM-PBKDF2-SHA1-MongoDB`
 - [ ] `SCRAM-PBKDF2-SHA256`
 - [ ] `scrypt`

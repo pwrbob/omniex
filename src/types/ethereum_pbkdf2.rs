@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Ethereum Wallet, PBKDF2-HMAC-SHA256",
     slug = "ethereum-pbkdf2",
-    hashcat = [15600],
+    hashcat = [15600], john = ["ethereum"],
 )]
 pub struct EthereumPbkdf2 {
     /// Iteration count.

@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// Bitcoin Core `wallet.dat` hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Bitcoin/Litecoin wallet.dat", slug = "bitcoin-wallet", hashcat = [11300])]
+#[hash(name = "Bitcoin/Litecoin wallet.dat", slug = "bitcoin-wallet", hashcat = [11300], john = ["Bitcoin"])]
 pub struct BitcoinWallet {
     /// Encrypted master key.
     #[field(role = ciphertext, encoding = hex)]

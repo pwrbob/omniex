@@ -251,7 +251,10 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "md5crypt",
         hashcat: &[hc!(500, "$1$38652870$DUjsu4TTlTsOe/xxZ05uf/")],
-        john: &[john!("md5crypt", "$1$38652870$DUjsu4TTlTsOe/xxZ05uf/")],
+        john: &[
+            john!("md5crypt", "$1$38652870$DUjsu4TTlTsOe/xxZ05uf/"),
+            john!("md5crypt-long", "$1$12345678$aIccj83HRDBo6ux1bVx7D1"),
+        ],
     },
     Vector {
         slug: "juniper-ive",
@@ -1840,7 +1843,10 @@ pub const VECTORS: &[Vector] = &[
             16900,
             "$ansible$0*0*6b761adc6faeb0cc0bf197d3d4a4a7d3f1682e4b169cae8fa6b459b3214ed41e*426d313c5809d4a80a4b9bc7d4823070*d8bad190c7fbc7c3cb1c60a27abfb0ff59d6fb73178681c7454d94a0f56a4360"
         )],
-        john: &[],
+        john: &[john!(
+            "ansible",
+            "$ansible$0*0*f623a48ba49f7abf7c1920bc1e2ab2607cda2b5786da2560b8178a6095e5dfd2*ab55de42e4f131f109f1a086f2e8e22f*6767c60857ce1d7aa20226d76ec1abf77837c623bb7e879147ab888ef15a0dbb"
+        )],
     },
     Vector {
         slug: "knx-ip-secure",
@@ -2434,7 +2440,10 @@ pub const VECTORS: &[Vector] = &[
             16200,
             "$ASN$*1*20000*80771171105233481004850004085037*d04b17af7f6b184346aad3efefe8bec0987ee73418291a41"
         )],
-        john: &[],
+        john: &[john!(
+            "notes",
+            "$ASN$*4*20000*caff9d98b629cad13d54f5f3cbae2b85*79270514692c7a9d971a1ab6f6d22ba42c0514c29408c998"
+        )],
     },
     Vector {
         slug: "electrum",
@@ -2554,7 +2563,10 @@ pub const VECTORS: &[Vector] = &[
             15600,
             "$ethereum$p*1024*38353131353831333338313138363430*a8b4dfe92687dbc0afeb5dae7863f18964241e96b264f09959903c8c924583fc*0a9252861d1e235994ce33dbca91c98231764d8ecb4950015a8ae20d6415b986"
         )],
-        john: &[],
+        john: &[john!(
+            "ethereum",
+            "$ethereum$p*262144*ae3cd4e7013836a3df6bd7241b12db061dbe2c6785853cce422d148a624ce0bd*5318b4d5bcd28de64ee5559e671353e16f075ecae9f99c7a79a38af5f869aa46*517ead924a9d0dc3124507e3393d175ce3ff7c1e96529c6c555ce9e51205e9b2"
+        )],
     },
     Vector {
         slug: "ethereum-scrypt",
@@ -2882,7 +2894,10 @@ pub const VECTORS: &[Vector] = &[
             23100,
             "$keychain$*74cd1efd49e54a8fdc8750288801e09fa26a33b1*66001ad4e0498dc7*5a084b7314971b728cb551ac40b2e50b7b5bd8b8496b902efe7af07538863a45394ead8399ec581681f7416003c49cc7"
         )],
-        john: &[],
+        john: &[john!(
+            "keychain",
+            "$keychain$*10f7445c8510fa40d9ef6b4e0f8c772a9d37e449*f3d19b2a45cdcccb*8c3c3b1c7d48a24dad4ccbd4fd794ca9b0b3f1386a0a4527f3548bfe6e2f1001804b082076641bbedbc9f3a7c33c084b"
+        )],
     },
     Vector {
         slug: "stuffit5",
@@ -3011,7 +3026,10 @@ pub const VECTORS: &[Vector] = &[
             13200,
             "$axcrypt$*1*10467*9a7cd609bb262c738d9f0e4977039b94*ecbe0fd05a96fd2099d88a92eebb76c59d6837dfe55b3631"
         )],
-        john: &[],
+        john: &[john!(
+            "AxCrypt",
+            "$axcrypt$*1*10467*9a7cd609bb262c738d9f0e4977039b94*ecbe0fd05a96fd2099d88a92eebb76c59d6837dfe55b3631"
+        )],
     },
     Vector {
         slug: "axcrypt-sha1",
@@ -3163,7 +3181,10 @@ pub const VECTORS: &[Vector] = &[
             11300,
             "$bitcoin$96$c265931309b4a59307921cf054b4ec6b6e4554369be79802e94e16477645777d948ae1d375191831efc78e5acd1f0443$16$8017214013543185$200460$96$480008005625057442352316337722323437108374245623701184230273883222762730232857701607167815448714$66$014754433300175043011633205413774877455616682000536368706315333388"
         )],
-        john: &[],
+        john: &[john!(
+            "Bitcoin",
+            "$bitcoin$96$c265931309b4a59307921cf054b4ec6b6e4554369be79802e94e16477645777d948ae1d375191831efc78e5acd1f0443$16$8017214013543185$200460$96$480008005625057442352316337722323437108374245623701184230273883222762730232857701607167815448714$66$014754433300175043011633205413774877455616682000536368706315333388"
+        )],
     },
     Vector {
         slug: "oldoffice",
@@ -3633,7 +3654,10 @@ pub const VECTORS: &[Vector] = &[
             40052,
             "$xmpp-scram$0$4096$45$353835323736323530353932363531393630313632353634313335323434323038393931323138373138343134$6d5b543b985dc6c0645da3c83d114fce121aa51d"
         )],
-        john: &[],
+        john: &[john!(
+            "SCRAM-PBKDF2-SHA1",
+            "$xmpp-scram$0$4096$36$37333536663261622d613666622d346333642d396232622d626432646237633338343064$38f79a6e3e64c07f731570d531ec05365aa05306"
+        )],
     },
     Vector {
         slug: "mongodb-scram-sha256",

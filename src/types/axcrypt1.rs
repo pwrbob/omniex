@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "AxCrypt 1",
     slug = "axcrypt1",
-    hashcat = [13200],
+    hashcat = [13200], john = ["AxCrypt"],
 )]
 pub struct Axcrypt1 {
     /// Format version.
