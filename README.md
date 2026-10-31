@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-720%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-725%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -223,7 +223,7 @@ checked against that command in CI.
 | `phps` | PHPS | 2612 | PHPS |
 | `lm` | LM | 3000 | - |
 | `oracle-h` | Oracle H | 3100 | - |
-| `bcrypt` | bcrypt | 3200, 33800 | bcrypt |
+| `bcrypt` | bcrypt | 3200, 33800, 30600 | bcrypt |
 | `sunmd5` | SunMD5 | 3300 | SunMD5 |
 | `racf` | RACF | 8500 | RACF |
 | `as400-des` | AS/400 DES | 8501 | - |
@@ -342,6 +342,10 @@ checked against that command in CI.
 | `postgres-scram-sha256` | PostgreSQL SCRAM-SHA-256 | 40055 | - |
 | `flask-session` | Flask Session Cookie | 40056 | - |
 | `blockchain-second` | Blockchain, My Wallet, Second Password | 40040 | - |
+| `krb5pa23` | Kerberos 5, etype 23, AS-REQ Pre-Auth | 7500 | - |
+| `sip-digest` | SIP digest authentication | 11400 | - |
+| `bcrypt-sha256-hmac` | bcrypt(HMAC-SHA256) | 30601 | - |
+| `cisco-ios14` | Cisco-IOS $14$ | 38200 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | RAR5 |
 | `winzip` | WinZip | 13600 | - |

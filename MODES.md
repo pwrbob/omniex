@@ -61,7 +61,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 7000-7999
 
-- [ ] `7500` - `Kerberos 5, etype 23, AS-REQ Pre-Auth`
 
 ### 8000-8999
 
@@ -75,7 +74,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 11000-11999
 
-- [ ] `11400` - `SIP digest authentication (MD5)`
 
 ### 12000-12999
 
@@ -182,8 +180,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 30000-30999
 
-- [ ] `30600` - `bcrypt(sha256($pass))`
-- [ ] `30601` - `bcrypt(HMAC-SHA256($pass))`
 
 ### 31000-31999
 
@@ -218,7 +214,6 @@ Hashcat's plaintext mode is excluded below.
 ### 38000-38999
 
 - [ ] `38000` - `Mikrotik RouterOS EC-SRP5 (Curve25519)`
-- [ ] `38200` - `Cisco-IOS $14$ (MD5 (Type 5) + scrypt, Convoluted)`
 - [ ] `38300` - `Apple DMG (encrcdsa v2, PBKDF2-HMAC-SHA1 + AES-192 key)`
 
 ### 40000-40099

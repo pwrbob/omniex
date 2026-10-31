@@ -526,6 +526,10 @@ pub const VECTORS: &[Vector] = &[
         slug: "bcrypt",
         hashcat: &[
             hc!(
+                30600,
+                "$2b$10$FxDtpTNaL303lLcWtd6LFO2U6Gc63VJ07qycHcfqbQQ71GhO/qSzu"
+            ),
+            hc!(
                 33800,
                 "$2a$08$hashcatohohohohohohohegk6PN.SFkoXxDIkacAGKFN9AF8nx.Hi"
             ),
@@ -3979,6 +3983,38 @@ pub const VECTORS: &[Vector] = &[
         hashcat: &[hc!(
             40040,
             "YnM6WYERjJfhxwepT7zV6odWoEUz1X4esYQb4bQ3KZ7bbZAyOTc1MDM3OTc1NjMyODA0ECcAAD3vFoc="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "krb5pa23",
+        hashcat: &[hc!(
+            7500,
+            "$krb5pa$23$user$realm$salt$5cbb0c882a2b26956e81644edbdb746326f4f5f0e947144fb3095dffe4b4b03e854fc1d631323632303636373330383333353630"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sip-digest",
+        hashcat: &[hc!(
+            11400,
+            "$sip$*72087*1215344588738747***342210558720*737232616*1215344588738747*8867133055*65600****MD5*e9980869221f9d1182c83b0d5e56a7db"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "bcrypt-sha256-hmac",
+        hashcat: &[hc!(
+            30601,
+            "$bcrypt-sha256$v=2,t=2b,r=12$KSOjON/ciJR86a00N5q61.$AmWZucQuHk13FGkQWhgMeiFvBfm2GCy"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "cisco-ios14",
+        hashcat: &[hc!(
+            38200,
+            "$14$ZeF0$Yh3cTZvrtSWBcT$6ImC5D6iNVvt4fwM14oDbj.Vd5KWkpl8WjUffnRdH5E"
         )],
         john: &[],
     },
