@@ -39,12 +39,13 @@ pub struct Encdv {
 }
 
 pub fn encdv_modes(value: &Encdv) -> Vec<crate::Mode> {
-    let has_extra = !value.extra.is_empty();
-    match (value.scheme.as_str(), has_extra) {
-        ("encdv-pbkdf2", false) => vec![crate::Mode::Hashcat(29910)],
-        ("encdv-pbkdf2", true) => vec![crate::Mode::Hashcat(29920)],
-        ("encdv", false) => vec![crate::Mode::Hashcat(29930)],
-        ("encdv", true) => vec![crate::Mode::Hashcat(29940)],
+    match value.scheme.as_str() {
+        "encdv-pbkdf2" if value.extra.matches('$').count() >= 3 => {
+            vec![crate::Mode::Hashcat(29920)]
+        }
+        "encdv-pbkdf2" => vec![crate::Mode::Hashcat(29910)],
+        "encdv" if value.extra.is_empty() => vec![crate::Mode::Hashcat(29930)],
+        "encdv" => vec![crate::Mode::Hashcat(29940)],
         _ => Vec::new(),
     }
 }
