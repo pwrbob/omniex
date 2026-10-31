@@ -276,6 +276,7 @@ checked against that command in CI.
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
 | `blockchain` | Blockchain, My Wallet | 12700, 15200 | - |
 | `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
+| `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | - |
 | `android-fde` | Android FDE <= 4.3 | 8800 | - |
 | `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
 | `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | - |

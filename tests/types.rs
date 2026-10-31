@@ -1027,6 +1027,11 @@ fn invalid_inputs_return_stable_error_kinds() {
             "$bitcoin$".into(),
             ParseErrorKind::InvalidLength,
         ),
+        (
+            "oldoffice".into(),
+            "$oldoffice$9*00*00*00".into(),
+            ParseErrorKind::InvalidCharacter,
+        ),
     ];
 
     for (slug, input, kind) in cases {

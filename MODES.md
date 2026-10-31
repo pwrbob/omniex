@@ -72,12 +72,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `9400` - `MS Office 2007`
 - [ ] `9500` - `MS Office 2010`
 - [ ] `9600` - `MS Office 2013`
-- [ ] `9700` - `MS Office <= 2003 $0/$1, MD5 + RC4`
-- [ ] `9710` - `MS Office <= 2003 $0/$1, MD5 + RC4, collider #1`
-- [ ] `9720` - `MS Office <= 2003 $0/$1, MD5 + RC4, collider #2`
-- [ ] `9800` - `MS Office <= 2003 $3/$4, SHA1 + RC4`
-- [ ] `9810` - `MS Office <= 2003 $3, SHA1 + RC4, collider #1`
-- [ ] `9820` - `MS Office <= 2003 $3, SHA1 + RC4, collider #2`
 
 ### 10000-10999
 
