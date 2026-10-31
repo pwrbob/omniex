@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-839%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-852%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -226,7 +226,7 @@ checked against that command in CI.
 | `bcrypt` | bcrypt | 3200, 33800, 30600 | bcrypt |
 | `sunmd5` | SunMD5 | 3300 | SunMD5 |
 | `racf` | RACF | 8500 | RACF |
-| `as400-des` | AS/400 DES | 8501 | - |
+| `as400-des` | AS/400 DES | 8501 | as400-des |
 | `scrypt` | scrypt | 8900 | - |
 | `racf-kdfaes` | RACF KDFAES | 14200 | - |
 | `linux-cryptoapi` | Linux Kernel Crypto API (2.4) | 14500 | - |
@@ -297,7 +297,7 @@ checked against that command in CI.
 | `blake2b-256` | BLAKE2b-256 | 34800 | - |
 | `salted-blake2b-256` | Salted BLAKE2b-256 | 34810, 34820 | - |
 | `sm3` | ShangMi 3 (SM3) | 31100 | Raw-SM3 |
-| `as400-ssha1` | AS/400 SSHA1 | 35200 | - |
+| `as400-ssha1` | AS/400 SSHA1 | 35200 | as400-ssha1 |
 | `werkzeug-md5` | Python Werkzeug MD5 | 30000 | - |
 | `werkzeug-sha256` | Python Werkzeug SHA256 | 30120 | - |
 | `anope-sha256` | Anope IRC Services | 30700 | - |
@@ -305,7 +305,7 @@ checked against that command in CI.
 | `md5-sha1-md5-nested` | md5(sha1(md5($pass))) | 32800 | - |
 | `grub2` | GRUB 2 | 40019 | - |
 | `oracle-t` | Oracle T: Type | 40036 | - |
-| `azure-sync` | MS-AzureSync | 40037 | - |
+| `azure-sync` | MS-AzureSync | 40037 | AzureAD |
 | `shiro-sha512` | Apache Shiro 1 SHA-512 | 40035 | - |
 | `huawei-h6` | Huawei Comware $h$6$ | 40002 | h3c |
 | `redhat-389ds` | RedHat 389-DS LDAP | 40025 | - |
@@ -421,6 +421,16 @@ checked against that command in CI.
 | `krb5-john` | Kerberos 5 (John) | - | krb5 |
 | `rakp` | RAKP (John) | - | RAKP-MD5, RAKP-SHA1, RAKP-SHA256 |
 | `wowsrp` | WoWSRP | - | WoWSRP |
+| `andotp` | andOTP | - | andOTP |
+| `bks` | BKS | - | BKS |
+| `blackberry-es10` | BlackBerry ES10 | - | Blackberry-ES10 |
+| `clipperz` | Clipperz | - | Clipperz |
+| `cryptosafe` | cryptoSafe | - | cryptoSafe |
+| `dashlane` | Dashlane | - | dashlane |
+| `encfs` | EncFS | - | EncFS |
+| `enpass` | Enpass | - | enpass |
+| `keplr` | Keplr | - | keplr |
+| `keyring` | Keyring | - | keyring |
 | `signal` | Signal | - | Signal |
 | `sl3` | SL3 | - | SL3 |
 | `vtp` | VTP | - | vtp |

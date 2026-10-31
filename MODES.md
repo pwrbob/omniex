@@ -218,25 +218,16 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 ### A-C
 
 - [ ] `agilekeychain` - OpenCL: `agilekeychain-opencl`
-- [ ] `andOTP`
 - [ ] `armory`
-- [ ] `as400-des`
-- [ ] `as400-ssha1`
 - [ ] `asa-md5`
 - [ ] `axcrypt2-opencl` - OpenCL only
-- [ ] `AzureAD`
 - [ ] `BestCrypt`
 - [ ] `bitshares`
 - [ ] `Bitwarden` - OpenCL: `bitwarden-opencl`
-- [ ] `BKS`
-- [ ] `Blackberry-ES10`
-- [ ] `Clipperz`
 - [ ] `cloudkeychain` - OpenCL: `cloudkeychain-opencl`
-- [ ] `cryptoSafe` - OpenCL: `cryptosafe-opencl`
 
 ### D-F
 
-- [ ] `dashlane` - OpenCL: `dashlane-opencl`
 - [ ] `diskcryptor-aes-opencl` - OpenCL only
 - [ ] `Django`
 - [ ] `django-scrypt`
@@ -245,8 +236,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 - [ ] `dominosec8`
 - [ ] `EPiServer`
 - [ ] `electrum-modern-opencl` - OpenCL only
-- [ ] `EncFS` - OpenCL: `EncFS-opencl`
-- [ ] `enpass` - OpenCL: `enpass-opencl`
 - [ ] `ethereum-presale-opencl` - OpenCL only
 - [ ] `FormSpring`
 
@@ -257,8 +246,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### J-L
 
-- [ ] `keplr`
-- [ ] `keyring` - OpenCL: `keyring-opencl`
 - [ ] `krb5asrep`
 - [ ] `krb5asrep-aes-opencl` - OpenCL only
 - [ ] `krb5pa-md5` - OpenCL: `krb5pa-md5-opencl`

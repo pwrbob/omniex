@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// Microsoft Azure AD Sync hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "MS-AzureSync", slug = "azure-sync", hashcat = [40037])]
+#[hash(name = "MS-AzureSync", slug = "azure-sync", hashcat = [40037], john = ["AzureAD"])]
 pub struct AzureSync {
     /// Object identifier.
     #[field(role = username, encoding = ascii)]
@@ -26,7 +26,7 @@ impl Parse for AzureSync {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        let rest = parse::strip_prefix(input, "v1;PPH1_MD4,", 0)?;
+        let rest = parse::strip_prefix(input, "v1;PPH1_MD4,", 0)?.trim_end_matches(';');
         let fields = parse::split_fields(rest, ',', 3)?;
         let iterations = fields[1].0.parse::<u32>().map_err(|_| {
             parse::error(
@@ -44,12 +44,21 @@ impl Parse for AzureSync {
 }
 
 impl Render for AzureSync {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
-        format!(
-            "v1;PPH1_MD4,{},{},{}",
-            self.object_id,
-            self.iterations,
-            crate::format::hex(self.digest)
-        )
+    fn render_value(&self, opts: &RenderOptions) -> String {
+        if opts.tool == crate::Tool::John {
+            format!(
+                "v1;PPH1_MD4,{},{},{};",
+                self.object_id,
+                self.iterations,
+                crate::format::hex(self.digest)
+            )
+        } else {
+            format!(
+                "v1;PPH1_MD4,{},{},{}",
+                self.object_id,
+                self.iterations,
+                crate::format::hex(self.digest)
+            )
+        }
     }
 }

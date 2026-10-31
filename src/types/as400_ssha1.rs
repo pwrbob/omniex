@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// AS/400 salted SHA1 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "AS/400 SSHA1", slug = "as400-ssha1", hashcat = [35200])]
+#[hash(name = "AS/400 SSHA1", slug = "as400-ssha1", hashcat = [35200], john = ["as400-ssha1"])]
 pub struct As400Ssha1 {
     /// AS/400 user name.
     #[field(role = salt, encoding = ascii)]
@@ -20,6 +20,20 @@ impl Parse for As400Ssha1 {
     fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
+        }
+        if let Some(rest) = input.strip_prefix("$as400ssha1$") {
+            let (digest, user, user_offset) = parse::split_once(rest, '$', 12)?;
+            if user.is_empty() || user.len() > 10 {
+                return Err(parse::error(
+                    ParseErrorKind::InvalidLength,
+                    user_offset,
+                    "AS/400 user names are between 1 and 10 characters",
+                ));
+            }
+            return Ok(Self {
+                user: user.to_owned(),
+                digest: parse::decode_hex_field::<20>(digest, 12, "digest")?,
+            });
         }
         let rest = parse::strip_prefix(input, "$as400$ssha1$*", 0)?;
         let fields = parse::split_fields(rest, '*', 2)?;
@@ -38,7 +52,14 @@ impl Parse for As400Ssha1 {
 }
 
 impl Render for As400Ssha1 {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, opts: &RenderOptions) -> String {
+        if opts.tool == crate::Tool::John {
+            return format!(
+                "$as400ssha1${}${}",
+                crate::format::hex(self.digest).to_uppercase(),
+                self.user
+            );
+        }
         format!(
             "$as400$ssha1$*{}*{}",
             self.user,
