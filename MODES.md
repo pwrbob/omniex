@@ -107,7 +107,6 @@ Hashcat's plaintext mode is excluded below.
 
 - [ ] `12200` - `eCryptfs`
 - [ ] `12500` - `RAR3-hp`
-- [ ] `12700` - `Blockchain, My Wallet`
 - [ ] `12900` - `Android FDE (Samsung DEK)`
 
 ### 13000-13999
@@ -148,7 +147,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 15000-15999
 
-- [ ] `15200` - `Blockchain, My Wallet, V2`
 - [ ] `15300` - `DPAPI masterkey file v1 (context 1 and 2)`
 - [ ] `15310` - `DPAPI masterkey file v1 (context 3)`
 - [ ] `15400` - `ChaCha20`
@@ -204,7 +202,6 @@ Hashcat's plaintext mode is excluded below.
 - [ ] `23001` - `SecureZIP AES-128`
 - [ ] `23002` - `SecureZIP AES-192`
 - [ ] `23003` - `SecureZIP AES-256`
-- [ ] `23700` - `RAR3-p (Uncompressed)`
 - [ ] `23800` - `RAR3-p (Compressed)` (no test module)
 
 ### 24000-24999

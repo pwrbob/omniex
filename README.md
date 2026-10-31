@@ -274,6 +274,8 @@ checked against that command in CI.
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
 | `mozilla-key3` | Mozilla key3.db | 26000 | - |
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
+| `blockchain` | Blockchain, My Wallet | 12700, 15200 | - |
+| `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730 | - |
