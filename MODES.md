@@ -132,11 +132,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 17000-17999
 
-- [ ] `17010` - `GPG (AES-128/AES-256 (SHA-1($pass)))`
-- [ ] `17020` - `GPG (AES-128/AES-256 (SHA-512($pass)))`
-- [ ] `17030` - `GPG (AES-128/AES-256 (SHA-256($pass)))`
-- [ ] `17040` - `GPG (CAST5 (SHA-1($pass)))`
-- [ ] `17050` - `GPG (AES-OCB-128 (SHA-1($pass)))`
 - [ ] `17200` - `PKZIP (Compressed)`
 - [ ] `17210` - `PKZIP (Uncompressed)`
 - [ ] `17220` - `PKZIP (Compressed Multi-File)`
