@@ -283,6 +283,9 @@ checked against that command in CI.
 | `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | - |
 | `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | - |
 | `keepass4` | KeePass KDBX v4 | 34300, 34301 | - |
+| `odf` | Open Document Format | 18400, 18600 | - |
+| `apfs` | Apple File System (APFS) | 18300 | - |
+| `android-backup` | Android Backup | 18900 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |

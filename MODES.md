@@ -131,10 +131,6 @@ Hashcat's plaintext mode is excluded below.
 ### 18000-18999
 
 - [ ] `18100` - `TOTP (HMAC-SHA1)`
-- [ ] `18300` - `Apple File System (APFS)`
-- [ ] `18400` - `Open Document Format (ODF) 1.2 (SHA-256, AES)`
-- [ ] `18600` - `Open Document Format (ODF) 1.1 (SHA-1, Blowfish)`
-- [ ] `18900` - `Android Backup`
 
 ### 19000-19999
 
