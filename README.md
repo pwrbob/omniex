@@ -311,6 +311,7 @@ checked against that command in CI.
 | `mongodb-scram-sha256` | MongoDB SCRAM-SHA-256 | 40053 | - |
 | `oracle-otm` | Oracle Transportation Management | 40045 | - |
 | `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | - |
+| `krb5asrep-aes` | Kerberos 5, etype 17/18, AS-REP | 32100, 32200 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |
@@ -471,9 +472,9 @@ checked against that command in CI.
 | `krb5db-old` | Kerberos 5, etype 1/2/3, DB | 38400 | - |
 | `krb5tgs17` | Kerberos 5, etype 17, TGS-REP | 19600 | - |
 | `krb5tgs18` | Kerberos 5, etype 18, TGS-REP | 19700 | - |
-| `krb5tgs23` | Kerberos 5, etype 23, TGS-REP | 13100 | - |
+| `krb5tgs23` | Kerberos 5, etype 23, TGS-REP | 13100, 35300 | - |
 | `krb5tgs3` | Kerberos 5, etype 3, TGS-REP | 38500 | - |
-| `krb5asrep23` | Kerberos 5, etype 23, AS-REP | 18200 | - |
+| `krb5asrep23` | Kerberos 5, etype 23, AS-REP | 18200, 35400 | - |
 | `krb5asrep3` | Kerberos 5, etype 3, AS-REP | 38600 | - |
 | `sspr-md5` | NetIQ SSPR (MD5) | 40057 | - |
 | `sspr-sha1` | NetIQ SSPR (SHA1) | 40058 | - |

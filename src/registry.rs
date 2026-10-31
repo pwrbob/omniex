@@ -139,6 +139,7 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &MongodbScramSha256::DESCRIPTOR,
     &OracleOtm::DESCRIPTOR,
     &SapCodvnH::DESCRIPTOR,
+    &Krb5AsrepAes::DESCRIPTOR,
     &Rar3hp::DESCRIPTOR,
     &Rar5::DESCRIPTOR,
     &WinZip::DESCRIPTOR,

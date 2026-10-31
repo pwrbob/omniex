@@ -207,8 +207,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 32000-32999
 
-- [ ] `32100` - `Kerberos 5, etype 17, AS-REP`
-- [ ] `32200` - `Kerberos 5, etype 18, AS-REP`
 - [ ] `32300` - `Empire CMS (Admin password)`
 - [ ] `32500` - `Dogechain.info Wallet`
 - [ ] `32700` - `Kremlin Encrypt 3.0 w/NewDES`
@@ -233,8 +231,6 @@ Hashcat's plaintext mode is excluded below.
 ### 35000-35999
 
 - [ ] `35100` - `sm3crypt $sm3$, SM3 (Unix)`
-- [ ] `35300` - `Kerberos 5, etype 23, TGS-REP (NT)`
-- [ ] `35400` - `Kerberos 5, etype 23, AS-REP (NT)`
 - [ ] `35500` - `Wordpress bcrypt(hmac-sha384($pass))`
 - [ ] `35600` - `gost12512crypt [$gost12512hash$] (Unix)`
 

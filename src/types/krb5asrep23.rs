@@ -8,7 +8,8 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[hash(
     name = "Kerberos 5, etype 23, AS-REP",
     slug = "krb5asrep23",
-    hashcat = [18200],
+    hashcat = [18200, 35400],
+    modes_fn = krb5asrep23_modes,
 )]
 pub struct Krb5AsRep23 {
     /// Kerberos username.
@@ -26,6 +27,10 @@ pub struct Krb5AsRep23 {
     /// Hexadecimal ciphertext.
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
+}
+
+pub fn krb5asrep23_modes(_value: &Krb5AsRep23) -> Vec<crate::Mode> {
+    vec![crate::Mode::Hashcat(18200), crate::Mode::Hashcat(35400)]
 }
 
 impl Parse for Krb5AsRep23 {
