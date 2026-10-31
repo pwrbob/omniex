@@ -301,6 +301,16 @@ checked against that command in CI.
 | `anope-sha256` | Anope IRC Services | 30700 | - |
 | `dane-sha256` | DANE RFC7929/RFC8162 SHA2-256 | 30420 | - |
 | `md5-sha1-md5-nested` | md5(sha1(md5($pass))) | 32800 | - |
+| `grub2` | GRUB 2 | 40019 | - |
+| `oracle-t` | Oracle T: Type | 40036 | - |
+| `azure-sync` | MS-AzureSync | 40037 | - |
+| `shiro-sha512` | Apache Shiro 1 SHA-512 | 40035 | - |
+| `huawei-h6` | Huawei Comware $h$6$ | 40002 | - |
+| `redhat-389ds` | RedHat 389-DS LDAP | 40025 | - |
+| `xmpp-scram` | XMPP SCRAM | 40052 | - |
+| `mongodb-scram-sha256` | MongoDB SCRAM-SHA-256 | 40053 | - |
+| `oracle-otm` | Oracle Transportation Management | 40045 | - |
+| `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | - |
 | `rar3hp` | RAR3-hp | 12500 | - |
 | `rar5` | RAR5 | 13000 | - |
 | `winzip` | WinZip | 13600 | - |

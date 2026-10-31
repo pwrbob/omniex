@@ -272,23 +272,10 @@ Hashcat's plaintext mode is excluded below.
 ### 40000-40099
 
 - [ ] `40000` - `XCA database password`
-- [ ] `40002` - `Huawei / H3C / HPE Comware $h$6$`
 - [ ] `40011` - `Password Safe v3`
-- [ ] `40019` - `GRUB 2`
-- [ ] `40023` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-1`
-- [ ] `40025` - `RedHat 389-DS LDAP (PBKDF2-HMAC-SHA256)`
-- [ ] `40035` - `Apache Shiro 1 SHA-512`
-- [ ] `40036` - `Oracle T: Type (Oracle 12+)`
-- [ ] `40037` - `MS-AzureSync PBKDF2-HMAC-SHA256`
 - [ ] `40040` - `Blockchain, My Wallet, Second Password (SHA256)`
-- [ ] `40045` - `Oracle Transportation Management (SHA256)`
-- [ ] `40052` - `XMPP SCRAM PBKDF2-SHA1`
-- [ ] `40053` - `MongoDB ServerKey SCRAM-SHA-256`
 - [ ] `40055` - `PostgreSQL SCRAM-SHA-256`
 - [ ] `40056` - `Flask Session Cookie ($salt.$salt.$pass)`
-- [ ] `40078` - `SAP CODVN H (PWDSALTEDHASH) isSHA512`
-- [ ] `40081` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-256`
-- [ ] `40082` - `SAP CODVN H (PWDSALTEDHASH) iSSHA-384`
 
 ### 40100-40199
 

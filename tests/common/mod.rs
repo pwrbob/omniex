@@ -3521,6 +3521,100 @@ pub const VECTORS: &[Vector] = &[
         hashcat: &[hc!(32800, "7b4f60b54472980e922280e225150dfa")],
         john: &[],
     },
+    Vector {
+        slug: "grub2",
+        hashcat: &[hc!(
+            40019,
+            "grub.pbkdf2.sha512.1024.03510507805003756325721848020561235456073188241051876082416068104377357018503082587026352628170170411053726157658716047762755750.aac26b18c2b0c44bcf56514d46aabd52eea097d9c95122722087829982e9dd957b2b641cb1e015d4df16a84d0571e96cf6d3de6361431bdeed4ddb0940f2425b"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "oracle-t",
+        hashcat: &[hc!(
+            40036,
+            "8F75FBD166AFDB6D7587DAB89C2F15672AAC031C5B0B5E65C0835FB130555F6FF4E0E5764976755558112246FFF306450C22F6B7746B9E9831ED97B373992F9157436180438417080374881414745255"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "azure-sync",
+        hashcat: &[hc!(
+            40037,
+            "v1;PPH1_MD4,54188415275183448824,100,55b530f052a9af79a7ba9c466dddcb8b116f8babf6c3873a51a3898fb008e123"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "shiro-sha512",
+        hashcat: &[hc!(
+            40035,
+            "$shiro1$SHA-512$1024$WobJGSjbUhsMdaILomMOdw==$9uptGJ24vzZCqZI55F77N7xjUxGlVrK5aCmAwIrV1vwDmFM4akE6Hmd23Aj8ANLSUdIEkHLZ6SnoitZbOsoQNQ=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "huawei-h6",
+        hashcat: &[hc!(
+            40002,
+            "$h$6$4tWqOiqovcWddOKv$XyFMVgaE46fGiqsZEHbcr+BM/m9tDkvahDbqU7HoNrvmALk2u31z9c/tuUmX7IiQhWRwN5qoZquW82A8XYaDWA=="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "redhat-389ds",
+        hashcat: &[hc!(
+            40025,
+            "{PBKDF2_SHA256}AAAgADkxMjM2NTIzMzgzMjQ3MjI4MDAwNTk5OTAyOTk4NDI2MjkyMzAzNjg0NjQwOTMxNjI3OTMzNjg0MDI0OTY5NTe5ULagRTYpLaUoeqJMg8x9W/DXu+9VTFaVhaYvebYrY+sOqn1ZMRnws22C1uAkiE2tFM8qN+xw5xe7OmCPZ203NuruK4oB33QlsKIEz4ppm0TR94JB9PJx7lIQwFHD3FUNUNryj4jk6UYyJ4+V1Z9Ug/Iy/ylQBJgfs5ihzgxHYZrfp1wUCXFzlZG9mxmziPm8VFnAhaX4+FBAZvLAx33jpbKOwEg7TmwP2VJ8BNFLQRqwYdlqIjQlAhncXH+dqIF9VdM4MonAA0hx76bMvFTP7LF5VO1IqVmcuYz7YG9v4KKRjnvoUUqOj6okUBQTay3EzsdFVnUW1FemYOccJd5q"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "xmpp-scram",
+        hashcat: &[hc!(
+            40052,
+            "$xmpp-scram$0$4096$45$353835323736323530353932363531393630313632353634313335323434323038393931323138373138343134$6d5b543b985dc6c0645da3c83d114fce121aa51d"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "mongodb-scram-sha256",
+        hashcat: &[hc!(
+            40053,
+            "$mongodb-scram$*1*dXNlcg==*15000*qYaA1K1ZZSSpWfY+yqShlcTn0XVcrNipxiYCLQ==*QWVry9aTS/JW+y5CWCBr8lcEH9Kr/D4je60ncooPer8="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "oracle-otm",
+        hashcat: &[hc!(
+            40045,
+            "otm_sha256:1000:1234567890:S5Q9Kc0ETY6ZPyQU+JYY60oFjaJuZZaSinggmzU8PC4="
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "sap-codvn-h",
+        hashcat: &[
+            hc!(
+                40023,
+                "{x-issha, 1024}BnjXMqcNTwa3BzdnUOf1iAu6dw02NzU4MzE2MTA="
+            ),
+            hc!(
+                40078,
+                "{x-isSHA512, 15000}YZH/V2T7zlQMGeWLBarm5Oi3qV9Y8ByXQijD28+bjtLdo7YssXaUBkxMXbS3l4yVlYw97tvYj+vu/L37sg1reDEzODQ4MDY1NzQ1NjQ="
+            ),
+            hc!(
+                40081,
+                "{x-isSHA256, 3000}56SL4GZltN0YPoXeGfu6BzTjFYmY4QS723iBHVbRnXg1Njc4OTAxMjM0NTY="
+            ),
+            hc!(
+                40082,
+                "{x-isSHA384, 5000}Hp1DRs7iqAwvLqhfMRnPVpFulGAdRYnnnIo3ytnoexSU5dxas1MOglsYHp5J5XuYNTY3ODkwMTIzNDU2"
+            ),
+        ],
+        john: &[],
+    },
 ];
 
 pub fn vector_for(descriptor: &HashTypeDescriptor) -> Option<&'static Vector> {
