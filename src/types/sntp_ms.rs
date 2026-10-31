@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
 /// Microsoft SNTP hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "MS SNTP", slug = "sntp-ms", hashcat = [31300])]
+#[hash(name = "MS SNTP", slug = "sntp-ms", hashcat = [31300], john = ["timeroast"])]
 pub struct SntpMs {
     /// Sixteen-byte digest.
     #[field(role = digest, encoding = hex)]

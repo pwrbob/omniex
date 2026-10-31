@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "BestCrypt",
     slug = "bestcrypt",
-    hashcat = [23900, 24000],
+    hashcat = [23900, 24000], john = ["BestCryptVE4"],
     modes_fn = bestcrypt_modes,
 )]
 pub struct Bestcrypt {

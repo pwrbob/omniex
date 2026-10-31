@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// Argon2 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Argon2", slug = "argon2", hashcat = [34000])]
+#[hash(name = "Argon2", slug = "argon2", hashcat = [34000], john = ["Argon2"])]
 pub struct Argon2 {
     /// Variant name, for example `argon2id`.
     #[field(role = other, encoding = ascii)]

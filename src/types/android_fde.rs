@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
 /// Android Full Disk Encryption hashes from before Android 4.4.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Android FDE <= 4.3", slug = "android-fde", hashcat = [8800])]
+#[hash(name = "Android FDE <= 4.3", slug = "android-fde", hashcat = [8800], john = ["fde"])]
 pub struct AndroidFde {
     /// Sixteen-byte salt.
     #[field(role = salt, encoding = hex)]

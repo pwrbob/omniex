@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "OpenSSH private keys",
     slug = "sshng",
-    hashcat = [22911, 22921, 22931, 22941, 22951, 36800],
+    hashcat = [22911, 22921, 22931, 22941, 22951, 36800], john = ["SSH"],
     modes_fn = sshng_modes,
 )]
 pub struct Sshng {

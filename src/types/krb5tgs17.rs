@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[hash(
     name = "Kerberos 5, etype 17, TGS-REP",
     slug = "krb5tgs17",
-    hashcat = [19600],
+    hashcat = [19600], john = ["krb5tgs-sha1"],
 )]
 pub struct Krb5Tgs17 {
     /// Kerberos username.

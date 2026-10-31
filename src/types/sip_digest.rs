@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[hash(
     name = "SIP digest authentication",
     slug = "sip-digest",
-    hashcat = [11400]
+    hashcat = [11400], john = ["SIP"]
 )]
 pub struct SipDigest {
     /// First unused field.

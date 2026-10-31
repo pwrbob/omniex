@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "SecureZIP AES",
     slug = "securezip",
-    hashcat = [23001, 23002, 23003],
+    hashcat = [23001, 23002, 23003], john = ["securezip"],
     modes_fn = securezip_modes,
 )]
 pub struct Securezip {

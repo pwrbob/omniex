@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-746%2F985-2ea44f)
+![hash modes](https://img.shields.io/badge/hash_modes-764%2F985-2ea44f)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -220,7 +220,7 @@ checked against that command in CI.
 | `dcc2` | Domain Cached Credentials 2 | 2100, 31600 | mscash2 |
 | `cisco-pix` | Cisco-PIX MD5 | 2400 | pix-md5 |
 | `cisco-asa` | Cisco-ASA MD5 | 2410 | - |
-| `phps` | PHPS | 2612 | PHPS |
+| `phps` | PHPS | 2612 | PHPS, PHPS2 |
 | `lm` | LM | 3000 | - |
 | `oracle-h` | Oracle H | 3100 | - |
 | `bcrypt` | bcrypt | 3200, 33800, 30600 | bcrypt |
@@ -244,7 +244,7 @@ checked against that command in CI.
 | `ethereum-pbkdf2` | Ethereum Wallet, PBKDF2-HMAC-SHA256 | 15600 | ethereum |
 | `ethereum-scrypt` | Ethereum Wallet, SCRYPT | 15700 | - |
 | `solarwinds` | SolarWinds Orion | 21500, 21501 | solarwinds |
-| `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | - |
+| `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | SNMP |
 | `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506, 30901, 30902, 30903, 30904, 30905, 30906 | - |
 | `virtualbox` | VirtualBox | 27500, 27600 | - |
 | `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
@@ -272,7 +272,7 @@ checked against that command in CI.
 | `lotus-notes` | Lotus Notes/Domino 6/8 | 8700, 9100 | - |
 | `axcrypt1` | AxCrypt 1 | 13200 | AxCrypt |
 | `axcrypt-sha1` | AxCrypt 1 in-memory SHA1 | 13300 | - |
-| `bestcrypt` | BestCrypt | 23900, 24000 | - |
+| `bestcrypt` | BestCrypt | 23900, 24000 | BestCryptVE4 |
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
 | `mozilla-key3` | Mozilla key3.db | 26000 | - |
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
@@ -291,12 +291,12 @@ checked against that command in CI.
 | `ecryptfs` | eCryptfs | 12200 | eCryptfs |
 | `itunes-backup` | iTunes backup | 14700, 14800 | itunes-backup |
 | `multibit-hd` | MultiBit HD (scrypt) | 22700 | - |
-| `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951, 36800 | - |
+| `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951, 36800 | SSH |
 | `bitlocker` | BitLocker | 22100 | BitLocker |
 | `blake2s-256` | BLAKE2s-256 | 31000 | - |
 | `blake2b-256` | BLAKE2b-256 | 34800 | - |
 | `salted-blake2b-256` | Salted BLAKE2b-256 | 34810, 34820 | - |
-| `sm3` | ShangMi 3 (SM3) | 31100 | - |
+| `sm3` | ShangMi 3 (SM3) | 31100 | Raw-SM3 |
 | `as400-ssha1` | AS/400 SSHA1 | 35200 | - |
 | `werkzeug-md5` | Python Werkzeug MD5 | 30000 | - |
 | `werkzeug-sha256` | Python Werkzeug SHA256 | 30120 | - |
@@ -307,12 +307,12 @@ checked against that command in CI.
 | `oracle-t` | Oracle T: Type | 40036 | - |
 | `azure-sync` | MS-AzureSync | 40037 | - |
 | `shiro-sha512` | Apache Shiro 1 SHA-512 | 40035 | - |
-| `huawei-h6` | Huawei Comware $h$6$ | 40002 | - |
+| `huawei-h6` | Huawei Comware $h$6$ | 40002 | h3c |
 | `redhat-389ds` | RedHat 389-DS LDAP | 40025 | - |
 | `xmpp-scram` | XMPP SCRAM | 40052 | SCRAM-PBKDF2-SHA1 |
 | `mongodb-scram-sha256` | MongoDB SCRAM-SHA-256 | 40053 | - |
 | `oracle-otm` | Oracle Transportation Management | 40045 | - |
-| `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | - |
+| `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | saph |
 | `krb5asrep-aes` | Kerberos 5, etype 17/18, AS-REP | 32100, 32200 | - |
 | `murmurhash64a-zero` | MurmurHash64A (zero seed) | 34201, 34211 | - |
 | `sm3crypt` | sm3crypt | 35100 | sm3crypt |
@@ -335,18 +335,18 @@ checked against that command in CI.
 | `openbsd-softraid` | OpenBSD softraid FDE | 38800, 38810 | OpenBSD-SoftRAID |
 | `fscrypt` | Google fscrypt | 38900 | - |
 | `veeam` | Veeam VBK | 31200 | - |
-| `sntp-ms` | MS SNTP | 31300 | - |
-| `argon2` | Argon2 | 34000 | - |
+| `sntp-ms` | MS SNTP | 31300 | timeroast |
+| `argon2` | Argon2 | 34000 | Argon2 |
 | `encdv` | ENCsecurity DataVault | 29910, 29920, 29930, 29940 | - |
 | `securecrt` | SecureCRT MasterPassphrase v2 | 31400 | - |
 | `postgres-scram-sha256` | PostgreSQL SCRAM-SHA-256 | 40055 | - |
 | `flask-session` | Flask Session Cookie | 40056 | - |
 | `blockchain-second` | Blockchain, My Wallet, Second Password | 40040 | - |
 | `krb5pa23` | Kerberos 5, etype 23, AS-REQ Pre-Auth | 7500 | - |
-| `sip-digest` | SIP digest authentication | 11400 | - |
+| `sip-digest` | SIP digest authentication | 11400 | SIP |
 | `bcrypt-sha256-hmac` | bcrypt(HMAC-SHA256) | 30601 | - |
 | `cisco-ios14` | Cisco-IOS $14$ | 38200 | - |
-| `securezip` | SecureZIP AES | 23001, 23002, 23003 | - |
+| `securezip` | SecureZIP AES | 23001, 23002, 23003 | securezip |
 | `xca` | XCA database | 40000 | - |
 | `iclass` | iClass | 36900, 36901 | - |
 | `mifare` | MIFARE Ultralight C | 37000 | - |
@@ -356,23 +356,23 @@ checked against that command in CI.
 | `bip39` | BIP39 Passphrase Recovery | 36000 | - |
 | `onepassword-mobile` | 1Password mobile keychain | 31800 | - |
 | `apple-dmg` | Apple DMG | 38300 | - |
-| `pkzip` | PKZIP | 17200, 17210, 17220, 17225, 17230 | - |
+| `pkzip` | PKZIP | 17200, 17210, 17220, 17225, 17230 | PKZIP |
 | `yescrypt` | yescrypt | 36100 | - |
 | `gost-yescrypt` | gost-yescrypt | 36200 | - |
-| `rar3hp` | RAR3-hp | 12500 | - |
+| `rar3hp` | RAR3-hp | 12500 | rar |
 | `rar5` | RAR5 | 13000 | RAR5 |
-| `winzip` | WinZip | 13600 | - |
+| `winzip` | WinZip | 13600 | ZIP |
 | `filevault2` | FileVault 2 | 16700 | FVDE |
 | `sevenzip` | 7-Zip | 11600 | 7z |
-| `android-fde` | Android FDE <= 4.3 | 8800 | - |
+| `android-fde` | Android FDE <= 4.3 | 8800 | fde |
 | `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
 | `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | Bitcoin |
 | `chacha20` | ChaCha20 | 15400 | - |
 | `cram-md5` | CRAM-MD5 | 10200 | - |
 | `ipmi2-rakp-sha1` | IPMI2 RAKP HMAC-SHA1 | 7300 | - |
 | `ipmi2-rakp-md5` | IPMI2 RAKP HMAC-MD5 | 7350 | - |
-| `sap-bcode` | SAP CODVN B | 7700, 7701 | - |
-| `sap-passcode` | SAP CODVN F/G | 7800, 7801 | - |
+| `sap-bcode` | SAP CODVN B | 7700, 7701 | sapb |
+| `sap-passcode` | SAP CODVN F/G | 7800, 7801 | sapg |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
 | `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
 | `md5-two-salts` | MD5 (two salts) | 3730, 31700, 32300, 33000 | - |
@@ -517,7 +517,7 @@ checked against that command in CI.
 | `krb5db17` | Kerberos 5, etype 17, DB | 28800 | - |
 | `krb5db18` | Kerberos 5, etype 18, DB | 28900 | - |
 | `krb5db-old` | Kerberos 5, etype 1/2/3, DB | 38400 | - |
-| `krb5tgs17` | Kerberos 5, etype 17, TGS-REP | 19600 | - |
+| `krb5tgs17` | Kerberos 5, etype 17, TGS-REP | 19600 | krb5tgs-sha1 |
 | `krb5tgs18` | Kerberos 5, etype 18, TGS-REP | 19700 | - |
 | `krb5tgs23` | Kerberos 5, etype 23, TGS-REP | 13100, 35300 | - |
 | `krb5tgs3` | Kerberos 5, etype 3, TGS-REP | 38500 | - |

@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "SAP CODVN H",
     slug = "sap-codvn-h",
-    hashcat = [40023, 40078, 40081, 40082],
+    hashcat = [40023, 40078, 40081, 40082], john = ["saph"],
     modes_fn = sap_codvn_h_modes,
 )]
 pub struct SapCodvnH {

@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
 /// A single SM3 digest.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "ShangMi 3 (SM3)", slug = "sm3", hashcat = [31100])]
+#[hash(name = "ShangMi 3 (SM3)", slug = "sm3", hashcat = [31100], john = ["Raw-SM3"])]
 pub struct Sm3 {
     /// Thirty-two-byte digest.
     #[field(role = digest, encoding = hex)]

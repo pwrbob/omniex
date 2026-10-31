@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "SAP CODVN F/G",
     slug = "sap-passcode",
-    hashcat = [7800, 7801],
+    hashcat = [7800, 7801], john = ["sapg"],
     modes_fn = sap_passcode_modes,
 )]
 pub struct SapPasscode {

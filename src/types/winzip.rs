@@ -6,7 +6,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// WinZip AES hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "WinZip", slug = "winzip", hashcat = [13600])]
+#[hash(name = "WinZip", slug = "winzip", hashcat = [13600], john = ["ZIP"])]
 pub struct WinZip {
     /// Encryption type, always `0`.
     #[field(role = other, encoding = decimal)]

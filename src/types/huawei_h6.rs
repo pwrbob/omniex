@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
 /// Huawei, H3C, and HPE Comware `$h$6$` hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Huawei Comware $h$6$", slug = "huawei-h6", hashcat = [40002])]
+#[hash(name = "Huawei Comware $h$6$", slug = "huawei-h6", hashcat = [40002], john = ["h3c"])]
 pub struct HuaweiH6 {
     /// ASCII salt.
     #[field(role = salt, encoding = ascii)]

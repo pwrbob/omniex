@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "PKZIP",
     slug = "pkzip",
-    hashcat = [17200, 17210, 17220, 17225, 17230],
+    hashcat = [17200, 17210, 17220, 17225, 17230], john = ["PKZIP"],
     modes_fn = pkzip_modes,
 )]
 pub struct Pkzip {

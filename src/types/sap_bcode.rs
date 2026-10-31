@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "SAP CODVN B",
     slug = "sap-bcode",
-    hashcat = [7700, 7701],
+    hashcat = [7700, 7701], john = ["sapb"],
     modes_fn = sap_bcode_modes,
 )]
 pub struct SapBcode {

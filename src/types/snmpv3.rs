@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "SNMPv3 HMAC",
     slug = "snmpv3",
-    hashcat = [25000, 25100, 25200, 26700, 26800, 26900, 27300],
+    hashcat = [25000, 25100, 25200, 26700, 26800, 26900, 27300], john = ["SNMP"],
     modes_fn = snmpv3_modes,
 )]
 pub struct Snmpv3 {
