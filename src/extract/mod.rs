@@ -345,6 +345,7 @@ mod encfs;
 mod enpass;
 mod fernet;
 mod filezilla;
+mod geli;
 mod gpg;
 mod jwt;
 mod known_hosts;
@@ -360,6 +361,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &enpass::EnpassExtractor,
     &fernet::FernetExtractor,
     &filezilla::FileZillaServerExtractor,
+    &geli::GeliExtractor,
     &gpg::GpgExtractor,
     &jwt::JwtExtractor,
     &known_hosts::KnownHostsExtractor,
