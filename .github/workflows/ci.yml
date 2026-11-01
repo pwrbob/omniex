@@ -71,19 +71,13 @@ jobs:
       - name: Check workspace
         run: cargo check --workspace --all-targets --locked
 
-  hashcat:
-    name: Hashcat conformance
+  hashcat-build:
+    name: Build hashcat
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
 
       - name: Fingerprint CPU features
         id: cpu
@@ -98,12 +92,48 @@ jobs:
       - name: Build hashcat 8.0.0
         run: scripts/build-hashcat.sh
 
+      - name: Upload hashcat
+        uses: actions/upload-artifact@v4
+        with:
+          name: hashcat-8.0.0
+          path: tmp/reference/hashcat-8.0.0/hashcat
+          if-no-files-found: error
+
+  hashcat:
+    name: Hashcat conformance (${{ matrix.shard }}/4)
+    needs: hashcat-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+
+      - name: Download hashcat
+        uses: actions/download-artifact@v4
+        with:
+          name: hashcat-8.0.0
+          path: tmp/reference/hashcat-8.0.0
+
       - name: Run hashcat conformance
         env:
           OMNIEX_HASHCAT: ${{ github.workspace }}/tmp/reference/hashcat-8.0.0/hashcat
           OMNIEX_CONFORMANCE_SUBSET: ${{ github.event_name == 'pull_request' && '1' || '0' }}
-          OMNIEX_CONFORMANCE_WORKERS: 8
-        run: cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
+          OMNIEX_CONFORMANCE_SHARD: ${{ matrix.shard }}
+          OMNIEX_CONFORMANCE_SHARDS: 4
+          OMNIEX_CONFORMANCE_WORKERS: 4
+        run: |
+          chmod +x "$OMNIEX_HASHCAT"
+          cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
 
   john:
     name: John conformance

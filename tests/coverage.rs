@@ -321,3 +321,18 @@ fn readme_mode_badge_matches_the_registry_and_checklist() {
         );
     }
 }
+
+#[test]
+fn opencl_only_john_vectors_are_parse_render_only() {
+    for vector in VECTORS {
+        for entry in vector.john {
+            if entry.format.to_ascii_lowercase().contains("opencl") {
+                assert!(
+                    !entry.conformance,
+                    "`{}` must not invoke John's OpenCL backend for `{}`",
+                    vector.slug, entry.format
+                );
+            }
+        }
+    }
+}
