@@ -1,0 +1,3 @@
+type = "ethereum-scrypt"
+generator = "synthetic ethereum-scrypt JSON fixture"
+notes = "Synthetic wallet; no real credentials."

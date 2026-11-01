@@ -39,3 +39,8 @@ This file documents the extractors currently registered in
 - `odf` - encrypted OpenDocument packages.
 - `winzip` - WinZip AES ZIP entries.
 - `dmg-john` - Apple DMG encrcdsa v2 images.
+- `blockchain` - Blockchain.com wallet JSON.
+- `electrum` - encrypted Electrum wallets.
+- `ethereum-pbkdf2` - Ethereum keystore wallets using PBKDF2.
+- `ethereum-presale` - Ethereum pre-sale wallets.
+- `ethereum-scrypt` - Ethereum keystore wallets using scrypt.

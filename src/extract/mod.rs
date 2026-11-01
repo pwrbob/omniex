@@ -340,11 +340,14 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
 
 mod ansible;
 mod bks;
+mod blockchain;
 mod dashlane;
 mod dmg;
 mod ecryptfs;
+mod electrum;
 mod encfs;
 mod enpass;
+mod ethereum;
 mod fernet;
 mod filezilla;
 mod geli;
@@ -364,10 +367,15 @@ mod winzip;
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
     &bks::BksExtractor,
+    &blockchain::BlockchainExtractor,
     &dashlane::DashlaneExtractor,
     &dmg::DmgExtractor,
     &ecryptfs::EcryptfsExtractor,
+    &electrum::ElectrumExtractor,
     &encfs::EncfsExtractor,
+    &ethereum::EthereumPbkdf2Extractor,
+    &ethereum::EthereumPresaleExtractor,
+    &ethereum::EthereumScryptExtractor,
     &enpass::EnpassExtractor,
     &fernet::FernetExtractor,
     &filezilla::FileZillaServerExtractor,

@@ -1,0 +1,14 @@
+{
+  "crypto": {
+    "cipher": "aes-128-ctr",
+    "kdf": "scrypt",
+    "kdfparams": {
+      "n": 262144,
+      "r": 8,
+      "p": 1,
+      "salt": "00112233445566778899aabbccddeeff"
+    },
+    "ciphertext": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+    "mac": "aabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccdd"
+  }
+}
