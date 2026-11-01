@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileZillaServer>
+  <Groups />
+  <Users>
+    <User Name="admin">
+      <Option Name="Pass">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</Option>
+      <Option Name="Salt">01234567890123456789012345678901</Option>
+    </User>
+    <User Name="legacy">
+      <Option Name="Pass">0123456789abcdef0123456789abcdef</Option>
+    </User>
+  </Users>
+</FileZillaServer>

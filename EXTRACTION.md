@@ -106,7 +106,7 @@ README badge counts checked lines in this file.
 - [ ] Password Safe v2 (`pwsafe-v2`)
 - [ ] Password Safe v3 (`pwsafe-v3`)
 - [ ] KDE KWallet (`kwallet`)
-- [ ] Enpass databases (`enpass`)
+- [x] Enpass databases (`enpass`)
 - [ ] Dashlane vaults (`dashlane`)
 - [ ] BKS keystores (`bks`)
 - [ ] Clipperz exports (`clipperz`)
@@ -147,6 +147,8 @@ README badge counts checked lines in this file.
 - [ ] Raw WIF private keys (`bitcoin-wif`)
 
 ## Mobile and application stores
+
+- [x] FileZilla Server XML configuration (`filezilla-server`)
 
 - [ ] Android backups (`android-backup`)
 - [ ] Signal backups (`signal`)
