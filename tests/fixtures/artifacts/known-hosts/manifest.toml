@@ -1,0 +1,3 @@
+type = "known-hosts"
+generator = "synthetic OpenSSH known_hosts entries"
+notes = "Two hashed entries and one unhashed entry; no real hosts."

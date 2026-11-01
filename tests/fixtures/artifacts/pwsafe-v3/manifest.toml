@@ -1,0 +1,3 @@
+type = "pwsafe-v3"
+generator = "hashcat 40011 example header"
+notes = "Synthetic Password Safe v3 header; no real database."

@@ -19,3 +19,6 @@ This file documents the extractors currently registered in
 - `jwt` - HMAC JSON Web Tokens whose header, payload, algorithm, and signature
   length are structurally valid. Non-HMAC JWTs are reported as possible
   candidates and require `--type`.
+- `known-hosts` - Hashed SSH `known_hosts` entries (John only).
+- `pwsafe` - Password Safe v3 databases in the John serialization.
+- `pwsafe-v3` - Password Safe v3 database headers for hashcat `40011`.

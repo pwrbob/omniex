@@ -336,6 +336,8 @@ mod fernet;
 mod filezilla;
 mod gpg;
 mod jwt;
+mod known_hosts;
+mod pwsafe;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
@@ -344,6 +346,9 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &filezilla::FileZillaServerExtractor,
     &gpg::GpgExtractor,
     &jwt::JwtExtractor,
+    &known_hosts::KnownHostsExtractor,
+    &pwsafe::PwsafeExtractor,
+    &pwsafe::PwsafeV3Extractor,
 ];
 
 /// Returns the extractor registered for a slug.

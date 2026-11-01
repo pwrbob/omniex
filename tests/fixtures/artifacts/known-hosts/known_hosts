@@ -1,0 +1,4 @@
+# hashed host keys
+|1|yivSFSAv9mhGu/GPc14KpaPMSjE=|I9L3FH6RGefWIFb0Po74BVN3Fto= host.example.com
+unhashed.example.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQ==
+|1|AAECAwQFBgcICQoLDA0ODxAREhM=|FBUWFxgZGhscHR4fICEiIyQlJic= 192.0.2.1
