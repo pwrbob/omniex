@@ -56,3 +56,17 @@ scripts/build-john.sh
 
 Then run conformance with `OMNIEX_HASHCAT` and `OMNIEX_JOHN` pointing at the
 built binaries, or let `scripts/ci.sh` discover them.
+
+## OpenCL-only John formats
+
+Never run John with an OpenCL-only `--format=<label>` just to inspect its
+schema. Device initialization can hang indefinitely when no usable OpenCL
+backend is present.
+
+- Read canonical vectors from John's `.c` format test tables or use
+  `--list=format-tests` only for CPU formats.
+- Guard any unavoidable OpenCL invocation with `timeout 15s`.
+- Mark OpenCL-only conformance vectors as parse/render-only rather than
+  executing John.
+- Check for a usable device before running OpenCL conformance, and record an
+  explicit skip when none is available.
