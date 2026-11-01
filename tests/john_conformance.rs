@@ -44,7 +44,7 @@ fn john_loads_every_vector() {
             included += 1;
 
             let path = work.join(format!("{}-{}.txt", vector.slug, entry.format));
-            std::fs::write(&path, format!("{}\n", entry.hash)).expect("write hash file");
+            std::fs::write(&path, format!("{}\n", entry.text())).expect("write hash file");
             items.push(WorkItem {
                 slug: vector.slug,
                 format: entry.format,

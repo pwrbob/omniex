@@ -161,37 +161,27 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### A-C
 
-- [ ] `axcrypt2-opencl` - OpenCL only
 
 ### D-F
 
-- [ ] `diskcryptor-aes-opencl` - OpenCL only
-- [ ] `electrum-modern-opencl` - OpenCL only
-- [ ] `ethereum-presale-opencl` - OpenCL only
 
 ### G-I
 
 
 ### J-L
 
-- [ ] `krb5asrep-aes-opencl` - OpenCL only
-- [ ] `LUKS`
 
 ### M-O
 
-- [ ] `ntlmv2-opencl` - OpenCL only
 
 ### P-R
 
-- [ ] `raw-SHA512-free-opencl` - OpenCL only
 
 ### S-U
 
-- [ ] `TrueCrypt-opencl` - OpenCL only
 
 ### V-Z
 
-- [ ] `XSHA512-free-opencl` - OpenCL only
 
 
 
@@ -207,6 +197,7 @@ Remove each entry together with the base mode it duplicates.
 - John `plaintext`: not a hash.
 - hashcat `2000` - `STDOUT`: not a hash.
 - hashcat `4000` - `Hash Recipe`: not a hash.
+- John `raw-SHA512-free-opencl` / `XSHA512-free-opencl`: generic loaders for several distinct serializations.
 - hashcat `14600` - `LUKS v1 (legacy)`: reads a volume path, not a hash string.
 - hashcat `73000`/`74000`: the hash string omits the external generic-hash algorithm.
 - hashcat `2500`/`2501`: deprecated in hashcat 8.0.0 and replaced by `22000`/`22001`.

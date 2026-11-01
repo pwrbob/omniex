@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256",
     slug = "ethereum-presale",
     hashcat = [16300],
+    john = ["ethereum-presale-opencl"],
 )]
 pub struct EthereumPresale {
     /// Hexadecimal encrypted seed.

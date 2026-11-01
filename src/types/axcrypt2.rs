@@ -9,6 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "AxCrypt 2",
     slug = "axcrypt2",
     hashcat = [23500, 23600],
+    john = ["axcrypt2-opencl"],
 )]
 pub struct Axcrypt2 {
     /// Format version.

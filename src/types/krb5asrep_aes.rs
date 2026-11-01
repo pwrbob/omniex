@@ -10,6 +10,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "Kerberos 5, etype 17/18, AS-REP",
     slug = "krb5asrep-aes",
     hashcat = [32100, 32200],
+    john = ["krb5asrep-aes-opencl"],
     modes_fn = krb5asrep_aes_modes,
 )]
 pub struct Krb5AsrepAes {

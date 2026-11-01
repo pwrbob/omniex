@@ -1308,7 +1308,7 @@ fn describe_is_not_empty_for_any_type() {
             .hashcat
             .first()
             .map(|entry| entry.text())
-            .or_else(|| vector.john.first().map(|entry| entry.hash.to_owned()))
+            .or_else(|| vector.john.first().map(|entry| entry.text()))
             .expect("hashcat or john vector");
         let value = registry::parse(descriptor, &hash, &ParseOptions::default()).unwrap();
         assert!(!value.describe().is_empty());
@@ -1413,7 +1413,7 @@ fn modes_fn_never_reports_undeclared_modes() {
             .map(|entry| vec![entry.text()])
             .unwrap_or_default();
         if let Some(entry) = vector.john.first() {
-            samples.push(entry.hash.to_owned());
+            samples.push(entry.text());
         }
 
         for sample in samples {
@@ -1712,6 +1712,36 @@ fn luks_headers_require_their_prefix_and_fields() {
     for slug in ["luks-v1", "luks-v2"] {
         let descriptor = registry::by_slug(slug).expect("registered");
         for input in ["", "not-a-hash", "$luks$1$", "$luks$2$"] {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
+        }
+    }
+}
+
+#[test]
+fn john_only_container_types_require_their_serialization() {
+    for (slug, inputs) in [
+        (
+            "luks-john",
+            [
+                "$luks$0$592$00$1$AA==$0000000000000000000000000000000000000000",
+                "$luks$1$592$zz$1$AA==$0000000000000000000000000000000000000000",
+                "$luks$1$512$00$1$AA==$0000000000000000000000000000000000000000",
+            ],
+        ),
+        (
+            "truecrypt-john",
+            [
+                "truecrypt_SHA512$00",
+                "unknown$00",
+                "truecrypt_RIPEMD_160$zz",
+            ],
+        ),
+    ] {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in inputs {
             assert!(
                 registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
                 "`{slug}` accepted `{input}`"

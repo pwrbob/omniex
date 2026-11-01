@@ -101,7 +101,7 @@ fn john_vectors_round_trip_and_report_their_format() {
                 ..RenderOptions::default()
             };
 
-            let value = registry::parse(descriptor, entry.hash, &opts).unwrap_or_else(|error| {
+            let value = registry::parse(descriptor, &entry.text(), &opts).unwrap_or_else(|error| {
                 panic!(
                     "`{}` failed to parse the {} vector: {error}",
                     vector.slug, entry.format
@@ -112,9 +112,11 @@ fn john_vectors_round_trip_and_report_their_format() {
                 .render(&render_opts)
                 .unwrap_or_else(|error| panic!("`{}` failed to render: {error}", vector.slug));
             assert_eq!(
-                rendered, entry.hash,
+                rendered,
+                entry.text(),
                 "`{}` did not round-trip for John format {}",
-                vector.slug, entry.format
+                vector.slug,
+                entry.format
             );
             assert!(
                 value.modes().contains(&Mode::John(entry.format)),
