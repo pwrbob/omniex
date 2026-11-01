@@ -331,13 +331,17 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
 }
 
 mod ansible;
+mod enpass;
 mod fernet;
+mod filezilla;
 mod gpg;
 mod jwt;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
+    &enpass::EnpassExtractor,
     &fernet::FernetExtractor,
+    &filezilla::FileZillaServerExtractor,
     &gpg::GpgExtractor,
     &jwt::JwtExtractor,
 ];
