@@ -1,5 +1,8 @@
 //! Fernet tokens, rendered as their base64 ciphertext.
 
+use base64::Engine;
+use base64::engine::general_purpose::URL_SAFE_NO_PAD;
+
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
@@ -30,6 +33,22 @@ impl Parse for Fernet {
                 ParseErrorKind::InvalidLength,
                 input.len(),
                 "Fernet tokens are 98 to 376 URL-safe base64 characters",
+            ));
+        }
+        let decoded = URL_SAFE_NO_PAD
+            .decode(input.trim_end_matches('='))
+            .map_err(|_| {
+                parse::error(
+                    ParseErrorKind::InvalidBase64,
+                    0,
+                    "invalid Fernet token encoding",
+                )
+            })?;
+        if decoded.len() < 73 || decoded[0] != 0x80 || (decoded.len() - 57) % 16 != 0 {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                0,
+                "invalid Fernet token structure",
             ));
         }
         Ok(Self {

@@ -172,8 +172,11 @@ Registered extractors cover:
 - FileZilla Server XML configurations (`filezilla-server`, hashcat `15000`).
 - Enpass databases (`enpass`, John only), selected by the `.enpassdb`
   extension and requiring `--type`.
-- Fernet tokens and JSON Web Tokens, which have no reliable file signature and
-  therefore require `--type`.
+- Fernet tokens whose version, timestamp, IV, ciphertext, and HMAC layout is
+  valid.
+- HMAC JSON Web Tokens whose header, payload, algorithm, and signature length
+  are structurally valid. Non-HMAC JWTs are reported as possible candidates and
+  require `--type`.
 
 ## Testing
 

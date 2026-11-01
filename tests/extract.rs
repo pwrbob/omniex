@@ -67,10 +67,10 @@ fn gpg_probe_separates_signatures_from_guesses() {
         extractor.probe(&Artifact::from_bytes("secret", vec![0xc5])),
         Probe::Yes(reason) if reason == "OpenPGP secret-key packet header"
     ));
-    assert!(matches!(
+    assert_eq!(
         extractor.probe(&Artifact::from_bytes("public", vec![0xc6])),
-        Probe::Maybe(reason) if reason.contains("tag 6")
-    ));
+        Probe::No
+    );
     assert_eq!(
         extractor.probe(&Artifact::from_bytes("text", b"not a key".to_vec())),
         Probe::No
@@ -205,7 +205,7 @@ fn extract_json_reports_type_and_hash() {
 
 #[test]
 fn extract_all_does_not_promote_unconfirmed_matches() {
-    let public = scratch("all-public-key.packet");
+    let public = scratch("all-public.enpassdb");
     std::fs::write(&public, [0xc6]).unwrap();
     let output = omniex()
         .arg("extract")
@@ -221,11 +221,14 @@ fn extract_all_does_not_promote_unconfirmed_matches() {
         "{}",
         String::from_utf8_lossy(&output.stderr)
     );
+    assert!(
+        String::from_utf8_lossy(&output.stderr).contains("enpass (Enpass database file extension)")
+    );
 }
 
 #[test]
 fn auto_detection_does_not_select_signatureless_matches() {
-    let public = scratch("public-key.packet");
+    let public = scratch("public-key.enpassdb");
     std::fs::write(&public, [0xc6]).unwrap();
     let output = omniex().arg("extract").arg(&public).output().unwrap();
     let _ = std::fs::remove_file(public);
@@ -233,7 +236,10 @@ fn auto_detection_does_not_select_signatureless_matches() {
     assert_eq!(output.status.code(), Some(1));
     let stderr = String::from_utf8_lossy(&output.stderr);
     assert!(stderr.contains("has no reliable signature"), "{stderr}");
-    assert!(stderr.contains("gpg (OpenPGP packet tag 6"), "{stderr}");
+    assert!(
+        stderr.contains("enpass (Enpass database file extension)"),
+        "{stderr}"
+    );
 }
 
 #[test]

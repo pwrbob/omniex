@@ -27,7 +27,7 @@ impl Extractor for FernetExtractor {
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         match token(artifact) {
-            Ok(_) => Probe::maybe("Fernet token text"),
+            Ok(_) => Probe::yes("Fernet token structure"),
             Err(ExtractError::Invalid(_)) => Probe::No,
             Err(error) => Probe::maybe(error.to_string()),
         }
