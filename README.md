@@ -6,7 +6,7 @@ that understands both hashcat and John the Ripper serializations.
 
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-261%2F261-1f6feb)
-![artifact formats](https://img.shields.io/badge/artifact_formats-6%2F143-8957e5)
+![artifact formats](https://img.shields.io/badge/artifact_formats-8%2F144-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in
@@ -172,6 +172,8 @@ Registered extractors cover:
   public-key algorithm.
 - Ansible Vault files (`ansible-vault`, hashcat `16900`).
 - FileZilla Server XML configurations (`filezilla-server`, hashcat `15000`).
+- Hashed SSH `known_hosts` entries (`known-hosts`, John only).
+- Password Safe v3 databases (`pwsafe-v3` for hashcat and `pwsafe` for John).
 - Enpass databases (`enpass`, John only), selected by the `.enpassdb`
   extension and requiring `--type`.
 - Fernet tokens whose version, timestamp, IV, ciphertext, and HMAC layout is

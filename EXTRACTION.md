@@ -86,6 +86,8 @@ README badge counts checked lines in this file.
 
 ## Keys and certificate containers
 
+- [x] Hashed SSH known_hosts entries (`known-hosts`)
+
 - [ ] PKCS#12 and PFX bundles (`pkcs12`, `pfx`)
 - [ ] PKCS#8 and PEM private keys (`pem-private-key`, `pem`)
 - [ ] JKS and JCEKS private keys (`jks-private-key`)
@@ -104,7 +106,7 @@ README badge counts checked lines in this file.
 - [ ] LastPass vault (`lastpass`)
 - [ ] LastPass CLI state (`lpcli`)
 - [ ] Password Safe v2 (`pwsafe-v2`)
-- [ ] Password Safe v3 (`pwsafe-v3`)
+- [x] Password Safe v3 (`pwsafe-v3`, `pwsafe`)
 - [ ] KDE KWallet (`kwallet`)
 - [x] Enpass databases (`enpass`)
 - [ ] Dashlane vaults (`dashlane`)
