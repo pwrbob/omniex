@@ -40,7 +40,7 @@ impl Extractor for GpgExtractor {
         };
         match tag {
             5 | 7 => Probe::yes("OpenPGP secret-key packet header"),
-            _ => Probe::maybe(format!("OpenPGP packet tag {tag}, not a secret key")),
+            _ => Probe::No,
         }
     }
 

@@ -1531,6 +1531,33 @@ fn unicode_salts_use_byte_lengths_for_mode_limits() {
 }
 
 #[test]
+fn fernet_rejects_invalid_binary_structure() {
+    use base64::Engine;
+    use base64::engine::general_purpose::URL_SAFE_NO_PAD;
+    use omniex::types::Fernet;
+
+    let opts = ParseOptions::default();
+    assert!(Fernet::parse("", &opts).is_err());
+    assert!(Fernet::parse("not base64!", &opts).is_err());
+
+    let wrong_version = URL_SAFE_NO_PAD.encode(
+        [0x81]
+            .into_iter()
+            .chain(std::iter::repeat_n(0, 88))
+            .collect::<Vec<_>>(),
+    );
+    assert!(Fernet::parse(&wrong_version, &opts).is_err());
+
+    let wrong_ciphertext_size = URL_SAFE_NO_PAD.encode(
+        [0x80]
+            .into_iter()
+            .chain(std::iter::repeat_n(0, 87))
+            .collect::<Vec<_>>(),
+    );
+    assert!(Fernet::parse(&wrong_ciphertext_size, &opts).is_err());
+}
+
+#[test]
 fn john_only_serialized_types_require_their_prefix() {
     let cases = [
         ("agilekeychain", "$agilekeychain$"),
