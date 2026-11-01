@@ -82,7 +82,7 @@ README badge counts checked lines in this file.
 - [ ] PST mail stores (`pst`)
 - [ ] SAP PSE files (`sappse`)
 - [ ] OpenSSL `enc` files (`openssl-enc`)
-- [ ] Ansible Vault files (`ansible-vault`)
+- [x] Ansible Vault files (`ansible-vault`)
 
 ## Keys and certificate containers
 
@@ -152,9 +152,9 @@ README badge counts checked lines in this file.
 - [ ] Signal backups (`signal`)
 - [ ] Telegram local data (`telegram`)
 - [ ] SQLCipher databases (`sqlcipher`)
-- [ ] Fernet-encrypted application secrets (`fernet`)
+- [x] Fernet-encrypted application secrets (`fernet`)
 - [ ] Flask signed session cookies (`flask-session`)
-- [ ] JSON Web Tokens (`jwt`)
+- [x] JSON Web Tokens (`jwt`)
 
 ## Network captures
 
