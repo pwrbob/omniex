@@ -11,6 +11,10 @@ impl Extractor for EnpassExtractor {
         Enpass::SLUG
     }
 
+    fn exact(&self) -> bool {
+        false
+    }
+
     fn probe(&self, artifact: &Artifact) -> Probe {
         if artifact.primary().is_empty() {
             return Probe::No;

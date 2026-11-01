@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <name>AES</name>
+  <keySize>192</keySize>
+  <kdfIterations>181474</kdfIterations>
+  <saltLen>20</saltLen>
+  <saltData>8cQT2aIPf9vAaMWkFSQTem4/sjE=</saltData>
+  <encodedKeySize>44</encodedKeySize>
+  <encodedKeyData>nA1OK5kPrA/XjWLD0mYScu+n1sF0Tug2pwKhFSWVj19Ve3qXOqrS/RQ4e08=</encodedKeyData>
+</config>

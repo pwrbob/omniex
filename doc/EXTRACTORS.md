@@ -2,7 +2,9 @@
 
 This file documents the extractors currently registered in
 `omniex::extract::EXTRACTORS`. Extraction coverage status remains in
-[`EXTRACTION.md`](../EXTRACTION.md).
+[`EXTRACTION.md`](../EXTRACTION.md). An extractor is exact when it can return
+`Probe::Yes` for at least one valid artifact; extractors that are always
+`Probe::Maybe` override `Extractor::exact()` to return `false`.
 
 - `gpg` - OpenPGP secret keys, including armored and binary keys, subkeys, and
   ECC. The extractor scans the whole keyring, so secret keys are found even
@@ -22,3 +24,4 @@ This file documents the extractors currently registered in
 - `known-hosts` - Hashed SSH `known_hosts` entries (John only).
 - `pwsafe` - Password Safe v3 databases in the John serialization.
 - `pwsafe-v3` - Password Safe v3 database headers for hashcat `40011`.
+- `encfs` - EncFS `.encfs6.xml` configurations (John only).

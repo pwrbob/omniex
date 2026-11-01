@@ -272,6 +272,14 @@ pub trait Extractor: Sync {
     /// Hash type slug this extractor produces.
     fn slug(&self) -> &'static str;
 
+    /// Whether this extractor can return `Probe::Yes` for a valid artifact.
+    ///
+    /// Extractors that can only produce `Probe::Maybe` override this to return
+    /// `false`.
+    fn exact(&self) -> bool {
+        true
+    }
+
     /// Reports whether this extractor recognizes an artifact.
     fn probe(&self, artifact: &Artifact) -> Probe;
 
@@ -331,6 +339,7 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
 }
 
 mod ansible;
+mod encfs;
 mod enpass;
 mod fernet;
 mod filezilla;
@@ -341,6 +350,7 @@ mod pwsafe;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
+    &encfs::EncfsExtractor,
     &enpass::EnpassExtractor,
     &fernet::FernetExtractor,
     &filezilla::FileZillaServerExtractor,

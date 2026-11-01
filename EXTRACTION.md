@@ -60,7 +60,7 @@ README badge counts checked lines in this file.
 - [ ] Samsung Android FDE (`android-fde-samsung`)
 - [ ] eCryptfs metadata (`ecryptfs`)
 - [ ] Google fscrypt policy and key material (`fscrypt`)
-- [ ] EncFS configuration and key files (`encfs`)
+- [x] EncFS configuration and key files (`encfs`)
 - [ ] VirtualBox disk images (`virtualbox`)
 - [ ] VMware VMX and encrypted disk metadata (`vmware-vmx`, `vmx`)
 - [ ] Veeam backup metadata (`veeam`)
