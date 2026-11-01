@@ -98,7 +98,10 @@ jobs:
           name: hashcat-8.0.0
           path: |
             tmp/reference/hashcat-8.0.0/hashcat
+            tmp/reference/hashcat-8.0.0/hashcat.hcstat2
             tmp/reference/hashcat-8.0.0/libhashcat.so.8
+            tmp/reference/hashcat-8.0.0/modules
+            tmp/reference/hashcat-8.0.0/OpenCL
           if-no-files-found: error
 
   hashcat:
