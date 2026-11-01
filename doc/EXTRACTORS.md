@@ -28,3 +28,5 @@ This file documents the extractors currently registered in
 - `agilekeychain` - 1Password agilekeychain `encryptionKeys.js` files in the John serialization.
 - `onepassword-agile` - 1Password agilekeychain keys for hashcat `6600`.
 - `monero` - Monero `.keys` wallet files (John only).
+- `bks` - Bouncy Castle BKS v1/v2 keystores (John only).
+- `dashlane` - Dashlane `.aes` databases and secure archives (John only).
