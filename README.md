@@ -146,9 +146,10 @@ omniex extract secret-key.asc --type gpg
 omniex extract secret-key.asc --format john
 ```
 
-Without `--type`, extraction runs every registered extractor. It succeeds only
-when exactly one hash type recognizes the artifact; otherwise it lists the
-candidates and asks for `--type`.
+Without `--type`, every extractor first probes the artifact. Auto-detection
+succeeds only when exactly one extractor reports confident recognition. Formats
+without a reliable signature, and artifacts that only look possible, are listed
+as candidates and require an explicit `--type`.
 
 The first extractor covers OpenPGP secret keys, including ECC keys. RSA keys
 render to the GPG hashcat modes that match their string-to-key hash and cipher:

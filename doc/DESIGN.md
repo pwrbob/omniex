@@ -218,22 +218,38 @@ hash type instances, which are the same types that `parse` produces.
 `omniex::extract` owns the extractor registry:
 
 ```rust
+pub enum Probe {
+    No,
+    Maybe(String),
+    Yes(String),
+}
+
 pub trait Extractor: Sync {
     fn slug(&self) -> &'static str;
-    fn extract(&self, data: &[u8]) -> Result<Vec<Box<dyn HashValue>>, ExtractError>;
+    fn probe(&self, artifact: &Artifact) -> Probe;
+    fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError>;
 }
 ```
 
+Probing and extraction are separate. `Probe::Yes` requires evidence such as a
+file signature or a validated structure. `Probe::Maybe` covers formats without a
+reliable signature. An extractor that accepts arbitrary bytes must not claim
+`Yes`, because that would make every input look recognized.
+
 An extractor is registered once in `EXTRACTORS`. `--type <slug>` selects the
-extractor with the same slug as the hash type. Without `--type`, every extractor
-is tried and the artifact is auto-detected only when exactly one succeeds.
+extractor with the same slug as the hash type and bypasses probe selection.
+Without `--type`, auto-detection succeeds only when exactly one extractor
+returns `Yes`. Multiple `Yes` results are ambiguous. With no `Yes`, any `Maybe`
+results are reported as unconfirmed candidates and also require `--type`.
 `ExtractError` separates `Unsupported` artifacts from malformed `Invalid` ones.
 
-The artifact abstraction is still bytes. Source paths, offsets, and streaming
-for large disk images are deferred until an extractor needs them. Multi-hash
-artifacts are already supported: one extractor may return several instances,
-for example a primary key and its subkeys. The invariant remains that `--type`
-selects the hash type in both directions.
+`Artifact` replaces the raw byte slice. It has a label and one or more members,
+each identified by a role such as `Primary` or `Named("SYSTEM")`. Every member
+implements `ReadAt`, so extractors can request bounded ranges, inspect headers,
+and work with large files or disk images without loading everything. Multi-file
+inputs and multi-hash outputs are supported; one extractor may return several
+instances, for example a primary key and its subkeys. The invariant remains that
+`--type` selects the hash type in both directions.
 
 The first extractor handles OpenPGP secret keys via the `pgp` crate, including
 RSA, DSA, ElGamal, ECDSA, ECDH, and EdDSA keys. It emits the `gpg` type. For RSA

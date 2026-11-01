@@ -396,40 +396,47 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                 .map(|extractor| (descriptor, extractor))
         })
         .transpose()?;
-    let data = std::fs::read(&args.artifact).map_err(|error| {
+    let artifact = extract::Artifact::from_file(&args.artifact).map_err(|error| {
         CliError::Input(format!("cannot read {}: {error}", args.artifact.display()))
     })?;
 
     let hashes = match extractor {
-        Some((descriptor, extractor)) => extractor.extract(&data).map_err(|error| {
+        Some((descriptor, extractor)) => extractor.extract(&artifact).map_err(|error| {
             CliError::Input(format!(
                 "cannot extract `{}` from {}: {error}",
                 descriptor.slug,
                 args.artifact.display()
             ))
         })?,
-        None => {
-            let mut matches = extract::detect(&data);
-            match matches.len() {
-                0 => {
-                    return Err(CliError::Input(format!(
-                        "no extractor recognized {}; use --type to choose a hash type",
+        None => match extract::select(extract::EXTRACTORS, &artifact) {
+            extract::Selection::Unique(extractor) => {
+                extractor.extract(&artifact).map_err(|error| {
+                    CliError::Input(format!(
+                        "cannot extract `{}` from {}: {error}",
+                        extractor.slug(),
                         args.artifact.display()
-                    )));
-                }
-                1 => matches.pop().expect("one match").hashes,
-                _ => {
-                    let candidates = matches
-                        .iter()
-                        .map(|detection| detection.extractor.slug())
-                        .collect::<Vec<_>>()
-                        .join(", ");
-                    return Err(CliError::Input(format!(
-                        "ambiguous artifact; extractor candidates: {candidates}; use --type"
-                    )));
-                }
+                    ))
+                })?
             }
-        }
+            extract::Selection::Ambiguous(candidates) => {
+                return Err(CliError::Input(format!(
+                    "ambiguous artifact; extractor candidates: {}; use --type",
+                    format_candidates(&candidates)
+                )));
+            }
+            extract::Selection::Unconfirmed(candidates) => {
+                return Err(CliError::Input(format!(
+                    "artifact may match an extractor but has no reliable signature: {}; use --type",
+                    format_candidates(&candidates)
+                )));
+            }
+            extract::Selection::None => {
+                return Err(CliError::Input(format!(
+                    "no extractor recognized {}; use --type to choose a hash type",
+                    args.artifact.display()
+                )));
+            }
+        },
     };
 
     let rendered = hashes
@@ -443,6 +450,14 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
         .collect::<Result<Vec<_>, _>>()
         .map_err(|error| CliError::Input(format!("cannot render extracted hash: {error}")))?;
     write_stdout(&format!("{}\n", rendered.join("\n")))
+}
+
+fn format_candidates(candidates: &[extract::Candidate]) -> String {
+    candidates
+        .iter()
+        .map(|candidate| format!("{} ({})", candidate.extractor.slug(), candidate.reason))
+        .collect::<Vec<_>>()
+        .join(", ")
 }
 
 fn select_type(

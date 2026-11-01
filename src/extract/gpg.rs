@@ -6,7 +6,7 @@ use pgp::armor::Dearmor;
 use pgp::packet::{Packet, PacketParser};
 use pgp::types::{PublicParams, SecretParams, StringToKeyType};
 
-use super::{ExtractError, Extracted, Extractor};
+use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Gpg;
 use crate::{HashType, HashValue};
 
@@ -17,8 +17,38 @@ impl Extractor for GpgExtractor {
         Gpg::SLUG
     }
 
-    fn extract(&self, data: &[u8]) -> Result<Extracted, ExtractError> {
-        let data = dearmor(data)?;
+    fn probe(&self, artifact: &Artifact) -> Probe {
+        let source = artifact.primary();
+        let mut prefix = [0; 15];
+        let read = match source.read_at(0, &mut prefix) {
+            Ok(read) => read,
+            Err(error) => return Probe::maybe(format!("cannot read artifact: {error}")),
+        };
+        if &prefix[..read] == b"-----BEGIN PGP " {
+            return Probe::yes("OpenPGP armor header");
+        }
+        let Some(first) = prefix.first().copied().filter(|_| read > 0) else {
+            return Probe::No;
+        };
+        if first & 0x80 == 0 {
+            return Probe::No;
+        }
+        let tag = if first & 0x40 != 0 {
+            first & 0x3f
+        } else {
+            (first >> 2) & 0x0f
+        };
+        match tag {
+            5 | 7 => Probe::yes("OpenPGP secret-key packet header"),
+            _ => Probe::maybe(format!("OpenPGP packet tag {tag}, not a secret key")),
+        }
+    }
+
+    fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
+        let data = artifact.primary().read_all().map_err(|error| {
+            ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
+        })?;
+        let data = dearmor(&data)?;
         let mut hashes = Vec::new();
 
         for packet in PacketParser::new(data.as_slice()) {
