@@ -1,3 +1,3 @@
 type = "gpg"
 generator = "test keys from https://github.com/pwrbob/pgp2hc"
-notes = "Synthetic OpenPGP test keys; no real credentials."
+notes = "Synthetic OpenPGP test keys; no real credentials. public-then-secret.pgp concatenates an exported public key block with the corresponding secret key block."

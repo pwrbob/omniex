@@ -93,9 +93,16 @@ For each extractor:
 - extract the artifact and compare with the expected hash type instance,
 - render hashcat and John strings and compare with the fixture,
 - run `hashcat --identify`,
+- test `Probe::Yes`, `Probe::Maybe`, and `Probe::No` on representative inputs,
+- test that signatureless matches require `--type` and are not promoted by
+  `--all`,
+- test explicit `--type`, auto-detection, and every-value extraction when one
+  artifact contains several records of the same type,
 - test wrong type, truncated file, corrupt header, unsupported version, and
   empty input,
-- test that an ambiguous auto-detect lists candidates instead of choosing one.
+- test that an ambiguous auto-detect lists candidates instead of choosing one,
+- test multi-member artifacts and bounded reads when the extractor uses them,
+- test that unknown cipher or mode parameters are rejected rather than guessed.
 
 ### 5. CLI tests
 

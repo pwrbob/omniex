@@ -61,12 +61,17 @@ fn gpg_probe_separates_signatures_from_guesses() {
 
     assert!(matches!(
         extractor.probe(&artifact("testkey1.key")),
-        Probe::Yes(reason) if reason == "OpenPGP armor header"
+        Probe::Yes(reason) if reason == "OpenPGP secret-key packet"
     ));
     assert!(matches!(
-        extractor.probe(&Artifact::from_bytes("secret", vec![0xc5])),
-        Probe::Yes(reason) if reason == "OpenPGP secret-key packet header"
+        extractor.probe(&artifact("public-then-secret.pgp")),
+        Probe::Yes(reason) if reason == "OpenPGP secret-key packet"
     ));
+    assert_eq!(extractor.probe(&artifact("public-only.pgp")), Probe::No);
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("truncated", vec![0xc5])),
+        Probe::No
+    );
     assert_eq!(
         extractor.probe(&Artifact::from_bytes("public", vec![0xc6])),
         Probe::No
@@ -77,6 +82,37 @@ fn gpg_probe_separates_signatures_from_guesses() {
     );
     assert_eq!(
         extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+}
+
+#[test]
+fn gpg_finds_secret_keys_after_public_packets() {
+    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+    let hashes = extractor
+        .extract(&artifact("public-then-secret.pgp"))
+        .expect("extract mixed keyring");
+    assert_eq!(hashes.len(), 2);
+    let rendered = hashes
+        .iter()
+        .map(|value| value.render(&RenderOptions::default()).unwrap())
+        .collect::<Vec<_>>();
+    assert_eq!(rendered, expected("public-then-secret.hash"));
+
+    let output = omniex()
+        .arg("extract")
+        .arg(fixture("public-then-secret.pgp"))
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+}
+
+#[test]
+fn gpg_does_not_claim_a_public_only_keyring() {
+    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+    assert_eq!(extractor.probe(&artifact("public-only.pgp")), Probe::No);
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("public", vec![0xc6])),
         Probe::No
     );
 }

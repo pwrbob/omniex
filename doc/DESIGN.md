@@ -255,9 +255,23 @@ inputs and multi-hash outputs are supported; one extractor may return several
 instances, for example a primary key and its subkeys. The invariant remains that
 `--type` selects the hash type in both directions.
 
+Probe confidence is part of the contract. `Yes` needs structural evidence from
+the bytes, not a filename or a loose parse. `Maybe` is reserved for formats
+without a reliable signature and always requires `--type`.
+
+Extractors scan the whole logical artifact for records of their type; finding
+one record early is not enough to stop. Multiple values of the same type are
+normal, for example subkeys or multiple users.
+
+Unknown cryptographic parameters are never guessed. If the cipher, digest,
+mode, or similar value is not encoded in the artifact, extraction needs an
+explicit option. Extraction options are added when the first format requires
+them.
+
 The first extractor handles OpenPGP secret keys via the `pgp` crate, including
-RSA, DSA, ElGamal, ECDSA, ECDH, and EdDSA keys. It emits the `gpg` type. For RSA
-keys the value reports the matching hashcat mode from `17010`, `17020`, `17030`,
+RSA, DSA, ElGamal, ECDSA, ECDH, and EdDSA keys. It scans every packet, so a
+keyring that starts with public keys and contains secret keys later is still
+recognized. It emits the `gpg` type. For RSA keys the value reports the matching hashcat mode from `17010`, `17020`, `17030`,
 `17040`, and `17050`, selected by string-to-key hash and cipher. ECC keys report
 John's `gpg` format only because hashcat 8.0.0 does not load their two-digit
 public-key algorithm. Simple string-to-key secrets are rejected because their

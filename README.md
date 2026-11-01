@@ -165,9 +165,11 @@ type and rendered hash.
 Registered extractors cover:
 
 - OpenPGP secret keys, including armored and binary keys, subkeys, and ECC
-  (`gpg`). RSA keys render to the matching hashcat mode among `17010`, `17020`,
-  `17030`, `17040`, and `17050`; ECC keys render for John's `gpg` format because
-  hashcat 8.0.0 rejects their two-digit public-key algorithm.
+  (`gpg`). The extractor scans the whole keyring, so secret keys are found even
+  when public-key packets come first. RSA keys render to the matching hashcat
+  mode among `17010`, `17020`, `17030`, `17040`, and `17050`; ECC keys render
+  for John's `gpg` format because hashcat 8.0.0 rejects their two-digit
+  public-key algorithm.
 - Ansible Vault files (`ansible-vault`, hashcat `16900`).
 - FileZilla Server XML configurations (`filezilla-server`, hashcat `15000`).
 - Enpass databases (`enpass`, John only), selected by the `.enpassdb`
