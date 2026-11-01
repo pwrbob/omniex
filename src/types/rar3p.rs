@@ -6,9 +6,9 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 /// RAR3 packed-file hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "RAR3-p (Uncompressed)",
+    name = "RAR3-p",
     slug = "rar3p",
-    hashcat = [23700],
+    hashcat = [23700, 23800],
 )]
 pub struct Rar3p {
     /// Header type.

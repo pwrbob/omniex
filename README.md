@@ -4,8 +4,8 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hashcat modes](https://img.shields.io/badge/hashcat_modes-662%2F723-2ea44f)
-![John modes](https://img.shields.io/badge/John_modes-249%2F263-1f6feb)
+![hashcat modes](https://img.shields.io/badge/hashcat_modes-664%2F723-2ea44f)
+![John modes](https://img.shields.io/badge/John_modes-253%2F263-1f6feb)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -180,61 +180,61 @@ checked against that command in CI.
 
 | Type (`--type`) | Name | Hashcat modes | John format |
 | --- | --- | --- | --- |
-| `md4` | MD4 | 900 | Raw-MD4 |
-| `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | Raw-MD5, Raw-MD5u |
+| `md4` | MD4 | 900 | `Raw-MD4` |
+| `md5` | MD5 | 0, 70, 2600, 3500, 4300, 4400 | `Raw-MD5, Raw-MD5u` |
 | `salted-md5` | Salted MD5 | 10, 11, 12, 20, 21, 23, 24, 30, 40, 2611, 2630, 2711, 2811, 3610, 3710, 3800, 3910, 4010, 4110, 4410, 4420, 4430 | - |
-| `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | Raw-SHA1, Raw-SHA1-Linkedin |
+| `sha1` | SHA1 | 100, 170, 300, 4500, 4700 | `Raw-SHA1, Raw-SHA1-Linkedin` |
 | `salted-sha1` | Salted SHA1 | 110, 120, 121, 130, 140, 4510, 4520, 4521, 4522, 4710, 4711, 4900, 5000 | - |
 | `oracle-sha1` | Oracle 11g SHA1 | 112 | - |
 | `ldap-sha1` | LDAP SHA1 (Base64) | 101 | - |
-| `ldap-ssha1` | LDAP SSHA1 (Base64) | 111 | Salted-SHA1 |
+| `ldap-ssha1` | LDAP SSHA1 (Base64) | 111 | `Salted-SHA1` |
 | `macos-sha1` | macOS SHA1 | 122 | - |
 | `django-sha1` | Django SHA1 | 124 | - |
 | `aruba-sha1` | ArubaOS SHA1 | 125 | - |
-| `mssql-2000` | MSSQL (2000) | 131 | mssql |
-| `mssql-2005` | MSSQL (2005) | 132 | mssql05 |
+| `mssql-2000` | MSSQL (2000) | 131 | `mssql` |
+| `mssql-2005` | MSSQL (2005) | 132 | `mssql05` |
 | `peoplesoft-sha1` | PeopleSoft SHA1 | 133 | - |
-| `episerver` | EPiServer (< .NET 4) | 141 | EPiServer |
-| `mysql323` | MySQL323 | 200 | mysql |
-| `phpass` | phpass | 400 | phpass |
-| `md5crypt` | md5crypt | 500 | md5crypt, md5crypt-long |
+| `episerver` | EPiServer (< .NET 4) | 141 | `EPiServer` |
+| `mysql323` | MySQL323 | 200 | `mysql` |
+| `phpass` | phpass | 400 | `phpass` |
+| `md5crypt` | md5crypt | 500 | `md5crypt, md5crypt-long` |
 | `juniper-ive` | Juniper IVE | 501 | - |
 | `juniper-screenos` | Juniper ScreenOS | 22 | - |
-| `blake2b-512` | BLAKE2b-512 | 600 | Raw-Blake2 |
+| `blake2b-512` | BLAKE2b-512 | 600 | `Raw-Blake2` |
 | `salted-blake2b-512` | Salted BLAKE2b-512 | 610, 620 | - |
-| `ntlm` | NTLM | 1000 | NT, NT-long |
+| `ntlm` | NTLM | 1000 | `NT, NT-long` |
 | `dcc` | Domain Cached Credentials | 1100, 31500 | - |
-| `sha224` | SHA2-224 | 1300 | Raw-SHA224 |
-| `sha256` | SHA2-256 | 1400, 1470 | Raw-SHA256 |
+| `sha224` | SHA2-224 | 1300 | `Raw-SHA224` |
+| `sha256` | SHA2-256 | 1400, 1470 | `Raw-SHA256` |
 | `salted-sha256` | Salted SHA2-256 | 1410, 1420, 1430, 1440 | - |
-| `hmailserver` | hMailServer | 1421 | hMailServer |
-| `sha512` | SHA2-512 | 1700, 1770 | Raw-SHA512 |
+| `hmailserver` | hMailServer | 1421 | `hMailServer` |
+| `sha512` | SHA2-512 | 1700, 1770 | `Raw-SHA512` |
 | `salted-sha512` | Salted SHA2-512 | 1710, 1720, 1730, 1740 | - |
 | `ldap-ssha256` | LDAP SSHA256 (Base64) | 1411 | - |
-| `ldap-ssha512` | LDAP SSHA512 (Base64) | 1711 | SSHA512 |
+| `ldap-ssha512` | LDAP SSHA512 (Base64) | 1711 | `SSHA512` |
 | `episerver-net4` | EPiServer (>= .NET 4) | 1441 | - |
-| `descrypt` | descrypt | 1500 | descrypt, crypt |
-| `apr1` | Apache MD5 (apr1) | 1600 | md5crypt |
-| `macos-sha512` | macOS SHA512 | 1722 | xsha512 |
-| `mssql-2012` | MSSQL (2012, 2014) | 1731 | mssql12 |
-| `sha512crypt` | sha512crypt | 1800 | sha512crypt |
-| `dcc2` | Domain Cached Credentials 2 | 2100, 31600 | mscash2 |
-| `cisco-pix` | Cisco-PIX MD5 | 2400 | pix-md5 |
-| `cisco-asa` | Cisco-ASA MD5 | 2410 | - |
-| `phps` | PHPS | 2612 | PHPS, PHPS2 |
+| `descrypt` | descrypt | 1500 | `descrypt, crypt` |
+| `apr1` | Apache MD5 (apr1) | 1600 | `md5crypt` |
+| `macos-sha512` | macOS SHA512 | 1722 | `xsha512` |
+| `mssql-2012` | MSSQL (2012, 2014) | 1731 | `mssql12` |
+| `sha512crypt` | sha512crypt | 1800 | `sha512crypt` |
+| `dcc2` | Domain Cached Credentials 2 | 2100, 31600 | `mscash2` |
+| `cisco-pix` | Cisco-PIX MD5 | 2400 | `pix-md5` |
+| `cisco-asa` | Cisco-ASA MD5 | 2410 | `asa-md5` |
+| `phps` | PHPS | 2612 | `PHPS, PHPS2` |
 | `lm` | LM | 3000 | - |
 | `oracle-h` | Oracle H | 3100 | - |
-| `bcrypt` | bcrypt | 3200, 33800, 30600 | bcrypt |
-| `sunmd5` | SunMD5 | 3300 | SunMD5 |
-| `racf` | RACF | 8500 | RACF |
-| `as400-des` | AS/400 DES | 8501 | as400-des |
-| `scrypt` | scrypt | 8900 | - |
+| `bcrypt` | bcrypt | 3200, 33800, 30600 | `bcrypt` |
+| `sunmd5` | SunMD5 | 3300 | `SunMD5` |
+| `racf` | RACF | 8500 | `RACF` |
+| `as400-des` | AS/400 DES | 8501 | `as400-des` |
+| `scrypt` | scrypt | 8900 | `scrypt` |
 | `racf-kdfaes` | RACF KDFAES | 14200 | - |
 | `linux-cryptoapi` | Linux Kernel Crypto API (2.4) | 14500 | - |
-| `apple-secure-notes` | Apple Secure Notes | 16200 | notes |
-| `electrum` | Electrum Wallet | 16600, 21700, 21800 | electrum |
-| `telegram` | Telegram | 22301, 22600, 24500 | telegram |
-| `multibit` | MultiBit Classic .key (MD5) | 22500 | multibit |
+| `apple-secure-notes` | Apple Secure Notes | 16200 | `notes` |
+| `electrum` | Electrum Wallet | 16600, 21700, 21800 | `electrum` |
+| `telegram` | Telegram | 22301, 22600, 24500 | `telegram` |
+| `multibit` | MultiBit Classic .key (MD5) | 22500 | `multibit` |
 | `sqlcipher` | SQLCipher | 24600 | - |
 | `vmware-vmx` | VMware VMX | 27400 | - |
 | `aws-sigv4` | Amazon AWS Signature Version 4 | 28700 | - |
@@ -242,21 +242,21 @@ checked against that command in CI.
 | `wpa-pmkid-legacy` | WPA-PMKID (legacy) | 16800, 16801 | - |
 | `mysql-a` | MySQL $A$ (sha256crypt) | 7401 | - |
 | `nsec3` | DNSSEC (NSEC3) | 8300 | - |
-| `ethereum-pbkdf2` | Ethereum Wallet, PBKDF2-HMAC-SHA256 | 15600 | ethereum |
+| `ethereum-pbkdf2` | Ethereum Wallet, PBKDF2-HMAC-SHA256 | 15600 | `ethereum` |
 | `ethereum-scrypt` | Ethereum Wallet, SCRYPT | 15700 | - |
-| `solarwinds` | SolarWinds Orion | 21500, 21501 | solarwinds |
-| `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | SNMP |
+| `solarwinds` | SolarWinds Orion | 21500, 21501 | `solarwinds` |
+| `snmpv3` | SNMPv3 HMAC | 25000, 25100, 25200, 26700, 26800, 26900, 27300 | `SNMP` |
 | `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506, 30901, 30902, 30903, 30904, 30905, 30906 | - |
 | `virtualbox` | VirtualBox | 27500, 27600 | - |
 | `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
 | `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
-| `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | diskcryptor |
+| `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | `diskcryptor` |
 | `bitwarden` | Bitwarden | 23400 | - |
 | `mongodb-scram` | MongoDB ServerKey SCRAM-SHA-1 | 24100 | - |
 | `stellar` | Stargazer Stellar Wallet XLM | 25500 | - |
 | `exodus` | Exodus Desktop Wallet (scrypt) | 28200 | - |
 | `axcrypt2` | AxCrypt 2 | 23500, 23600 | - |
-| `apple-keychain` | Apple Keychain | 23100 | keychain |
+| `apple-keychain` | Apple Keychain | 23100 | `keychain` |
 | `stuffit5` | Stuffit5 | 24700 | - |
 | `terra` | Terra Station Wallet | 29600 | - |
 | `jks-private-key` | JKS Java Key Store Private Keys (SHA1) | 15500 | - |
@@ -268,37 +268,37 @@ checked against that command in CI.
 | `onepassword-cloud` | 1Password, cloudkeychain | 8200 | - |
 | `lastpass` | LastPass | 6800 | - |
 | `lotus5` | Lotus Notes/Domino 5 | 8600 | - |
-| `iwork` | Apple iWork | 23300 | iwork |
+| `iwork` | Apple iWork | 23300 | `iwork` |
 | `windows-hello` | Windows Hello PIN/Password | 28100 | - |
 | `lotus-notes` | Lotus Notes/Domino 6/8 | 8700, 9100 | - |
-| `axcrypt1` | AxCrypt 1 | 13200 | AxCrypt |
+| `axcrypt1` | AxCrypt 1 | 13200 | `AxCrypt` |
 | `axcrypt-sha1` | AxCrypt 1 in-memory SHA1 | 13300 | - |
-| `bestcrypt` | BestCrypt | 23900, 24000 | BestCryptVE4 |
+| `bestcrypt` | BestCrypt | 23900, 24000 | `BestCryptVE4` |
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
 | `mozilla-key3` | Mozilla key3.db | 26000 | - |
 | `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
-| `blockchain` | Blockchain, My Wallet | 12700, 15200, 34700 | Blockchain |
-| `rar3p` | RAR3-p (Uncompressed) | 23700 | - |
-| `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | oldoffice |
-| `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | Office |
-| `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700, 25400 | PDF |
-| `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | gpg |
-| `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | DPAPImk |
-| `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | KeePass |
+| `blockchain` | Blockchain, My Wallet | 12700, 15200, 34700 | `Blockchain` |
+| `rar3p` | RAR3-p | 23700, 23800 | - |
+| `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | `oldoffice` |
+| `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | `Office` |
+| `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700, 25400 | `PDF` |
+| `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | `gpg` |
+| `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | `DPAPImk` |
+| `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | `KeePass` |
 | `keepass4` | KeePass KDBX v4 | 34300, 34301 | - |
-| `odf` | Open Document Format | 18400, 18600 | ODF |
+| `odf` | Open Document Format | 18400, 18600 | `ODF` |
 | `apfs` | Apple File System (APFS) | 18300 | - |
-| `android-backup` | Android Backup | 18900 | AndroidBackup |
-| `ecryptfs` | eCryptfs | 12200 | eCryptfs |
-| `itunes-backup` | iTunes backup | 14700, 14800 | itunes-backup |
+| `android-backup` | Android Backup | 18900 | `AndroidBackup` |
+| `ecryptfs` | eCryptfs | 12200 | `eCryptfs` |
+| `itunes-backup` | iTunes backup | 14700, 14800 | `itunes-backup` |
 | `multibit-hd` | MultiBit HD (scrypt) | 22700 | - |
-| `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951, 36800 | SSH |
-| `bitlocker` | BitLocker | 22100 | BitLocker |
+| `sshng` | OpenSSH private keys | 22911, 22921, 22931, 22941, 22951, 36800 | `SSH` |
+| `bitlocker` | BitLocker | 22100 | `BitLocker` |
 | `blake2s-256` | BLAKE2s-256 | 31000 | - |
 | `blake2b-256` | BLAKE2b-256 | 34800 | - |
 | `salted-blake2b-256` | Salted BLAKE2b-256 | 34810, 34820 | - |
-| `sm3` | ShangMi 3 (SM3) | 31100 | Raw-SM3 |
-| `as400-ssha1` | AS/400 SSHA1 | 35200 | as400-ssha1 |
+| `sm3` | ShangMi 3 (SM3) | 31100 | `Raw-SM3` |
+| `as400-ssha1` | AS/400 SSHA1 | 35200 | `as400-ssha1` |
 | `werkzeug-md5` | Python Werkzeug MD5 | 30000 | - |
 | `werkzeug-sha256` | Python Werkzeug SHA256 | 30120 | - |
 | `anope-sha256` | Anope IRC Services | 30700 | - |
@@ -306,17 +306,17 @@ checked against that command in CI.
 | `md5-sha1-md5-nested` | md5(sha1(md5($pass))) | 32800 | - |
 | `grub2` | GRUB 2 | 40019 | - |
 | `oracle-t` | Oracle T: Type | 40036 | - |
-| `azure-sync` | MS-AzureSync | 40037 | AzureAD |
+| `azure-sync` | MS-AzureSync | 40037 | `AzureAD` |
 | `shiro-sha512` | Apache Shiro 1 SHA-512 | 40035 | - |
-| `huawei-h6` | Huawei Comware $h$6$ | 40002 | h3c |
+| `huawei-h6` | Huawei Comware $h$6$ | 40002 | `h3c` |
 | `redhat-389ds` | RedHat 389-DS LDAP | 40025 | - |
-| `xmpp-scram` | XMPP SCRAM | 40052 | SCRAM-PBKDF2-SHA1 |
+| `xmpp-scram` | XMPP SCRAM | 40052 | `SCRAM-PBKDF2-SHA1` |
 | `mongodb-scram-sha256` | MongoDB SCRAM-SHA-256 | 40053 | - |
 | `oracle-otm` | Oracle Transportation Management | 40045 | - |
-| `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | saph |
+| `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | `saph` |
 | `krb5asrep-aes` | Kerberos 5, etype 17/18, AS-REP | 32100, 32200 | - |
 | `murmurhash64a-zero` | MurmurHash64A (zero seed) | 34201, 34211 | - |
-| `sm3crypt` | sm3crypt | 35100 | sm3crypt |
+| `sm3crypt` | sm3crypt | 35100 | `sm3crypt` |
 | `scryptcrypt` | scryptcrypt | 36300 | - |
 | `pbkdf2-sha512-utf16` | PBKDF2-HMAC-SHA512 (UTF-16LE) | 36600 | - |
 | `mssql-2025` | MSSQL (2025) | 36601 | - |
@@ -327,27 +327,27 @@ checked against that command in CI.
 | `rc4-dropn` | RC4 DropN | 33500, 33501, 33502 | - |
 | `microsoft-online` | Microsoft Online Account | 33700 | - |
 | `wordpress-bcrypt` | WordPress bcrypt(hmac-sha384) | 35500 | - |
-| `gost12512crypt` | gost12512crypt | 35600 | streebog512crypt |
+| `gost12512crypt` | gost12512crypt | 35600 | `streebog512crypt` |
 | `mega` | mega.nz | 33400 | - |
-| `kwallet` | KDE KWallet | 36400, 36410 | kwallet |
+| `kwallet` | KDE KWallet | 36400, 36410 | `kwallet` |
 | `racf-passphrase` | RACF DES Passphrase | 37400 | - |
 | `racf-kdfaes-passphrase` | RACF KDFAES Passphrase | 37500 | - |
-| `geli` | FreeBSD GELI | 38700 | geli |
-| `openbsd-softraid` | OpenBSD softraid FDE | 38800, 38810 | OpenBSD-SoftRAID |
+| `geli` | FreeBSD GELI | 38700 | `geli` |
+| `openbsd-softraid` | OpenBSD softraid FDE | 38800, 38810 | `OpenBSD-SoftRAID` |
 | `fscrypt` | Google fscrypt | 38900 | - |
 | `veeam` | Veeam VBK | 31200 | - |
-| `sntp-ms` | MS SNTP | 31300 | timeroast |
-| `argon2` | Argon2 | 34000 | Argon2 |
+| `sntp-ms` | MS SNTP | 31300 | `timeroast` |
+| `argon2` | Argon2 | 34000 | `Argon2` |
 | `encdv` | ENCsecurity DataVault | 29910, 29920, 29930, 29940 | - |
 | `securecrt` | SecureCRT MasterPassphrase v2 | 31400 | - |
 | `postgres-scram-sha256` | PostgreSQL SCRAM-SHA-256 | 40055 | - |
 | `flask-session` | Flask Session Cookie | 40056 | - |
 | `blockchain-second` | Blockchain, My Wallet, Second Password | 40040 | - |
 | `krb5pa23` | Kerberos 5, etype 23, AS-REQ Pre-Auth | 7500 | - |
-| `sip-digest` | SIP digest authentication | 11400 | SIP |
+| `sip-digest` | SIP digest authentication | 11400 | `SIP` |
 | `bcrypt-sha256-hmac` | bcrypt(HMAC-SHA256) | 30601 | - |
 | `cisco-ios14` | Cisco-IOS $14$ | 38200 | - |
-| `securezip` | SecureZIP AES | 23001, 23002, 23003 | securezip |
+| `securezip` | SecureZIP AES | 23001, 23002, 23003 | `securezip` |
 | `xca` | XCA database | 40000 | - |
 | `iclass` | iClass | 36900, 36901 | - |
 | `mifare` | MIFARE Ultralight C | 37000 | - |
@@ -357,172 +357,175 @@ checked against that command in CI.
 | `bip39` | BIP39 Passphrase Recovery | 36000 | - |
 | `onepassword-mobile` | 1Password mobile keychain | 31800 | - |
 | `apple-dmg` | Apple DMG | 38300 | - |
-| `pkzip` | PKZIP | 17200, 17210, 17220, 17225, 17230 | PKZIP |
+| `pkzip` | PKZIP | 17200, 17210, 17220, 17225, 17230 | `PKZIP` |
 | `yescrypt` | yescrypt | 36100 | - |
 | `gost-yescrypt` | gost-yescrypt | 36200 | - |
-| `john-hmac` | HMAC | - | HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512 |
-| `adxcrypt` | adxcrypt | - | adxcrypt |
-| `afs` | AFS | - | AFS |
-| `bfegg` | bfegg | - | bfegg |
-| `cq` | cq | - | cq |
-| `ipb2` | IPB2 | - | ipb2 |
-| `iterated-sha1` | Iterated-SHA1 | - | Iterated-SHA1 |
-| `mscash` | mscash | - | mscash |
-| `lastpass-john` | LastPass (John) | - | LastPass |
-| `lp` | LP | - | lp |
-| `lpcli` | LastPass CLI | - | lpcli |
-| `mongodb-john` | MongoDB (John) | - | MongoDB |
-| `money` | Money | - | money |
-| `oracle-john` | Oracle (John) | - | oracle |
-| `oracle11` | Oracle 11 | - | oracle11 |
-| `oracle12c` | Oracle 12c | - | Oracle12C |
-| `osc` | OSC | - | osc |
-| `pwsafe` | Password Safe (John) | - | pwsafe |
-| `radius` | RADIUS | - | radius |
-| `rvary` | RVARY | - | RVARY |
-| `skey` | S/Key | - | skey |
-| `strip` | STRIP | - | STRIP |
-| `tcp-md5` | TCP-MD5 | - | tcp-md5 |
-| `vnc` | VNC | - | VNC |
-| `zed` | Zed | - | zed |
-| `zipmonster` | ZipMonster | - | ZipMonster |
-| `mysql-sha1` | MySQL 4.1+ | - | mysql-sha1 |
-| `nk` | NK | - | nk |
-| `o3logon` | Oracle O3LOGON | - | o3logon |
-| `o5logon` | Oracle O5LOGON | - | o5logon |
-| `o10glogon` | Oracle O10GLOGON | - | o10glogon |
-| `pgpdisk` | PGP Disk | - | pgpdisk |
-| `pgpsda` | PGP SDA | - | pgpsda |
-| `pst` | PST | - | PST |
-| `sappse` | SAP PSE | - | sappse |
-| `known-hosts` | known_hosts | - | known_hosts |
-| `krb5-18` | krb5-18 (John) | - | krb5-18 |
-| `leet` | leet | - | leet |
-| `md5ns` | md5ns | - | md5ns |
-| `monero` | Monero | - | Monero |
-| `net-ah` | NetAH | - | net-ah |
-| `net-md5` | NetMD5 | - | net-md5 |
-| `net-sha1` | NetSHA1 | - | net-sha1 |
-| `openssl-enc` | OpenSSL enc | - | openssl-enc |
-| `openvms` | OpenVMS | - | OpenVMS |
-| `pgpwde` | PGP WDE | - | pgpwde |
-| `putty` | PuTTY | - | PuTTY |
-| `sybase-prop` | Sybase-PROP | - | Sybase-PROP |
-| `tezos` | Tezos | - | tezos |
-| `vdi` | VDI | - | vdi |
-| `keystore` | Keystore | - | keystore |
-| `chap` | CHAP | - | chap |
-| `cardano-john` | Cardano (John) | - | cardano |
-| `dmd5` | DIGEST-MD5 (John) | - | dmd5 |
-| `eigrp` | EIGRP | - | eigrp |
-| `hdaa` | HDAA | - | hdaa |
-| `hsrp` | HSRP | - | hsrp |
-| `ike-john` | IKE (John) | - | IKE |
-| `krb4` | Kerberos 4 | - | krb4 |
-| `krb5-john` | Kerberos 5 (John) | - | krb5 |
-| `rakp` | RAKP (John) | - | RAKP-MD5, RAKP-SHA1, RAKP-SHA256 |
-| `wowsrp` | WoWSRP | - | WoWSRP |
-| `andotp` | andOTP | - | andOTP |
-| `bks` | BKS | - | BKS |
-| `blackberry-es10` | BlackBerry ES10 | - | Blackberry-ES10 |
-| `clipperz` | Clipperz | - | Clipperz |
-| `cryptosafe` | cryptoSafe | - | cryptoSafe |
-| `dashlane` | Dashlane | - | dashlane |
-| `encfs` | EncFS | - | EncFS |
-| `enpass` | Enpass | - | enpass |
-| `keplr` | Keplr | - | keplr |
-| `keyring` | Keyring | - | keyring |
-| `agilekeychain` | agilekeychain | - | agilekeychain |
-| `armory` | Armory | - | armory |
-| `formspring` | FormSpring | - | FormSpring |
-| `gost94crypt` | gost94crypt | - | gost94crypt |
-| `iterated-sha256` | Iterated-SHA256 | - | Iterated-SHA256 |
-| `lotus85` | Lotus Notes 8.5 | - | lotus85 |
-| `po` | PO | - | po |
-| `cloudkeychain` | cloudkeychain | - | cloudkeychain |
-| `bestcrypt-john` | BestCrypt | - | BestCrypt |
-| `bitshares-john` | bitshares | - | bitshares |
-| `bitwarden-john` | Bitwarden | - | Bitwarden |
-| `django-john` | Django | - | Django |
-| `django-scrypt` | django-scrypt | - | django-scrypt |
-| `dmg-john` | dmg | - | dmg |
-| `dominosec` | dominosec | - | dominosec |
-| `dominosec8` | dominosec8 | - | dominosec8 |
-| `krb5asrep-john` | krb5asrep | - | krb5asrep |
-| `krb5pa-md5` | krb5pa-md5 | - | krb5pa-md5 |
-| `krb5pa-sha1` | krb5pa-sha1 | - | krb5pa-sha1 |
-| `krb5tgs-john` | krb5tgs | - | krb5tgs |
-| `mozilla-john` | Mozilla | - | Mozilla |
-| `mschapv2-naive` | mschapv2-naive | - | mschapv2-naive |
-| `nethalflm` | nethalflm | - | nethalflm |
-| `netlmv2-john` | netlmv2 | - | netlmv2 |
-| `netlm` | netlm | - | netlm |
-| `netntlm-naive` | netntlm-naive | - | netntlm-naive |
-| `nsec3-john` | nsec3 | - | nsec3 |
-| `ospf` | ospf | - | ospf |
-| `padlock` | Padlock | - | Padlock |
-| `palshop` | Palshop | - | Palshop |
-| `pbkdf2-hmac-md4` | PBKDF2-HMAC-MD4 | - | PBKDF2-HMAC-MD4 |
-| `pbkdf2-hmac-md5-john` | PBKDF2-HMAC-MD5 | - | PBKDF2-HMAC-MD5 |
-| `pbkdf2-hmac-sha1-john` | PBKDF2-HMAC-SHA1 | - | PBKDF2-HMAC-SHA1 |
-| `pbkdf2-hmac-sha256-john` | PBKDF2-HMAC-SHA256 | - | PBKDF2-HMAC-SHA256 |
-| `pbkdf2-hmac-sha512-john` | PBKDF2-HMAC-SHA512 | - | PBKDF2-HMAC-SHA512 |
-| `pem-john` | PEM | - | PEM |
-| `pfx` | pfx | - | pfx |
-| `racf-kdfaes-john` | RACF-KDFAES | - | RACF-KDFAES |
-| `restic` | restic | - | restic |
-| `rsvp` | rsvp | - | rsvp |
-| `scram-john` | SCRAM-PBKDF2-SHA1-MongoDB | - | SCRAM-PBKDF2-SHA1-MongoDB |
-| `scram-pbkdf2-sha256` | SCRAM-PBKDF2-SHA256 | - | SCRAM-PBKDF2-SHA256 |
-| `siemens-s7` | Siemens-S7 | - | Siemens-S7 |
-| `streebog256crypt` | streebog256crypt | - | streebog256crypt |
-| `vmx-john` | vmx | - | vmx |
-| `wbb3-john` | wbb3 | - | wbb3 |
-| `wpapsk` | wpapsk | - | wpapsk |
-| `wpapsk-pmk` | wpapsk-pmk | - | wpapsk-pmk |
-| `signal` | Signal | - | Signal |
-| `sl3` | SL3 | - | SL3 |
-| `vtp` | VTP | - | vtp |
-| `rar3hp` | RAR3-hp | 12500 | rar |
-| `rar5` | RAR5 | 13000 | RAR5 |
-| `winzip` | WinZip | 13600 | ZIP |
-| `filevault2` | FileVault 2 | 16700 | FVDE |
-| `sevenzip` | 7-Zip | 11600 | 7z |
-| `android-fde` | Android FDE <= 4.3 | 8800 | fde |
+| `john-hmac` | HMAC | - | `HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512` |
+| `adxcrypt` | adxcrypt | - | `adxcrypt` |
+| `afs` | AFS | - | `AFS` |
+| `bfegg` | bfegg | - | `bfegg` |
+| `cq` | cq | - | `cq` |
+| `ipb2` | IPB2 | - | `ipb2` |
+| `iterated-sha1` | Iterated-SHA1 | - | `Iterated-SHA1` |
+| `mscash` | mscash | - | `mscash` |
+| `lastpass-john` | LastPass (John) | - | `LastPass` |
+| `lp` | LP | - | `lp` |
+| `lpcli` | LastPass CLI | - | `lpcli` |
+| `mongodb-john` | MongoDB (John) | - | `MongoDB` |
+| `money` | Money | - | `money` |
+| `oracle-john` | Oracle (John) | - | `oracle` |
+| `oracle11` | Oracle 11 | - | `oracle11` |
+| `oracle12c` | Oracle 12c | - | `Oracle12C` |
+| `osc` | OSC | - | `osc` |
+| `pwsafe` | Password Safe (John) | - | `pwsafe` |
+| `radius` | RADIUS | - | `radius` |
+| `rvary` | RVARY | - | `RVARY` |
+| `skey` | S/Key | - | `skey` |
+| `strip` | STRIP | - | `STRIP` |
+| `tcp-md5` | TCP-MD5 | - | `tcp-md5` |
+| `vnc` | VNC | - | `VNC` |
+| `zed` | Zed | - | `zed` |
+| `zipmonster` | ZipMonster | - | `ZipMonster` |
+| `mysql-sha1` | MySQL 4.1+ | - | `mysql-sha1` |
+| `nk` | NK | - | `nk` |
+| `o3logon` | Oracle O3LOGON | - | `o3logon` |
+| `o5logon` | Oracle O5LOGON | - | `o5logon` |
+| `o10glogon` | Oracle O10GLOGON | - | `o10glogon` |
+| `pgpdisk` | PGP Disk | - | `pgpdisk` |
+| `pgpsda` | PGP SDA | - | `pgpsda` |
+| `pst` | PST | - | `PST` |
+| `sappse` | SAP PSE | - | `sappse` |
+| `known-hosts` | known_hosts | - | `known_hosts` |
+| `krb5-18` | krb5-18 (John) | - | `krb5-18` |
+| `leet` | leet | - | `leet` |
+| `md5ns` | md5ns | - | `md5ns` |
+| `monero` | Monero | - | `Monero` |
+| `net-ah` | NetAH | - | `net-ah` |
+| `net-md5` | NetMD5 | - | `net-md5` |
+| `net-sha1` | NetSHA1 | - | `net-sha1` |
+| `openssl-enc` | OpenSSL enc | - | `openssl-enc` |
+| `openvms` | OpenVMS | - | `OpenVMS` |
+| `pgpwde` | PGP WDE | - | `pgpwde` |
+| `putty` | PuTTY | - | `PuTTY` |
+| `sybase-prop` | Sybase-PROP | - | `Sybase-PROP` |
+| `tezos` | Tezos | - | `tezos` |
+| `vdi` | VDI | - | `vdi` |
+| `keystore` | Keystore | - | `keystore` |
+| `chap` | CHAP | - | `chap` |
+| `cardano-john` | Cardano (John) | - | `cardano` |
+| `dmd5` | DIGEST-MD5 (John) | - | `dmd5` |
+| `eigrp` | EIGRP | - | `eigrp` |
+| `hdaa` | HDAA | - | `hdaa` |
+| `hsrp` | HSRP | - | `hsrp` |
+| `ike-john` | IKE (John) | - | `IKE` |
+| `krb4` | Kerberos 4 | - | `krb4` |
+| `krb5-john` | Kerberos 5 (John) | - | `krb5` |
+| `rakp` | RAKP (John) | - | `RAKP-MD5, RAKP-SHA1, RAKP-SHA256` |
+| `wowsrp` | WoWSRP | - | `WoWSRP` |
+| `andotp` | andOTP | - | `andOTP` |
+| `bks` | BKS | - | `BKS` |
+| `blackberry-es10` | BlackBerry ES10 | - | `Blackberry-ES10` |
+| `clipperz` | Clipperz | - | `Clipperz` |
+| `cryptosafe` | cryptoSafe | - | `cryptoSafe` |
+| `dashlane` | Dashlane | - | `dashlane` |
+| `encfs` | EncFS | - | `EncFS` |
+| `enpass` | Enpass | - | `enpass` |
+| `keplr` | Keplr | - | `keplr` |
+| `keyring` | Keyring | - | `keyring` |
+| `agilekeychain` | agilekeychain | - | `agilekeychain` |
+| `armory` | Armory | - | `armory` |
+| `formspring` | FormSpring | - | `FormSpring` |
+| `gost94crypt` | gost94crypt | - | `gost94crypt` |
+| `iterated-sha256` | Iterated-SHA256 | - | `Iterated-SHA256` |
+| `lotus85` | Lotus Notes 8.5 | - | `lotus85` |
+| `po` | PO | - | `po` |
+| `cloudkeychain` | cloudkeychain | - | `cloudkeychain` |
+| `bestcrypt-john` | BestCrypt | - | `BestCrypt` |
+| `bitshares-john` | bitshares | - | `bitshares` |
+| `bitwarden-john` | Bitwarden | - | `Bitwarden` |
+| `django-john` | Django | - | `Django` |
+| `django-scrypt` | django-scrypt | - | `django-scrypt` |
+| `dmg-john` | dmg | - | `dmg` |
+| `dominosec` | dominosec | - | `dominosec` |
+| `dominosec8` | dominosec8 | - | `dominosec8` |
+| `krb5asrep-john` | krb5asrep | - | `krb5asrep` |
+| `krb5pa-md5` | krb5pa-md5 | - | `krb5pa-md5` |
+| `krb5pa-sha1` | krb5pa-sha1 | - | `krb5pa-sha1` |
+| `krb5tgs-john` | krb5tgs | - | `krb5tgs` |
+| `mozilla-john` | Mozilla | - | `Mozilla` |
+| `mschapv2-naive` | mschapv2-naive | - | `mschapv2-naive` |
+| `nethalflm` | nethalflm | - | `nethalflm` |
+| `netlmv2-john` | netlmv2 | - | `netlmv2` |
+| `netlm` | netlm | - | `netlm` |
+| `netntlm-naive` | netntlm-naive | - | `netntlm-naive` |
+| `nsec3-john` | nsec3 | - | `nsec3` |
+| `ospf` | ospf | - | `ospf` |
+| `padlock` | Padlock | - | `Padlock` |
+| `palshop` | Palshop | - | `Palshop` |
+| `pbkdf2-hmac-md4` | PBKDF2-HMAC-MD4 | - | `PBKDF2-HMAC-MD4` |
+| `pbkdf2-hmac-md5-john` | PBKDF2-HMAC-MD5 | - | `PBKDF2-HMAC-MD5` |
+| `pbkdf2-hmac-sha1-john` | PBKDF2-HMAC-SHA1 | - | `PBKDF2-HMAC-SHA1` |
+| `pbkdf2-hmac-sha256-john` | PBKDF2-HMAC-SHA256 | - | `PBKDF2-HMAC-SHA256` |
+| `pbkdf2-hmac-sha512-john` | PBKDF2-HMAC-SHA512 | - | `PBKDF2-HMAC-SHA512` |
+| `pem-john` | PEM | - | `PEM` |
+| `pfx` | pfx | - | `pfx` |
+| `racf-kdfaes-john` | RACF-KDFAES | - | `RACF-KDFAES` |
+| `restic` | restic | - | `restic` |
+| `rsvp` | rsvp | - | `rsvp` |
+| `scram-john` | SCRAM-PBKDF2-SHA1-MongoDB | - | `SCRAM-PBKDF2-SHA1-MongoDB` |
+| `scram-pbkdf2-sha256` | SCRAM-PBKDF2-SHA256 | - | `SCRAM-PBKDF2-SHA256` |
+| `siemens-s7` | Siemens-S7 | - | `Siemens-S7` |
+| `streebog256crypt` | streebog256crypt | - | `streebog256crypt` |
+| `vmx-john` | vmx | - | `vmx` |
+| `wbb3-john` | wbb3 | - | `wbb3` |
+| `wpapsk` | wpapsk | - | `wpapsk` |
+| `wpapsk-pmk` | wpapsk-pmk | - | `wpapsk-pmk` |
+| `signal` | Signal | - | `Signal` |
+| `sl3` | SL3 | - | `SL3` |
+| `vtp` | VTP | - | `vtp` |
+| `rar3hp` | RAR3-hp | 12500 | `rar` |
+| `rar5` | RAR5 | 13000 | `RAR5` |
+| `winzip` | WinZip | 13600 | `ZIP` |
+| `filevault2` | FileVault 2 | 16700 | `FVDE` |
+| `sevenzip` | 7-Zip | 11600 | `7z` |
+| `android-fde` | Android FDE <= 4.3 | 8800 | `fde` |
 | `android-fde-samsung` | Android FDE (Samsung DEK) | 12900 | - |
-| `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | Bitcoin |
+| `bitcoin-wallet` | Bitcoin/Litecoin wallet.dat | 11300 | `Bitcoin` |
 | `chacha20` | ChaCha20 | 15400 | - |
 | `cram-md5` | CRAM-MD5 | 10200 | - |
 | `ipmi2-rakp-sha1` | IPMI2 RAKP HMAC-SHA1 | 7300 | - |
 | `ipmi2-rakp-md5` | IPMI2 RAKP HMAC-MD5 | 7350 | - |
-| `sap-bcode` | SAP CODVN B | 7700, 7701 | sapb |
-| `sap-passcode` | SAP CODVN F/G | 7800, 7801 | sapg |
+| `sap-bcode` | SAP CODVN B | 7700, 7701 | `sapb` |
+| `sap-passcode` | SAP CODVN F/G | 7800, 7801 | `sapg` |
 | `wpa-pmkid` | WPA-PMKID/EAPOL | 22000, 22001 | - |
-| `mediawiki-b` | MediaWiki B | 3711 | MediaWiki |
+| `mediawiki-b` | MediaWiki B | 3711 | `MediaWiki` |
 | `md5-two-salts` | MD5 (two salts) | 3730, 31700, 32300, 33000 | - |
 | `iscsi-chap` | iSCSI CHAP | 4800 | - |
 | `half-md5` | Half MD5 | 5100 | - |
 | `ike-psk-md5` | IKE-PSK MD5 | 5300 | - |
 | `ike-psk-sha1` | IKE-PSK SHA1 | 5400 | - |
 | `netntlmv1` | NetNTLMv1 | 5500, 27000 | - |
-| `netntlmv2` | NetNTLMv2 | 5600, 27100 | netntlmv2 |
+| `netntlmv2` | NetNTLMv2 | 5600, 27100 | `netntlmv2` |
 | `cisco-ios4` | Cisco-IOS type 4 | 5700 | - |
 | `samsung-android` | Samsung Android | 5800 | - |
-| `whirlpool` | Whirlpool | 6100, 40174, 40175 | whirlpool, whirlpool0, whirlpool1 |
-| `gost` | GOST R 34.11-94 | 6900, 40088 | gost |
+| `whirlpool` | Whirlpool | 6100, 40174, 40175 | `whirlpool, whirlpool0, whirlpool1` |
+| `gost` | GOST R 34.11-94 | 6900, 40088 | `gost` |
+| `oubliette-blowfish` | Oubliette-Blowfish | - | `Oubliette-Blowfish` |
+| `oubliette-idea` | Oubliette-IDEA | - | `Oubliette-IDEA` |
+| `iphone-passcode` | iPhone passcode | 26500 | - |
 | `ripemd` | RIPEMD | 40086, 40173, 6000, 40087, 33600 | - |
 | `streebog` | Streebog | 11700, 11800 | - |
 | `hmac` | HMAC | 50, 60, 150, 160, 40013, 40014, 1450, 1460, 40027, 40028, 40072, 40073, 40074, 1750, 1760, 40029, 40030 | - |
 | `radiogatun` | RadioGatun | 40171, 40172 | - |
 | `md6` | MD6 | 40168, 40170, 34600 | - |
-| `snefru` | Snefru | 40094, 40095 | Snefru-128, Snefru-256 |
-| `skein-512` | Skein-512 | 40096, 40097, 40098, 40099 | skein-512 |
+| `snefru` | Snefru | 40094, 40095 | `Snefru-128, Snefru-256` |
+| `skein-512` | Skein-512 | 40096, 40097, 40098, 40099 | `skein-512` |
 | `simd` | SIMD | 40161, 40162, 40163, 40164 | - |
 | `shavite3` | SHAvite-3 | 40157, 40158, 40159, 40160 | - |
-| `sha3` | SHA3 | 17300, 17400, 17500, 17600 | Raw-SHA3 |
+| `sha3` | SHA3 | 17300, 17400, 17500, 17600 | `Raw-SHA3` |
 | `shabal` | Shabal | 40153, 40154, 40155, 40156 | - |
 | `luffa` | Luffa | 40149, 40150, 40151, 40152 | - |
-| `keccak` | Keccak | 17700, 17800, 17900, 18000 | Raw-Keccak-256, Raw-Keccak |
+| `keccak` | Keccak | 17700, 17800, 17900, 18000 | `Raw-Keccak-256, Raw-Keccak` |
 | `jh` | JH | 40145, 40146, 40147, 40148 | - |
 | `hamsi` | Hamsi | 40141, 40142, 40143, 40144 | - |
 | `groestl` | Groestl | 40137, 40138, 40139, 40140 | - |
@@ -532,15 +535,15 @@ checked against that command in CI.
 | `bmw` | BMW | 40121, 40122, 40123, 40124 | - |
 | `blake` | BLAKE | 40117, 40118, 40119, 40120 | - |
 | `haval` | HAVAL | 40102, 40103, 40104, 40105, 40106, 40107, 40108, 40109, 40110, 40111, 40112, 40113, 40114, 40115, 40116 | - |
-| `sha384` | SHA2-384 | 10800 | Raw-SHA384 |
+| `sha384` | SHA2-384 | 10800 | `Raw-SHA384` |
 | `salted-sha384` | Salted SHA2-384 | 10810, 10820, 10830, 10840 | - |
 | `sha384-utf16` | SHA2-384 (UTF-16LE) | 10870 | - |
-| `md2` | MD2 | 40084 | MD2 |
+| `md2` | MD2 | 40084 | `MD2` |
 | `sha0` | SHA-0 | 40085 | - |
 | `tiger` | Tiger | 40090, 40091, 40089, 40092, 40093 | - |
-| `panama` | PANAMA | 40100 | Panama |
-| `mdc2` | MDC-2 | 40101 | mdc2 |
-| `has-160` | HAS-160 | 40165 | has-160 |
+| `panama` | PANAMA | 40100 | `Panama` |
+| `mdc2` | MDC-2 | 40101 | `mdc2` |
+| `has-160` | HAS-160 | 40165 | `has-160` |
 | `edon-r-256` | EDON-R-256 | 40166 | - |
 | `edon-r-512` | EDON-R-512 | 40167 | - |
 | `sha256-md5` | SHA2-256 of MD5 | 20800 | - |
@@ -574,10 +577,10 @@ checked against that command in CI.
 | `ssha1-aix` | AIX {ssha1} | 40017 | - |
 | `ssha256-aix` | AIX {ssha256} | 40015 | - |
 | `ssha512-aix` | AIX {ssha512} | 40016 | - |
-| `sha256crypt` | sha256crypt | 7400 | sha256crypt |
-| `citrix-netscaler-sha1` | Citrix NetScaler SHA1 | 8100 | Citrix_NS10 |
+| `sha256crypt` | sha256crypt | 7400 | `sha256crypt` |
+| `citrix-netscaler-sha1` | Citrix NetScaler SHA1 | 8100 | `Citrix_NS10` |
 | `wbb3` | WBB3 | 8400 | - |
-| `qnx-md5` | QNX MD5 | 19000 | qnx |
+| `qnx-md5` | QNX MD5 | 19000 | `qnx` |
 | `qnx-sha256` | QNX SHA2-256 | 19100 | - |
 | `qnx-sha512` | QNX SHA2-512 | 19200 | - |
 | `pbkdf2-hmac-md5` | PBKDF2-HMAC-MD5 | 40031 | - |
@@ -590,13 +593,13 @@ checked against that command in CI.
 | `django-pbkdf2-sha256` | Django (PBKDF2-SHA256) | 40022 | - |
 | `atlassian-pbkdf2-sha1` | Atlassian (PBKDF2-HMAC-SHA1) | 40033 | - |
 | `prestashop` | PrestaShop | 40026 | - |
-| `sha1crypt` | Juniper/NetBSD sha1crypt | 40038 | sha1crypt |
-| `drupal7` | Drupal7 | 40020 | Drupal7 |
+| `sha1crypt` | Juniper/NetBSD sha1crypt | 40038 | `sha1crypt` |
+| `drupal7` | Drupal7 | 40020 | `Drupal7` |
 | `cisco-ios8` | Cisco-IOS $8$ (PBKDF2-SHA256) | 40021 | - |
 | `macos-pbkdf2-sha512` | macOS v10.8+ (PBKDF2-SHA512) | 40018 | - |
 | `pbkdf1-sha1` | PBKDF1-SHA1 | 40070 | - |
 | `web2py-pbkdf2-sha512` | Web2py pbkdf2-sha512 | 40050 | - |
-| `crc32` | CRC32 | 11500 | CRC32 |
+| `crc32` | CRC32 | 11500 | `CRC32` |
 | `crc32c` | CRC32C | 27900 | - |
 | `murmurhash` | MurmurHash | 25700 | - |
 | `murmurhash3` | MurmurHash3 | 27800 | - |
@@ -608,15 +611,15 @@ checked against that command in CI.
 | `uuid-v5` | UUID v5 (RFC 4122 name-based, SHA-1) | 40005 | - |
 | `modx-evolution` | MODX Evolution (uncrypt) | 40007 | - |
 | `cisco-ise-sha256` | Cisco-ISE Hashed Password (SHA256) | 40012 | - |
-| `fortigate256` | FortiGate256 (FortiOS256) | 40054 | Fortigate256 |
+| `fortigate256` | FortiGate256 (FortiOS256) | 40054 | `Fortigate256` |
 | `qnx7-sha512` | QNX 7 /etc/shadow (SHA512) | 40041 | - |
 | `umbraco-hmac-sha1` | Umbraco HMAC-SHA1 | 24800 | - |
-| `dahua-md5` | Dahua Authentication MD5 | 24900 | dahua |
+| `dahua-md5` | Dahua Authentication MD5 | 24900 | `dahua` |
 | `besder-md5` | Besder Authentication MD5 | 24901 | - |
-| `postgres-cram-md5` | PostgreSQL CRAM (MD5) | 11100 | postgres |
-| `mysql-cram-sha1` | MySQL CRAM (SHA1) | 11200 | mysqlna |
+| `postgres-cram-md5` | PostgreSQL CRAM (MD5) | 11100 | `postgres` |
+| `mysql-cram-sha1` | MySQL CRAM (SHA1) | 11200 | `mysqlna` |
 | `cram-md5-dovecot` | CRAM-MD5 Dovecot | 16400 | - |
-| `tacacs-plus` | TACACS+ | 16100 | tacacs-plus |
+| `tacacs-plus` | TACACS+ | 16100 | `tacacs-plus` |
 | `pop3-apop` | POP3 APOP | 37601 | - |
 | `sasl-digest-md5` | SASL DIGEST-MD5 | 37600 | - |
 | `ospf-md5` | OSPFv2/RIPv2 MD5 authentication | 40001 | - |
@@ -641,14 +644,14 @@ checked against that command in CI.
 | `krb5db17` | Kerberos 5, etype 17, DB | 28800 | - |
 | `krb5db18` | Kerberos 5, etype 18, DB | 28900 | - |
 | `krb5db-old` | Kerberos 5, etype 1/2/3, DB | 38400 | - |
-| `krb5tgs17` | Kerberos 5, etype 17, TGS-REP | 19600 | krb5tgs-sha1 |
+| `krb5tgs17` | Kerberos 5, etype 17, TGS-REP | 19600 | `krb5tgs-sha1` |
 | `krb5tgs18` | Kerberos 5, etype 18, TGS-REP | 19700 | - |
 | `krb5tgs23` | Kerberos 5, etype 23, TGS-REP | 13100, 35300 | - |
 | `krb5tgs3` | Kerberos 5, etype 3, TGS-REP | 38500 | - |
 | `krb5asrep23` | Kerberos 5, etype 23, AS-REP | 18200, 35400 | - |
 | `krb5asrep3` | Kerberos 5, etype 3, AS-REP | 38600 | - |
 | `sspr-md5` | NetIQ SSPR (MD5) | 40057 | - |
-| `sspr-sha1` | NetIQ SSPR (SHA1) | 40058 | sspr |
+| `sspr-sha1` | NetIQ SSPR (SHA1) | 40058 | `sspr` |
 | `sspr-sha1-salt` | NetIQ SSPR (SHA-1 with Salt) | 40059 | - |
 | `sspr-sha256-salt` | NetIQ SSPR (SHA-256 with Salt) | 40060 | - |
 | `adobe-aem-sha256-salt` | Adobe AEM (SSPR, SHA-256 with Salt) | 40061 | - |
@@ -665,20 +668,20 @@ checked against that command in CI.
 | `bcrypt-sha512` | bcrypt(sha512($pass)) | 28400 | - |
 | `phpass-md5` | phpass(md5($pass)) | 40079 | - |
 | `cisco-ios9` | Cisco-IOS $9$ (scrypt) | 9300 | - |
-| `bsdi-crypt` | BSDi Crypt, Extended DES | 12400 | bsdicrypt |
-| `radmin2` | Radmin2 | 9900 | RAdmin |
-| `fortigate` | FortiGate (FortiOS) | 7000 | Fortigate |
-| `sybase-ase` | Sybase ASE | 8000 | SybaseASE |
+| `bsdi-crypt` | BSDi Crypt, Extended DES | 12400 | `bsdicrypt` |
+| `radmin2` | Radmin2 | 9900 | `RAdmin` |
+| `fortigate` | FortiGate (FortiOS) | 7000 | `Fortigate` |
+| `sybase-ase` | Sybase ASE | 8000 | `SybaseASE` |
 | `citrix-netscaler-sha512` | Citrix NetScaler SHA512 | 22200 | - |
 | `bitshares` | BitShares v0.x | 21000 | - |
 | `rails-restful-authentication` | Ruby on Rails Restful-Authentication | 19500 | - |
-| `tripcode` | Tripcode | 16000 | tripcode |
+| `tripcode` | Tripcode | 16000 | `tripcode` |
 | `openedge-progress` | OpenEdge Progress Encode | 26200 | - |
 | `teamspeak3` | Teamspeak 3 (channel hash) | 28300 | - |
 | `aes-crypt-sha256` | AES Crypt (SHA256) | 22400 | - |
 | `jwt` | JWT (JSON Web Token) | 16500 | - |
 | `mojolicious` | Perl Mojolicious session cookie | 16501 | - |
-| `ansible-vault` | Ansible Vault | 16900 | ansible |
+| `ansible-vault` | Ansible Vault | 16900 | `ansible` |
 | `knx-ip-secure` | KNX IP Secure - Device Authentication Code | 25900 | - |
 | `metamask` | MetaMask Wallet | 26600, 26610 | - |
 | `office2016-sheetprotection` | MS Office 2016 - SheetProtection | 25300 | - |

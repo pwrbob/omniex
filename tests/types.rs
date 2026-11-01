@@ -136,6 +136,10 @@ fn every_type_describes_every_field() {
             "bitcoin-wallet",
             &["master", "salt", "rounds", "ckey", "public_key"],
         ),
+        (
+            "iphone-passcode",
+            &["uid_key", "salt", "iterations", "class_key"],
+        ),
     ];
 
     for (slug, names) in expected {
@@ -1573,6 +1577,14 @@ fn additional_john_only_types_reject_invalid_input() {
             "po",
             "550c41c11bab48f9dbd8203ed313eef0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         ),
+        (
+            "oubliette-blowfish",
+            "$oubliette-blowfish$16c863009dbc7a89fa26520aeeae5543beda0bbf41622be472d7c7320c8ea66f",
+        ),
+        (
+            "oubliette-idea",
+            "$oubliette-idea$e82bb8b871ed9a2b7d77afce662325a2c522844e0e91bde104b8e4f68044e991",
+        ),
     ];
 
     for (slug, valid) in cases {
@@ -1628,5 +1640,21 @@ fn digest_only_types_reject_invalid_input() {
                 "`{slug}` accepted `{input}`"
             );
         }
+    }
+}
+
+#[test]
+fn iphone_passcode_requires_every_fixed_field() {
+    let opts = ParseOptions::default();
+    for input in [
+        "$uido$",
+        "$uido$77889b1bca161ce876d976a102c7bf82$3090545724551425617156367874312887832777$50000",
+        "$uido$zz$3090545724551425617156367874312887832777$50000$2d4c86b71c0c04129a47c6468e2437d1fecd88e232a7b15112d5364682dc391dbbbb921cf6e02664",
+        "$uido$77889b1bca161ce876d976a102c7bf82$3090545724551425617156367874312887832777$nope$2d4c86b71c0c04129a47c6468e2437d1fecd88e232a7b15112d5364682dc391dbbbb921cf6e02664",
+    ] {
+        assert!(
+            omniex::types::IphonePasscode::parse(input, &opts).is_err(),
+            "accepted `{input}`"
+        );
     }
 }

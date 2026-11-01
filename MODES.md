@@ -135,8 +135,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 23000-23999
 
-- [ ] `23800` - `RAR3-p (Compressed)` (no test module)
-
 ### 24000-24999
 
 
@@ -144,8 +142,6 @@ Hashcat's plaintext mode is excluded below.
 
 
 ### 26000-26999
-
-- [ ] `26500` - `iPhone passcode (UID key + System Keybag)`
 
 ### 27000-27999
 
@@ -217,7 +213,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### A-C
 
-- [ ] `asa-md5`
 - [ ] `axcrypt2-opencl` - OpenCL only
 
 ### D-F
@@ -237,8 +232,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 ### M-O
 
 - [ ] `ntlmv2-opencl` - OpenCL only
-- [ ] `Oubliette-Blowfish`
-- [ ] `Oubliette-IDEA`
 
 ### P-R
 
@@ -246,7 +239,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### S-U
 
-- [ ] `scrypt`
 - [ ] `TrueCrypt-opencl` - OpenCL only
 
 ### V-Z

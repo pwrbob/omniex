@@ -1,7 +1,9 @@
 //! Cisco-ASA MD5, rendered as `<crypt>:<salt>`.
 
 use crate::parse;
-use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
+use crate::{
+    HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions, Tool,
+};
 
 /// Cisco-ASA MD5 password hash.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
@@ -9,6 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     name = "Cisco-ASA MD5",
     slug = "cisco-asa",
     hashcat = [2410],
+    john = ["asa-md5"],
 )]
 pub struct CiscoAsa {
     /// The 16-character crypt string.
@@ -21,23 +24,29 @@ pub struct CiscoAsa {
 }
 
 impl Parse for CiscoAsa {
-    fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
+    fn parse(input: &str, opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
         }
 
-        let (crypt, salt, salt_offset) = parse::split_once(input, ':', 0)?;
+        let (crypt, salt, crypt_offset, salt_offset) = if opts.tool == Tool::John {
+            let (salt, crypt, crypt_offset) = parse::split_once(input, ':', 0)?;
+            (crypt, salt, crypt_offset, 0)
+        } else {
+            let (crypt, salt, salt_offset) = parse::split_once(input, ':', 0)?;
+            (crypt, salt, 0, salt_offset)
+        };
         if crypt.len() != 16 {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
-                0,
+                crypt_offset,
                 "Cisco-ASA crypt string must be 16 characters",
             ));
         }
         if !crypt.bytes().all(is_crypt_character) {
             return Err(parse::error(
                 ParseErrorKind::InvalidCharacter,
-                0,
+                crypt_offset,
                 "Cisco-ASA crypt string must use the crypt alphabet",
             ));
         }
@@ -57,7 +66,10 @@ impl Parse for CiscoAsa {
 }
 
 impl Render for CiscoAsa {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
+    fn render_value(&self, opts: &RenderOptions) -> String {
+        if opts.tool == Tool::John {
+            return format!("{}:{}", self.salt, self.crypt);
+        }
         format!("{}:{}", self.crypt, self.salt)
     }
 }

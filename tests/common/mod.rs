@@ -505,7 +505,7 @@ pub const VECTORS: &[Vector] = &[
     Vector {
         slug: "cisco-asa",
         hashcat: &[hc!(2410, "YjDBNr.A0AN7DA8s:4684")],
-        john: &[],
+        john: &[john!("asa-md5", "4684:YjDBNr.A0AN7DA8s")],
     },
     Vector {
         slug: "phps",
@@ -2454,7 +2454,10 @@ pub const VECTORS: &[Vector] = &[
             8900,
             "SCRYPT:16384:8:1:OTEyNzU0ODg=:Cc8SPjRH1hFQhuIPCdF51uNGtJ2aOY/isuoMlMUsJ8c="
         )],
-        john: &[],
+        john: &[john!(
+            "scrypt",
+            "$ScryptKDF.pm$16384*8*1*VHRuaXZOZ05INWJs*JjrOzA8pdPhLvLh8sY64fLLaAjFUwYCXMmS16NXcn0A="
+        )],
     },
     Vector {
         slug: "racf-kdfaes",
@@ -3156,10 +3159,16 @@ pub const VECTORS: &[Vector] = &[
     },
     Vector {
         slug: "rar3p",
-        hashcat: &[hc!(
-            23700,
-            "$RAR3$*1*e54a73729887cb53*49b0a846*16*14*1*34620bcca8176642a210b1051901921e*30"
-        )],
+        hashcat: &[
+            hc!(
+                23700,
+                "$RAR3$*1*e54a73729887cb53*49b0a846*16*14*1*34620bcca8176642a210b1051901921e*30"
+            ),
+            hc!(
+                23800,
+                "$RAR3$*1*ad56eb40219c9da2*834064ce*32*13*1*eb47b1abe17a1a75bce6c92ab1cef3f4126035ea95deaf08b3f32a0c7b8078e1*33"
+            ),
+        ],
         john: &[],
     },
     Vector {
@@ -5215,6 +5224,30 @@ pub const VECTORS: &[Vector] = &[
         john: &[john!(
             "wpapsk-pmk",
             "$WPAPSK$test#..qHuv0A..ZPYJBRzZwAKpEXUJwpza/b69itFaq4.OWoGHfonpc13zCAUsRIfQN2Zar6EXp2BYcRuSkWEJIWjEJJvb4DWZCspbZ51.21.3zy.EY.6........../zZwAKpEXUJwpza/b69itFaq4.OWoGHfonpc13zCAUsQ..................................................................BoK.31m.E2..31m.U2..31m.U2..31m.U................................................................................................................................................................................/X.....E...AkkDQmDg9837LBHG.dGlKA"
+        )],
+    },
+    Vector {
+        slug: "iphone-passcode",
+        hashcat: &[hc!(
+            26500,
+            "$uido$77889b1bca161ce876d976a102c7bf82$3090545724551425617156367874312887832777$50000$2d4c86b71c0c04129a47c6468e2437d1fecd88e232a7b15112d5364682dc391dbbbb921cf6e02664"
+        )],
+        john: &[],
+    },
+    Vector {
+        slug: "oubliette-blowfish",
+        hashcat: &[],
+        john: &[john!(
+            "Oubliette-Blowfish",
+            "$oubliette-blowfish$16c863009dbc7a89fa26520aeeae5543beda0bbf41622be472d7c7320c8ea66f"
+        )],
+    },
+    Vector {
+        slug: "oubliette-idea",
+        hashcat: &[],
+        john: &[john!(
+            "Oubliette-IDEA",
+            "$oubliette-idea$e82bb8b871ed9a2b7d77afce662325a2c522844e0e91bde104b8e4f68044e991"
         )],
     },
 ];
