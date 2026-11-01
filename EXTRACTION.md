@@ -55,7 +55,7 @@ README badge counts checked lines in this file.
 - [ ] FileVault 2 volume (`filevault2`)
 - [ ] APFS volume (`apfs`)
 - [x] FreeBSD GELI metadata (`geli`)
-- [ ] OpenBSD softraid metadata (`openbsd-softraid`)
+- [x] OpenBSD softraid metadata (`openbsd-softraid`)
 - [ ] Android FDE footer (`android-fde`)
 - [ ] Samsung Android FDE (`android-fde-samsung`)
 - [ ] eCryptfs metadata (`ecryptfs`)

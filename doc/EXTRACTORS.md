@@ -31,3 +31,4 @@ This file documents the extractors currently registered in
 - `bks` - Bouncy Castle BKS v1/v2 keystores (John only).
 - `dashlane` - Dashlane `.aes` databases and secure archives (John only).
 - `geli` - FreeBSD GELI metadata from disk images.
+- `openbsd-softraid` - OpenBSD softraid crypto metadata from disk images.
