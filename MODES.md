@@ -217,58 +217,42 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 
 ### A-C
 
-- [ ] `armory`
 - [ ] `asa-md5`
 - [ ] `axcrypt2-opencl` - OpenCL only
 
 ### D-F
 
 - [ ] `diskcryptor-aes-opencl` - OpenCL only
-- [ ] `EPiServer`
 - [ ] `electrum-modern-opencl` - OpenCL only
 - [ ] `ethereum-presale-opencl` - OpenCL only
-- [ ] `FormSpring`
 
 ### G-I
 
-- [ ] `gost94crypt` - OpenCL: `gost94crypt-opencl`
-- [ ] `Iterated-SHA256` - OpenCL: `Iterated-SHA256-opencl`
 
 ### J-L
 
 - [ ] `krb5asrep-aes-opencl` - OpenCL only
-- [ ] `lotus85`
 - [ ] `LUKS`
 
 ### M-O
 
-- [ ] `multibit`
 - [ ] `ntlmv2-opencl` - OpenCL only
 - [ ] `Oubliette-Blowfish`
 - [ ] `Oubliette-IDEA`
 
 ### P-R
 
-- [ ] `po`
-- [ ] `Raw-MD5-flat`
 - [ ] `raw-SHA512-free-opencl` - OpenCL only
 
 ### S-U
 
 - [ ] `scrypt`
-- [ ] `Skein`
-- [ ] `Snefru`
-- [ ] `sspr` - OpenCL: `sspr-opencl`
-- [ ] `streebog512crypt` - OpenCL: `streebog512crypt-opencl`
 - [ ] `TrueCrypt-opencl` - OpenCL only
 
 ### V-Z
 
-- [ ] `Whirpool`
 - [ ] `XSHA512-free-opencl` - OpenCL only
 
-- [ ] `xsha`
-- [ ] `xsha512`
 
 
 ## hashcat bridged modes

@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "gost12512crypt",
     slug = "gost12512crypt",
-    hashcat = [35600]
+    hashcat = [35600], john = ["streebog512crypt"]
 )]
 pub struct Gost12512crypt {
     /// ASCII salt.

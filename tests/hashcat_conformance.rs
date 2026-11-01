@@ -165,7 +165,7 @@ fn worker_count(items: usize) -> usize {
                 .unwrap_or(1)
         });
 
-    requested.min(items.max(1)).min(16)
+    requested.min(items.max(1)).min(32)
 }
 
 fn identified_modes(stdout: &str) -> Vec<u32> {

@@ -236,7 +236,10 @@ pub const VECTORS: &[Vector] = &[
             141,
             "$episerver$*0*MjEwNA==*ZUgAmuaYTqAvisD0A427FA3oaWU"
         )],
-        john: &[],
+        john: &[john!(
+            "EPiServer",
+            "$episerver$*0*fGJ2wn/5WlzqQoDeCA2kXA==*UQgnz/vPWap9UeD8Dhaw3h/fgFA"
+        )],
     },
     Vector {
         slug: "mysql323",
@@ -456,7 +459,10 @@ pub const VECTORS: &[Vector] = &[
             1722,
             "07543781b07e905f6f947db8ae305c248b9e12f509b41097e852e2f450e824790e677ea7397b8a9a552b1c19ecf6a6e1dd3844fa5ee5db23976962859676f7d2fb85ca94"
         )],
-        john: &[],
+        john: &[john!(
+            "xsha512",
+            "bb0489df7b073e715f19f83fd52d08ede24243554450f7159dd65c100298a5820525b55320f48182491b72b4c4ba50d7b0e281c1d98e06591a5e9c6167f42a742f0359c7"
+        )],
     },
     Vector {
         slug: "mssql-2012",
@@ -681,7 +687,20 @@ pub const VECTORS: &[Vector] = &[
                 "e57fc143265bf3a566290cd59f7cd31ffe607e0acffe5a98bc7bb104e3f5bbd1fe047b42d054737a1adf37a626064bf6bba271e2b4dbaeab9e14c6d824a9246b"
             ),
         ],
-        john: &[],
+        john: &[
+            john!(
+                "whirlpool",
+                "19fa61d75522a4669b44e39c1d2e1726c530232130d407f89afee0964997f7a73e83be698b288febcf88e3e03c4f0757ea8964e59b63d93708b138cc42a66eb3"
+            ),
+            john!(
+                "whirlpool0",
+                "b3e1ab6eaf640a34f784593f2074416accd3b8e62c620175fca0997b1ba2347339aa0d79e754c308209ea36811dfa40c1c32f1a2b9004725d987d3635165d3c8"
+            ),
+            john!(
+                "whirlpool1",
+                "470f0409abaa446e49667d4ebe12a14387cedbd10dd17b8243cad550a089dc0feea7aa40f6c2aaab71c6ebd076e43c7cfca0ad32567897dcb5969861049a0f5a"
+            ),
+        ],
     },
     Vector {
         slug: "gost",
@@ -1622,7 +1641,10 @@ pub const VECTORS: &[Vector] = &[
             40058,
             "$sspr$1$100000$NONE$b3485214dfa55b038a606a183a560dab7db4ecf1"
         )],
-        john: &[],
+        john: &[john!(
+            "sspr",
+            "$sspr$1$100000$NONE$64840051a425cbc0b4e2d3750d9e0de3e800de18"
+        )],
     },
     Vector {
         slug: "sspr-sha1-salt",
@@ -2264,7 +2286,10 @@ pub const VECTORS: &[Vector] = &[
                 "67a6caf6e02968509ea3893d65eda0d8ffcaf22c6c5466357d3fd1e34c9a9e8c2b349b6ba6f8b2c2ee672f30c2ee982e5da7ee20509125830af88ff57169a742",
             ),
         ],
-        john: &[],
+        john: &[john!(
+            "skein-512",
+            "bc5b4c50925519c290cc634277ae3d6257212395cba733bbad37a4af0fa06af41fca7903d06564fea7a2d3730dbdb80c1f85562dfcc070334ea4d1d9e72cba7a"
+        )],
     },
     Vector {
         slug: "tiger",
@@ -2286,7 +2311,13 @@ pub const VECTORS: &[Vector] = &[
                 "7f224f9a530d90acae8c051c87e9f2dfd60232c6529aee3aec16e0578d625f7e",
             ),
         ],
-        john: &[],
+        john: &[
+            john!("Snefru-128", "53b8a9b1c9ed00174d88d705fb7bae30"),
+            john!(
+                "Snefru-256",
+                "4170e04e900e6221562ceb5ff6ea27fa9b9b0d9587add44a4379a02619c5a106"
+            ),
+        ],
     },
     Vector {
         slug: "md6",
@@ -2500,7 +2531,10 @@ pub const VECTORS: &[Vector] = &[
             22500,
             "$multibit$1*e5912fe5c84af3d5*5f0391c219e8ef62c06505b1f6232858f5bcaa739c2b471d45dd0bd8345334de"
         )],
-        john: &[],
+        john: &[john!(
+            "multibit",
+            "$multibit$1*0908a1bd44147709*c82b6d0409c1e46a4660ea6d4fa9ae12e4e234c98a71a51ced105c7e66a57ca3"
+        )],
     },
     Vector {
         slug: "sqlcipher",
@@ -3866,7 +3900,10 @@ pub const VECTORS: &[Vector] = &[
             35600,
             "$gost12512hash$salt$w0TCvk4n0JHA/kPNpHEyf3RR5YuUXReihlrize3NdcPCmtLk/ewG63OUWT.G4bvjegPTeMb/xQ2PK7apsCfC7/"
         )],
-        john: &[],
+        john: &[john!(
+            "streebog512crypt",
+            "$gost12512hash$salt$nwv1Oqm2zL9523APlKI6Fpmlm56UzSe.J1wDzMk61S2zxa1nWY4U9d3oP5UyOpZQvTzVPEZWRnfRd/yJZeXp2."
+        )],
     },
     Vector {
         slug: "rc4-dropn",
@@ -5122,6 +5159,54 @@ pub const VECTORS: &[Vector] = &[
         john: &[john!(
             "wpapsk",
             "$WPAPSK$Coherer#..l/Uf7J..qHUXMunTE3nfbMWSwxv27Ua0XutIOrfRSuv9gOCIugIVGlosMyXdNxfBZUAYmgKqeb6GBPxLiIZr56NtWTGR/Cp5ldAk61.5I0.Ec.2...........nTE3nfbMWSwxv27Ua0XutIOrfRSuv9gOCIugIVGlosM.................................................................3X.I.E..1uk0.E..1uk2.E..1uk0....................................................................................................................................................................................../t.....U...8FWdk8OpPckhewBwt4MXYI"
+        )],
+    },
+    Vector {
+        slug: "armory",
+        hashcat: &[],
+        john: &[john!(
+            "armory",
+            "YXI6DKXVcrlt7I85ct/qzlUSXX1MCs+wbXVpJdtrw9RuXZpMowuOXmfqMiuFKj0/g/G2sQScLr6+dsiNrh/OOlsDzP4T60QAAIAAAgAAAIZidMeJWIXezaAL+WpoA5nbs9eGf5syXhOnHYF65Ftmo4p+jw=="
+        )],
+    },
+    Vector {
+        slug: "formspring",
+        hashcat: &[],
+        john: &[john!(
+            "FormSpring",
+            "2a4fa0bf8c6a01dd625d3141746451ba51e07f99dc9143f1e25a37f65cb02eb4$RA"
+        )],
+    },
+    Vector {
+        slug: "gost94crypt",
+        hashcat: &[],
+        john: &[john!(
+            "gost94crypt",
+            "$gost94hash$salt$sG.6rfU0vKHX4eL00bUDqjXxaAcQHqpJQlM3ctfj013"
+        )],
+    },
+    Vector {
+        slug: "iterated-sha256",
+        hashcat: &[],
+        john: &[john!(
+            "Iterated-SHA256",
+            "465865d4226c4d9696e601f2c99b25ae2c194ec01806bafc93933331acfc1a60e8bdcca8be9fa245a5fa16029bb52480915746f47d1c539d01da7ec6f37468d1"
+        )],
+    },
+    Vector {
+        slug: "lotus85",
+        hashcat: &[],
+        john: &[john!(
+            "lotus85",
+            "0040B2B17C344C236953F955B28E4865014034D1F664489D7F42B35FB6928A94DCFFEF7750CE029F94C83A582A80B4662D49B3FA45816143"
+        )],
+    },
+    Vector {
+        slug: "po",
+        hashcat: &[],
+        john: &[john!(
+            "po",
+            "550c41c11bab48f9dbd8203ed313eef0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         )],
     },
     Vector {

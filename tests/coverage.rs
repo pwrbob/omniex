@@ -246,19 +246,51 @@ fn readme_mode_badge_matches_the_registry_and_checklist() {
     let modes = std::fs::read_to_string(std::path::Path::new(root).join("MODES.md"))
         .expect("read MODES.md");
 
+    let john_implemented: usize = registry::all()
+        .iter()
+        .map(|descriptor| {
+            descriptor
+                .all_modes
+                .iter()
+                .filter(|mode| matches!(mode, Mode::John(_)))
+                .count()
+        })
+        .sum();
     let implemented: usize = registry::all()
         .iter()
         .map(|descriptor| descriptor.all_modes.len())
         .sum();
-    let remaining = modes
-        .lines()
-        .filter(|line| line.starts_with("- [ ] `"))
-        .count();
-    let total = implemented + remaining;
+    let hashcat_implemented = implemented - john_implemented;
 
-    let expected = format!("hash_modes-{implemented}%2F{total}-");
-    assert!(
-        readme.contains(&expected),
-        "README must advertise `{expected}`; found no matching badge"
+    let mut section = "";
+    let mut hashcat_remaining = 0;
+    let mut john_remaining = 0;
+    for line in modes.lines() {
+        if line.starts_with("## ") {
+            section = line;
+        }
+        if !line.starts_with("- [ ] `") {
+            continue;
+        }
+        match section {
+            "## John the Ripper formats" => john_remaining += 1,
+            "## hashcat modes" | "## hashcat bridged modes" => hashcat_remaining += 1,
+            _ => {}
+        }
+    }
+
+    let hashcat = format!(
+        "hashcat_modes-{hashcat_implemented}%2F{}-",
+        hashcat_implemented + hashcat_remaining
     );
+    let john = format!(
+        "John_modes-{john_implemented}%2F{}-",
+        john_implemented + john_remaining
+    );
+    for badge in [hashcat, john] {
+        assert!(
+            readme.contains(&badge),
+            "README must advertise `{badge}`; found no matching badge"
+        );
+    }
 }

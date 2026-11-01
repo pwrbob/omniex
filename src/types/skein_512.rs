@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Skein-512",
     slug = "skein-512",
-    hashcat = [40096, 40097, 40098, 40099],
+    hashcat = [40096, 40097, 40098, 40099], john = ["skein-512"],
     modes_fn = skein_512_modes,
 )]
 pub struct Skein512 {
@@ -35,7 +35,10 @@ impl Parse for Skein512 {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        let digest = parse::decode_hex(input, 0)?;
+        let digest = match input.strip_prefix("$skein$") {
+            Some(rest) => parse::decode_hex(rest, 7)?,
+            None => parse::decode_hex(input, 0)?,
+        };
         if !matches!(digest.len(), 28 | 32 | 48 | 64) {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,

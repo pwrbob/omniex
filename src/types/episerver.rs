@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "EPiServer (< .NET 4)",
     slug = "episerver",
-    hashcat = [141],
+    hashcat = [141], john = ["EPiServer"],
 )]
 pub struct Episerver {
     /// Salt, base64 encoded in the hash string.

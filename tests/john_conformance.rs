@@ -6,9 +6,18 @@
 
 mod common;
 
+use std::path::Path;
 use std::process::Command;
+use std::sync::Mutex;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 use common::{VECTORS, reference, selected_modes, work_dir};
+
+struct WorkItem {
+    slug: &'static str,
+    format: &'static str,
+    path: std::path::PathBuf,
+}
 
 #[test]
 #[ignore = "requires a John jumbo build"]
@@ -17,9 +26,9 @@ fn john_loads_every_vector() {
         return;
     };
     let work = work_dir("john-conformance");
-    let mut checked_formats = Vec::new();
     let selected = selected_modes();
     let subset = std::env::var("OMNIEX_CONFORMANCE_SUBSET").as_deref() == Ok("1");
+    let mut items = Vec::new();
 
     for vector in VECTORS {
         let mut included = 0;
@@ -34,44 +43,85 @@ fn john_loads_every_vector() {
             }
             included += 1;
 
-            let hash_file = work.join(format!("{}-{}.txt", vector.slug, entry.format));
-            std::fs::write(&hash_file, format!("{}\n", entry.hash)).expect("write hash file");
-
-            if !checked_formats.contains(&entry.format) {
-                let list = Command::new(&john)
-                    .args(["--list=format-tests", &format!("--format={}", entry.format)])
-                    .output()
-                    .expect("run john --list=format-tests");
-                assert!(
-                    list.status.success() && !list.stdout.is_empty(),
-                    "john does not know format `{}`: {}",
-                    entry.format,
-                    String::from_utf8_lossy(&list.stderr)
-                );
-                checked_formats.push(entry.format);
-            }
-
-            let show = Command::new(&john)
-                .args(["--show=formats", &format!("--format={}", entry.format)])
-                .arg(&hash_file)
-                .output()
-                .expect("run john --show=formats");
-            let stdout = String::from_utf8_lossy(&show.stdout);
-            let stderr = String::from_utf8_lossy(&show.stderr);
-            let label = format!("\"label\":\"{}\"", entry.format);
-
-            assert!(
-                show.status.success(),
-                "john --show=formats --format={} failed for `{}`: {stderr}",
-                entry.format,
-                vector.slug
-            );
-            assert!(
-                stdout.contains(&label),
-                "john did not load `{}` as {}: stdout={stdout} stderr={stderr}",
-                vector.slug,
-                entry.format
-            );
+            let path = work.join(format!("{}-{}.txt", vector.slug, entry.format));
+            std::fs::write(&path, format!("{}\n", entry.hash)).expect("write hash file");
+            items.push(WorkItem {
+                slug: vector.slug,
+                format: entry.format,
+                path,
+            });
         }
     }
+
+    run_parallel(&john, &items, worker_count(items.len()));
+}
+
+fn run_parallel(john: &Path, items: &[WorkItem], workers: usize) {
+    let next = AtomicUsize::new(0);
+    let failures = Mutex::new(Vec::new());
+
+    std::thread::scope(|scope| {
+        for _ in 0..workers {
+            scope.spawn(|| {
+                loop {
+                    let index = next.fetch_add(1, Ordering::Relaxed);
+                    let Some(item) = items.get(index) else {
+                        break;
+                    };
+                    if let Err(message) = check_item(john, item) {
+                        failures.lock().expect("failure list").push(message);
+                    }
+                }
+            });
+        }
+    });
+
+    let failures = failures.into_inner().expect("failure list");
+    assert!(
+        failures.is_empty(),
+        "{} John conformance failure(s):\n{}",
+        failures.len(),
+        failures.join("\n")
+    );
+}
+
+fn check_item(john: &Path, item: &WorkItem) -> Result<(), String> {
+    let show = Command::new(john)
+        .args(["--show=formats", &format!("--format={}", item.format)])
+        .arg(&item.path)
+        .output()
+        .map_err(|error| format!("run john --show=formats: {error}"))?;
+    let stdout = String::from_utf8_lossy(&show.stdout);
+    let stderr = String::from_utf8_lossy(&show.stderr);
+
+    if !show.status.success() {
+        return Err(format!(
+            "john --show=formats --format={} failed for `{}`: {stderr}",
+            item.format, item.slug
+        ));
+    }
+
+    let label = format!("\"label\":\"{}\"", item.format);
+    if !stdout.contains(&label) {
+        return Err(format!(
+            "john did not load `{}` as {}: stdout={stdout} stderr={stderr}",
+            item.slug, item.format
+        ));
+    }
+
+    Ok(())
+}
+
+fn worker_count(items: usize) -> usize {
+    let requested = std::env::var("OMNIEX_CONFORMANCE_WORKERS")
+        .ok()
+        .and_then(|value| value.parse::<usize>().ok())
+        .filter(|workers| *workers > 0)
+        .unwrap_or_else(|| {
+            std::thread::available_parallelism()
+                .map(usize::from)
+                .unwrap_or(1)
+        });
+
+    requested.min(items.max(1)).min(32)
 }

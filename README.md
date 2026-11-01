@@ -4,7 +4,8 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hash modes](https://img.shields.io/badge/hash_modes-894%2F985-2ea44f)
+![hashcat modes](https://img.shields.io/badge/hashcat_modes-662%2F723-2ea44f)
+![John modes](https://img.shields.io/badge/John_modes-249%2F263-1f6feb)
 
 Status: early development. Hashcat mode coverage is tracked in
 [`MODES.md`](MODES.md); extraction is not implemented yet.
@@ -193,7 +194,7 @@ checked against that command in CI.
 | `mssql-2000` | MSSQL (2000) | 131 | mssql |
 | `mssql-2005` | MSSQL (2005) | 132 | mssql05 |
 | `peoplesoft-sha1` | PeopleSoft SHA1 | 133 | - |
-| `episerver` | EPiServer (< .NET 4) | 141 | - |
+| `episerver` | EPiServer (< .NET 4) | 141 | EPiServer |
 | `mysql323` | MySQL323 | 200 | mysql |
 | `phpass` | phpass | 400 | phpass |
 | `md5crypt` | md5crypt | 500 | md5crypt, md5crypt-long |
@@ -214,7 +215,7 @@ checked against that command in CI.
 | `episerver-net4` | EPiServer (>= .NET 4) | 1441 | - |
 | `descrypt` | descrypt | 1500 | descrypt, crypt |
 | `apr1` | Apache MD5 (apr1) | 1600 | md5crypt |
-| `macos-sha512` | macOS SHA512 | 1722 | - |
+| `macos-sha512` | macOS SHA512 | 1722 | xsha512 |
 | `mssql-2012` | MSSQL (2012, 2014) | 1731 | mssql12 |
 | `sha512crypt` | sha512crypt | 1800 | sha512crypt |
 | `dcc2` | Domain Cached Credentials 2 | 2100, 31600 | mscash2 |
@@ -233,7 +234,7 @@ checked against that command in CI.
 | `apple-secure-notes` | Apple Secure Notes | 16200 | notes |
 | `electrum` | Electrum Wallet | 16600, 21700, 21800 | electrum |
 | `telegram` | Telegram | 22301, 22600, 24500 | telegram |
-| `multibit` | MultiBit Classic .key (MD5) | 22500 | - |
+| `multibit` | MultiBit Classic .key (MD5) | 22500 | multibit |
 | `sqlcipher` | SQLCipher | 24600 | - |
 | `vmware-vmx` | VMware VMX | 27400 | - |
 | `aws-sigv4` | Amazon AWS Signature Version 4 | 28700 | - |
@@ -326,7 +327,7 @@ checked against that command in CI.
 | `rc4-dropn` | RC4 DropN | 33500, 33501, 33502 | - |
 | `microsoft-online` | Microsoft Online Account | 33700 | - |
 | `wordpress-bcrypt` | WordPress bcrypt(hmac-sha384) | 35500 | - |
-| `gost12512crypt` | gost12512crypt | 35600 | - |
+| `gost12512crypt` | gost12512crypt | 35600 | streebog512crypt |
 | `mega` | mega.nz | 33400 | - |
 | `kwallet` | KDE KWallet | 36400, 36410 | kwallet |
 | `racf-passphrase` | RACF DES Passphrase | 37400 | - |
@@ -432,6 +433,12 @@ checked against that command in CI.
 | `keplr` | Keplr | - | keplr |
 | `keyring` | Keyring | - | keyring |
 | `agilekeychain` | agilekeychain | - | agilekeychain |
+| `armory` | Armory | - | armory |
+| `formspring` | FormSpring | - | FormSpring |
+| `gost94crypt` | gost94crypt | - | gost94crypt |
+| `iterated-sha256` | Iterated-SHA256 | - | Iterated-SHA256 |
+| `lotus85` | Lotus Notes 8.5 | - | lotus85 |
+| `po` | PO | - | po |
 | `cloudkeychain` | cloudkeychain | - | cloudkeychain |
 | `bestcrypt-john` | BestCrypt | - | BestCrypt |
 | `bitshares-john` | bitshares | - | bitshares |
@@ -501,15 +508,15 @@ checked against that command in CI.
 | `netntlmv2` | NetNTLMv2 | 5600, 27100 | netntlmv2 |
 | `cisco-ios4` | Cisco-IOS type 4 | 5700 | - |
 | `samsung-android` | Samsung Android | 5800 | - |
-| `whirlpool` | Whirlpool | 6100, 40174, 40175 | - |
+| `whirlpool` | Whirlpool | 6100, 40174, 40175 | whirlpool, whirlpool0, whirlpool1 |
 | `gost` | GOST R 34.11-94 | 6900, 40088 | gost |
 | `ripemd` | RIPEMD | 40086, 40173, 6000, 40087, 33600 | - |
 | `streebog` | Streebog | 11700, 11800 | - |
 | `hmac` | HMAC | 50, 60, 150, 160, 40013, 40014, 1450, 1460, 40027, 40028, 40072, 40073, 40074, 1750, 1760, 40029, 40030 | - |
 | `radiogatun` | RadioGatun | 40171, 40172 | - |
 | `md6` | MD6 | 40168, 40170, 34600 | - |
-| `snefru` | Snefru | 40094, 40095 | - |
-| `skein-512` | Skein-512 | 40096, 40097, 40098, 40099 | - |
+| `snefru` | Snefru | 40094, 40095 | Snefru-128, Snefru-256 |
+| `skein-512` | Skein-512 | 40096, 40097, 40098, 40099 | skein-512 |
 | `simd` | SIMD | 40161, 40162, 40163, 40164 | - |
 | `shavite3` | SHAvite-3 | 40157, 40158, 40159, 40160 | - |
 | `sha3` | SHA3 | 17300, 17400, 17500, 17600 | Raw-SHA3 |
@@ -641,7 +648,7 @@ checked against that command in CI.
 | `krb5asrep23` | Kerberos 5, etype 23, AS-REP | 18200, 35400 | - |
 | `krb5asrep3` | Kerberos 5, etype 3, AS-REP | 38600 | - |
 | `sspr-md5` | NetIQ SSPR (MD5) | 40057 | - |
-| `sspr-sha1` | NetIQ SSPR (SHA1) | 40058 | - |
+| `sspr-sha1` | NetIQ SSPR (SHA1) | 40058 | sspr |
 | `sspr-sha1-salt` | NetIQ SSPR (SHA-1 with Salt) | 40059 | - |
 | `sspr-sha256-salt` | NetIQ SSPR (SHA-256 with Salt) | 40060 | - |
 | `adobe-aem-sha256-salt` | Adobe AEM (SSPR, SHA-256 with Salt) | 40061 | - |

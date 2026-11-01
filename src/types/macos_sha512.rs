@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "macOS SHA512",
     slug = "macos-sha512",
-    hashcat = [1722],
+    hashcat = [1722], john = ["xsha512"],
 )]
 pub struct MacosSha512 {
     /// The 4-byte salt.

@@ -1550,6 +1550,47 @@ fn john_only_serialized_types_require_their_prefix() {
 }
 
 #[test]
+fn additional_john_only_types_reject_invalid_input() {
+    let cases = [
+        ("armory", "cGF5bG9hZA=="),
+        (
+            "formspring",
+            "2a4fa0bf8c6a01dd625d3141746451ba51e07f99dc9143f1e25a37f65cb02eb4$RA",
+        ),
+        (
+            "gost94crypt",
+            "$gost94hash$salt$sG.6rfU0vKHX4eL00bUDqjXxaAcQHqpJQlM3ctfj013",
+        ),
+        (
+            "iterated-sha256",
+            "465865d4226c4d9696e601f2c99b25ae2c194ec01806bafc93933331acfc1a60e8bdcca8be9fa245a5fa16029bb52480915746f47d1c539d01da7ec6f37468d1",
+        ),
+        (
+            "lotus85",
+            "0040b2b17c344c236953f955b28e4865014034d1f664489d7f42b35fb6928a94dcffef7750ce029f94c83a582a80b4662d49b3fa45816143",
+        ),
+        (
+            "po",
+            "550c41c11bab48f9dbd8203ed313eef0aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        ),
+    ];
+
+    for (slug, valid) in cases {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in ["", "not-a-hash"] {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
+        }
+        assert!(
+            registry::parse(descriptor, valid, &ParseOptions::default()).is_ok(),
+            "`{slug}` rejected `{valid}`"
+        );
+    }
+}
+
+#[test]
 fn john_only_plain_serialized_types_reject_empty_input() {
     for slug in [
         "mschapv2-naive",

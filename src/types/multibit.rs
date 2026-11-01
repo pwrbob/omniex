@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "MultiBit Classic .key (MD5)",
     slug = "multibit",
-    hashcat = [22500],
+    hashcat = [22500], john = ["multibit"],
 )]
 pub struct Multibit {
     /// Format version.

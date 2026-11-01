@@ -8,7 +8,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "NetIQ SSPR (SHA1)",
     slug = "sspr-sha1",
-    hashcat = [40058],
+    hashcat = [40058], john = ["sspr"],
 )]
 pub struct SsprSha1 {
     /// Iteration count.
