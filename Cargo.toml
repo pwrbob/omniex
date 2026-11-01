@@ -25,6 +25,7 @@ base64 = "0.22"
 clap = { version = "4", features = ["derive"] }
 omniex-core.workspace = true
 omniex-macros.workspace = true
+pgp = "0.10"
 serde_json = "1"
 terminal_size = "0.4"
 unicode-width = "0.2"

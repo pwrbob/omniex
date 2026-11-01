@@ -139,8 +139,23 @@ usable in a pipeline.
 
 ### Extraction
 
-`omniex extract` is present but no extractor is registered yet. It exits `1`
-with a clear message.
+`omniex extract` reads an artifact and emits one rendered hash per line:
+
+```bash
+omniex extract secret-key.asc --type gpg
+omniex extract secret-key.asc --format john
+```
+
+Without `--type`, every extractor first probes the artifact. Auto-detection
+succeeds only when exactly one extractor reports confident recognition. Formats
+without a reliable signature, and artifacts that only look possible, are listed
+as candidates and require an explicit `--type`.
+
+The first extractor covers OpenPGP secret keys, including ECC keys. RSA keys
+render to the GPG hashcat modes that match their string-to-key hash and cipher:
+`17010`, `17020`, `17030`, `17040`, or `17050`. ECC keys currently render for
+John's `gpg` format only, because hashcat 8.0.0 rejects their two-digit public
+key algorithm. Both armored and binary OpenPGP key files are accepted.
 
 ## Testing
 
