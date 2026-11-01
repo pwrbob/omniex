@@ -63,12 +63,17 @@ Before calling an iteration finished:
    `--type`. A filename or extension alone is never `Yes`. Return `No` for
    unrelated input, and do not turn a permissive parser or a successful byte
    search into confident recognition.
-4. Scan the whole artifact when the target can appear after other records. For
-   example, an OpenPGP keyring may start with public-key packets and contain
-   secret-key packets later.
+4. Always scan the whole artifact for extractable hashes. Never stop or return
+   `No` just because the first record is not a target, or because one target was
+   already found. Other information must not hide later hashes. Keep scanning to
+   the end of the logical artifact and collect every target record. Examples:
+   an OpenPGP keyring may begin with public-key packets and contain secret keys
+   later; a configuration may hold several users; an archive may contain several
+   encrypted entries.
 5. Extract every matching value of the selected type, including subkeys,
-   multiple users, or multiple records. Fail without partial output when the
-   artifact is malformed or a guessed parameter is unavailable.
+   multiple users, and multiple records. Probe and extract must use the same
+   whole-artifact search. Fail without partial output when the artifact is
+   malformed or a guessed parameter is unavailable.
 6. Never guess unavailable cryptographic parameters. If a format needs a cipher,
    digest, mode, or similar value that is not encoded in the artifact, add an
    explicit extraction option rather than silently choosing a default.
