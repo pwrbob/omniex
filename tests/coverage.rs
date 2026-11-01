@@ -58,7 +58,7 @@ fn hashcat_vectors_round_trip_and_report_their_mode() {
         };
 
         for entry in vector.hashcat {
-            let value = registry::parse(descriptor, entry.hash, &opts).unwrap_or_else(|error| {
+            let value = registry::parse(descriptor, &entry.text(), &opts).unwrap_or_else(|error| {
                 panic!(
                     "`{}` failed to parse the mode {} vector: {error}",
                     vector.slug, entry.mode
@@ -69,9 +69,11 @@ fn hashcat_vectors_round_trip_and_report_their_mode() {
                 .render(&render_opts)
                 .unwrap_or_else(|error| panic!("`{}` failed to render: {error}", vector.slug));
             assert_eq!(
-                rendered, entry.hash,
+                rendered,
+                entry.text(),
                 "`{}` did not round-trip for hashcat mode {}",
-                vector.slug, entry.mode
+                vector.slug,
+                entry.mode
             );
             assert!(
                 value.modes().contains(&Mode::Hashcat(entry.mode)),

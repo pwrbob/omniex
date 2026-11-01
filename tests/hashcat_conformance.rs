@@ -49,9 +49,9 @@ fn hashcat_identifies_and_loads_every_vector() {
 
             let path = work.join(format!("{index}-{}-{}.txt", vector.slug, entry.mode));
             if entry.binary {
-                std::fs::write(&path, decode_hex(entry.hash)).expect("write binary hash file");
+                std::fs::write(&path, decode_hex(&entry.text())).expect("write binary hash file");
             } else {
-                std::fs::write(&path, format!("{}\n", entry.hash)).expect("write hash file");
+                std::fs::write(&path, format!("{}\n", entry.text())).expect("write hash file");
             }
             items.push(WorkItem {
                 slug: vector.slug,

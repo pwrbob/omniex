@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hashcat modes](https://img.shields.io/badge/hashcat_modes-707%2F723-2ea44f)
+![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F723-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-253%2F263-1f6feb)
 
 Status: early development. Hashcat mode coverage is tracked in
@@ -512,6 +512,8 @@ checked against that command in CI.
 | `samsung-android` | Samsung Android | 5800 | - |
 | `whirlpool` | Whirlpool | 6100, 40174, 40175 | `whirlpool, whirlpool0, whirlpool1` |
 | `gost` | GOST R 34.11-94 | 6900, 40088 | `gost` |
+| `luks-v1` | LUKS v1 | 29511, 29512, 29513, 29521, 29522, 29523, 29531, 29532, 29533, 29541, 29542, 29543 | - |
+| `luks-v2` | LUKS v2 Argon2 | 34100 | - |
 | `pwsafe-v2` | Password Safe v2 | 9000 | - |
 | `pwsafe-v3` | Password Safe v3 | 40011 | - |
 | `oubliette-blowfish` | Oubliette-Blowfish | - | `Oubliette-Blowfish` |

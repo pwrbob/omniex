@@ -9,8 +9,22 @@ use omniex::{HashTypeDescriptor, Mode};
 pub struct HashcatVector {
     pub mode: u32,
     pub hash: &'static str,
+    pub fixture: Option<&'static str>,
     pub identify: bool,
     pub binary: bool,
+}
+
+impl HashcatVector {
+    pub fn text(&self) -> String {
+        if let Some(path) = self.fixture {
+            let root = Path::new(env!("CARGO_MANIFEST_DIR"));
+            return std::fs::read_to_string(root.join(path))
+                .unwrap_or_else(|error| panic!("read vector fixture `{path}`: {error}"))
+                .trim_end()
+                .to_owned();
+        }
+        self.hash.to_owned()
+    }
 }
 
 pub struct JohnVector {
@@ -29,6 +43,7 @@ macro_rules! hc {
         HashcatVector {
             mode: $mode,
             hash: $hash,
+            fixture: None,
             identify: true,
             binary: false,
         }
@@ -40,8 +55,21 @@ macro_rules! hc_binary {
         HashcatVector {
             mode: $mode,
             hash: $hash,
+            fixture: None,
             identify: true,
             binary: true,
+        }
+    };
+}
+
+macro_rules! hc_fixture {
+    ($mode:literal, $path:literal $(,)?) => {
+        HashcatVector {
+            mode: $mode,
+            hash: "",
+            fixture: Some($path),
+            identify: true,
+            binary: false,
         }
     };
 }
@@ -51,6 +79,7 @@ macro_rules! hc_binary_only {
         HashcatVector {
             mode: $mode,
             hash: $hash,
+            fixture: None,
             identify: false,
             binary: true,
         }
@@ -62,6 +91,7 @@ macro_rules! hc_ambiguous {
         HashcatVector {
             mode: $mode,
             hash: $hash,
+            fixture: None,
             identify: false,
             binary: false,
         }
@@ -5469,6 +5499,29 @@ pub const VECTORS: &[Vector] = &[
             40011,
             "50575333e4e2a590a5e5c8269f57ec04a8a1c0c03da55b311c51236dab8c6b96b0afca02000800005eaeee20c6cc10d5caa6522b3ca545c41d9133d630ca08f467b7aae8a2bbef51aa2df968d10b9c4cfb17a182c0add7acb8c153794f51337e12f472f451d10e6dcac664ed760606aabdbb6b794a80d6ce2a330100c76de0ff961a45cca21576b893d826c52f272b97cdf48aca6fbe6c74b039f81c61b7d632fb6fddd9f96162ab1effd69a4598a331e855e38792e5365272d4791bf991d248e1585a9ad20ea3d77b5d2ef9a711ef90a70ec6991cb578f1b8bdaa9efa7b0039e9ea96f777491713047bdd99fa1d78f06f23406a66046b387d3034e46b1f84129bba853cc18fa49f107dc0290547258d30566a4b1b363ff4c1c16cb2f5f400059833d4b651bfa508200cbdc7a75fc57ef90eb1d90b0deea8505753332d454f46505753332d454f466236710e2e2477878e738b60d0aa2834a96b01e97764fe980243a06ad16939d1"
         )],
+        john: &[],
+    },
+    Vector {
+        slug: "luks-v1",
+        hashcat: &[
+            hc_fixture!(29511, "tests/fixtures/hashcat/luks/29511.txt"),
+            hc_fixture!(29512, "tests/fixtures/hashcat/luks/29512.txt"),
+            hc_fixture!(29513, "tests/fixtures/hashcat/luks/29513.txt"),
+            hc_fixture!(29521, "tests/fixtures/hashcat/luks/29521.txt"),
+            hc_fixture!(29522, "tests/fixtures/hashcat/luks/29522.txt"),
+            hc_fixture!(29523, "tests/fixtures/hashcat/luks/29523.txt"),
+            hc_fixture!(29531, "tests/fixtures/hashcat/luks/29531.txt"),
+            hc_fixture!(29532, "tests/fixtures/hashcat/luks/29532.txt"),
+            hc_fixture!(29533, "tests/fixtures/hashcat/luks/29533.txt"),
+            hc_fixture!(29541, "tests/fixtures/hashcat/luks/29541.txt"),
+            hc_fixture!(29542, "tests/fixtures/hashcat/luks/29542.txt"),
+            hc_fixture!(29543, "tests/fixtures/hashcat/luks/29543.txt"),
+        ],
+        john: &[],
+    },
+    Vector {
+        slug: "luks-v2",
+        hashcat: &[hc_fixture!(34100, "tests/fixtures/hashcat/luks/34100.txt")],
         john: &[],
     },
 ];

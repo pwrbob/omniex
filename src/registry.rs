@@ -337,6 +337,8 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &SamsungAndroid::DESCRIPTOR,
     &Whirlpool::DESCRIPTOR,
     &Gost::DESCRIPTOR,
+    &LuksV1::DESCRIPTOR,
+    &LuksV2::DESCRIPTOR,
     &PwsafeV2::DESCRIPTOR,
     &PwsafeV3::DESCRIPTOR,
     &OublietteBlowfish::DESCRIPTOR,

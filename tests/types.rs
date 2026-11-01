@@ -146,7 +146,7 @@ fn every_type_describes_every_field() {
         let descriptor = registry::by_slug(slug).expect("registered");
         let vector = vector_for(descriptor).expect("vector");
         let entry = vector.hashcat.first().expect("hashcat vector");
-        let value = registry::parse(descriptor, entry.hash, &ParseOptions::default())
+        let value = registry::parse(descriptor, &entry.text(), &ParseOptions::default())
             .unwrap_or_else(|error| panic!("`{slug}` failed to parse: {error}"));
         let described = value.describe();
 
@@ -1279,7 +1279,7 @@ fn modes_are_reported_for_parsed_values() {
     for vector in VECTORS {
         let descriptor = registry::by_slug(vector.slug).expect("registered");
         for entry in vector.hashcat {
-            let value = registry::parse(descriptor, entry.hash, &ParseOptions::default())
+            let value = registry::parse(descriptor, &entry.text(), &ParseOptions::default())
                 .unwrap_or_else(|error| panic!("`{}`: {error}", vector.slug));
             assert!(value.modes().contains(&omniex::Mode::Hashcat(entry.mode)));
         }
@@ -1291,7 +1291,8 @@ fn render_is_stable_across_repeated_round_trips() {
     for vector in VECTORS {
         let descriptor = registry::by_slug(vector.slug).expect("registered");
         for entry in vector.hashcat {
-            let parsed = registry::parse(descriptor, entry.hash, &ParseOptions::default()).unwrap();
+            let parsed =
+                registry::parse(descriptor, &entry.text(), &ParseOptions::default()).unwrap();
             let first = parsed.render(&RenderOptions::default()).unwrap();
             let reparsed = registry::parse(descriptor, &first, &ParseOptions::default()).unwrap();
             assert_eq!(reparsed.render(&RenderOptions::default()).unwrap(), first);
@@ -1306,10 +1307,10 @@ fn describe_is_not_empty_for_any_type() {
         let hash = vector
             .hashcat
             .first()
-            .map(|entry| entry.hash)
-            .or_else(|| vector.john.first().map(|entry| entry.hash))
+            .map(|entry| entry.text())
+            .or_else(|| vector.john.first().map(|entry| entry.hash.to_owned()))
             .expect("hashcat or john vector");
-        let value = registry::parse(descriptor, hash, &ParseOptions::default()).unwrap();
+        let value = registry::parse(descriptor, &hash, &ParseOptions::default()).unwrap();
         assert!(!value.describe().is_empty());
     }
 }
@@ -1375,7 +1376,7 @@ fn modes_fn_never_reports_undeclared_modes() {
         let mut samples = vector
             .hashcat
             .first()
-            .map(|entry| vec![entry.hash.to_owned()])
+            .map(|entry| vec![entry.text()])
             .unwrap_or_default();
         if let Some(entry) = vector.john.first() {
             samples.push(entry.hash.to_owned());
@@ -1664,6 +1665,19 @@ fn legacy_volume_headers_reject_wrong_lengths() {
     for slug in ["truecrypt-legacy", "veracrypt-legacy"] {
         let descriptor = registry::by_slug(slug).expect("registered");
         for input in ["", "abcd", &"0".repeat(1023), &"g".repeat(1024)] {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
+        }
+    }
+}
+
+#[test]
+fn luks_headers_require_their_prefix_and_fields() {
+    for slug in ["luks-v1", "luks-v2"] {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in ["", "not-a-hash", "$luks$1$", "$luks$2$"] {
             assert!(
                 registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
                 "`{slug}` accepted `{input}`"

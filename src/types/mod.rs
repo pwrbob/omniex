@@ -217,6 +217,8 @@ mod lotus_notes;
 mod lp;
 mod lpcli;
 mod luffa;
+mod luks_v1;
+mod luks_v2;
 mod macos_pbkdf2_sha512;
 mod macos_sha1;
 mod macos_sha512;
@@ -729,6 +731,8 @@ pub use lotus85::Lotus85;
 pub use lp::Lp;
 pub use lpcli::Lpcli;
 pub use luffa::Luffa;
+pub use luks_v1::LuksV1;
+pub use luks_v2::LuksV2;
 pub use macos_pbkdf2_sha512::MacosPbkdf2Sha512;
 pub use macos_sha1::MacosSha1;
 pub use macos_sha512::MacosSha512;
@@ -1025,3 +1029,23 @@ pub use xmpp_scram::XmppScram;
 pub use yescrypt::Yescrypt;
 pub use zed::Zed;
 pub use zipmonster::Zipmonster;
+
+/// Returns LUKS v1 mode numbers for a hash and cipher pair.
+pub(crate) fn luks_modes(hash: &str, cipher: &str) -> Vec<crate::Mode> {
+    let base = match (hash, cipher) {
+        ("sha1", "aes") => 29511,
+        ("sha1", "serpent") => 29512,
+        ("sha1", "twofish") => 29513,
+        ("sha256", "aes") => 29521,
+        ("sha256", "serpent") => 29522,
+        ("sha256", "twofish") => 29523,
+        ("sha512", "aes") => 29531,
+        ("sha512", "serpent") => 29532,
+        ("sha512", "twofish") => 29533,
+        ("ripemd160", "aes") => 29541,
+        ("ripemd160", "serpent") => 29542,
+        ("ripemd160", "twofish") => 29543,
+        _ => return Vec::new(),
+    };
+    vec![crate::Mode::Hashcat(base)]
+}

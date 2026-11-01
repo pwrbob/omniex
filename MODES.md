@@ -114,18 +114,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 29000-29999
 
-- [ ] `29511` - `LUKS v1 SHA-1 + AES`
-- [ ] `29512` - `LUKS v1 SHA-1 + Serpent`
-- [ ] `29513` - `LUKS v1 SHA-1 + Twofish`
-- [ ] `29521` - `LUKS v1 SHA-256 + AES`
-- [ ] `29522` - `LUKS v1 SHA-256 + Serpent`
-- [ ] `29523` - `LUKS v1 SHA-256 + Twofish`
-- [ ] `29531` - `LUKS v1 SHA-512 + AES`
-- [ ] `29532` - `LUKS v1 SHA-512 + Serpent`
-- [ ] `29533` - `LUKS v1 SHA-512 + Twofish`
-- [ ] `29541` - `LUKS v1 RIPEMD-160 + AES`
-- [ ] `29542` - `LUKS v1 RIPEMD-160 + Serpent`
-- [ ] `29543` - `LUKS v1 RIPEMD-160 + Twofish`
 
 ### 30000-30999
 
@@ -141,7 +129,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 34000-34999
 
-- [ ] `34100` - `LUKS v2 argon2 + SHA-256 + AES`
 
 ### 35000-35999
 
