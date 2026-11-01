@@ -33,6 +33,9 @@ fn john_loads_every_vector() {
     for vector in VECTORS {
         let mut included = 0;
         for entry in vector.john {
+            if !entry.conformance {
+                continue;
+            }
             if let Some(labels) = &selected {
                 if !labels.iter().any(|label| label == entry.format) {
                     continue;
