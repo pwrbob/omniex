@@ -37,3 +37,4 @@ This file documents the extractors currently registered in
 - `ecryptfs` - eCryptfs version 2 wrapped passphrases.
 - `kwallet` - legacy KDE KWallet files.
 - `odf` - encrypted OpenDocument packages.
+- `winzip` - WinZip AES ZIP entries.

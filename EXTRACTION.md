@@ -70,7 +70,7 @@ README badge counts checked lines in this file.
 ## Archives and documents
 
 - [ ] ZIP with ZipCrypto (`pkzip`)
-- [ ] ZIP with WinZip AES (`winzip`)
+- [x] ZIP with WinZip AES (`winzip`)
 - [ ] SecureZIP AES archives (`securezip`)
 - [ ] PKZIP master-key archives (`pkzip-master-key`)
 - [ ] RAR3 archives (`rar3p`, `rar3hp`)

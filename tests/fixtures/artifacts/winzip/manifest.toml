@@ -1,0 +1,4 @@
+type = "winzip"
+password = "password"
+generator = "7z a -tzip -mem=AES256 -p password"
+notes = "Encrypted ZIP generated for extractor integration tests."

@@ -358,6 +358,7 @@ mod onepassword_agile;
 mod openbsd_softraid;
 mod pgpsda;
 mod pwsafe;
+mod winzip;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
@@ -374,6 +375,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &jwt::JwtExtractor,
     &known_hosts::KnownHostsExtractor,
     &kwallet::KwalletExtractor,
+    &winzip::WinZipExtractor,
     &monero::MoneroExtractor,
     &odf::OdfExtractor,
     &onepassword_agile::AgileKeychainExtractor,
