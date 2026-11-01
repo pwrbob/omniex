@@ -185,6 +185,8 @@ OMNIEX_JOHN=tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
 ```
 
 Conformance tests are `#[ignore]`d so the fast suite never needs either tool.
+When the required generator is available, CI also creates real artifacts such
+as AES ZIP archives and checks extraction against the reference output.
 
 ## Documentation
 
