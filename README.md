@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F723-2ea44f)
+![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-253%2F263-1f6feb)
 ![artifact formats](https://img.shields.io/badge/artifact_formats-1%2F10-8957e5)
 

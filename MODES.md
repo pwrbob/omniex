@@ -70,7 +70,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 14000-14999
 
-- [ ] `14600` - `LUKS v1 (legacy)`
 
 ### 15000-15999
 
@@ -201,8 +200,6 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 These duplicate an existing hash type and usually need no separate struct.
 Remove each entry together with the base mode it duplicates.
 
-- [ ] `73000` - `Generic Hash [Bridged: Python]`
-- [ ] `74000` - `Generic Hash [Bridged: Rust]`
 
 ## Excluded
 
@@ -210,5 +207,7 @@ Remove each entry together with the base mode it duplicates.
 - John `plaintext`: not a hash.
 - hashcat `2000` - `STDOUT`: not a hash.
 - hashcat `4000` - `Hash Recipe`: not a hash.
+- hashcat `14600` - `LUKS v1 (legacy)`: reads a volume path, not a hash string.
+- hashcat `73000`/`74000`: the hash string omits the external generic-hash algorithm.
 - hashcat `2500`/`2501`: deprecated in hashcat 8.0.0 and replaced by `22000`/`22001`.
 - John `dynamic` and `dynamic=`: dynamic compiler support is out of scope.
