@@ -346,6 +346,8 @@ mod filezilla;
 mod gpg;
 mod jwt;
 mod known_hosts;
+mod monero;
+mod onepassword_agile;
 mod pwsafe;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
@@ -357,6 +359,9 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &gpg::GpgExtractor,
     &jwt::JwtExtractor,
     &known_hosts::KnownHostsExtractor,
+    &monero::MoneroExtractor,
+    &onepassword_agile::AgileKeychainExtractor,
+    &onepassword_agile::OnepasswordAgileExtractor,
     &pwsafe::PwsafeExtractor,
     &pwsafe::PwsafeV3Extractor,
 ];

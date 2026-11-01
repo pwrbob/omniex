@@ -25,3 +25,6 @@ This file documents the extractors currently registered in
 - `pwsafe` - Password Safe v3 databases in the John serialization.
 - `pwsafe-v3` - Password Safe v3 database headers for hashcat `40011`.
 - `encfs` - EncFS `.encfs6.xml` configurations (John only).
+- `agilekeychain` - 1Password agilekeychain `encryptionKeys.js` files in the John serialization.
+- `onepassword-agile` - 1Password agilekeychain keys for hashcat `6600`.
+- `monero` - Monero `.keys` wallet files (John only).
