@@ -1,0 +1,3 @@
+type = "kwallet"
+generator = "synthetic legacy KWallet file"
+notes = "Synthetic wallet; no real secrets."

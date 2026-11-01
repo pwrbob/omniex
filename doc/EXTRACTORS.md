@@ -34,3 +34,5 @@ This file documents the extractors currently registered in
 - `openbsd-softraid` - OpenBSD softraid crypto metadata from disk images.
 - `pgpsda` - PGP self-decrypting archive stubs.
 - `iwork` - Apple iWork 2013/2014 password verifiers (`iwpv2`).
+- `ecryptfs` - eCryptfs version 2 wrapped passphrases.
+- `kwallet` - legacy KDE KWallet files.

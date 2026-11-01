@@ -1,0 +1,3 @@
+type = "ecryptfs"
+generator = "synthetic eCryptfs version 2 wrapped passphrase"
+notes = "Synthetic wrapped passphrase; no real key."

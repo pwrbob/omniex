@@ -341,6 +341,7 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
 mod ansible;
 mod bks;
 mod dashlane;
+mod ecryptfs;
 mod encfs;
 mod enpass;
 mod fernet;
@@ -350,6 +351,7 @@ mod gpg;
 mod iwork;
 mod jwt;
 mod known_hosts;
+mod kwallet;
 mod monero;
 mod onepassword_agile;
 mod openbsd_softraid;
@@ -360,6 +362,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
     &bks::BksExtractor,
     &dashlane::DashlaneExtractor,
+    &ecryptfs::EcryptfsExtractor,
     &encfs::EncfsExtractor,
     &enpass::EnpassExtractor,
     &fernet::FernetExtractor,
@@ -369,6 +372,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &iwork::IworkExtractor,
     &jwt::JwtExtractor,
     &known_hosts::KnownHostsExtractor,
+    &kwallet::KwalletExtractor,
     &monero::MoneroExtractor,
     &onepassword_agile::AgileKeychainExtractor,
     &onepassword_agile::OnepasswordAgileExtractor,
