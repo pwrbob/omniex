@@ -180,7 +180,7 @@ omniex parse <hash> [--type <slug>] [--format hashcat|john] [--verbose|--json]
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
-omniex extract <artifact> [--type <slug>] [--format hashcat|john]
+omniex extract <artifact> [--type <slug>|--all] [--format hashcat|john] [--json]
 ```
 
 - `parse` parses one hash string into a hash type instance and renders it again.
@@ -192,8 +192,12 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
   `identify`, which is always input-driven.
 - `show` prints one type's fields and modes without requiring a hash.
 - `extract` uses the extractor registered for the selected hash type. Without
-  `--type`, it auto-detects when exactly one type matches; otherwise it lists
-  candidates.
+  `--type`, it auto-detects when exactly one type reports confident recognition;
+  otherwise it lists candidates.
+- `extract --all` runs every confidently recognized extractor in registry order.
+  It conflicts with `--type`, excludes `Maybe` candidates, writes no partial
+  output if one extractor fails, and deduplicates by type and rendered hash.
+- `extract --json` emits one array of `{"type": ..., "hash": ...}` entries.
 - `--format` defaults to `hashcat`. Rendering fails when the concrete value has
   no mode for the selected tool.
 - Hash lists are one hash per line of the same type. The first bad line aborts

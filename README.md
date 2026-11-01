@@ -5,7 +5,7 @@ forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
-![John modes](https://img.shields.io/badge/John_modes-253%2F263-1f6feb)
+![John modes](https://img.shields.io/badge/John_modes-260%2F263-1f6feb)
 ![artifact formats](https://img.shields.io/badge/artifact_formats-1%2F10-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
@@ -146,12 +146,21 @@ usable in a pipeline.
 ```bash
 omniex extract secret-key.asc --type gpg
 omniex extract secret-key.asc --format john
+omniex extract artifact --all
+omniex extract artifact --all --json
 ```
 
 Without `--type`, every extractor first probes the artifact. Auto-detection
 succeeds only when exactly one extractor reports confident recognition. Formats
 without a reliable signature, and artifacts that only look possible, are listed
 as candidates and require an explicit `--type`.
+
+`--all` runs every extractor that returned confident recognition, in registry
+order. It conflicts with `--type`, never promotes possible-but-unconfirmed
+matches, and fails without partial output if any confident extractor fails.
+`--json` emits an array of `{"type": "...", "hash": "..."}` entries so mixed
+output keeps its type. Plain output remains one hash per line, deduplicated by
+type and rendered hash.
 
 The first extractor covers OpenPGP secret keys, including ECC keys. RSA keys
 render to the GPG hashcat modes that match their string-to-key hash and cipher:
@@ -249,7 +258,7 @@ checked against that command in CI.
 | `racf-kdfaes` | RACF KDFAES | 14200 | - |
 | `linux-cryptoapi` | Linux Kernel Crypto API (2.4) | 14500 | - |
 | `apple-secure-notes` | Apple Secure Notes | 16200 | `notes` |
-| `electrum` | Electrum Wallet | 16600, 21700, 21800 | `electrum` |
+| `electrum` | Electrum Wallet | 16600, 21700, 21800 | `electrum, electrum-modern-opencl` |
 | `telegram` | Telegram | 22301, 22600, 24500 | `telegram` |
 | `multibit` | MultiBit Classic .key (MD5) | 22500 | `multibit` |
 | `sqlcipher` | SQLCipher | 24600 | - |
@@ -269,17 +278,17 @@ checked against that command in CI.
 | `truecrypt-legacy` | TrueCrypt (legacy) | 6211, 6212, 6213, 6221, 6222, 6223, 6231, 6232, 6233, 6241, 6242, 6243 | - |
 | `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
 | `veracrypt-legacy` | VeraCrypt (legacy) | 13711, 13712, 13713, 13721, 13722, 13723, 13731, 13732, 13733, 13741, 13742, 13743, 13751, 13752, 13753, 13761, 13762, 13763, 13771, 13772, 13773, 13781, 13782, 13783 | - |
-| `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | `diskcryptor` |
+| `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | `diskcryptor, diskcryptor-aes-opencl` |
 | `bitwarden` | Bitwarden | 23400 | - |
 | `mongodb-scram` | MongoDB ServerKey SCRAM-SHA-1 | 24100 | - |
 | `stellar` | Stargazer Stellar Wallet XLM | 25500 | - |
 | `exodus` | Exodus Desktop Wallet (scrypt) | 28200 | - |
-| `axcrypt2` | AxCrypt 2 | 23500, 23600 | - |
+| `axcrypt2` | AxCrypt 2 | 23500, 23600 | `axcrypt2-opencl` |
 | `apple-keychain` | Apple Keychain | 23100 | `keychain` |
 | `stuffit5` | Stuffit5 | 24700 | - |
 | `terra` | Terra Station Wallet | 29600 | - |
 | `jks-private-key` | JKS Java Key Store Private Keys (SHA1) | 15500 | - |
-| `ethereum-presale` | Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256 | 16300 | - |
+| `ethereum-presale` | Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256 | 16300 | `ethereum-presale-opencl` |
 | `multibit-wallet` | MultiBit Classic .wallet (scrypt) | 27700 | - |
 | `pem-private-key` | PKCS#8 Private Keys | 24410, 24420 | - |
 | `pkcs12` | PKCS#12 | 24430, 24440 | - |
@@ -333,7 +342,7 @@ checked against that command in CI.
 | `mongodb-scram-sha256` | MongoDB SCRAM-SHA-256 | 40053 | - |
 | `oracle-otm` | Oracle Transportation Management | 40045 | - |
 | `sap-codvn-h` | SAP CODVN H | 40023, 40078, 40081, 40082 | `saph` |
-| `krb5asrep-aes` | Kerberos 5, etype 17/18, AS-REP | 32100, 32200 | - |
+| `krb5asrep-aes` | Kerberos 5, etype 17/18, AS-REP | 32100, 32200 | `krb5asrep-aes-opencl` |
 | `murmurhash64a-zero` | MurmurHash64A (zero seed) | 34201, 34211 | - |
 | `sm3crypt` | sm3crypt | 35100 | `sm3crypt` |
 | `scryptcrypt` | scryptcrypt | 36300 | - |
@@ -524,11 +533,12 @@ checked against that command in CI.
 | `ike-psk-md5` | IKE-PSK MD5 | 5300 | - |
 | `ike-psk-sha1` | IKE-PSK SHA1 | 5400 | - |
 | `netntlmv1` | NetNTLMv1 | 5500, 27000 | - |
-| `netntlmv2` | NetNTLMv2 | 5600, 27100 | `netntlmv2` |
+| `netntlmv2` | NetNTLMv2 | 5600, 27100 | `netntlmv2, ntlmv2-opencl` |
 | `cisco-ios4` | Cisco-IOS type 4 | 5700 | - |
 | `samsung-android` | Samsung Android | 5800 | - |
 | `whirlpool` | Whirlpool | 6100, 40174, 40175 | `whirlpool, whirlpool0, whirlpool1` |
 | `gost` | GOST R 34.11-94 | 6900, 40088 | `gost` |
+| `luks-john` | LUKS (John) | - | `LUKS` |
 | `luks-v1` | LUKS v1 | 29511, 29512, 29513, 29521, 29522, 29523, 29531, 29532, 29533, 29541, 29542, 29543 | - |
 | `luks-v2` | LUKS v2 Argon2 | 34100 | - |
 | `pwsafe-v2` | Password Safe v2 | 9000 | - |

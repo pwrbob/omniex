@@ -154,6 +154,76 @@ fn gpg_auto_detects_an_armored_artifact() {
 }
 
 #[test]
+fn extract_all_matches_unique_detection() {
+    let automatic = omniex()
+        .arg("extract")
+        .arg(fixture("testkey1.key"))
+        .output()
+        .unwrap();
+    let explicit_all = omniex()
+        .arg("extract")
+        .arg(fixture("testkey1.key"))
+        .arg("--all")
+        .output()
+        .unwrap();
+
+    assert!(automatic.status.success());
+    assert!(explicit_all.status.success());
+    assert_eq!(automatic.stdout, explicit_all.stdout);
+}
+
+#[test]
+fn extract_all_conflicts_with_type() {
+    let output = omniex()
+        .arg("extract")
+        .arg(fixture("testkey1.key"))
+        .args(["--all", "--type", "gpg"])
+        .output()
+        .unwrap();
+
+    assert_eq!(output.status.code(), Some(2));
+    assert!(String::from_utf8_lossy(&output.stderr).contains("cannot be used with"));
+}
+
+#[test]
+fn extract_json_reports_type_and_hash() {
+    let output = omniex()
+        .arg("extract")
+        .arg(fixture("testkey1.key"))
+        .args(["--all", "--json"])
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+
+    let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    let entries = value.as_array().expect("array");
+    assert_eq!(entries.len(), 2);
+    assert_eq!(entries[0]["type"], "gpg");
+    assert_eq!(entries[0]["hash"], expected("testkey1.hash")[0].as_str());
+    assert_eq!(entries[1]["type"], "gpg");
+}
+
+#[test]
+fn extract_all_does_not_promote_unconfirmed_matches() {
+    let public = scratch("all-public-key.packet");
+    std::fs::write(&public, [0xc6]).unwrap();
+    let output = omniex()
+        .arg("extract")
+        .arg(&public)
+        .arg("--all")
+        .output()
+        .unwrap();
+    let _ = std::fs::remove_file(public);
+
+    assert_eq!(output.status.code(), Some(1));
+    assert!(
+        String::from_utf8_lossy(&output.stderr).contains("has no reliable signature"),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
+
+#[test]
 fn auto_detection_does_not_select_signatureless_matches() {
     let public = scratch("public-key.packet");
     std::fs::write(&public, [0xc6]).unwrap();

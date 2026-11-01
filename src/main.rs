@@ -1,5 +1,6 @@
 //! `omniex` command-line interface.
 
+use std::collections::HashSet;
 use std::fmt;
 use std::io::{Read, Write};
 use std::path::PathBuf;
@@ -108,8 +109,16 @@ struct ExtractArgs {
     artifact: PathBuf,
 
     /// Hash type slug.
-    #[arg(long = "type", value_name = "SLUG")]
+    #[arg(long = "type", value_name = "SLUG", conflicts_with = "all")]
     type_slug: Option<String>,
+
+    /// Extract every hash type that confidently matches.
+    #[arg(long, conflicts_with = "type_slug")]
+    all: bool,
+
+    /// Print one JSON array containing every extracted hash.
+    #[arg(long)]
+    json: bool,
 
     /// Output serialization.
     #[arg(long, value_enum, default_value = "hashcat")]
@@ -400,27 +409,17 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
         CliError::Input(format!("cannot read {}: {error}", args.artifact.display()))
     })?;
 
-    let hashes = match extractor {
-        Some((descriptor, extractor)) => extractor.extract(&artifact).map_err(|error| {
-            CliError::Input(format!(
-                "cannot extract `{}` from {}: {error}",
-                descriptor.slug,
-                args.artifact.display()
-            ))
-        })?,
+    let extractors = match extractor {
+        Some((descriptor, extractor)) => vec![(descriptor.slug, extractor)],
         None => match extract::select(extract::EXTRACTORS, &artifact) {
-            extract::Selection::Unique(extractor) => {
-                extractor.extract(&artifact).map_err(|error| {
-                    CliError::Input(format!(
-                        "cannot extract `{}` from {}: {error}",
-                        extractor.slug(),
-                        args.artifact.display()
-                    ))
-                })?
-            }
+            extract::Selection::Unique(extractor) => vec![(extractor.slug(), extractor)],
+            extract::Selection::Ambiguous(candidates) if args.all => candidates
+                .into_iter()
+                .map(|candidate| (candidate.extractor.slug(), candidate.extractor))
+                .collect(),
             extract::Selection::Ambiguous(candidates) => {
                 return Err(CliError::Input(format!(
-                    "ambiguous artifact; extractor candidates: {}; use --type",
+                    "ambiguous artifact; extractor candidates: {}; use --type or --all",
                     format_candidates(&candidates)
                 )));
             }
@@ -439,17 +438,46 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
         },
     };
 
-    let rendered = hashes
-        .iter()
-        .map(|value| {
-            value.render(&RenderOptions {
-                tool,
-                ..RenderOptions::default()
-            })
-        })
-        .collect::<Result<Vec<_>, _>>()
-        .map_err(|error| CliError::Input(format!("cannot render extracted hash: {error}")))?;
-    write_stdout(&format!("{}\n", rendered.join("\n")))
+    let mut outputs = Vec::new();
+    let mut seen = HashSet::new();
+    for (slug, extractor) in extractors {
+        let hashes = extractor.extract(&artifact).map_err(|error| {
+            CliError::Input(format!(
+                "cannot extract `{slug}` from {}: {error}",
+                args.artifact.display()
+            ))
+        })?;
+        for value in hashes {
+            let rendered = value
+                .render(&RenderOptions {
+                    tool,
+                    ..RenderOptions::default()
+                })
+                .map_err(|error| {
+                    CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+                })?;
+            if seen.insert((slug, rendered.clone())) {
+                outputs.push((slug, rendered));
+            }
+        }
+    }
+
+    if args.json {
+        let entries = outputs
+            .iter()
+            .map(|(slug, hash)| json!({"type": slug, "hash": hash}))
+            .collect::<Vec<_>>();
+        return print_json(&Value::Array(entries));
+    }
+
+    write_stdout(&format!(
+        "{}\n",
+        outputs
+            .iter()
+            .map(|(_, hash)| hash.as_str())
+            .collect::<Vec<_>>()
+            .join("\n")
+    ))
 }
 
 fn format_candidates(candidates: &[extract::Candidate]) -> String {
