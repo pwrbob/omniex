@@ -6,7 +6,7 @@ that understands both hashcat and John the Ripper serializations.
 
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-261%2F261-1f6feb)
-![artifact formats](https://img.shields.io/badge/artifact_formats-6%2F143-8957e5)
+![extractor formats](https://img.shields.io/badge/extractor_formats-6%2F143-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in
@@ -162,23 +162,9 @@ matches, and fails without partial output if any confident extractor fails.
 output keeps its type. Plain output remains one hash per line, deduplicated by
 type and rendered hash.
 
-Registered extractors cover:
-
-- OpenPGP secret keys, including armored and binary keys, subkeys, and ECC
-  (`gpg`). The extractor scans the whole keyring, so secret keys are found even
-  when public-key packets come first. RSA keys render to the matching hashcat
-  mode among `17010`, `17020`, `17030`, `17040`, and `17050`; ECC keys render
-  for John's `gpg` format because hashcat 8.0.0 rejects their two-digit
-  public-key algorithm.
-- Ansible Vault files (`ansible-vault`, hashcat `16900`).
-- FileZilla Server XML configurations (`filezilla-server`, hashcat `15000`).
-- Enpass databases (`enpass`, John only), selected by the `.enpassdb`
-  extension and requiring `--type`.
-- Fernet tokens whose version, timestamp, IV, ciphertext, and HMAC layout is
-  valid.
-- HMAC JSON Web Tokens whose header, payload, algorithm, and signature length
-  are structurally valid. Non-HMAC JWTs are reported as possible candidates and
-  require `--type`.
+Registered extractors and their supported serializations are documented in
+[`doc/EXTRACTORS.md`](doc/EXTRACTORS.md). Extraction coverage is tracked in
+[`EXTRACTION.md`](EXTRACTION.md).
 
 ## Testing
 
@@ -204,6 +190,7 @@ Conformance tests are `#[ignore]`d so the fast suite never needs either tool.
 - [`doc/DESIGN.md`](doc/DESIGN.md) - data model and CLI behavior.
 - [`doc/MACROS.md`](doc/MACROS.md) - `#[derive(HashType)]` reference.
 - [`doc/TESTING.md`](doc/TESTING.md) - test strategy and fixtures.
+- [`doc/EXTRACTORS.md`](doc/EXTRACTORS.md) - registered extractors.
 - [`doc/DEVELOPMENT.md`](doc/DEVELOPMENT.md) - project goal, layout, and workflow.
 - [`AGENTS.md`](AGENTS.md) - instructions for automated contributors.
 

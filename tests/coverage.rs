@@ -258,7 +258,7 @@ fn readme_extraction_badge_matches_the_checklist() {
         .lines()
         .filter(|line| line.starts_with("- [ ] "))
         .count();
-    let expected = format!("artifact_formats-{done}%2F{}-", done + remaining);
+    let expected = format!("extractor_formats-{done}%2F{}-", done + remaining);
     assert!(
         readme.contains(&expected),
         "README must advertise `{expected}`; found no matching badge"
