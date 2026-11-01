@@ -38,3 +38,4 @@ This file documents the extractors currently registered in
 - `kwallet` - legacy KDE KWallet files.
 - `odf` - encrypted OpenDocument packages.
 - `winzip` - WinZip AES ZIP entries.
+- `dmg-john` - Apple DMG encrcdsa v2 images.

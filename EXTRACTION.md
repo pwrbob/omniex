@@ -43,7 +43,8 @@ README badge counts checked lines in this file.
 - [ ] iTunes and Finder iOS backups (`itunes-backup`)
 - [x] Apple iWork 2013/2014 documents with an iwpv2 verifier (`iwork`)
 - [ ] Apple iWork 2009 documents (`iwork`)
-- [ ] Apple DMG images (`apple-dmg`)
+- [x] Apple DMG encrcdsa v2 images (`dmg-john`)
+- [ ] Apple DMG encrcdsa v3 images (`apple-dmg`)
 
 ## Disk and filesystem encryption
 

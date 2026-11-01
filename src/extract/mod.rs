@@ -341,6 +341,7 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
 mod ansible;
 mod bks;
 mod dashlane;
+mod dmg;
 mod ecryptfs;
 mod encfs;
 mod enpass;
@@ -364,6 +365,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
     &bks::BksExtractor,
     &dashlane::DashlaneExtractor,
+    &dmg::DmgExtractor,
     &ecryptfs::EcryptfsExtractor,
     &encfs::EncfsExtractor,
     &enpass::EnpassExtractor,

@@ -65,6 +65,14 @@ const CASES: &[Case] = &[
         subset: false,
     },
     Case {
+        name: "dmg-v2",
+        script: "dmg2john.py",
+        args: &["tests/fixtures/artifacts/dmg/sample.dmg"],
+        expected: "tests/fixtures/artifacts/dmg/sample.hash",
+        normalize: Normalize::Hash,
+        subset: false,
+    },
+    Case {
         name: "ecryptfs-v2",
         script: "ecryptfs2john.py",
         args: &["tests/fixtures/artifacts/ecryptfs/wrapped-passphrase"],
