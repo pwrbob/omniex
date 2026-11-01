@@ -41,6 +41,10 @@ fi
 if [[ -n "${OMNIEX_JOHN:-}" ]]; then
     echo "==> John conformance"
     cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
+
+    export OMNIEX_JOHN_RUN="$(dirname "$OMNIEX_JOHN")"
+    echo "==> extractor conformance"
+    cargo test -p omniex --test extract_conformance --locked -- --ignored --nocapture
 else
     missing+=("John")
     echo "warning: pinned John jumbo build not found; John conformance skipped" >&2

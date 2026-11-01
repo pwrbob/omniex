@@ -117,7 +117,7 @@ fn parse(artifact: &Artifact) -> Result<Bks, ExtractError> {
 
     Ok(Bks {
         fields: format!(
-            "0*{}*{}*{}*{}*{}*{}*{}",
+            "0${}${}${}${}${}${}${}",
             version,
             hmac_key_size,
             iterations,

@@ -104,6 +104,12 @@ For each extractor:
 - test multi-member artifacts and bounded reads when the extractor uses them,
 - test that unknown cipher or mode parameters are rejected rather than guessed.
 
+When the pinned John build is available, `tests/extract_conformance.rs` runs the
+corresponding `*2john` scripts against the fixtures and compares their output to
+the expected hash strings. Extractors whose reference script is broken under
+Python 3, emits a different serialization, or has no reference script remain
+covered by fixture tests; the conformance test documents those exceptions.
+
 ### 5. CLI tests
 
 Use `assert_cmd` or `trycmd` plus `insta` for snapshots:
