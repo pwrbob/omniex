@@ -351,6 +351,7 @@ mod jwt;
 mod known_hosts;
 mod monero;
 mod onepassword_agile;
+mod openbsd_softraid;
 mod pwsafe;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
@@ -368,6 +369,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &monero::MoneroExtractor,
     &onepassword_agile::AgileKeychainExtractor,
     &onepassword_agile::OnepasswordAgileExtractor,
+    &openbsd_softraid::OpenbsdSoftraidExtractor,
     &pwsafe::PwsafeExtractor,
     &pwsafe::PwsafeV3Extractor,
 ];
