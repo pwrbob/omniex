@@ -1,0 +1,4 @@
+type = "ansible-vault"
+password = "hashcat"
+generator = "constructed from the hashcat 16900 example hash"
+notes = "Synthetic vault container; no real secret."

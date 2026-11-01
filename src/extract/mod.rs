@@ -330,9 +330,17 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
     }
 }
 
+mod ansible;
+mod fernet;
 mod gpg;
+mod jwt;
 
-pub static EXTRACTORS: &[&dyn Extractor] = &[&gpg::GpgExtractor];
+pub static EXTRACTORS: &[&dyn Extractor] = &[
+    &ansible::AnsibleVaultExtractor,
+    &fernet::FernetExtractor,
+    &gpg::GpgExtractor,
+    &jwt::JwtExtractor,
+];
 
 /// Returns the extractor registered for a slug.
 #[must_use]

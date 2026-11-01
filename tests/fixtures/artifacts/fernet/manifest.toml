@@ -1,0 +1,3 @@
+type = "fernet"
+generator = "hashcat 40083 example token"
+notes = "Synthetic token; no real credential."
