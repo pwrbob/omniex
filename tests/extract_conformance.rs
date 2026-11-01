@@ -129,6 +129,14 @@ const CASES: &[Case] = &[
         subset: false,
     },
     Case {
+        name: "odf",
+        script: "libreoffice2john.py",
+        args: &["tests/fixtures/artifacts/odf/sample.odt"],
+        expected: "tests/fixtures/artifacts/odf/sample.hash",
+        normalize: Normalize::Hash,
+        subset: false,
+    },
+    Case {
         name: "pgpsda",
         script: "pgpsda2john.py",
         args: &["tests/fixtures/artifacts/pgpsda/sample.sda"],

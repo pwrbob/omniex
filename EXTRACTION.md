@@ -80,7 +80,7 @@ README badge counts checked lines in this file.
 - [ ] MS Office 2007+ documents (`office`)
 - [ ] MS Office sheet protection (`office2016-sheetprotection`)
 - [ ] PDF user and owner passwords (`pdf`)
-- [ ] OpenDocument files (`odf`)
+- [x] Encrypted OpenDocument packages (`odf`)
 - [ ] PST mail stores (`pst`)
 - [ ] SAP PSE files (`sappse`)
 - [ ] OpenSSL `enc` files (`openssl-enc`)
