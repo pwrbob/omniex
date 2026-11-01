@@ -32,3 +32,4 @@ This file documents the extractors currently registered in
 - `dashlane` - Dashlane `.aes` databases and secure archives (John only).
 - `geli` - FreeBSD GELI metadata from disk images.
 - `openbsd-softraid` - OpenBSD softraid crypto metadata from disk images.
+- `pgpsda` - PGP self-decrypting archive stubs.

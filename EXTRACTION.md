@@ -9,7 +9,7 @@ README badge counts checked lines in this file.
 
 - [x] OpenPGP secret keys, armored and binary, including subkeys and ECC (`gpg`)
 - [ ] OpenPGP symmetrically encrypted files (`gpg`)
-- [ ] PGP Self-Decrypting Archive `.sda` (`pgpsda`)
+- [x] PGP Self-Decrypting Archive `.sda` (`pgpsda`)
 - [ ] PGP Whole Disk Encryption volume (`pgpwde`)
 - [ ] PGP Disk volume (`pgpdisk`)
 
