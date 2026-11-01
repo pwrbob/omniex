@@ -110,6 +110,11 @@ the expected hash strings. Extractors whose reference script is broken under
 Python 3, emits a different serialization, or has no reference script remain
 covered by fixture tests; the conformance test documents those exceptions.
 
+Committed fixtures are supplemented by `tests/extract_real_files.rs`, which
+creates real artifacts with external tools and extracts them with `omniex`. It
+currently generates a 7-Zip-created AES ZIP and compares the result with
+`zip2john`. CI runs these tests when the required generator tool is available.
+
 ### 5. CLI tests
 
 Use `assert_cmd` or `trycmd` plus `insta` for snapshots:

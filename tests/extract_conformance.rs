@@ -121,6 +121,14 @@ const CASES: &[Case] = &[
         subset: false,
     },
     Case {
+        name: "winzip",
+        script: "zip2john",
+        args: &["tests/fixtures/artifacts/winzip/aes.zip"],
+        expected: "tests/fixtures/artifacts/winzip/aes.hash",
+        normalize: Normalize::Hash,
+        subset: false,
+    },
+    Case {
         name: "monero",
         script: "monero2john.py",
         args: &["tests/fixtures/artifacts/monero/wallet.keys"],
@@ -208,7 +216,9 @@ fn normalize(stdout: &str, mode: Normalize) -> Vec<String> {
             let line = line.trim();
             let start = line.find('$')?;
             let mut hash = &line[start..];
-            if let Some(index) = hash.find(":::") {
+            if let Some(index) = hash.find("$/zip2$") {
+                hash = &hash[..index + "$/zip2$".len()];
+            } else if let Some(index) = hash.find(":::") {
                 hash = &hash[..index];
             }
             Some(match mode {
