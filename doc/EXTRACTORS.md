@@ -36,3 +36,4 @@ This file documents the extractors currently registered in
 - `iwork` - Apple iWork 2013/2014 password verifiers (`iwpv2`).
 - `ecryptfs` - eCryptfs version 2 wrapped passphrases.
 - `kwallet` - legacy KDE KWallet files.
+- `odf` - encrypted OpenDocument packages.
