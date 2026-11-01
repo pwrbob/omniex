@@ -10,7 +10,7 @@ use crate::{
 #[hash(
     name = "scrypt",
     slug = "scrypt",
-    hashcat = [8900],
+    hashcat = [8900, 70100, 70200],
     john = ["scrypt"],
 )]
 pub struct Scrypt {

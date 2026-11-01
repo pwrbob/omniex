@@ -10,7 +10,7 @@ const ALPHABET: &[u8] = b"./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 #[hash(
     name = "bcrypt",
     slug = "bcrypt",
-    hashcat = [3200, 33800, 30600],
+    hashcat = [3200, 33800, 30600, 75000, 79000],
     modes_fn = bcrypt_modes,
     john = ["bcrypt"],
 )]
@@ -37,6 +37,8 @@ pub fn bcrypt_modes(_value: &Bcrypt) -> Vec<crate::Mode> {
         crate::Mode::Hashcat(3200),
         crate::Mode::Hashcat(33800),
         crate::Mode::Hashcat(30600),
+        crate::Mode::Hashcat(75000),
+        crate::Mode::Hashcat(79000),
         crate::Mode::John("bcrypt"),
     ]
 }

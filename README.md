@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hashcat modes](https://img.shields.io/badge/hashcat_modes-702%2F723-2ea44f)
+![hashcat modes](https://img.shields.io/badge/hashcat_modes-707%2F723-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-253%2F263-1f6feb)
 
 Status: early development. Hashcat mode coverage is tracked in
@@ -224,11 +224,11 @@ checked against that command in CI.
 | `phps` | PHPS | 2612 | `PHPS, PHPS2` |
 | `lm` | LM | 3000 | - |
 | `oracle-h` | Oracle H | 3100 | - |
-| `bcrypt` | bcrypt | 3200, 33800, 30600 | `bcrypt` |
+| `bcrypt` | bcrypt | 3200, 33800, 30600, 75000, 79000 | `bcrypt` |
 | `sunmd5` | SunMD5 | 3300 | `SunMD5` |
 | `racf` | RACF | 8500 | `RACF` |
 | `as400-des` | AS/400 DES | 8501 | `as400-des` |
-| `scrypt` | scrypt | 8900 | `scrypt` |
+| `scrypt` | scrypt | 8900, 70100, 70200 | `scrypt` |
 | `racf-kdfaes` | RACF KDFAES | 14200 | - |
 | `linux-cryptoapi` | Linux Kernel Crypto API (2.4) | 14500 | - |
 | `apple-secure-notes` | Apple Secure Notes | 16200 | `notes` |
@@ -339,7 +339,7 @@ checked against that command in CI.
 | `fscrypt` | Google fscrypt | 38900 | - |
 | `veeam` | Veeam VBK | 31200 | - |
 | `sntp-ms` | MS SNTP | 31300 | `timeroast` |
-| `argon2` | Argon2 | 34000 | `Argon2` |
+| `argon2` | Argon2 | 34000, 70000 | `Argon2` |
 | `encdv` | ENCsecurity DataVault | 29910, 29920, 29930, 29940 | - |
 | `securecrt` | SecureCRT MasterPassphrase v2 | 31400 | - |
 | `postgres-scram-sha256` | PostgreSQL SCRAM-SHA-256 | 40055 | - |

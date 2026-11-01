@@ -214,13 +214,8 @@ struct. Labels marked `OpenCL only` have no CPU equivalent in the source list.
 These duplicate an existing hash type and usually need no separate struct.
 Remove each entry together with the base mode it duplicates.
 
-- [ ] `70000` - `Argon2id [Bridged: reference implementation + tunings]`
-- [ ] `70100` - `scrypt [Bridged: Scrypt-Jane SMix]`
-- [ ] `70200` - `scrypt [Bridged: Scrypt-Yescrypt]`
 - [ ] `73000` - `Generic Hash [Bridged: Python]`
 - [ ] `74000` - `Generic Hash [Bridged: Rust]`
-- [ ] `75000` - `bcrypt $2*$, Blowfish (Unix) [Bridged: FPGA]`
-- [ ] `79000` - `bcrypt $2*$, Blowfish (Unix) [Bridged: FPGA fleet sim]`
 
 ## Excluded
 

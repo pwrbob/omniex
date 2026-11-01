@@ -568,6 +568,14 @@ pub const VECTORS: &[Vector] = &[
                 3200,
                 "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
             ),
+            hc_ambiguous!(
+                75000,
+                "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
+            ),
+            hc_ambiguous!(
+                79000,
+                "$2a$05$MBCzKhG1KhezLh.0LRa0Kuw12nLJtpHy6DIaU.JAnqJUDYspHC.Ou"
+            ),
         ],
         john: &[john!(
             "bcrypt",
@@ -2475,10 +2483,20 @@ pub const VECTORS: &[Vector] = &[
     },
     Vector {
         slug: "scrypt",
-        hashcat: &[hc!(
-            8900,
-            "SCRYPT:16384:8:1:OTEyNzU0ODg=:Cc8SPjRH1hFQhuIPCdF51uNGtJ2aOY/isuoMlMUsJ8c="
-        )],
+        hashcat: &[
+            hc!(
+                8900,
+                "SCRYPT:16384:8:1:OTEyNzU0ODg=:Cc8SPjRH1hFQhuIPCdF51uNGtJ2aOY/isuoMlMUsJ8c="
+            ),
+            hc!(
+                70100,
+                "SCRYPT:16384:8:1:OTEyNzU0ODg=:Cc8SPjRH1hFQhuIPCdF51uNGtJ2aOY/isuoMlMUsJ8c="
+            ),
+            hc!(
+                70200,
+                "SCRYPT:16384:8:1:OTEyNzU0ODg=:Cc8SPjRH1hFQhuIPCdF51uNGtJ2aOY/isuoMlMUsJ8c="
+            ),
+        ],
         john: &[john!(
             "scrypt",
             "$ScryptKDF.pm$16384*8*1*VHRuaXZOZ05INWJs*JjrOzA8pdPhLvLh8sY64fLLaAjFUwYCXMmS16NXcn0A="
@@ -4046,10 +4064,16 @@ pub const VECTORS: &[Vector] = &[
     },
     Vector {
         slug: "argon2",
-        hashcat: &[hc!(
-            34000,
-            "$argon2id$v=19$m=65536,t=3,p=1$FBMjI4RJBhIykCgol1KEJA$2ky5GAdhT1kH4kIgPN/oERE3Taiy43vNN70a3HpiKQU"
-        )],
+        hashcat: &[
+            hc!(
+                34000,
+                "$argon2id$v=19$m=65536,t=3,p=1$FBMjI4RJBhIykCgol1KEJA$2ky5GAdhT1kH4kIgPN/oERE3Taiy43vNN70a3HpiKQU"
+            ),
+            hc!(
+                70000,
+                "$argon2id$v=19$m=65536,t=3,p=1$FBMjI4RJBhIykCgol1KEJA$2ky5GAdhT1kH4kIgPN/oERE3Taiy43vNN70a3HpiKQU"
+            ),
+        ],
         john: &[john!(
             "Argon2",
             "$argon2d$v=19$m=4096,t=3,p=1$ZGFtYWdlX2RvbmU$w9w3s5/zV8+PcAZlJhnTCOE+vBkZssmZf6jOq3dKv50"
