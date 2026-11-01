@@ -14,7 +14,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 pub struct Kwallet {
     /// Hash version.
     #[field(role = other, encoding = decimal)]
-    pub version: u8,
+    pub version: u32,
 
     /// Version-specific fields, preserved verbatim.
     #[field(role = other, encoding = ascii)]
@@ -44,7 +44,7 @@ impl Parse for Kwallet {
             ));
         }
         Ok(Self {
-            version: version.parse::<u8>().map_err(|_| {
+            version: version.parse::<u32>().map_err(|_| {
                 parse::error(
                     ParseErrorKind::InvalidCharacter,
                     9,
