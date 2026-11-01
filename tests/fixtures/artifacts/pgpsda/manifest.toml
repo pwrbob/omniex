@@ -1,0 +1,3 @@
+type = "pgpsda"
+generator = "synthetic PGP SDA header"
+notes = "Synthetic SDA stub; no real archive."
