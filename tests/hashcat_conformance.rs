@@ -83,10 +83,10 @@ fn select_vectors(
     for vector in VECTORS {
         let mut included = 0;
         for entry in vector.hashcat {
-            if let Some(labels) = selected
-                && !labels.iter().any(|label| label == &entry.mode.to_string())
-            {
-                continue;
+            if let Some(labels) = selected {
+                if !labels.iter().any(|label| label == &entry.mode.to_string()) {
+                    continue;
+                }
             }
 
             let current = ordinal;
