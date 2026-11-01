@@ -1,0 +1,13 @@
+{
+  "crypto": {
+    "cipher": "aes-128-ctr",
+    "kdf": "pbkdf2",
+    "kdfparams": {
+      "c": 1024,
+      "prf": "hmac-sha256",
+      "salt": "00112233445566778899aabbccddeeff"
+    },
+    "ciphertext": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+    "mac": "aabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccdd"
+  }
+}

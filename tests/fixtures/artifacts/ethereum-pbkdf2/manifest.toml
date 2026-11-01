@@ -1,0 +1,3 @@
+type = "ethereum-pbkdf2"
+generator = "synthetic ethereum-pbkdf2 JSON fixture"
+notes = "Synthetic wallet; no real credentials."
