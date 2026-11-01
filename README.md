@@ -4,7 +4,7 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
-![hashcat modes](https://img.shields.io/badge/hashcat_modes-664%2F723-2ea44f)
+![hashcat modes](https://img.shields.io/badge/hashcat_modes-702%2F723-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-253%2F263-1f6feb)
 
 Status: early development. Hashcat mode coverage is tracked in
@@ -249,7 +249,9 @@ checked against that command in CI.
 | `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506, 30901, 30902, 30903, 30904, 30905, 30906 | - |
 | `virtualbox` | VirtualBox | 27500, 27600 | - |
 | `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
+| `truecrypt-legacy` | TrueCrypt (legacy) | 6211, 6212, 6213, 6221, 6222, 6223, 6231, 6232, 6233, 6241, 6242, 6243 | - |
 | `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
+| `veracrypt-legacy` | VeraCrypt (legacy) | 13711, 13712, 13713, 13721, 13722, 13723, 13731, 13732, 13733, 13741, 13742, 13743, 13751, 13752, 13753, 13761, 13762, 13763, 13771, 13772, 13773, 13781, 13782, 13783 | - |
 | `diskcryptor` | DiskCryptor | 20011, 20012, 20013 | `diskcryptor` |
 | `bitwarden` | Bitwarden | 23400 | - |
 | `mongodb-scram` | MongoDB ServerKey SCRAM-SHA-1 | 24100 | - |
@@ -510,6 +512,8 @@ checked against that command in CI.
 | `samsung-android` | Samsung Android | 5800 | - |
 | `whirlpool` | Whirlpool | 6100, 40174, 40175 | `whirlpool, whirlpool0, whirlpool1` |
 | `gost` | GOST R 34.11-94 | 6900, 40088 | `gost` |
+| `pwsafe-v2` | Password Safe v2 | 9000 | - |
+| `pwsafe-v3` | Password Safe v3 | 40011 | - |
 | `oubliette-blowfish` | Oubliette-Blowfish | - | `Oubliette-Blowfish` |
 | `oubliette-idea` | Oubliette-IDEA | - | `Oubliette-IDEA` |
 | `iphone-passcode` | iPhone passcode | 26500 | - |

@@ -48,7 +48,11 @@ fn hashcat_identifies_and_loads_every_vector() {
             included += 1;
 
             let path = work.join(format!("{index}-{}-{}.txt", vector.slug, entry.mode));
-            std::fs::write(&path, format!("{}\n", entry.hash)).expect("write hash file");
+            if entry.binary {
+                std::fs::write(&path, decode_hex(entry.hash)).expect("write binary hash file");
+            } else {
+                std::fs::write(&path, format!("{}\n", entry.hash)).expect("write hash file");
+            }
             items.push(WorkItem {
                 slug: vector.slug,
                 mode: entry.mode,
@@ -166,6 +170,22 @@ fn worker_count(items: usize) -> usize {
         });
 
     requested.min(items.max(1)).min(32)
+}
+
+fn decode_hex(value: &str) -> Vec<u8> {
+    value
+        .as_bytes()
+        .chunks_exact(2)
+        .map(|pair| {
+            let digit = |byte: u8| match byte {
+                b'0'..=b'9' => byte - b'0',
+                b'a'..=b'f' => byte - b'a' + 10,
+                b'A'..=b'F' => byte - b'A' + 10,
+                _ => panic!("invalid hex digit"),
+            };
+            (digit(pair[0]) << 4) | digit(pair[1])
+        })
+        .collect()
 }
 
 fn identified_modes(stdout: &str) -> Vec<u32> {

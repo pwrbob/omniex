@@ -1658,3 +1658,16 @@ fn iphone_passcode_requires_every_fixed_field() {
         );
     }
 }
+
+#[test]
+fn legacy_volume_headers_reject_wrong_lengths() {
+    for slug in ["truecrypt-legacy", "veracrypt-legacy"] {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in ["", "abcd", &"0".repeat(1023), &"g".repeat(1024)] {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
+        }
+    }
+}

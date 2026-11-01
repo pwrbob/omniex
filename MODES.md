@@ -46,18 +46,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 6000-6999
 
-- [ ] `6211` - `TrueCrypt RIPEMD160 + XTS 512 bit (legacy)`
-- [ ] `6212` - `TrueCrypt RIPEMD160 + XTS 1024 bit (legacy)`
-- [ ] `6213` - `TrueCrypt RIPEMD160 + XTS 1536 bit (legacy)`
-- [ ] `6221` - `TrueCrypt SHA512 + XTS 512 bit (legacy)`
-- [ ] `6222` - `TrueCrypt SHA512 + XTS 1024 bit (legacy)`
-- [ ] `6223` - `TrueCrypt SHA512 + XTS 1536 bit (legacy)`
-- [ ] `6231` - `TrueCrypt Whirlpool + XTS 512 bit (legacy)`
-- [ ] `6232` - `TrueCrypt Whirlpool + XTS 1024 bit (legacy)`
-- [ ] `6233` - `TrueCrypt Whirlpool + XTS 1536 bit (legacy)`
-- [ ] `6241` - `TrueCrypt RIPEMD160 + XTS 512 bit + boot-mode (legacy)`
-- [ ] `6242` - `TrueCrypt RIPEMD160 + XTS 1024 bit + boot-mode (legacy)`
-- [ ] `6243` - `TrueCrypt RIPEMD160 + XTS 1536 bit + boot-mode (legacy)`
 
 ### 7000-7999
 
@@ -67,7 +55,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 9000-9999
 
-- [ ] `9000` - `Password Safe v2`
 
 ### 10000-10999
 
@@ -80,30 +67,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 13000-13999
 
-- [ ] `13711` - `VeraCrypt RIPEMD160 + XTS 512 bit (legacy)`
-- [ ] `13712` - `VeraCrypt RIPEMD160 + XTS 1024 bit (legacy)`
-- [ ] `13713` - `VeraCrypt RIPEMD160 + XTS 1536 bit (legacy)`
-- [ ] `13721` - `VeraCrypt SHA512 + XTS 512 bit (legacy)`
-- [ ] `13722` - `VeraCrypt SHA512 + XTS 1024 bit (legacy)`
-- [ ] `13723` - `VeraCrypt SHA512 + XTS 1536 bit (legacy)`
-- [ ] `13731` - `VeraCrypt Whirlpool + XTS 512 bit (legacy)`
-- [ ] `13732` - `VeraCrypt Whirlpool + XTS 1024 bit (legacy)`
-- [ ] `13733` - `VeraCrypt Whirlpool + XTS 1536 bit (legacy)`
-- [ ] `13741` - `VeraCrypt RIPEMD160 + XTS 512 bit + boot-mode (legacy)`
-- [ ] `13742` - `VeraCrypt RIPEMD160 + XTS 1024 bit + boot-mode (legacy)`
-- [ ] `13743` - `VeraCrypt RIPEMD160 + XTS 1536 bit + boot-mode (legacy)`
-- [ ] `13751` - `VeraCrypt SHA256 + XTS 512 bit (legacy)`
-- [ ] `13752` - `VeraCrypt SHA256 + XTS 1024 bit (legacy)`
-- [ ] `13753` - `VeraCrypt SHA256 + XTS 1536 bit (legacy)`
-- [ ] `13761` - `VeraCrypt SHA256 + XTS 512 bit + boot-mode (legacy)`
-- [ ] `13762` - `VeraCrypt SHA256 + XTS 1024 bit + boot-mode (legacy)`
-- [ ] `13763` - `VeraCrypt SHA256 + XTS 1536 bit + boot-mode (legacy)`
-- [ ] `13771` - `VeraCrypt Streebog-512 + XTS 512 bit (legacy)`
-- [ ] `13772` - `VeraCrypt Streebog-512 + XTS 1024 bit (legacy)`
-- [ ] `13773` - `VeraCrypt Streebog-512 + XTS 1536 bit (legacy)`
-- [ ] `13781` - `VeraCrypt Streebog-512 + XTS 512 bit + boot-mode (legacy)`
-- [ ] `13782` - `VeraCrypt Streebog-512 + XTS 1024 bit + boot-mode (legacy)`
-- [ ] `13783` - `VeraCrypt Streebog-512 + XTS 1536 bit + boot-mode (legacy)`
 
 ### 14000-14999
 
@@ -194,7 +157,6 @@ Hashcat's plaintext mode is excluded below.
 
 ### 40000-40099
 
-- [ ] `40011` - `Password Safe v3`
 
 ### 40100-40199
 
