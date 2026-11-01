@@ -1,0 +1,3 @@
+type = "dmg-john"
+generator = "synthetic encrcdsa v2 DMG header and data chunks"
+notes = "Synthetic image; no real disk."
