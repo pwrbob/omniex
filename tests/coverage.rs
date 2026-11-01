@@ -4,6 +4,7 @@ mod common;
 
 use assert_cmd::Command;
 use common::{VECTORS, vector_for, vector_modes};
+use omniex::extract::EXTRACTORS;
 use omniex::{Mode, ParseOptions, RenderOptions, Tool, registry};
 
 #[test]
@@ -239,6 +240,23 @@ fn readme_type_table_matches_the_types_command() {
     assert_eq!(
         readme_rows, cli_rows,
         "the README supported-type list must match `omniex types`"
+    );
+}
+
+#[test]
+fn readme_exact_extractor_badge_matches_the_registry() {
+    let root = env!("CARGO_MANIFEST_DIR");
+    let readme = std::fs::read_to_string(std::path::Path::new(root).join("README.md"))
+        .expect("read README.md");
+
+    let exact = EXTRACTORS
+        .iter()
+        .filter(|extractor| extractor.exact())
+        .count();
+    let expected = format!("exact_extractors-{exact}%2F{}-", EXTRACTORS.len());
+    assert!(
+        readme.contains(&expected),
+        "README must advertise `{expected}`; found no matching badge"
     );
 }
 

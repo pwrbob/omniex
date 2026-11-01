@@ -62,7 +62,8 @@ Before calling an iteration finished:
    `Probe::Maybe` is for formats without reliable signatures and must require
    `--type`. A filename or extension alone is never `Yes`. Return `No` for
    unrelated input, and do not turn a permissive parser or a successful byte
-   search into confident recognition.
+   search into confident recognition. Override `Extractor::exact()` to return
+   `false` when the extractor can only ever produce `Probe::Maybe`.
 4. Always scan the whole artifact for extractable hashes. Never stop or return
    `No` just because the first record is not a target, or because one target was
    already found. Other information must not hide later hashes. Keep scanning to
