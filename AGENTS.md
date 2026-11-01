@@ -45,6 +45,41 @@ Before calling an iteration finished:
 6. Run conformance against the reference tools under `tmp/` when available.
 7. Remove the covered entries from `MODES.md`.
 
+## Adding an extractor
+
+1. Keep one extractor per hash type. An extractor returns only values of its
+   registered slug; never mix hash types in one extractor.
+2. Add a module under `src/extract/`, implement `Extractor`, and register it in
+   `EXTRACTORS`. Read through `Artifact` and `ReadAt`; do not load large inputs
+   or disk images wholesale.
+3. Implement `probe` before `extract`. Return `Probe::Yes` only with structural
+   evidence:
+   - a format signature plus validated headers,
+   - a decoded or parsed embedded structure such as JSON, XML, or ASN.1,
+   - cross-field invariants such as version, length, block alignment, or a
+     checksum,
+   - successful discovery of the exact packet or record needed for extraction.
+   `Probe::Maybe` is for formats without reliable signatures and must require
+   `--type`. A filename or extension alone is never `Yes`. Return `No` for
+   unrelated input, and do not turn a permissive parser or a successful byte
+   search into confident recognition.
+4. Scan the whole artifact when the target can appear after other records. For
+   example, an OpenPGP keyring may start with public-key packets and contain
+   secret-key packets later.
+5. Extract every matching value of the selected type, including subkeys,
+   multiple users, or multiple records. Fail without partial output when the
+   artifact is malformed or a guessed parameter is unavailable.
+6. Never guess unavailable cryptographic parameters. If a format needs a cipher,
+   digest, mode, or similar value that is not encoded in the artifact, add an
+   explicit extraction option rather than silently choosing a default.
+7. Add fixtures under `tests/fixtures/artifacts/<slug>/` with a `manifest.toml`,
+   expected hashcat and John output, and synthetic or clearly licensed inputs.
+8. Add tests for canonical extraction, auto-detection, explicit `--type`,
+   `--all`, wrong type, malformed or truncated input, empty input, and the
+   `Yes`/`Maybe`/`No` probe boundary.
+9. Check the entry in `EXTRACTION.md`, update the README extraction badge, and
+   run `scripts/ci.sh`.
+
 ## Reference tools
 
 Build pinned tools under `tmp/reference/`:

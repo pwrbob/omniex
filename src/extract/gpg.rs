@@ -18,30 +18,33 @@ impl Extractor for GpgExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        let source = artifact.primary();
-        let mut prefix = [0; 15];
-        let read = match source.read_at(0, &mut prefix) {
-            Ok(read) => read,
+        let data = match artifact.primary().read_all() {
+            Ok(data) => data,
             Err(error) => return Probe::maybe(format!("cannot read artifact: {error}")),
         };
-        if &prefix[..read] == b"-----BEGIN PGP " {
-            return Probe::yes("OpenPGP armor header");
-        }
-        let Some(first) = prefix.first().copied().filter(|_| read > 0) else {
-            return Probe::No;
-        };
-        if first & 0x80 == 0 {
+        let armored = data.starts_with(b"-----BEGIN PGP ");
+        if !armored && data.first().is_none_or(|first| first & 0x80 == 0) {
             return Probe::No;
         }
-        let tag = if first & 0x40 != 0 {
-            first & 0x3f
-        } else {
-            (first >> 2) & 0x0f
+        let data = match dearmor(&data) {
+            Ok(data) => data,
+            Err(error) => return Probe::maybe(error.to_string()),
         };
-        match tag {
-            5 | 7 => Probe::yes("OpenPGP secret-key packet header"),
-            _ => Probe::No,
+
+        let mut saw_packet = false;
+        for packet in PacketParser::new(data.as_slice()) {
+            match packet {
+                Ok(Packet::SecretKey(_) | Packet::SecretSubkey(_)) => {
+                    return Probe::yes("OpenPGP secret-key packet");
+                }
+                Ok(_) => saw_packet = true,
+                Err(error) if armored || saw_packet => {
+                    return Probe::maybe(format!("invalid OpenPGP packet: {error}"));
+                }
+                Err(_) => return Probe::No,
+            }
         }
+        Probe::No
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
