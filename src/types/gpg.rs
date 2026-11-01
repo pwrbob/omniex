@@ -13,9 +13,9 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = gpg_modes,
 )]
 pub struct Gpg {
-    /// Unknown option marker, always `1`.
+    /// Public-key algorithm identifier.
     #[field(role = other, encoding = decimal)]
-    pub version: u8,
+    pub algorithm: u8,
 
     /// Encrypted data size in bytes.
     #[field(role = other, encoding = decimal)]
@@ -33,13 +33,13 @@ pub struct Gpg {
     #[field(role = other, encoding = decimal)]
     pub s2k_type: u8,
 
+    /// String-to-key usage identifier.
+    #[field(role = other, encoding = decimal)]
+    pub s2k_mode: u8,
+
     /// String-to-key hash identifier.
     #[field(role = other, encoding = decimal)]
     pub s2k_hash: u32,
-
-    /// String-to-key mode, always `2`.
-    #[field(role = other, encoding = decimal)]
-    pub s2k_mode: u8,
 
     /// Cipher algorithm identifier.
     #[field(role = other, encoding = decimal)]
@@ -63,15 +63,32 @@ pub struct Gpg {
 }
 
 pub fn gpg_modes(value: &Gpg) -> Vec<crate::Mode> {
-    match value.cipher {
-        3 => vec![crate::Mode::Hashcat(17040), crate::Mode::John("gpg")],
-        7 if value.iv.len() == 12 => vec![crate::Mode::Hashcat(17050)],
-        7 | 9 => vec![
-            crate::Mode::Hashcat(17010),
-            crate::Mode::Hashcat(17020),
-            crate::Mode::Hashcat(17030),
-            crate::Mode::John("gpg"),
-        ],
+    use crate::Mode;
+
+    let john = || vec![Mode::John("gpg")];
+    match (value.cipher, value.s2k_hash) {
+        (3, 2) => {
+            let mut modes = vec![Mode::Hashcat(17040)];
+            modes.extend(john());
+            modes
+        }
+        (7 | 9, 2) if value.iv.len() == 12 => vec![Mode::Hashcat(17050)],
+        (7 | 9, 2) if matches!(value.algorithm, 1..=3) => {
+            let mut modes = vec![Mode::Hashcat(17010)];
+            modes.extend(john());
+            modes
+        }
+        (7 | 9, 10) if matches!(value.algorithm, 1..=3) => {
+            let mut modes = vec![Mode::Hashcat(17020)];
+            modes.extend(john());
+            modes
+        }
+        (7 | 9, 8) if matches!(value.algorithm, 1..=3) => {
+            let mut modes = vec![Mode::Hashcat(17030)];
+            modes.extend(john());
+            modes
+        }
+        (3 | 7 | 9, 2 | 8 | 10) => john(),
         _ => Vec::new(),
     }
 }
@@ -103,9 +120,9 @@ impl Parse for Gpg {
         }
 
         Ok(Self {
-            version: u8::try_from(number(fields[0].0, fields[0].1, "version")?).map_err(|_| {
-                parse::error(ParseErrorKind::InvalidCharacter, 6, "invalid GPG version")
-            })?,
+            algorithm: u8::try_from(number(fields[0].0, fields[0].1, "algorithm")?).map_err(
+                |_| parse::error(ParseErrorKind::InvalidCharacter, 6, "invalid GPG algorithm"),
+            )?,
             encrypted_size: number(fields[1].0, fields[1].1, "encrypted size")?,
             modulus_size: number(fields[2].0, fields[2].1, "modulus size")?,
             encrypted_data,
@@ -118,16 +135,16 @@ impl Parse for Gpg {
                     )
                 },
             )?,
-            s2k_hash: number(fields[5].0, fields[5].1, "s2k hash")?,
-            s2k_mode: u8::try_from(number(fields[6].0, fields[6].1, "s2k mode")?).map_err(
+            s2k_mode: u8::try_from(number(fields[5].0, fields[5].1, "s2k mode")?).map_err(
                 |_| {
                     parse::error(
                         ParseErrorKind::InvalidCharacter,
-                        fields[6].1,
+                        fields[5].1,
                         "invalid s2k mode",
                     )
                 },
             )?,
+            s2k_hash: number(fields[6].0, fields[6].1, "s2k hash")?,
             cipher: u8::try_from(number(fields[7].0, fields[7].1, "cipher")?).map_err(|_| {
                 parse::error(
                     ParseErrorKind::InvalidCharacter,
@@ -153,13 +170,13 @@ impl Render for Gpg {
     fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "$gpg$*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}",
-            self.version,
+            self.algorithm,
             self.encrypted_size,
             self.modulus_size,
             crate::format::hex(&self.encrypted_data),
             self.s2k_type,
-            self.s2k_hash,
             self.s2k_mode,
+            self.s2k_hash,
             self.cipher,
             self.iv_size,
             crate::format::hex(&self.iv),

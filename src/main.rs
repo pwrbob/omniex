@@ -6,6 +6,7 @@ use std::path::PathBuf;
 use std::process::ExitCode;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
+use omniex::extract;
 use omniex::registry;
 use omniex::{Encoding, FieldRole, HashValue, Mode, ParseOptions, RenderOptions, Tool};
 use serde_json::{Value, json};
@@ -381,19 +382,67 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
 }
 
 fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
-    let _tool = Tool::from(args.format);
+    let tool = Tool::from(args.format);
     let selected = select_type(args.type_slug.as_deref())?;
-    let artifact = args.artifact.display();
+    let extractor = selected
+        .map(|descriptor| {
+            extract::by_slug(descriptor.slug)
+                .ok_or_else(|| {
+                    CliError::Input(format!(
+                        "no extractor is registered for `{}`",
+                        descriptor.slug
+                    ))
+                })
+                .map(|extractor| (descriptor, extractor))
+        })
+        .transpose()?;
+    let data = std::fs::read(&args.artifact).map_err(|error| {
+        CliError::Input(format!("cannot read {}: {error}", args.artifact.display()))
+    })?;
 
-    match selected {
-        Some(descriptor) => Err(CliError::Input(format!(
-            "no extractor is registered for `{}`; cannot extract from {artifact}",
-            descriptor.slug
-        ))),
-        None => Err(CliError::Input(format!(
-            "no extractor is registered; cannot extract from {artifact}"
-        ))),
-    }
+    let hashes = match extractor {
+        Some((descriptor, extractor)) => extractor.extract(&data).map_err(|error| {
+            CliError::Input(format!(
+                "cannot extract `{}` from {}: {error}",
+                descriptor.slug,
+                args.artifact.display()
+            ))
+        })?,
+        None => {
+            let mut matches = extract::detect(&data);
+            match matches.len() {
+                0 => {
+                    return Err(CliError::Input(format!(
+                        "no extractor recognized {}; use --type to choose a hash type",
+                        args.artifact.display()
+                    )));
+                }
+                1 => matches.pop().expect("one match").hashes,
+                _ => {
+                    let candidates = matches
+                        .iter()
+                        .map(|detection| detection.extractor.slug())
+                        .collect::<Vec<_>>()
+                        .join(", ");
+                    return Err(CliError::Input(format!(
+                        "ambiguous artifact; extractor candidates: {candidates}; use --type"
+                    )));
+                }
+            }
+        }
+    };
+
+    let rendered = hashes
+        .iter()
+        .map(|value| {
+            value.render(&RenderOptions {
+                tool,
+                ..RenderOptions::default()
+            })
+        })
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| CliError::Input(format!("cannot render extracted hash: {error}")))?;
+    write_stdout(&format!("{}\n", rendered.join("\n")))
 }
 
 fn select_type(

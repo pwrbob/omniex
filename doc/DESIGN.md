@@ -212,12 +212,36 @@ omniex extract <artifact> [--type <slug>] [--format hashcat|john]
 
 ## Extraction
 
-Extraction is a separate operation, not part of parsing. It will return one or
-more hash type instances, which are the same types that `parse` produces.
+Extraction is a separate operation, not part of parsing. It returns one or more
+hash type instances, which are the same types that `parse` produces.
 
-The exact source abstraction for files and disk images is deferred until the
-first extractor lands. The invariant is already fixed: `--type` selects the hash
-type in both directions.
+`omniex::extract` owns the extractor registry:
+
+```rust
+pub trait Extractor: Sync {
+    fn slug(&self) -> &'static str;
+    fn extract(&self, data: &[u8]) -> Result<Vec<Box<dyn HashValue>>, ExtractError>;
+}
+```
+
+An extractor is registered once in `EXTRACTORS`. `--type <slug>` selects the
+extractor with the same slug as the hash type. Without `--type`, every extractor
+is tried and the artifact is auto-detected only when exactly one succeeds.
+`ExtractError` separates `Unsupported` artifacts from malformed `Invalid` ones.
+
+The artifact abstraction is still bytes. Source paths, offsets, and streaming
+for large disk images are deferred until an extractor needs them. Multi-hash
+artifacts are already supported: one extractor may return several instances,
+for example a primary key and its subkeys. The invariant remains that `--type`
+selects the hash type in both directions.
+
+The first extractor handles OpenPGP secret keys via the `pgp` crate, including
+RSA, DSA, ElGamal, ECDSA, ECDH, and EdDSA keys. It emits the `gpg` type. For RSA
+keys the value reports the matching hashcat mode from `17010`, `17020`, `17030`,
+`17040`, and `17050`, selected by string-to-key hash and cipher. ECC keys report
+John's `gpg` format only because hashcat 8.0.0 does not load their two-digit
+public-key algorithm. Simple string-to-key secrets are rejected because their
+serialization omits the salt and iteration count that the current type models.
 
 ## Scope
 

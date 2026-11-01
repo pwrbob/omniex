@@ -8,6 +8,7 @@ extern crate self as omniex;
 pub use omniex_core::*;
 pub use omniex_macros::HashType;
 
+pub mod extract;
 pub mod format;
 
 pub mod parse;

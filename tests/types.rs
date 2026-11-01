@@ -1369,6 +1369,40 @@ fn value_dependent_modes_track_salt_and_key_limits() {
 }
 
 #[test]
+fn gpg_modes_follow_the_string_to_key_and_cipher() {
+    use omniex::Mode;
+    use omniex::types::Gpg;
+
+    let opts = ParseOptions::default();
+    let base =
+        "$gpg$*1*1*8*00*3*254*HASH*CIPHER*16*00000000000000000000000000000000*1*0000000000000000";
+
+    let sha1 = Gpg::parse(&base.replace("HASH", "2").replace("CIPHER", "7"), &opts).unwrap();
+    assert!(sha1.modes().contains(&Mode::Hashcat(17010)));
+    assert!(!sha1.modes().contains(&Mode::Hashcat(17020)));
+    assert!(sha1.modes().contains(&Mode::John("gpg")));
+
+    let sha512 = Gpg::parse(&base.replace("HASH", "10").replace("CIPHER", "7"), &opts).unwrap();
+    assert!(sha512.modes().contains(&Mode::Hashcat(17020)));
+    assert!(!sha512.modes().contains(&Mode::Hashcat(17010)));
+
+    let cast5 = Gpg::parse(&base.replace("HASH", "2").replace("CIPHER", "3"), &opts).unwrap();
+    assert!(cast5.modes().contains(&Mode::Hashcat(17040)));
+    assert!(!cast5.modes().contains(&Mode::Hashcat(17010)));
+
+    let ecc = Gpg::parse(
+        &base
+            .replace("*1*1*8*", "*18*1*8*")
+            .replace("HASH", "2")
+            .replace("CIPHER", "7"),
+        &opts,
+    )
+    .unwrap();
+    assert!(ecc.modes().contains(&Mode::John("gpg")));
+    assert!(!ecc.modes().contains(&Mode::Hashcat(17010)));
+}
+
+#[test]
 fn modes_fn_never_reports_undeclared_modes() {
     for descriptor in registry::all() {
         let vector = vector_for(descriptor).expect("vector");
