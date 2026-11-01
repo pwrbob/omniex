@@ -30,3 +30,4 @@ This file documents the extractors currently registered in
 - `monero` - Monero `.keys` wallet files (John only).
 - `bks` - Bouncy Castle BKS v1/v2 keystores (John only).
 - `dashlane` - Dashlane `.aes` databases and secure archives (John only).
+- `geli` - FreeBSD GELI metadata from disk images.
