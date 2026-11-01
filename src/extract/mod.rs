@@ -347,6 +347,7 @@ mod fernet;
 mod filezilla;
 mod geli;
 mod gpg;
+mod iwork;
 mod jwt;
 mod known_hosts;
 mod monero;
@@ -365,6 +366,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &filezilla::FileZillaServerExtractor,
     &geli::GeliExtractor,
     &gpg::GpgExtractor,
+    &iwork::IworkExtractor,
     &jwt::JwtExtractor,
     &known_hosts::KnownHostsExtractor,
     &monero::MoneroExtractor,

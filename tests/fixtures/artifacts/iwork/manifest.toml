@@ -1,0 +1,3 @@
+type = "iwork"
+generator = "synthetic iWork 2013/2014 ZIP with an iwpv2 verifier"
+notes = "Synthetic document; no real content."

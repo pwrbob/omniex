@@ -55,7 +55,7 @@ fn parse(artifact: &Artifact) -> Result<Geli, ExtractError> {
 
     Ok(Geli {
         data: format!(
-            "0*{}*{}*{}*{}*{}*{}*{}*{}",
+            "0${}${}${}${}${}${}${}${}",
             version,
             ealgo,
             keylen,
