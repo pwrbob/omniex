@@ -99,7 +99,7 @@ README badge counts checked lines in this file.
 
 - [ ] KeePass KDBX v2/v3 (`keepass`)
 - [ ] KeePass KDBX v4 (`keepass4`)
-- [ ] 1Password agilekeychain (`onepassword-agile`)
+- [x] 1Password agilekeychain (`onepassword-agile`, `agilekeychain`)
 - [ ] 1Password cloudkeychain (`onepassword-cloud`)
 - [ ] 1Password mobile keychain (`onepassword-mobile`)
 - [ ] Bitwarden encrypted export (`bitwarden`)
@@ -139,7 +139,7 @@ README badge counts checked lines in this file.
 - [ ] Dogechain wallets (`dogechain`)
 - [ ] Exodus wallets (`exodus`)
 - [ ] Bisq wallets (`bisq`)
-- [ ] Monero wallets (`monero`)
+- [x] Monero wallets (`monero`)
 - [ ] Tezos wallets (`tezos`)
 - [ ] Cardano wallets (`cardano`)
 - [ ] Keplr wallets (`keplr`)
