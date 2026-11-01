@@ -241,6 +241,29 @@ fn readme_type_table_matches_the_types_command() {
 }
 
 #[test]
+fn readme_extraction_badge_matches_the_checklist() {
+    let root = env!("CARGO_MANIFEST_DIR");
+    let readme = std::fs::read_to_string(std::path::Path::new(root).join("README.md"))
+        .expect("read README.md");
+    let extraction = std::fs::read_to_string(std::path::Path::new(root).join("EXTRACTION.md"))
+        .expect("read EXTRACTION.md");
+
+    let done = extraction
+        .lines()
+        .filter(|line| line.starts_with("- [x] "))
+        .count();
+    let remaining = extraction
+        .lines()
+        .filter(|line| line.starts_with("- [ ] "))
+        .count();
+    let expected = format!("artifact_formats-{done}%2F{}-", done + remaining);
+    assert!(
+        readme.contains(&expected),
+        "README must advertise `{expected}`; found no matching badge"
+    );
+}
+
+#[test]
 fn readme_mode_badge_matches_the_registry_and_checklist() {
     let root = env!("CARGO_MANIFEST_DIR");
     let readme = std::fs::read_to_string(std::path::Path::new(root).join("README.md"))
