@@ -1,0 +1,3 @@
+type = "mssql-2012"
+generator = "synthetic SQL dump containing database password hashes"
+notes = "Synthetic rows from canonical vectors; no real database."

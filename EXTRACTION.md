@@ -108,6 +108,11 @@ README badge counts checked lines in this file.
 
 ## Password managers
 
+- [x] MySQL user-table hash dumps (`mysql323`, `mysql-sha1`, `mysql-a`)
+- [x] MSSQL database user hashes (`mssql-2000`, `mssql-2005`, `mssql-2012`, `mssql-2025`)
+- [x] PostgreSQL SCRAM verifier dumps (`postgres-scram-sha256`)
+- [x] Oracle H and T password hashes (`oracle-h`, `oracle-t`)
+
 - [ ] KeePass KDBX v2/v3 (`keepass`)
 - [ ] KeePass KDBX v4 (`keepass4`)
 - [x] 1Password agilekeychain (`onepassword-agile`, `agilekeychain`)

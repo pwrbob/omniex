@@ -378,6 +378,7 @@ mod pgpwde;
 mod pwsafe;
 mod racf;
 mod shadow;
+mod sql;
 mod vdi;
 mod vmx;
 mod winzip;
@@ -442,6 +443,16 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &shadow::Sha512CryptExtractor,
     &shadow::SunMd5Extractor,
     &shadow::YescryptExtractor,
+    &sql::Mssql2000Extractor,
+    &sql::Mssql2005Extractor,
+    &sql::Mssql2012Extractor,
+    &sql::Mssql2025Extractor,
+    &sql::Mysql323Extractor,
+    &sql::MysqlAExtractor,
+    &sql::MysqlSha1Extractor,
+    &sql::OracleHExtractor,
+    &sql::OracleTExtractor,
+    &sql::PostgresScramSha256Extractor,
 ];
 
 /// Returns the extractor registered for a slug.

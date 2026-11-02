@@ -74,3 +74,7 @@ This file documents the extractors currently registered in
 - `ssha512-aix` - AIX `{ssha512}` password hashes.
 - `lotus5` - Lotus Notes/Domino 5 user ID blobs.
 - `racf` - RACF DES records from CRACF.TXT.
+- `mssql-2000`, `mssql-2005`, `mssql-2012`, `mssql-2025` - database user hashes in SQL dumps.
+- `mysql323`, `mysql-sha1`, `mysql-a` - MySQL user-table hashes in SQL dumps.
+- `oracle-h`, `oracle-t` - Oracle password hashes in SQL dumps.
+- `postgres-scram-sha256` - PostgreSQL SCRAM verifiers in SQL dumps.
