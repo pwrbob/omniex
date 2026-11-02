@@ -300,7 +300,12 @@ fn cli_extracts_explicit_types() {
         ("bitlocker", fixture("bitlocker", "recovery.img"), "john", 2),
         ("as400-des", fixture("as400", "profile.bin"), "hashcat", 2),
         ("as400-ssha1", fixture("as400", "profile.bin"), "hashcat", 1),
-        ("lotus-notes", fixture("lotus-notes", "user.id"), "hashcat", 2),
+        (
+            "lotus-notes",
+            fixture("lotus-notes", "user.id"),
+            "hashcat",
+            2,
+        ),
     ] {
         let output = omniex()
             .args(["extract", "--type", slug, "--format", format])
