@@ -1,0 +1,4 @@
+SAM Username : test
+Default Salt : TEST.LOCALtest
+Credentials
+  aes256_hmac (4096) : 266b5a

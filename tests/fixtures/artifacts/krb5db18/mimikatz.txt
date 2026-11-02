@@ -1,0 +1,14 @@
+SAM Username         : test
+ * Kerberos-Newer-Keys
+    Default Salt : TEST.LOCALtest
+    Default Iterations : 4096
+    Credentials
+      aes256_hmac       (4096) : 266b5a53a6d663c3f69174f3309acada8e467c097c7973699f86286a6cf1a6c7
+      aes128_hmac       (4096) : 1c41586d6c060071e08186ee214e725e
+
+SAM Username         : carol
+ * Kerberos-Newer-Keys
+    Default Salt : EXAMPLE.COMcarol
+    Default Iterations : 4096
+    Credentials
+      aes256_hmac       (4096) : ffeeddccbbaa99887766554433221100ffeeddccbbaa99887766554433221100

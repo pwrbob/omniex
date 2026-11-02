@@ -1,0 +1,6 @@
+type = "pem"
+password = "password"
+hashcat = ""
+john = "$PEM$1$1$..."
+generator = "openssl genrsa and openssl pkcs8 -topk8 -v2 des3 -v2prf hmacWithSHA1"
+notes = "Throwaway PKCS#8 test keys; no real credentials."

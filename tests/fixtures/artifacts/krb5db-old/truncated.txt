@@ -1,0 +1,4 @@
+SAM Username : test
+Default Salt : TEST.LOCALtest
+Credentials
+  des_cbc_md5 (4096) : 8899aabb

@@ -1,0 +1,6 @@
+SamAccountName: test
+    Kerberos:
+      Credentials:
+        AES256_HMAC
+          Key: 266b5a53a6d663c3f69174f3309acada8e467c097c7973699f86286a6cf1a6c7
+    Salt: TEST.LOCALtest

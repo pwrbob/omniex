@@ -1,0 +1,17 @@
+SAM Username         : test
+ * Kerberos-Old-Keys
+    Default Salt : TEST.LOCALtest
+    Default Iterations : 4096
+    Credentials
+      des_cbc_crc       (4096) : 7f153708497ae385
+      des_cbc_md4       (4096) : 0011223344556677
+      des_cbc_md5       (4096) : 8899aabbccddeeff
+    OldCredentials
+      des_cbc_md5       (4096) : ffffffffffffffff
+
+SAM Username         : HOST$
+ * Kerberos-Newer-Keys
+    Default Salt : TEST.LOCALhost.host.test.local
+    Default Iterations : 4096
+    Credentials
+      des_cbc_md5       (4096) : aaaaaaaaaaaaaaaa
