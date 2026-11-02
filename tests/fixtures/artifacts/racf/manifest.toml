@@ -1,3 +1,6 @@
 type = "racf"
 generator = "synthetic CRACF.TXT record"
 notes = "Synthetic RACF record; no real system."
+artifact = "CRACF.TXT"
+hashcat = "$racf$*USER1*1234567890ABCDEF"
+john = "$racf$*USER1*1234567890ABCDEF"

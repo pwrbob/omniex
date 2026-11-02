@@ -1,3 +1,8 @@
 type = "adxcrypt"
 generator = "synthetic ADXCSOUF user records"
 notes = "Synthetic 4690 user file; no real system."
+artifact = "ADXCSOUF.DAT"
+john = """
+$adxcrypt$12345678
+$adxcrypt$87654321
+"""

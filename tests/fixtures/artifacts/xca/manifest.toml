@@ -1,3 +1,5 @@
 type = "xca"
 generator = "sqlite3 synthetic XCA database"
 notes = "Synthetic settings table; no real secrets."
+artifact = "sample.xdb"
+hashcat = "T0123456789abcdef0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF"

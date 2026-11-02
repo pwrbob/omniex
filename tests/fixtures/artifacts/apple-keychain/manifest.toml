@@ -1,3 +1,6 @@
 type = "apple-keychain"
 generator = "synthetic macOS login keychain database blob"
 notes = "Synthetic keychain; the wrapped key is not derived from a password."
+artifact = "login.keychain"
+hashcat = "$keychain$*74cd1efd49e54a8fdc8750288801e09fa26a33b1*66001ad4e0498dc7*5a084b7314971b728cb551ac40b2e50b7b5bd8b8496b902efe7af07538863a45394ead8399ec581681f7416003c49cc7"
+john = "$keychain$*74cd1efd49e54a8fdc8750288801e09fa26a33b1*66001ad4e0498dc7*5a084b7314971b728cb551ac40b2e50b7b5bd8b8496b902efe7af07538863a45394ead8399ec581681f7416003c49cc7"

@@ -1,3 +1,5 @@
 type = "mozilla-key3"
 generator = "synthetic key3.db BSD database"
 notes = "Synthetic master-password verifier; no real credentials."
+artifact = "key3.db"
+hashcat = "$mozilla$*3DES*00112233445566778899aabbccddeeff00112233*aabbccddeeff00112233445566778899aabbccdd*0123456789abcdeffedcba9876543210"

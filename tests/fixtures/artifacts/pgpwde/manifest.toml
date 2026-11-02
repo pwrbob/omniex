@@ -1,3 +1,6 @@
 type = "pgpwde"
 generator = "synthetic PGP WDE user record"
 notes = "Synthetic disk; no real volume."
+artifact = "sample.img"
+# John 8.0.0 rejects the synthetic serialization.
+john = "-"

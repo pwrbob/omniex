@@ -1,3 +1,7 @@
 type = "vmx-john"
 generator = "synthetic VMware VMX keySafe"
 notes = "Synthetic VM configuration; no real disk."
+artifact = "sample.vmx"
+hashcat = "$vmx$1$0$0$10000$000102030405060708090a0b0c0d0e0f$00070e151c232a31383f464d545b626970777e858c939aa1a8afb6bdc4cbd2d9e0e7eef5fc030a11181f262d343b424950575e656c737a81888f969da4abb2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c535a61686f767d848b9299"
+# John 8.0.0 rejects the synthetic serialization.
+john = "-"

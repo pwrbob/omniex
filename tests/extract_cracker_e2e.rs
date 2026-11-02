@@ -242,6 +242,10 @@ fn selected_cases(cases: Vec<Case>, labels: Option<&[String]>, hashcat: bool) ->
     let mut selected = Vec::new();
 
     for (index, case) in cases.into_iter().enumerate() {
+        if by_slug(case.descriptor.slug).is_none() {
+            continue;
+        }
+
         let supported = if hashcat {
             case.hashcat.is_some()
                 && hashcat_modes(&case)

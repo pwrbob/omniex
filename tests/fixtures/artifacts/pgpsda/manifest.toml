@@ -1,3 +1,5 @@
 type = "pgpsda"
 generator = "synthetic PGP SDA header"
 notes = "Synthetic SDA stub; no real archive."
+artifact = "sample.sda"
+john = "$pgpsda$0*1000*1122334455667788*99aabbccddeeff00"

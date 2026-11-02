@@ -1,3 +1,5 @@
 type = "tcp-md5"
 generator = "synthetic TCP MD5 signature packets"
 notes = "Synthetic BGP segment; no real credentials."
+artifact = "tcp.pcap"
+john = "$tcpmd5$c0a83814c0a838280006002800b3d10515f72762291b6878a010007300000000$eaf8d1f1da3f03c90b42709e9508fc73"

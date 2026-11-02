@@ -1,3 +1,5 @@
 type = "metamask"
 generator = "synthetic MetaMask browser-extension vault"
 notes = "Synthetic ciphertext; no real keys."
+artifact = "vault.json"
+hashcat = "$metamask$AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=$AAECAwQFBgcICQoLDA0ODw==$AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4v"

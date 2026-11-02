@@ -1,3 +1,8 @@
 type = "known-hosts"
 generator = "synthetic OpenSSH known_hosts entries"
 notes = "Two hashed entries and one unhashed entry; no real hosts."
+artifact = "known_hosts"
+john = """
+$known_hosts$|1|yivSFSAv9mhGu/GPc14KpaPMSjE=|I9L3FH6RGefWIFb0Po74BVN3Fto=
+$known_hosts$|1|AAECAwQFBgcICQoLDA0ODxAREhM=|FBUWFxgZGhscHR4fICEiIyQlJic=
+"""
