@@ -1,0 +1,4 @@
+type = "sip-digest"
+hashcat = "$sip$***alice*example.com*REGISTER*sip*alice@example.com**abc123****MD5*0123456789abcdef0123456789abcdef"
+generator = "synthetic SIP REGISTER and INVITE requests with Digest Authorization headers"
+notes = "Synthetic digest responses; no real SIP account."

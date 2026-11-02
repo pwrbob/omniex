@@ -1,0 +1,4 @@
+type = "snmpv3"
+hashcat = "$SNMPv3$0$1$..."
+generator = "synthetic BER-encoded SNMPv3 USM messages, raw and in a UDP capture"
+notes = "Synthetic HMAC values; the authentication parameter field is zeroed in the expected message."

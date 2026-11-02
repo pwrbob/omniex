@@ -1,0 +1,2 @@
+$sip$***alice*example.com*REGISTER*sip*alice@example.com**abc123****MD5*0123456789abcdef0123456789abcdef
+$sip$***bob*example.com*INVITE*sip*bob@example.com*5060*nonce2*xyz*00000001*auth*MD5*ffeeddccbbaa99887766554433221100

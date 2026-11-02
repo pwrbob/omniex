@@ -3,7 +3,7 @@
 use std::path::{Path, PathBuf};
 
 use omniex::extract::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt};
-use omniex::{HashType, HashValue, RenderOptions};
+use omniex::{HashType, HashValue, RenderOptions, Tool};
 
 pub mod types {
     pub use omniex::types::*;
@@ -279,5 +279,411 @@ fn fixtures_render_for_both_tools_where_applicable() {
                 .iter()
                 .any(|mode| matches!(mode, omniex::Mode::Hashcat(11300)))
         );
+    }
+}
+
+pub mod extract {
+    pub use omniex::extract::*;
+}
+
+#[path = "../src/extract/iscsi_chap.rs"]
+mod iscsi_chap;
+#[path = "../src/extract/radius.rs"]
+mod radius;
+#[path = "../src/extract/sip_digest.rs"]
+mod sip_digest;
+#[path = "../src/extract/snmpv3.rs"]
+mod snmpv3;
+#[path = "../src/extract/tacacs_plus.rs"]
+mod tacacs_plus;
+
+fn with_member(kind: &str, name: &str, member: &str, value: Vec<u8>) -> Artifact {
+    Artifact::from_bytes(name, std::fs::read(fixture(kind, name)).unwrap())
+        .with_member(member, omniex::extract::MemorySource::from(value))
+}
+
+fn lines(kind: &str, name: &str) -> Vec<String> {
+    expected(kind, name).lines().map(str::to_owned).collect()
+}
+
+fn rendered_john(result: Result<Extracted, ExtractError>) -> Vec<String> {
+    let options = RenderOptions {
+        tool: Tool::John,
+        ..RenderOptions::default()
+    };
+    result
+        .unwrap()
+        .iter()
+        .map(|value| value.render(&options).unwrap())
+        .collect()
+}
+
+fn truncated(kind: &str, name: &str) -> Artifact {
+    let data = std::fs::read(fixture(kind, name)).unwrap();
+    Artifact::from_bytes("truncated", data[..data.len() / 2].to_vec())
+}
+
+#[test]
+fn iscsi_chap_recognizes_login_exchanges() {
+    let extractor = iscsi_chap::IscsiChapExtractor;
+    assert_eq!(extractor.slug(), "iscsi-chap");
+    for name in ["login.pcap", "login.pcapng"] {
+        assert!(
+            matches!(
+                extractor.probe(&artifact("iscsi-chap", name)),
+                Probe::Yes(reason) if reason.contains("iSCSI")
+            ),
+            "{name}"
+        );
+        assert_eq!(
+            rendered(extractor.extract(&artifact("iscsi-chap", name))),
+            vec![expected("iscsi-chap", "login.hash")],
+            "{name}"
+        );
+    }
+    assert_eq!(
+        rendered(extractor.extract(&artifact("iscsi-chap", "multi.pcap"))),
+        lines("iscsi-chap", "multi.hash")
+    );
+}
+
+#[test]
+fn iscsi_chap_probe_boundaries() {
+    let extractor = iscsi_chap::IscsiChapExtractor;
+    assert!(matches!(
+        extractor.probe(&artifact("iscsi-chap", "incomplete.pcap")),
+        Probe::Maybe(reason) if reason.contains("CHAP")
+    ));
+    assert_eq!(
+        extractor.probe(&artifact("sip-digest", "register.pcap")),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("plain", b"not a capture".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert!(matches!(
+        extractor.probe(&truncated("iscsi-chap", "login.pcap")),
+        Probe::Maybe(_)
+    ));
+    assert!(
+        extractor
+            .extract(&truncated("iscsi-chap", "login.pcap"))
+            .is_err()
+    );
+    assert!(
+        extractor
+            .extract(&artifact("iscsi-chap", "incomplete.pcap"))
+            .is_err()
+    );
+}
+
+#[test]
+fn snmpv3_extracts_raw_and_captured_messages() {
+    let extractor = snmpv3::Snmpv3Extractor;
+    assert_eq!(extractor.slug(), "snmpv3");
+    for (name, hash) in [
+        ("message.bin", "message.hash"),
+        ("message.pcap", "message.hash"),
+    ] {
+        assert!(
+            matches!(
+                extractor.probe(&artifact("snmpv3", name)),
+                Probe::Yes(reason) if reason.contains("SNMPv3")
+            ),
+            "{name}"
+        );
+        assert_eq!(
+            rendered(extractor.extract(&artifact("snmpv3", name))),
+            vec![expected("snmpv3", hash)],
+            "{name}"
+        );
+    }
+    let values = extractor
+        .extract(&artifact("snmpv3", "sha256.bin"))
+        .unwrap();
+    assert_eq!(
+        values[0].render(&RenderOptions::default()).unwrap(),
+        expected("snmpv3", "sha256.hash")
+    );
+    assert!(
+        values[0]
+            .modes()
+            .iter()
+            .any(|mode| matches!(mode, omniex::Mode::Hashcat(26800)))
+    );
+}
+
+#[test]
+fn snmpv3_probe_boundaries() {
+    let extractor = snmpv3::Snmpv3Extractor;
+    assert!(matches!(
+        extractor.probe(&artifact("snmpv3", "unauth.bin")),
+        Probe::Maybe(reason) if reason.contains("authentication")
+    ));
+    assert!(
+        extractor
+            .extract(&artifact("snmpv3", "unauth.bin"))
+            .is_err()
+    );
+    assert_eq!(
+        extractor.probe(&artifact("iscsi-chap", "login.pcap")),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("plain", b"not snmp".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert!(
+        extractor
+            .extract(&truncated("snmpv3", "message.bin"))
+            .is_err()
+    );
+}
+
+#[test]
+fn radius_requires_an_explicit_sidecar() {
+    let extractor = radius::RadiusExtractor;
+    assert_eq!(extractor.slug(), "radius");
+    assert!(matches!(
+        extractor.probe(&artifact("radius", "access.pcap")),
+        Probe::Maybe(reason) if reason.contains("sidecar")
+    ));
+    assert!(
+        extractor
+            .extract(&artifact("radius", "access.pcap"))
+            .is_err()
+    );
+
+    let secret = std::fs::read(fixture("radius", "shared.secret")).unwrap();
+    let with_secret = with_member("radius", "access.pcap", "radius-secret", secret);
+    assert!(matches!(
+        extractor.probe(&with_secret),
+        Probe::Yes(reason) if reason.contains("User-Password")
+    ));
+    assert_eq!(
+        rendered_john(extractor.extract(&with_secret)),
+        vec![expected("radius", "access.hash")]
+    );
+
+    let salted = Artifact::from_file(&fixture("radius", "access.pcap")).unwrap();
+    assert_eq!(
+        rendered_john(extractor.extract(&salted)),
+        vec![expected("radius", "access.hash")]
+    );
+
+    let password = with_member(
+        "radius",
+        "access.pcap",
+        "radius-password",
+        b"Passw0rd2".to_vec(),
+    );
+    assert_eq!(
+        rendered_john(extractor.extract(&password)),
+        vec![expected("radius", "access.hash").replace("*1*", "*0*")]
+    );
+}
+
+#[test]
+fn radius_probe_boundaries() {
+    let extractor = radius::RadiusExtractor;
+    assert!(matches!(
+        extractor.probe(&artifact("radius", "nopassword.pcap")),
+        Probe::Maybe(reason) if reason.contains("User-Password")
+    ));
+    assert_eq!(
+        extractor.probe(&artifact("snmpv3", "message.pcap")),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("plain", b"not a capture".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert!(matches!(
+        extractor.probe(&truncated("radius", "access.pcap")),
+        Probe::Maybe(_)
+    ));
+}
+
+#[test]
+fn tacacs_plus_extracts_encrypted_responses() {
+    let extractor = tacacs_plus::TacacsPlusExtractor;
+    assert_eq!(extractor.slug(), "tacacs-plus");
+    assert!(matches!(
+        extractor.probe(&artifact("tacacs-plus", "response.pcap")),
+        Probe::Yes(reason) if reason.contains("TACACS+")
+    ));
+    assert_eq!(
+        rendered(extractor.extract(&artifact("tacacs-plus", "response.pcap"))),
+        vec![expected("tacacs-plus", "response.hash")]
+    );
+    assert_eq!(
+        rendered(extractor.extract(&artifact("tacacs-plus", "multi.pcap"))),
+        lines("tacacs-plus", "multi.hash")
+    );
+}
+
+#[test]
+fn tacacs_plus_probe_boundaries() {
+    let extractor = tacacs_plus::TacacsPlusExtractor;
+    assert!(matches!(
+        extractor.probe(&artifact("tacacs-plus", "plain.pcap")),
+        Probe::Maybe(reason) if reason.contains("encrypted")
+    ));
+    assert_eq!(
+        extractor.probe(&artifact("iscsi-chap", "login.pcap")),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("plain", b"not a capture".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert!(matches!(
+        extractor.probe(&truncated("tacacs-plus", "response.pcap")),
+        Probe::Maybe(_)
+    ));
+}
+
+#[test]
+fn sip_digest_extracts_authorization_headers() {
+    let extractor = sip_digest::SipDigestExtractor;
+    assert_eq!(extractor.slug(), "sip-digest");
+    for (name, hash) in [
+        ("register.pcap", "register.hash"),
+        ("register.pcapng", "register.hash"),
+        ("invite.pcap", "invite.hash"),
+    ] {
+        assert!(
+            matches!(
+                extractor.probe(&artifact("sip-digest", name)),
+                Probe::Yes(reason) if reason.contains("SIP")
+            ),
+            "{name}"
+        );
+        assert_eq!(
+            rendered(extractor.extract(&artifact("sip-digest", name))),
+            vec![expected("sip-digest", hash)],
+            "{name}"
+        );
+    }
+    assert_eq!(
+        rendered(extractor.extract(&artifact("sip-digest", "multi.pcap"))),
+        lines("sip-digest", "multi.hash")
+    );
+    let values = extractor
+        .extract(&artifact("sip-digest", "register.pcap"))
+        .unwrap();
+    assert!(
+        values[0]
+            .modes()
+            .iter()
+            .any(|mode| matches!(mode, omniex::Mode::Hashcat(11400)))
+    );
+}
+
+#[test]
+fn sip_digest_probe_boundaries() {
+    let extractor = sip_digest::SipDigestExtractor;
+    assert!(matches!(
+        extractor.probe(&artifact("sip-digest", "sha256.pcap")),
+        Probe::Maybe(reason) if reason.contains("unsupported")
+    ));
+    assert!(
+        extractor
+            .extract(&artifact("sip-digest", "sha256.pcap"))
+            .is_err()
+    );
+    assert!(matches!(
+        extractor.probe(&artifact("sip-digest", "plain.pcap")),
+        Probe::Maybe(reason) if reason.contains("without digest")
+    ));
+    assert_eq!(
+        extractor.probe(&artifact("tacacs-plus", "response.pcap")),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("plain", b"not a capture".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert!(matches!(
+        extractor.probe(&truncated("sip-digest", "register.pcap")),
+        Probe::Maybe(_)
+    ));
+}
+
+#[test]
+fn network_extractors_claim_only_their_own_captures() {
+    let plain = Artifact::from_bytes("plain", b"plain text with no capture".to_vec());
+    for extractor in [
+        &iscsi_chap::IscsiChapExtractor as &dyn Extractor,
+        &snmpv3::Snmpv3Extractor,
+        &radius::RadiusExtractor,
+        &tacacs_plus::TacacsPlusExtractor,
+        &sip_digest::SipDigestExtractor,
+    ] {
+        assert_eq!(extractor.probe(&plain), Probe::No, "{}", extractor.slug());
+    }
+
+    let owned = [
+        (
+            "iscsi-chap",
+            &artifact("iscsi-chap", "login.pcap"),
+            &iscsi_chap::IscsiChapExtractor as &dyn Extractor,
+        ),
+        (
+            "snmpv3",
+            &artifact("snmpv3", "message.pcap"),
+            &snmpv3::Snmpv3Extractor,
+        ),
+        (
+            "tacacs-plus",
+            &artifact("tacacs-plus", "response.pcap"),
+            &tacacs_plus::TacacsPlusExtractor,
+        ),
+        (
+            "sip-digest",
+            &artifact("sip-digest", "register.pcap"),
+            &sip_digest::SipDigestExtractor,
+        ),
+    ];
+    for (slug, capture, owner) in owned {
+        assert!(matches!(owner.probe(capture), Probe::Yes(_)), "{slug}");
+        for extractor in [
+            &iscsi_chap::IscsiChapExtractor as &dyn Extractor,
+            &snmpv3::Snmpv3Extractor,
+            &radius::RadiusExtractor,
+            &tacacs_plus::TacacsPlusExtractor,
+            &sip_digest::SipDigestExtractor,
+        ] {
+            if extractor.slug() == slug {
+                continue;
+            }
+            assert_eq!(
+                extractor.probe(capture),
+                Probe::No,
+                "{} on {slug}",
+                extractor.slug()
+            );
+        }
     }
 }
