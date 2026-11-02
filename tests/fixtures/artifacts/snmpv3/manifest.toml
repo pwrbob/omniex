@@ -1,4 +1,5 @@
 type = "snmpv3"
-hashcat = "$SNMPv3$0$1$..."
+artifact = "message.bin"
 generator = "synthetic BER-encoded SNMPv3 USM messages, raw and in a UDP capture"
 notes = "Synthetic HMAC values; the authentication parameter field is zeroed in the expected message."
+hashcat = "$SNMPv3$0$1$3049020103300e020212340202ffe304010102010304323030041180001f88808106d566db57fd60000000000201070201780405706970706f040c00000000000000000000000004003000$80001f88808106d566db57fd6000000000$1b37c3ea872731f922959e90"
