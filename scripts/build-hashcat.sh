@@ -30,7 +30,10 @@ rm -rf "$dest"
 tar -xzf "$archive" -C "$cache"
 
 jobs="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)"
-make -C "$dest" -j"$jobs"
+# The LINUX cross target drops the host-only -march=native flags, so the
+# artifact also runs on conformance runners with a different CPU.
+make -C "$dest" linux -j"$jobs"
+install -m 755 "$dest/hashcat.bin" "$dest/hashcat"
 
 test -x "$dest/hashcat"
 printf '%s\n' "$script_hash" > "$stamp"

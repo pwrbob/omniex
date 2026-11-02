@@ -115,6 +115,10 @@ scripts/build-john.sh
 Then run conformance with `OMNIEX_HASHCAT` and `OMNIEX_JOHN` pointing at the
 built binaries, or let `scripts/ci.sh` discover them.
 
+Keep the hashcat build on the `linux` cross target. A plain `make` builds with
+the host's `-march=native` flags, and the resulting artifact can trap with
+SIGILL on a conformance runner with a different CPU.
+
 ## OpenCL-only John formats
 
 Never run John with an OpenCL-only `--format=<label>` just to inspect its
