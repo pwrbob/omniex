@@ -1,0 +1,16 @@
+dn: uid=alice,dc=example
+uid: alice
+cn: Alice
+userPassword: {SHA}AAECAwQFBgcICQoLDA0ODxAREhM=
+
+dn: uid=bob,dc=example
+uid: bob
+userPassword: {SSHA}FBUWFxgZGhscHR4fICEiIyQlJicAAQIDBAUGBw==
+
+dn: uid=carol,dc=example
+uid: carol
+userPassword: {SSHA256}AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8ICQoLDA0ODxAREhM=
+
+dn: uid=dave,dc=example
+uid: dave
+userPassword: {SSHA512}AAMGCQwPEhUYGx4hJCcqLTAzNjk8P0JFSEtOUVRXWl1gY2ZpbG9ydXh7foGEh4qNkJOWmZyfoqWoq66xtLe6vQABAgMEBQYHCAkKCwwNDg8=

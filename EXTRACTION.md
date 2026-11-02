@@ -10,8 +10,8 @@ README badge counts checked lines in this file.
 - [x] OpenPGP secret keys, armored and binary, including subkeys and ECC (`gpg`)
 - [ ] OpenPGP symmetrically encrypted files (`gpg`)
 - [x] PGP Self-Decrypting Archive `.sda` (`pgpsda`)
-- [ ] PGP Whole Disk Encryption volume (`pgpwde`)
-- [ ] PGP Disk volume (`pgpdisk`)
+- [x] PGP Whole Disk Encryption volume (`pgpwde`)
+- [x] PGP Disk volume (`pgpdisk`)
 
 ## Windows
 
@@ -33,7 +33,7 @@ README badge counts checked lines in this file.
 - [ ] AIX `/etc/security/passwd` (`aix-smd5`, `aix-ssha1`, `aix-ssha256`, `aix-ssha512`)
 - [ ] AS/400 user profiles (`as400-des`, `as400-ssha1`)
 - [ ] RACF database extracts (`racf`, `racf-kdfaes`, `racf-passphrase`, `racf-kdfaes-passphrase`)
-- [ ] LDAP password attributes (`ldap-sha1`, `ldap-ssha1`, `ldap-ssha256`, `ldap-ssha512`)
+- [x] LDAP password attributes (`ldap-sha1`, `ldap-ssha1`, `ldap-ssha256`, `ldap-ssha512`)
 
 ## Apple and macOS
 
@@ -66,8 +66,10 @@ README badge counts checked lines in this file.
 - [ ] eCryptfs version 1 wrapped passphrases (`ecryptfs`)
 - [ ] Google fscrypt policy and key material (`fscrypt`)
 - [x] EncFS configuration and key files (`encfs`)
-- [ ] VirtualBox disk images (`virtualbox`)
-- [ ] VMware VMX and encrypted disk metadata (`vmware-vmx`, `vmx`)
+- [x] VirtualBox VDI key stores from `.vbox` files (`vdi`)
+- [x] VirtualBox hashcat disk metadata (`virtualbox`)
+- [x] VMware VMX encryption keySafe (`vmx-john`)
+- [ ] VMware VMX hashcat metadata (`vmware-vmx`)
 - [ ] Veeam backup metadata (`veeam`)
 
 ## Archives and documents
@@ -105,7 +107,8 @@ README badge counts checked lines in this file.
 - [ ] KeePass KDBX v2/v3 (`keepass`)
 - [ ] KeePass KDBX v4 (`keepass4`)
 - [x] 1Password agilekeychain (`onepassword-agile`, `agilekeychain`)
-- [ ] 1Password cloudkeychain (`onepassword-cloud`)
+- [x] 1Password cloudkeychain profiles (`cloudkeychain`)
+- [ ] 1Password cloudkeychain hashcat serialization (`onepassword-cloud`)
 - [ ] 1Password mobile keychain (`onepassword-mobile`)
 - [ ] Bitwarden encrypted export (`bitwarden`)
 - [ ] LastPass vault (`lastpass`)
