@@ -58,3 +58,13 @@ This file documents the extractors currently registered in
 - `ldap-ssha1` - LDAP `{SSHA}` attributes in LDIF exports.
 - `ldap-ssha256` - LDAP `{SSHA256}` attributes in LDIF exports.
 - `ldap-ssha512` - LDAP `{SSHA512}` attributes in LDIF exports.
+- `apr1` - Apache `$apr1$` password hashes in text password files.
+- `bcrypt` - bcrypt password hashes in text password files.
+- `bsdi-crypt` - BSDi crypt hashes from `master.passwd` dumps.
+- `descrypt` - traditional DES crypt hashes from shadow files.
+- `md5crypt` - md5crypt hashes from shadow files.
+- `sha1crypt` - Solaris SHA1 crypt hashes.
+- `sha256crypt` - sha256crypt hashes from shadow files.
+- `sha512crypt` - sha512crypt hashes from shadow files.
+- `sunmd5` - Solaris SunMD5 hashes.
+- `yescrypt` - yescrypt hashes from shadow files.

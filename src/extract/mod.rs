@@ -374,6 +374,7 @@ mod pgpdisk;
 mod pgpsda;
 mod pgpwde;
 mod pwsafe;
+mod shadow;
 mod vdi;
 mod vmx;
 mod winzip;
@@ -422,6 +423,16 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &pgpwde::PgpwdeExtractor,
     &pwsafe::PwsafeExtractor,
     &pwsafe::PwsafeV3Extractor,
+    &shadow::Apr1Extractor,
+    &shadow::BcryptExtractor,
+    &shadow::BsdiCryptExtractor,
+    &shadow::DesCryptExtractor,
+    &shadow::Md5CryptExtractor,
+    &shadow::Sha1cryptExtractor,
+    &shadow::Sha256CryptExtractor,
+    &shadow::Sha512CryptExtractor,
+    &shadow::SunMd5Extractor,
+    &shadow::YescryptExtractor,
 ];
 
 /// Returns the extractor registered for a slug.
