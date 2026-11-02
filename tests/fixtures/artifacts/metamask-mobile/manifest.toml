@@ -1,0 +1,3 @@
+type = "metamask-mobile"
+generator = "synthetic MetaMask mobile vault"
+notes = "Synthetic ciphertext; no real keys."
