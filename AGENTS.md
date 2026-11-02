@@ -14,17 +14,34 @@
 Before calling an iteration finished:
 
 1. Run `scripts/ci.sh` locally. It executes the fast CI jobs: formatting, clippy,
-   docs, workspace tests, and doc tests. It also runs hashcat and John
-   conformance when the reference binaries are available.
-2. If a conformance tool is not available, record that explicitly rather than
+   the Rust 1.85 MSRV check when that toolchain is installed, docs, workspace
+   tests, and doc tests. It also runs hashcat and John conformance when the
+   reference binaries are available.
+2. Run `cargo +1.85.0 check --workspace --all-targets --locked` whenever
+   dependencies change. Treat the CI `msrv` job as the final authority.
+3. If a conformance tool is not available, record that explicitly rather than
    claiming it passed.
-3. Update `MODES.md` by removing every mode the iteration now covers.
-4. Before committing, review the registry for grouping opportunities. Try to
+4. Update `MODES.md` by removing every mode the iteration now covers.
+5. Before committing, review the registry for grouping opportunities. Try to
    merge types whose algorithm, fields, and serialization match, with the
    varying parameter (output size, round count, variant, or similar) selected
    by the mode and filtered through `modes_fn`. This keeps the type count
    driven by logical hash types rather than hashcat mode numbers.
-5. Commit the result. Do not push.
+6. Commit the result. Do not push.
+
+## Dependency MSRV
+
+The workspace supports Rust 1.85.0. `cargo add` only honors a dependency's own
+`rust-version` field, and some crates omit it or publish a patch release that
+raises the real requirement.
+
+- Check the resolved version with `cargo tree -i <crate>` and
+  `cargo info <crate>@<version>`.
+- Run `cargo +1.85.0 check --workspace --all-targets --locked` after adding,
+  updating, or pinning a dependency.
+- Pin an exact version when a newer patch release cannot compile on 1.85, and
+  record why in the commit message.
+- Do not rely on `--locked` alone; it proves reproducibility, not MSRV.
 
 ## Adding a hash type
 

@@ -11,6 +11,13 @@ cargo fmt --all --check
 echo "==> cargo clippy"
 cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 
+echo "==> cargo +1.85.0 check"
+if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.85\.0'; then
+    cargo +1.85.0 check --workspace --all-targets --locked
+else
+    echo "warning: Rust 1.85.0 toolchain not installed; MSRV check skipped" >&2
+fi
+
 echo "==> cargo doc"
 RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 

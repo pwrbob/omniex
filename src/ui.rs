@@ -136,7 +136,7 @@ pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> Strin
     }
 
     let mut table = Table::new();
-    table.load_style(NOTHING);
+    table.load_preset(NOTHING);
     table.set_content_arrangement(ContentArrangement::Dynamic);
     table.set_width(u16::try_from(context.width).unwrap_or(u16::MAX));
     if context.bold {
