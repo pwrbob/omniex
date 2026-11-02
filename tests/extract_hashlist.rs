@@ -7,7 +7,26 @@ use omniex::RenderOptions;
 use omniex::extract::{self, Artifact, Probe};
 
 const SLUGS: &[&str] = &[
-    "md5", "md4", "ntlm", "lm", "sha1", "ripemd", "sha224", "sha256", "sha384", "sha512",
+    "md5",
+    "md4",
+    "ntlm",
+    "lm",
+    "sha1",
+    "ripemd",
+    "sha224",
+    "sha256",
+    "sha384",
+    "sha512",
+    "gost",
+    "keccak",
+    "md2",
+    "sha0",
+    "sha3",
+    "sm3",
+    "streebog",
+    "tiger",
+    "whirlpool",
+    "skein-512",
 ];
 
 fn fixture(name: &str) -> PathBuf {

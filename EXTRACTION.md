@@ -195,6 +195,16 @@ README badge counts checked lines in this file.
 - [x] SHA-256 hash lists (`sha256`)
 - [x] SHA-384 hash lists (`sha384`)
 - [x] SHA-512 hash lists (`sha512`)
+- [x] GOST hash lists (`gost`)
+- [x] Keccak hash lists (`keccak`)
+- [x] MD2 hash lists (`md2`)
+- [x] SHA-0 hash lists (`sha0`)
+- [x] SHA-3 hash lists (`sha3`)
+- [x] SM3 hash lists (`sm3`)
+- [x] Streebog hash lists (`streebog`)
+- [x] Tiger hash lists (`tiger`)
+- [x] Whirlpool hash lists (`whirlpool`)
+- [x] Skein-512 hash lists (`skein-512`)
 
 ## Textual credential exports
 

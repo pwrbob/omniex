@@ -85,3 +85,4 @@ This file documents the extractors currently registered in
 - `racf-kdfaes`, `racf-passphrase` - RACF KDFAES and passphrase exports.
 - `sybase-prop` - Sybase hash exports.
 - Plain hash lists for `md4`, `md5`, `ntlm`, `lm`, `sha1`, `ripemd`, `sha224`, `sha256`, `sha384`, and `sha512`.
+- Plain hash lists also cover `gost`, `keccak`, `md2`, `sha0`, `sha3`, `sm3`, `streebog`, `tiger`, `whirlpool`, and `skein-512`.
