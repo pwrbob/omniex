@@ -1,0 +1,6 @@
+type = "sshng"
+password = "password"
+hashcat = "$sshng$6$16$..."
+john = "$sshng$6$16$..."
+generator = "ssh-keygen -t rsa -N password; openssl rsa -aes256 -traditional"
+notes = "Throwaway SSH test keys; no real credentials."

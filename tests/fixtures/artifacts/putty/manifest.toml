@@ -1,0 +1,6 @@
+type = "putty"
+password = "password"
+hashcat = ""
+john = "$putty$1*16*1*0*..."
+generator = "synthetic PuTTY-User-Key-File-2 with AES-256-CBC and HMAC-SHA1"
+notes = "Throwaway PuTTY test key; no real credentials."
