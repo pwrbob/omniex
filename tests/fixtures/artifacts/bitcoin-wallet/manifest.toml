@@ -1,0 +1,3 @@
+type = "bitcoin-wallet"
+generator = "synthetic Bitcoin Core wallet.dat"
+notes = "Synthetic BDB page; no real key."

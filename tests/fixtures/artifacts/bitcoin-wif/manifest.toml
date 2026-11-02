@@ -1,0 +1,3 @@
+type = "bitcoin-wif"
+generator = "synthetic WIF private keys"
+notes = "Public test vectors; no real funds."
