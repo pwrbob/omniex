@@ -1,3 +1,5 @@
 type = "filezilla-server"
 generator = "synthetic FileZilla Server XML fixture"
 notes = "Contains one supported SHA-512 user and one legacy MD5 user."
+artifact = "FileZilla Server.xml"
+hashcat = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:3031323334353637383930313233343536373839303132333435363738393031"

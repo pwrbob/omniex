@@ -1,3 +1,5 @@
 type = "macos-sha1"
 generator = "synthetic user.plist with a SALTED-SHA1 shadow hash"
 notes = "Synthetic directory-service plist; no real account."
+artifact = "user.plist"
+hashcat = "1122334400112233445566778899aabbccddeeff00112233"

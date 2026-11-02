@@ -1,3 +1,6 @@
 type = "ecryptfs"
 generator = "synthetic eCryptfs version 2 wrapped passphrase"
 notes = "Synthetic wrapped passphrase; no real key."
+artifact = "wrapped-passphrase"
+hashcat = "$ecryptfs$0$1$0102030405060708$1122334455667788"
+john = "$ecryptfs$0$1$0102030405060708$1122334455667788"

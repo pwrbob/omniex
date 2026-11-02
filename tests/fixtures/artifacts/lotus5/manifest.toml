@@ -1,3 +1,5 @@
 type = "lotus5"
 generator = "synthetic Lotus Notes 5 user ID"
 notes = "Synthetic ID blob; no real identity."
+artifact = "user.id"
+hashcat = "00112233445566778899aabbccddeeff"
