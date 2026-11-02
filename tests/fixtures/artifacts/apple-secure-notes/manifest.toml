@@ -1,0 +1,3 @@
+type = "apple-secure-notes"
+generator = "synthetic NoteStore.sqlite database"
+notes = "Synthetic protected notes; wrapped keys are arbitrary bytes."

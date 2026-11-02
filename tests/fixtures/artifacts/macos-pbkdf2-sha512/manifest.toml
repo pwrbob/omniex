@@ -1,0 +1,3 @@
+type = "macos-pbkdf2-sha512"
+generator = "synthetic user.plist with a SALTED-SHA512-PBKDF2 shadow hash"
+notes = "Synthetic directory-service plist; no real account."

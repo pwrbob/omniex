@@ -1,0 +1,3 @@
+type = "apple-keychain"
+generator = "synthetic macOS login keychain database blob"
+notes = "Synthetic keychain; the wrapped key is not derived from a password."
