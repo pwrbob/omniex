@@ -1,0 +1,6 @@
+type = "lotus-notes"
+generator = "tests/fixtures/artifacts/lotus-notes/generate.py"
+hashcat = "(GDJ0nDZI8l8RJzlRbemg)"
+john = "(GDJ0nDZI8l8RJzlRbemg)"
+expected = "expected.hash"
+notes = "Synthetic Notes user ID file holding a Domino 6 (G) and a Domino 8 (H) password digest; both are hashcat example digests, not real identities."

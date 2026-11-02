@@ -1,0 +1,6 @@
+type = "dpapi"
+generator = "tests/fixtures/artifacts/dpapi/generate.py"
+hashcat = "$DPAPImk$1*1*S-1-5-21-1111111111-2222222222-3333333333-1001*des3*sha1*24000*b0b1b2b3b4b5b6b7b8b9babbbcbdbebf*128*000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+john = "$DPAPImk$1*1*S-1-5-21-1111111111-2222222222-3333333333-1001*des3*sha1*24000*b0b1b2b3b4b5b6b7b8b9babbbcbdbebf*128*000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+expected = "masterkey.hash"
+notes = "Synthetic user masterkey files plus a Credential Manager vault policy SID; the account SID is not stored in the masterkey files and comes from the vault data."
