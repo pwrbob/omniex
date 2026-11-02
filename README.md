@@ -191,6 +191,19 @@ Conformance tests are `#[ignore]`d so the fast suite never needs either tool.
 When the required generator is available, CI also creates real artifacts such
 as AES ZIP archives and checks extraction against the reference output.
 
+### Extractor-to-cracker conformance
+
+Fixtures that declare a `hashcat` or `john` serialization in their manifest are
+exercised end to end: `omniex` extracts the artifact, verifies the rendered
+hashes match the manifest, and then asks the pinned hashcat build to identify
+and load each hash with `--show`, or the pinned John build to report the
+declared format with `--show=formats`. Neither path runs an attack.
+
+This checks the extractor's real output rather than a separately curated hash
+string: if the extractor serialization drifts, the cracker call fails. Fixtures
+whose synthetic serialization a reference cracker rejects are marked
+`e2e = false` with a reason so the gap remains visible.
+
 ## Documentation
 
 - [`doc/DESIGN.md`](doc/DESIGN.md) - data model and CLI behavior.
