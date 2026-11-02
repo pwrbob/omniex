@@ -1,0 +1,3 @@
+type = "netntlmv2"
+generator = "synthetic NTLMSSP challenge/authenticate exchange in a packet capture"
+notes = "Synthetic challenge and NTLMv2 blob; no real credentials."
