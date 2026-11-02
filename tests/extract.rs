@@ -283,13 +283,13 @@ fn extract_rejects_unknown_types_and_unrecognized_artifacts() {
     let wrong_type = omniex()
         .args(["extract"])
         .arg(fixture("ec_testkey1.key"))
-        .args(["--type", "md6"])
+        .args(["--type", "chacha20"])
         .output()
         .expect("extract runs");
     assert_eq!(wrong_type.status.code(), Some(1));
     assert!(
         String::from_utf8_lossy(&wrong_type.stderr)
-            .contains("no extractor is registered for `md6`")
+            .contains("no extractor is registered for `chacha20`")
     );
 
     let text = scratch("not-a-key.txt");
