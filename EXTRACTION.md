@@ -26,6 +26,8 @@ README badge counts checked lines in this file.
 
 ## Unix and directory credentials
 
+- [x] IBM/Toshiba 4690 ADXCSOUF user database (`adxcrypt`)
+
 - [ ] Linux `/etc/shadow` (`descrypt`, `md5crypt`, `sha256crypt`, `sha512crypt`, `yescrypt`)
 - [ ] BSD `/etc/master.passwd` (`bsdicrypt`)
 - [ ] AIX `/etc/security/passwd` (`aix-smd5`, `aix-ssha1`, `aix-ssha256`, `aix-ssha512`)
@@ -111,7 +113,7 @@ README badge counts checked lines in this file.
 - [ ] Password Safe v2 (`pwsafe-v2`)
 - [x] Password Safe v3 (`pwsafe-v3`, `pwsafe`)
 - [x] Legacy KDE KWallet files (`kwallet`)
-- [ ] Salted KDE KWallet 4.13+ files with `.salt` sidecars (`kwallet`)
+- [x] Salted KDE KWallet 4.13+ files with `.salt` sidecars (`kwallet`)
 - [x] Enpass databases (`enpass`)
 - [x] Dashlane vaults (`dashlane`)
 - [x] BKS keystores (`bks`)
@@ -131,8 +133,8 @@ README badge counts checked lines in this file.
 
 - [ ] Bitcoin Core `wallet.dat` (`bitcoin-wallet`)
 - [x] Electrum wallets (`electrum`)
-- [ ] MultiBit Classic `.key` (`multibit`)
-- [ ] MultiBit HD wallets (`multibit-hd`)
+- [x] MultiBit Classic `.key` (`multibit`)
+- [x] MultiBit HD wallets (`multibit-hd`)
 - [ ] MultiBit Classic `.wallet` (`multibit-wallet`)
 - [x] Ethereum keystore v3 JSON (`ethereum-pbkdf2`, `ethereum-scrypt`)
 - [x] Ethereum presale wallets (`ethereum-presale`)
@@ -150,7 +152,8 @@ README badge counts checked lines in this file.
 - [ ] Keplr wallets (`keplr`)
 - [ ] Stellar wallets (`stellar`)
 - [ ] Terra wallets (`terra`)
-- [ ] BitShares wallets (`bitshares`)
+- [x] BitShares backup wallets (`bitshares-john`)
+- [ ] BitShares SQLite and LevelDB wallets (`bitshares`)
 - [ ] Raw WIF private keys (`bitcoin-wif`)
 
 ## Mobile and application stores

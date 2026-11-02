@@ -96,3 +96,20 @@ fn kwallet_rejects_truncated_and_invalid_sizes() {
         );
     }
 }
+
+#[test]
+fn kwallet_extracts_a_modern_salted_wallet_with_its_sidecar() {
+    let output = omniex()
+        .arg("extract")
+        .arg(fixture("modern.kwl"))
+        .args(["--type", "kwallet", "--format", "john"])
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    assert_eq!(
+        String::from_utf8(output.stdout).unwrap().trim_end(),
+        std::fs::read_to_string(fixture("modern.hash"))
+            .unwrap()
+            .trim_end()
+    );
+}

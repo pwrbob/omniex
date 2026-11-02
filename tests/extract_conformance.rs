@@ -25,6 +25,22 @@ struct Case {
 
 const CASES: &[Case] = &[
     Case {
+        name: "adxcrypt",
+        script: "adxcsouf2john.py",
+        args: &["tests/fixtures/artifacts/adxcrypt/ADXCSOUF.DAT"],
+        expected: "tests/fixtures/artifacts/adxcrypt/ADXCSOUF.hash",
+        normalize: Normalize::Hash,
+        subset: false,
+    },
+    Case {
+        name: "kwallet-modern",
+        script: "kwallet2john.py",
+        args: &["tests/fixtures/artifacts/kwallet/modern.kwl"],
+        expected: "tests/fixtures/artifacts/kwallet/modern.hash",
+        normalize: Normalize::Hash,
+        subset: false,
+    },
+    Case {
         name: "ansible-vault",
         script: "ansible2john.py",
         args: &["tests/fixtures/artifacts/ansible/sample.yml"],
