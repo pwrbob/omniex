@@ -206,10 +206,12 @@ fn empty_input_is_never_recognized() {
 
 #[test]
 fn ike_extractors_reject_the_wrong_digest_length() {
-    assert!(MD5
-        .extract(&artifact("ike-psk-sha1", "aggressive.pcap"))
-        .is_err());
-    assert!(SHA1
-        .extract(&artifact("ike-psk-md5", "aggressive.pcap"))
-        .is_err());
+    assert!(
+        MD5.extract(&artifact("ike-psk-sha1", "aggressive.pcap"))
+            .is_err()
+    );
+    assert!(
+        SHA1.extract(&artifact("ike-psk-md5", "aggressive.pcap"))
+            .is_err()
+    );
 }

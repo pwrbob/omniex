@@ -8,7 +8,7 @@ README badge counts checked lines in this file.
 ## OpenPGP and PGP
 
 - [x] OpenPGP secret keys, armored and binary, including subkeys and ECC (`gpg`)
-- [ ] OpenPGP symmetrically encrypted files (`gpg`)
+- [x] OpenPGP symmetrically encrypted files (`gpg`)
 - [x] PGP Self-Decrypting Archive `.sda` (`pgpsda`)
 - [x] PGP Whole Disk Encryption volume (`pgpwde`)
 - [x] PGP Disk volume (`pgpdisk`)
@@ -48,7 +48,7 @@ README badge counts checked lines in this file.
 - [x] iOS keychain records from a backup (`keyring`, `iphone-passcode`)
 - [x] iTunes and Finder iOS backups (`itunes-backup`)
 - [x] Apple iWork 2013/2014 documents with an iwpv2 verifier (`iwork`)
-- [ ] Apple iWork 2009 documents (`iwork`)
+- [x] Apple iWork 2009 documents (`iwork`)
 - [x] Apple DMG encrcdsa v2 images (`dmg-john`)
 - [x] Apple DMG encrcdsa v3 images (`apple-dmg`)
 
@@ -67,7 +67,7 @@ README badge counts checked lines in this file.
 - [x] Android FDE footer (`android-fde`)
 - [x] Samsung Android FDE (`android-fde-samsung`)
 - [x] eCryptfs version 2 wrapped passphrases (`ecryptfs`)
-- [ ] eCryptfs version 1 wrapped passphrases (`ecryptfs`)
+- [x] eCryptfs version 1 wrapped passphrases (`ecryptfs`)
 - [x] Google fscrypt policy and key material (`fscrypt`)
 - [x] EncFS configuration and key files (`encfs`)
 - [x] VirtualBox VDI key stores from `.vbox` files (`vdi`)
@@ -101,7 +101,7 @@ README badge counts checked lines in this file.
 
 - [x] PKCS#12 and PFX bundles (`pkcs12`, `pfx`)
 - [x] PKCS#8 and PEM private keys (`pem-private-key`)
-- [ ] PEM private keys in the John serialization (`pem`)
+- [x] PEM private keys in the John serialization (`pem`)
 - [x] JKS and JCEKS private keys (`jks-private-key`)
 - [x] OpenSSH private keys (`sshng`)
 - [x] PuTTY private keys (`putty`)
@@ -247,7 +247,7 @@ README badge counts checked lines in this file.
 - [x] Kerberos TGS-REP, etype 23 (`krb5tgs23`)
 - [x] Kerberos TGS-REP, etype 17/18 (`krb5tgs17`, `krb5tgs18`)
 - [x] Kerberos AS-REQ pre-authentication (`krb5pa23`, `krb5pa17`, `krb5pa18`)
-- [ ] Kerberos database extracts (`krb5db17`, `krb5db18`, `krb5db-old`)
+- [x] Kerberos database extracts (`krb5db17`, `krb5db18`, `krb5db-old`)
 - [x] Kerberos 4 exchanges (`krb4`)
 - [x] NTLMSSP NetNTLMv1 (`netntlmv1`)
 - [x] NTLMSSP NetNTLMv2 (`netntlmv2`)
@@ -257,7 +257,7 @@ README badge counts checked lines in this file.
 - [x] RADIUS shared-secret exchanges (`radius`)
 - [x] TACACS+ exchanges (`tacacs-plus`)
 - [x] SIP digest authentication (`sip-digest`)
-- [ ] IKE pre-shared-key exchanges (`ike-psk-md5`, `ike-psk-sha1`, `ike-john`)
+- [x] IKE pre-shared-key exchanges (`ike-psk-md5`, `ike-psk-sha1`, `ike-john`)
 - [x] OSPFv2 and RIPv2 MD5 authentication (`ospf-md5`)
 - [x] TCP MD5 signatures (`tcp-md5`)
 - [x] HSRP authentication (`hsrp`)

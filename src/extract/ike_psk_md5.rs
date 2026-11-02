@@ -353,10 +353,8 @@ pub(crate) mod ike {
         if version >> 4 != 1 || data[18] != IKEV1_AGGRESSIVE {
             return None;
         }
-        let total = usize::try_from(u32::from_be_bytes([
-            data[24], data[25], data[26], data[27],
-        ]))
-        .ok()?;
+        let total =
+            usize::try_from(u32::from_be_bytes([data[24], data[25], data[26], data[27]])).ok()?;
         if total < 28 || total > data.len() {
             return None;
         }
@@ -505,7 +503,11 @@ fn scan_records(artifact: &Artifact) -> Result<Vec<IkePskMd5>, ExtractError> {
             nonce_1: exchange.nr_b,
             digest,
         };
-        if seen.insert(value.render(&omniex::RenderOptions::default()).unwrap_or_default()) {
+        if seen.insert(
+            value
+                .render(&omniex::RenderOptions::default())
+                .unwrap_or_default(),
+        ) {
             values.push(value);
         }
     }

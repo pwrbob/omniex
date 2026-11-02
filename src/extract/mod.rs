@@ -482,6 +482,14 @@ mod veracrypt;
 mod vmware_vmx;
 mod windows_hello;
 
+mod ike_john;
+mod ike_psk_md5;
+mod ike_psk_sha1;
+mod krb5db17;
+mod krb5db18;
+mod krb5db_old;
+mod pem;
+
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &adxcrypt::AdxcryptExtractor,
     &aix::AixSmd5Extractor,
@@ -705,6 +713,13 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &hsrp::HsrpExtractor,
     &eigrp::EigrpExtractor,
     &sntp_ms::SntpMsExtractor,
+    &pem::PemExtractor,
+    &krb5db17::Krb5Db17Extractor,
+    &krb5db18::Krb5Db18Extractor,
+    &krb5db_old::Krb5DbOldExtractor,
+    &ike_psk_md5::IkePskMd5Extractor,
+    &ike_psk_sha1::IkePskSha1Extractor,
+    &ike_john::IkeJohnExtractor,
 ];
 
 /// Returns the extractor registered for a slug.

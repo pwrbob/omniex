@@ -29,7 +29,11 @@ fn scan_records(artifact: &Artifact) -> Result<Vec<IkePskSha1>, ExtractError> {
             nonce_1: exchange.nr_b,
             digest,
         };
-        if seen.insert(value.render(&omniex::RenderOptions::default()).unwrap_or_default()) {
+        if seen.insert(
+            value
+                .render(&omniex::RenderOptions::default())
+                .unwrap_or_default(),
+        ) {
             values.push(value);
         }
     }

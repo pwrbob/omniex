@@ -176,6 +176,9 @@ This file documents the extractors currently registered in
 - `hsrp` - HSRP authentication.
 - `eigrp` - EIGRP authentication.
 - `sntp-ms` - MS SNTP authenticated packets.
+- `pem` - PEM private keys in the John serialization.
+- `krb5db17`, `krb5db18`, `krb5db-old` - Kerberos database extracts.
+- `ike-psk-md5`, `ike-psk-sha1`, `ike-john` - IKE pre-shared-key exchanges.
 - Plain hash lists for `md4`, `md5`, `ntlm`, `lm`, `sha1`, `ripemd`, `sha224`, `sha256`, `sha384`, and `sha512`.
 - Plain hash lists also cover `gost`, `keccak`, `md2`, `sha0`, `sha3`, `sm3`, `streebog`, `tiger`, `whirlpool`, and `skein-512`.
 - Plain hash lists also cover `blake2b-512`, `blake2b-256`, `blake2s-256`, `snefru`, `md6`, `has-160`, `panama`, `mdc2`, `radiogatun`, and `edon-r-256`.
