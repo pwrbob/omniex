@@ -13,6 +13,8 @@ Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in
 [`EXTRACTION.md`](EXTRACTION.md).
 
+AI use: this project was entirely developed by AI with only minor human guidance.
+
 ## Goals
 
 - Support hashcat modes and named John formats that can be parsed or extracted.
