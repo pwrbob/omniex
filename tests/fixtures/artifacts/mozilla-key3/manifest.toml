@@ -1,0 +1,3 @@
+type = "mozilla-key3"
+generator = "synthetic key3.db BSD database"
+notes = "Synthetic master-password verifier; no real credentials."

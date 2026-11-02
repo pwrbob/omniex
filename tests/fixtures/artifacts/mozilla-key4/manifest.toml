@@ -1,0 +1,3 @@
+type = "mozilla-key4"
+generator = "synthetic key4.db SQLite database"
+notes = "Synthetic master-password verifier; no real credentials."

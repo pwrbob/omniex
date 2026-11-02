@@ -1,0 +1,3 @@
+type = "armory"
+generator = "synthetic Armory wallet"
+notes = "Synthetic encrypted key; no real funds."
