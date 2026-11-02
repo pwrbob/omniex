@@ -62,7 +62,11 @@ fn aes_ccm(entry: &[u8]) -> Option<([u8; 12], [u8; 60])> {
     Some((nonce_out, data))
 }
 
-fn parse_vmk(entry: &[u8], salt: &mut Option<[u8; 16]>, found: &mut Vec<Recovery>) -> Result<(), ExtractError> {
+fn parse_vmk(
+    entry: &[u8],
+    salt: &mut Option<[u8; 16]>,
+    found: &mut Vec<Recovery>,
+) -> Result<(), ExtractError> {
     let protection = u16_at(entry, 26)
         .ok_or_else(|| ExtractError::Invalid("truncated BitLocker VMK entry".to_owned()))?;
     if protection != PASSWORD_VMK {
@@ -71,9 +75,10 @@ fn parse_vmk(entry: &[u8], salt: &mut Option<[u8; 16]>, found: &mut Vec<Recovery
 
     let mut position = 28;
     while position < entry.len() {
-        let size = usize::from(u16_at(entry, position).ok_or_else(|| {
-            ExtractError::Invalid("truncated BitLocker VMK property".to_owned())
-        })?);
+        let size =
+            usize::from(u16_at(entry, position).ok_or_else(|| {
+                ExtractError::Invalid("truncated BitLocker VMK property".to_owned())
+            })?);
         if size < 8 || position + size > entry.len() {
             return Err(ExtractError::Invalid(
                 "invalid BitLocker VMK property size".to_owned(),
@@ -105,10 +110,11 @@ fn parse_vmk(entry: &[u8], salt: &mut Option<[u8; 16]>, found: &mut Vec<Recovery
 }
 
 fn parse_block(block: &[u8]) -> Result<Vec<Recovery>, ExtractError> {
-    let metadata_size = usize::try_from(u32_at(block, 64).ok_or_else(|| {
-        ExtractError::Invalid("truncated BitLocker metadata header".to_owned())
-    })?)
-    .map_err(|_| ExtractError::Invalid("invalid BitLocker metadata size".to_owned()))?;
+    let metadata_size =
+        usize::try_from(u32_at(block, 64).ok_or_else(|| {
+            ExtractError::Invalid("truncated BitLocker metadata header".to_owned())
+        })?)
+        .map_err(|_| ExtractError::Invalid("invalid BitLocker metadata size".to_owned()))?;
     if metadata_size < 112 || metadata_size > block.len() {
         return Err(ExtractError::Invalid(
             "invalid BitLocker metadata size".to_owned(),
@@ -156,9 +162,8 @@ fn metadata_offsets(source: &dyn ReadAt, guid_offset: usize) -> Result<Vec<u64>,
 
 fn extract(artifact: &Artifact) -> Result<Vec<BitLocker>, ExtractError> {
     let source = artifact.primary();
-    let guid_offset = signature(source).ok_or_else(|| {
-        ExtractError::Unsupported("not a BitLocker volume".to_owned())
-    })?;
+    let guid_offset = signature(source)
+        .ok_or_else(|| ExtractError::Unsupported("not a BitLocker volume".to_owned()))?;
 
     let mut recoveries = Vec::new();
     let mut last_error = None;

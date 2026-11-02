@@ -136,6 +136,46 @@ This file documents the extractors currently registered in
 - `krb5asrep23` - Kerberos AS-REP etype 23 exchanges.
 - `krb5asrep-aes` - Kerberos AS-REP etype 17 and 18 exchanges.
 - `krb5tgs23` - Kerberos TGS-REP etype 23 exchanges.
+- `dcc2` - DCC2 cached domain credential records.
+- `dpapi` - DPAPI master key records.
+- `windows-hello` - Windows Hello PIN and container records.
+- `bitlocker` - BitLocker FVE volume metadata and VMK material.
+- `veeam` - Veeam VBK backup metadata.
+- `apple-keychain` - macOS login keychains.
+- `apple-secure-notes` - Apple Secure Notes.
+- `macos-sha1`, `macos-sha512`, `macos-pbkdf2-sha512` - macOS local account password plists.
+- `iphone-passcode` - iOS backup keychain records.
+- `itunes-backup` - iTunes and Finder iOS backups.
+- `apple-dmg` - Apple DMG encrcdsa v3 images.
+- `android-backup` - Android backups.
+- `android-fde`, `android-fde-samsung` - Android FDE footers.
+- `luks-v1`, `luks-v2` - LUKS volume headers.
+- `truecrypt`, `veracrypt` - TrueCrypt and VeraCrypt volume headers.
+- `diskcryptor` - DiskCryptor volumes.
+- `filevault2` - FileVault 2 volumes.
+- `apfs` - APFS volumes.
+- `fscrypt` - Google fscrypt policy and key material.
+- `vmware-vmx` - VMware VMX hashcat metadata.
+- `signal` - Signal backups.
+- `telegram` - Telegram local data.
+- `sqlcipher` - SQLCipher databases.
+- `flask-session` - Flask signed session cookies.
+- `racf-kdfaes-passphrase` - RACF KDFAES passphrase records.
+- `krb5tgs17`, `krb5tgs18` - Kerberos TGS-REP AES exchanges.
+- `krb5pa23`, `krb5pa17`, `krb5pa18` - Kerberos AS-REQ pre-authentication exchanges.
+- `krb4` - Kerberos 4 exchanges.
+- `netntlmv1`, `netntlmv2` - NTLMSSP NetNTLM exchanges.
+- `mschapv2-naive`, `chap` - MSCHAPv2 and CHAP exchanges.
+- `iscsi-chap` - iSCSI CHAP exchanges.
+- `snmpv3` - SNMPv3 authenticated messages.
+- `radius` - RADIUS shared-secret exchanges.
+- `tacacs-plus` - TACACS+ exchanges.
+- `sip-digest` - SIP digest authentication.
+- `ospf-md5` - OSPFv2 and RIPv2 MD5 authentication.
+- `tcp-md5` - TCP MD5 signatures.
+- `hsrp` - HSRP authentication.
+- `eigrp` - EIGRP authentication.
+- `sntp-ms` - MS SNTP authenticated packets.
 - Plain hash lists for `md4`, `md5`, `ntlm`, `lm`, `sha1`, `ripemd`, `sha224`, `sha256`, `sha384`, and `sha512`.
 - Plain hash lists also cover `gost`, `keccak`, `md2`, `sha0`, `sha3`, `sm3`, `streebog`, `tiger`, `whirlpool`, and `skein-512`.
 - Plain hash lists also cover `blake2b-512`, `blake2b-256`, `blake2s-256`, `snefru`, `md6`, `has-160`, `panama`, `mdc2`, `radiogatun`, and `edon-r-256`.

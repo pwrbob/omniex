@@ -105,7 +105,9 @@ fn offsets(artifact: &Artifact) -> Result<Vec<u64>, ExtractError> {
     let overlap = MAGIC.len().saturating_sub(1);
     let mut start = 0u64;
     while start < len {
-        let read_len = usize::try_from(len - start).unwrap_or(usize::MAX).min(SCAN_CHUNK);
+        let read_len = usize::try_from(len - start)
+            .unwrap_or(usize::MAX)
+            .min(SCAN_CHUNK);
         let mut chunk = vec![0; read_len];
         let read = source
             .read_at(start, &mut chunk)

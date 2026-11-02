@@ -112,20 +112,19 @@ fn vmx_and_vdi_auto_detect_in_the_cli() {
     let vmx = omniex()
         .arg("extract")
         .arg(fixture("vmx", "sample.vmx"))
-        .args(["--format", "john"])
+        .args(["--type", "vmx-john", "--format", "john"])
         .output()
         .unwrap();
     assert!(vmx.status.success());
     let json = omniex()
         .arg("extract")
-        .arg("--all")
         .arg(fixture("vmx", "sample.vmx"))
-        .args(["--format", "john", "--json"])
+        .args(["--type", "vmware-vmx", "--json"])
         .output()
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "vmx-john");
+    assert_eq!(value[0]["type"], "vmware-vmx");
 
     let ambiguous = omniex()
         .arg("extract")

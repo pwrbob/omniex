@@ -56,9 +56,8 @@ fn parse_record(source: &dyn ReadAt, offset: u64) -> Result<ItunesBackup, Extrac
             "not an iTunes backup keybag record".to_owned(),
         ));
     }
-    let salt = tag_value(&data, 0, 20).ok_or_else(|| {
-        ExtractError::Invalid("iTunes backup SALT is not 20 bytes".to_owned())
-    })?;
+    let salt = tag_value(&data, 0, 20)
+        .ok_or_else(|| ExtractError::Invalid("iTunes backup SALT is not 20 bytes".to_owned()))?;
     let iter = find_tag(&data, TAG_ITER, 28, MAX_SEARCH)
         .ok_or_else(|| ExtractError::Invalid("iTunes backup ITER is missing".to_owned()))?;
     let iter_value = tag_value(&data, iter, 4)
@@ -71,9 +70,8 @@ fn parse_record(source: &dyn ReadAt, offset: u64) -> Result<ItunesBackup, Extrac
     }
     let wpky = find_tag(&data, TAG_WPKY, iter + 8, iter + 8 + MAX_SEARCH)
         .ok_or_else(|| ExtractError::Invalid("iTunes backup WPKY is missing".to_owned()))?;
-    let wrapped_key = tag_value(&data, wpky, 40).ok_or_else(|| {
-        ExtractError::Invalid("iTunes backup WPKY is not 40 bytes".to_owned())
-    })?;
+    let wrapped_key = tag_value(&data, wpky, 40)
+        .ok_or_else(|| ExtractError::Invalid("iTunes backup WPKY is not 40 bytes".to_owned()))?;
 
     let wpky_end = wpky + 8 + 40;
     let record_end = find_tag(&data, TAG_SALT, wpky_end, data.len())
@@ -81,8 +79,7 @@ fn parse_record(source: &dyn ReadAt, offset: u64) -> Result<ItunesBackup, Extrac
         .min(wpky_end + MAX_SEARCH);
     let dpic = find_tag(&data, TAG_DPIC, wpky_end, record_end);
     let dpsl = dpic.and_then(|dpic| {
-        find_tag(&data, TAG_DPSL, dpic + 8, dpic + 8 + MAX_SEARCH)
-            .map(|dpsl| (dpic, dpsl))
+        find_tag(&data, TAG_DPSL, dpic + 8, dpic + 8 + MAX_SEARCH).map(|dpsl| (dpic, dpsl))
     });
     let (version, iterations2, extra) = match dpsl {
         Some((dpic, dpsl)) => {
@@ -119,7 +116,9 @@ fn offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
     let mut found = Vec::new();
     let mut start = 0u64;
     while start < len {
-        let read_len = usize::try_from(len - start).unwrap_or(usize::MAX).min(SCAN_CHUNK);
+        let read_len = usize::try_from(len - start)
+            .unwrap_or(usize::MAX)
+            .min(SCAN_CHUNK);
         let mut chunk = vec![0; read_len];
         let read = source
             .read_at(start, &mut chunk)
@@ -165,7 +164,9 @@ impl Extractor for ItunesBackupExtractor {
             return Probe::No;
         }
         if !has_plist_magic(source) {
-            return Probe::maybe("iTunes backup keybag records are present without a bplist header");
+            return Probe::maybe(
+                "iTunes backup keybag records are present without a bplist header",
+            );
         }
         for offset in &found {
             if parse_record(source, *offset).is_ok() {
@@ -179,9 +180,7 @@ impl Extractor for ItunesBackupExtractor {
         let source = artifact.primary();
         let found = offsets(source)?;
         if found.is_empty() {
-            return Err(ExtractError::Unsupported(
-                "not an iTunes backup".to_owned(),
-            ));
+            return Err(ExtractError::Unsupported("not an iTunes backup".to_owned()));
         }
         let mut hashes = Vec::with_capacity(found.len());
         for offset in found {

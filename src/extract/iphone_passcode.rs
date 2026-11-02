@@ -142,7 +142,9 @@ fn offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
     let mut found = Vec::new();
     let mut start = 0u64;
     while start < len {
-        let read_len = usize::try_from(len - start).unwrap_or(usize::MAX).min(SCAN_CHUNK);
+        let read_len = usize::try_from(len - start)
+            .unwrap_or(usize::MAX)
+            .min(SCAN_CHUNK);
         let mut chunk = vec![0; read_len];
         let read = source
             .read_at(start, &mut chunk)
@@ -198,9 +200,9 @@ fn uid_key(artifact: &Artifact) -> Result<[u8; 16], ExtractError> {
             .map_err(|_| ExtractError::Invalid("UID key is not ASCII hex".to_owned()))?;
         let bytes = parse::decode_hex(text, 0)
             .map_err(|_| ExtractError::Invalid("UID key is not valid hex".to_owned()))?;
-        return bytes.try_into().map_err(|_| {
-            ExtractError::Invalid("UID key is not 16 bytes".to_owned())
-        });
+        return bytes
+            .try_into()
+            .map_err(|_| ExtractError::Invalid("UID key is not 16 bytes".to_owned()));
     }
     Err(ExtractError::Unsupported(
         "iOS keybag does not contain the device UID key; attach a `uid-key` companion".to_owned(),
@@ -242,9 +244,8 @@ impl Extractor for IphonePasscodeExtractor {
             }
         }
         if keybags.is_empty() {
-            return Err(last_error.unwrap_or_else(|| {
-                ExtractError::Unsupported("not an iOS keybag".to_owned())
-            }));
+            return Err(last_error
+                .unwrap_or_else(|| ExtractError::Unsupported("not an iOS keybag".to_owned())));
         }
         let uid_key = uid_key(artifact)?;
         let mut hashes = Vec::new();

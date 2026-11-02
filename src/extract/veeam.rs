@@ -4,7 +4,9 @@ use super::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt};
 use crate::types::Veeam;
 use crate::{HashType, HashValue};
 
-const SIGNATURE: &[u8] = &[0x60, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00];
+const SIGNATURE: &[u8] = &[
+    0x60, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00,
+];
 const PREFIX: usize = 96;
 const DIGEST: usize = 16;
 const DATA: usize = 64;
@@ -59,9 +61,9 @@ fn extract(artifact: &Artifact) -> Result<Vec<Veeam>, ExtractError> {
     let mut hashes = Vec::new();
     for offset in offsets(source)? {
         let mut record = [0u8; RECORD];
-        source.read_exact_at(offset, &mut record).map_err(|_| {
-            ExtractError::Invalid("truncated Veeam VBK backup block".to_owned())
-        })?;
+        source
+            .read_exact_at(offset, &mut record)
+            .map_err(|_| ExtractError::Invalid("truncated Veeam VBK backup block".to_owned()))?;
         let digest_start = SIGNATURE.len() + PREFIX;
         let data_start = digest_start + DIGEST;
         let mut digest = [0u8; DIGEST];

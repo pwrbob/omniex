@@ -390,9 +390,11 @@ fn android_backup_probe_and_errors() {
     );
     let mut data = std::fs::read(fixture("android-backup", "sample.ab")).unwrap();
     data.truncate(40);
-    assert!(android
-        .extract(&Artifact::from_bytes("short", data.clone()))
-        .is_err());
+    assert!(
+        android
+            .extract(&Artifact::from_bytes("short", data.clone()))
+            .is_err()
+    );
     assert!(matches!(
         android.probe(&Artifact::from_bytes("short", data)),
         Probe::Maybe(_)
@@ -440,13 +442,15 @@ fn android_fde_probe_and_errors() {
         fde.probe(&artifact("android-fde", "wrong-cipher.img")),
         Probe::Maybe(_)
     ));
-    assert!(fde
-        .extract(&artifact("android-fde", "wrong-cipher.img"))
-        .is_err());
+    assert!(
+        fde.extract(&artifact("android-fde", "wrong-cipher.img"))
+            .is_err()
+    );
     let data = std::fs::read(fixture("android-fde", "sample.img")).unwrap();
-    assert!(fde
-        .extract(&Artifact::from_bytes("short", data[..100].to_vec()))
-        .is_err());
+    assert!(
+        fde.extract(&Artifact::from_bytes("short", data[..100].to_vec()))
+            .is_err()
+    );
     assert!(matches!(
         extract::select(extract::EXTRACTORS, &artifact("android-fde", "sample.img")),
         Selection::Unique(candidate) if candidate.slug() == "android-fde"
@@ -468,10 +472,7 @@ fn apple_dmg_probe_and_errors() {
         dmg.probe(&artifact("apple-dmg", "aes.dmg")),
         Probe::Yes(reason) if reason == "Apple DMG encrcdsa AES-192 key blob"
     ));
-    assert_eq!(
-        dmg.probe(&artifact("apple-dmg", "legacy.dmg")),
-        Probe::No
-    );
+    assert_eq!(dmg.probe(&artifact("apple-dmg", "legacy.dmg")), Probe::No);
     assert_eq!(
         dmg.probe(&Artifact::from_bytes("junk", b"not a dmg".to_vec())),
         Probe::No
@@ -481,9 +482,10 @@ fn apple_dmg_probe_and_errors() {
         Probe::No
     );
     let data = std::fs::read(fixture("apple-dmg", "aes.dmg")).unwrap();
-    assert!(dmg
-        .extract(&Artifact::from_bytes("short", data[..100].to_vec()))
-        .is_err());
+    assert!(
+        dmg.extract(&Artifact::from_bytes("short", data[..100].to_vec()))
+            .is_err()
+    );
     let selected = omniex()
         .arg("extract")
         .arg("--type")
@@ -536,9 +538,11 @@ fn itunes_backup_probe_and_errors() {
         Probe::No
     );
     let truncated = records[..28].to_vec();
-    assert!(itunes
-        .extract(&Artifact::from_bytes("short", truncated.clone()))
-        .is_err());
+    assert!(
+        itunes
+            .extract(&Artifact::from_bytes("short", truncated.clone()))
+            .is_err()
+    );
     assert!(matches!(
         itunes.probe(&Artifact::from_bytes("short", truncated)),
         Probe::No
@@ -551,12 +555,7 @@ fn itunes_backup_probe_and_errors() {
 
 #[test]
 fn iphone_passcode_extracts_wrapped_class_keys() {
-    let keybag = with_companion(
-        "iphone-passcode",
-        "keybag.bin",
-        "uid-key",
-        "uid-key.txt",
-    );
+    let keybag = with_companion("iphone-passcode", "keybag.bin", "uid-key", "uid-key.txt");
     let hashes = extractor("iphone-passcode")
         .extract(&keybag)
         .expect("keybag extraction succeeds");
@@ -585,9 +584,11 @@ fn iphone_passcode_probe_and_errors() {
         iphone.probe(&artifact("iphone-passcode", "keybag.bin")),
         Probe::Yes(reason) if reason == "iOS keybag with a wrapped class key"
     ));
-    assert!(iphone
-        .extract(&artifact("iphone-passcode", "keybag.bin"))
-        .is_err());
+    assert!(
+        iphone
+            .extract(&artifact("iphone-passcode", "keybag.bin"))
+            .is_err()
+    );
     assert_eq!(
         iphone.probe(&Artifact::from_bytes("junk", b"not a keybag".to_vec())),
         Probe::No

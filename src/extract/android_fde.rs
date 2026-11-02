@@ -28,7 +28,9 @@ fn footer_offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
     let mut found = Vec::new();
     let mut start = 0u64;
     while start < len {
-        let read_len = usize::try_from(len - start).unwrap_or(usize::MAX).min(SCAN_CHUNK);
+        let read_len = usize::try_from(len - start)
+            .unwrap_or(usize::MAX)
+            .min(SCAN_CHUNK);
         let mut chunk = vec![0; read_len];
         let read = source
             .read_at(start, &mut chunk)
@@ -56,7 +58,9 @@ fn footer_offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
 }
 
 fn data_sample(artifact: &Artifact) -> Result<Vec<u8>, ExtractError> {
-    let source = artifact.member("data").unwrap_or_else(|| artifact.primary());
+    let source = artifact
+        .member("data")
+        .unwrap_or_else(|| artifact.primary());
     if source.len() < u64::try_from(DATA_SAMPLE).unwrap_or(u64::MAX) {
         return Err(ExtractError::Invalid(
             "Android FDE data sample is truncated".to_owned(),

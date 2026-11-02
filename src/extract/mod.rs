@@ -431,6 +431,57 @@ mod wpa_pmkid;
 mod wpa_pmkid_legacy;
 mod xca;
 
+mod android_backup;
+mod android_fde;
+mod android_fde_samsung;
+mod apfs;
+mod apple_dmg;
+mod apple_keychain;
+mod apple_secure_notes;
+mod bitlocker;
+mod chap;
+mod dcc2;
+mod diskcryptor;
+mod dpapi;
+mod eigrp;
+mod filevault2;
+mod flask_session;
+mod fscrypt;
+mod hsrp;
+mod iphone_passcode;
+mod iscsi_chap;
+mod itunes_backup;
+mod krb4;
+mod krb5pa17;
+mod krb5pa18;
+mod krb5pa23;
+mod krb5tgs17;
+mod krb5tgs18;
+mod luks_v1;
+mod luks_v2;
+mod macos_pbkdf2_sha512;
+mod macos_sha1;
+mod macos_sha512;
+mod mschapv2_naive;
+mod netntlmv1;
+mod netntlmv2;
+mod ospf_md5;
+mod racf_kdfaes_passphrase;
+mod radius;
+mod signal;
+mod sip_digest;
+mod snmpv3;
+mod sntp_ms;
+mod sqlcipher;
+mod tacacs_plus;
+mod tcp_md5;
+mod telegram;
+mod truecrypt;
+mod veeam;
+mod veracrypt;
+mod vmware_vmx;
+mod windows_hello;
+
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &adxcrypt::AdxcryptExtractor,
     &aix::AixSmd5Extractor,
@@ -604,6 +655,56 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &krb5tgs23::Krb5Tgs23Extractor,
     &wpa_pmkid::WpaPmkidExtractor,
     &wpa_pmkid_legacy::WpaPmkidLegacyExtractor,
+    &bitlocker::BitlockerExtractor,
+    &dcc2::Dcc2Extractor,
+    &dpapi::DpapiExtractor,
+    &veeam::VeeamExtractor,
+    &windows_hello::WindowsHelloExtractor,
+    &apple_keychain::AppleKeychainExtractor,
+    &apple_secure_notes::AppleSecureNotesExtractor,
+    &macos_pbkdf2_sha512::MacosPbkdf2Sha512Extractor,
+    &macos_sha1::MacosSha1Extractor,
+    &macos_sha512::MacosSha512Extractor,
+    &iphone_passcode::IphonePasscodeExtractor,
+    &itunes_backup::ItunesBackupExtractor,
+    &apple_dmg::AppleDmgExtractor,
+    &android_backup::AndroidBackupExtractor,
+    &android_fde::AndroidFdeExtractor,
+    &luks_v1::LuksV1Extractor,
+    &luks_v2::LuksV2Extractor,
+    &truecrypt::TrueCryptExtractor,
+    &veracrypt::VeraCryptExtractor,
+    &diskcryptor::DiskcryptorExtractor,
+    &filevault2::FileVault2Extractor,
+    &apfs::ApfsExtractor,
+    &android_fde_samsung::AndroidFdeSamsungExtractor,
+    &fscrypt::FscryptExtractor,
+    &vmware_vmx::VmwareVmxExtractor,
+    &signal::SignalExtractor,
+    &telegram::TelegramExtractor,
+    &sqlcipher::SqlcipherExtractor,
+    &flask_session::FlaskSessionExtractor,
+    &racf_kdfaes_passphrase::RacfKdfaesPassphraseExtractor,
+    &krb5tgs17::Krb5Tgs17Extractor,
+    &krb5tgs18::Krb5Tgs18Extractor,
+    &krb5pa23::Krb5Pa23Extractor,
+    &krb5pa17::Krb5Pa17Extractor,
+    &krb5pa18::Krb5Pa18Extractor,
+    &chap::ChapExtractor,
+    &krb4::Krb4Extractor,
+    &mschapv2_naive::Mschapv2NaiveExtractor,
+    &netntlmv1::NetNtlmV1Extractor,
+    &netntlmv2::NetNtlmV2Extractor,
+    &iscsi_chap::IscsiChapExtractor,
+    &snmpv3::Snmpv3Extractor,
+    &radius::RadiusExtractor,
+    &tacacs_plus::TacacsPlusExtractor,
+    &sip_digest::SipDigestExtractor,
+    &ospf_md5::OspfMd5Extractor,
+    &tcp_md5::TcpMd5Extractor,
+    &hsrp::HsrpExtractor,
+    &eigrp::EigrpExtractor,
+    &sntp_ms::SntpMsExtractor,
 ];
 
 /// Returns the extractor registered for a slug.

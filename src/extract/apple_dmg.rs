@@ -25,9 +25,7 @@ fn parse(artifact: &Artifact) -> Result<AppleDmg, ExtractError> {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
     })?;
     if &header[..8] != MAGIC {
-        return Err(ExtractError::Unsupported(
-            "not an encrcdsa DMG".to_owned(),
-        ));
+        return Err(ExtractError::Unsupported("not an encrcdsa DMG".to_owned()));
     }
     let version = BigEndian::read_u32(&number::<4>(&header, 8)?);
     if version != 2 {
@@ -86,7 +84,9 @@ impl Extractor for AppleDmgExtractor {
     fn probe(&self, artifact: &Artifact) -> Probe {
         match parse(artifact) {
             Ok(_) => Probe::yes("Apple DMG encrcdsa AES-192 key blob"),
-            Err(ExtractError::Unsupported(reason)) if reason.starts_with("unsupported encrcdsa") => {
+            Err(ExtractError::Unsupported(reason))
+                if reason.starts_with("unsupported encrcdsa") =>
+            {
                 Probe::maybe(reason)
             }
             Err(_) => Probe::No,
