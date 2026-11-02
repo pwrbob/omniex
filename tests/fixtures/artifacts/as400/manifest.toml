@@ -1,0 +1,6 @@
+type = "as400-des"
+generator = "tests/fixtures/artifacts/as400/generate.py"
+hashcat = "$as400$des$*OPEN3*EC76FC0DEF5B0A83"
+john = "$as400des$OPEN3*EC76FC0DEF5B0A83"
+expected = "des.hash"
+notes = "Synthetic QSYRUPWD UPWD0100 receiver for a legacy QPWDLVL profile. Two DES verifier slots and one SHA1 verifier are present; no real credentials."
