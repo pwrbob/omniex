@@ -1,0 +1,3 @@
+type = "cryptosafe"
+generator = "synthetic cryptoSafe base64 vault"
+notes = "Synthetic ciphertext; no real keys."
