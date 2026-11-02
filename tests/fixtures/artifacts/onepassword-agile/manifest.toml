@@ -1,3 +1,7 @@
 type = "onepassword-agile"
+e2e = false
+e2e_reason = "the extractor emits a 1Password 1000: serialization that hashcat 6600 rejects"
+artifact = "encryptionKeys.js"
 generator = "synthetic encryptionKeys.js with salted and unsalted keys"
 notes = "Synthetic 1Password vault; no real credentials."
+hashcat = "$agilekeychain$2*1000*8*d61a54f1efdfcf57*16*000102030405060708090a0b0c0d0e0f*1000*16*00000000000000000000000000000000*16*101112131415161718191a1b1c1d1e1f"
