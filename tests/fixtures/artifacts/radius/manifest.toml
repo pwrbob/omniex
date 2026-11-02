@@ -1,4 +1,5 @@
 type = "radius"
+artifact = "access.pcap"
 john = "$radius$1*1*Passw0rd2*00112233445566778899aabbccddeeff*fedcba98765432100123456789abcdef"
 generator = "synthetic RADIUS Access-Request with a User-Password attribute"
 notes = "Synthetic shared secret and ciphertext; the shared secret comes from a .salt sidecar."

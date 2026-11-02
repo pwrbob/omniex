@@ -1,4 +1,5 @@
 type = "rar3hp"
+artifact = "archive.rar"
 password = "unused"
 hashcat = "$RAR3$*0*45109af8ab5f297a*090e13181d22272c31363b40454a4f54"
 john = "$RAR3$*0*45109af8ab5f297a*090e13181d22272c31363b40454a4f54"

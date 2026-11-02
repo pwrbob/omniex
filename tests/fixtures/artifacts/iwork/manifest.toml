@@ -1,6 +1,11 @@
 type = "iwork"
+<<<<<<< HEAD
 generator = "synthetic iWork 2013/2014 ZIP with an iwpv2 verifier"
 notes = "Synthetic document; no real content."
 artifact = "sample.key"
 hashcat = "$iwork$1$2$1$100000$000102030405060708090a0b0c0d0e0f$101112131415161718191a1b1c1d1e1f$000306090c0f1215181b1e2124272a2d303336393c3f4245484b4e5154575a5d606366696c6f7275787b7e8184878a8d909396999c9fa2a5a8abaeb1b4b7babd"
 john = "$iwork$1$2$1$100000$000102030405060708090a0b0c0d0e0f$101112131415161718191a1b1c1d1e1f$000306090c0f1215181b1e2124272a2d303336393c3f4245484b4e5154575a5d606366696c6f7275787b7e8184878a8d909396999c9fa2a5a8abaeb1b4b7babd"
+=======
+generator = "synthetic iWork 2013/2014 ZIP with an iwpv2 verifier and a synthetic iWork 2009 ZIP with a central-directory verifier"
+notes = "Synthetic documents; no real content. The 2009 verifier uses the fixed salt \"someSalt\"."
+>>>>>>> extract-next-d

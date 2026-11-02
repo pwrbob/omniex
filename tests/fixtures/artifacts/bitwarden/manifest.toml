@@ -1,4 +1,5 @@
 type = "bitwarden"
+artifact = "data.json"
 generator = "synthetic Bitwarden desktop data.json"
 notes = "Synthetic Bitwarden account fields; no real vault."
 hashcat = "$bitwarden$2*100000*2*bm9yZXBseUBoYXNoY2F0Lm5ldA==*+v5rHxYydSRUDlan+4pSoiYQwAgEhdmivlb+exQX+fg="
