@@ -1,0 +1,3 @@
+type = "xca"
+generator = "sqlite3 synthetic XCA database"
+notes = "Synthetic settings table; no real secrets."

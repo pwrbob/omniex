@@ -1,0 +1,3 @@
+type = "keepass"
+generator = "synthetic KDBX 3.1 header"
+notes = "Synthetic database header; no real secrets."

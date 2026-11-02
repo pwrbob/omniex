@@ -1,0 +1,3 @@
+type = "pwsafe-v2"
+generator = "synthetic Password Safe v2 header"
+notes = "Synthetic database; no real secrets."
