@@ -6,7 +6,13 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// BitLocker recovery key hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "BitLocker", slug = "bitlocker", hashcat = [22100], john = ["BitLocker"])]
+#[hash(
+    name = "BitLocker",
+    slug = "bitlocker",
+    hashcat = [22100],
+    john = ["BitLocker"],
+    modes_fn = bitlocker_modes
+)]
 pub struct BitLocker {
     /// Verification type, always `1`.
     #[field(role = other, encoding = decimal)]
@@ -39,6 +45,14 @@ pub struct BitLocker {
     /// Sixty-byte encrypted data.
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 60],
+}
+
+pub fn bitlocker_modes(value: &BitLocker) -> Vec<crate::Mode> {
+    if value.kind == 1 {
+        vec![crate::Mode::Hashcat(22100), crate::Mode::John("BitLocker")]
+    } else {
+        vec![crate::Mode::John("BitLocker")]
+    }
 }
 
 impl Parse for BitLocker {

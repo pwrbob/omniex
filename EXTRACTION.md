@@ -19,10 +19,10 @@ README badge counts checked lines in this file.
 - [x] SECURITY hive cached domain credentials (`dcc2`)
 - [ ] SECURITY hive LSA secrets
 - [x] SECURITY hive DPAPI masterkeys (`dpapi`)
-- [ ] User DPAPI masterkey files (`dpapi`)
-- [ ] Windows Credential Manager vaults (`dpapi`)
+- [x] User DPAPI masterkey files (`dpapi`)
+- [x] Windows Credential Manager vaults (`dpapi`)
 - [x] Windows Hello PIN and container data (`windows-hello`)
-- [ ] BitLocker recovery keys and VMK material (`bitlocker`)
+- [x] BitLocker recovery keys and VMK material (`bitlocker`)
 
 ## Unix and directory credentials
 
@@ -31,7 +31,7 @@ README badge counts checked lines in this file.
 - [x] Linux `/etc/shadow` (`descrypt`, `md5crypt`, `sha256crypt`, `sha512crypt`, `yescrypt`)
 - [x] BSD `/etc/master.passwd` (`bsdicrypt`)
 - [x] AIX `/etc/security/passwd` (`aix-smd5`, `ssha1-aix`, `ssha256-aix`, `ssha512-aix`)
-- [ ] AS/400 user profiles (`as400-des`, `as400-ssha1`)
+- [x] AS/400 user profiles (`as400-des`, `as400-ssha1`)
 - [x] RACF DES records (`racf`)
 - [x] RACF KDFAES and passphrase records (`racf-kdfaes`, `racf-passphrase`, `racf-kdfaes-passphrase`)
 - [x] LDAP password attributes (`ldap-sha1`, `ldap-ssha1`, `ldap-ssha256`, `ldap-ssha512`)
@@ -174,7 +174,7 @@ README badge counts checked lines in this file.
 ## Mobile and application stores
 
 - [x] Lotus Notes/Domino 5 user ID files (`lotus5`)
-- [ ] Lotus Notes/Domino 6/8 user ID files (`lotus-notes`)
+- [x] Lotus Notes/Domino 6/8 user ID files (`lotus-notes`)
 
 - [x] FileZilla Server XML configuration (`filezilla-server`)
 

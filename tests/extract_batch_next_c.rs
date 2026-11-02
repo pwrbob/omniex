@@ -226,7 +226,7 @@ fn bitlocker_scans_every_metadata_block() {
     let extractor = extract::by_slug("bitlocker").expect("bitlocker extractor");
     assert!(matches!(extractor.probe(&artifact), Probe::Yes(_)));
     assert_eq!(
-        rendered("bitlocker", &artifact, Tool::Hashcat),
+        rendered("bitlocker", &artifact, Tool::John),
         expected("bitlocker", "recovery.hash")
     );
 }
@@ -295,15 +295,15 @@ fn every_new_extractor_rejects_empty_input() {
 
 #[test]
 fn cli_extracts_explicit_types() {
-    for (slug, path, count) in [
-        ("dpapi", fixture("dpapi", "masterkey.bin"), 3),
-        ("bitlocker", fixture("bitlocker", "recovery.img"), 2),
-        ("as400-des", fixture("as400", "profile.bin"), 2),
-        ("as400-ssha1", fixture("as400", "profile.bin"), 1),
-        ("lotus-notes", fixture("lotus-notes", "user.id"), 2),
+    for (slug, path, format, count) in [
+        ("dpapi", fixture("dpapi", "masterkey.bin"), "hashcat", 3),
+        ("bitlocker", fixture("bitlocker", "recovery.img"), "john", 2),
+        ("as400-des", fixture("as400", "profile.bin"), "hashcat", 2),
+        ("as400-ssha1", fixture("as400", "profile.bin"), "hashcat", 1),
+        ("lotus-notes", fixture("lotus-notes", "user.id"), "hashcat", 2),
     ] {
         let output = omniex()
-            .args(["extract", "--type", slug])
+            .args(["extract", "--type", slug, "--format", format])
             .arg(&path)
             .output()
             .expect("run omniex");
