@@ -1,0 +1,5 @@
+type = "blockchain-second"
+password = "hashcat"
+hashcat = "YnM6WYERjJfhxwepT7zV6odWoEUz1X4esYQb4bQ3KZ7bbZAyOTc1MDM3OTc1NjMyODA0ECcAAD3vFoc="
+generator = "synthetic decrypted Blockchain wallet JSON"
+notes = "Synthetic wallet with a second password; no real credentials."

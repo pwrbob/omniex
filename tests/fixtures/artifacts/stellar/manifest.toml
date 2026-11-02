@@ -1,0 +1,5 @@
+type = "stellar"
+password = "hashcat"
+hashcat = "$stellar$YAlIJziURRcBEWUwRSRDWA==$EutMmmcV5Hbf3p1I$rfSAF349RvGKG4R4Z2VCrH9WjNEKjbJa9hpOja9Yn8MwXruuFEMtw47HPn9CYj+JJ5Rb4Z87Wejj1c4fqpbMZHFOnqtQsVAr"
+generator = "synthetic Stargazer local-storage dump"
+notes = "Synthetic wallet; no real credentials."
