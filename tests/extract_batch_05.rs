@@ -1,24 +1,38 @@
-//! Extraction for XCA, KeePass, Password Safe v2, and Clipperz artifacts.
+//! Extraction for FileVault 2, APFS, Samsung Android FDE, fscrypt, and VMware VMX.
+
+#[path = "../src/extract/android_fde_samsung.rs"]
+mod android_fde_samsung;
+#[path = "../src/extract/apfs.rs"]
+mod apfs;
+#[path = "../src/extract/filevault2.rs"]
+mod filevault2;
+#[path = "../src/extract/fscrypt.rs"]
+mod fscrypt;
+#[path = "../src/extract/vmware_vmx.rs"]
+mod vmware_vmx;
 
 use std::path::{Path, PathBuf};
 
-use assert_cmd::Command;
-use omniex::extract::{self, Artifact, Probe};
-use omniex::{RenderOptions, Tool};
+use omniex::extract::{Artifact, Extractor, MemorySource, Probe, Selection, select};
+use omniex::{HashValue, Mode, RenderOptions, Tool};
+
+use android_fde_samsung::AndroidFdeSamsungExtractor;
+use apfs::ApfsExtractor;
+use filevault2::FileVault2Extractor;
+use fscrypt::FscryptExtractor;
+use vmware_vmx::VmwareVmxExtractor;
+
+static FILEVAULT2: FileVault2Extractor = FileVault2Extractor;
+static APFS: ApfsExtractor = ApfsExtractor;
+static SAMSUNG: AndroidFdeSamsungExtractor = AndroidFdeSamsungExtractor;
+static FSCRYPT: FscryptExtractor = FscryptExtractor;
+static VMWARE: VmwareVmxExtractor = VmwareVmxExtractor;
 
 fn fixture(slug: &str, name: &str) -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests/fixtures/artifacts")
         .join(slug)
         .join(name)
-}
-
-fn expected(slug: &str, name: &str) -> Vec<String> {
-    std::fs::read_to_string(fixture(slug, name))
-        .expect("read expected fixture")
-        .lines()
-        .map(str::to_owned)
-        .collect()
 }
 
 fn artifact(slug: &str, name: &str) -> Artifact {
@@ -28,18 +42,15 @@ fn artifact(slug: &str, name: &str) -> Artifact {
     )
 }
 
-fn bytes_artifact(name: &str, data: Vec<u8>) -> Artifact {
-    Artifact::from_bytes(name, data)
+fn expected(slug: &str) -> String {
+    std::fs::read_to_string(fixture(slug, "sample.hash"))
+        .expect("read expected hash")
+        .trim_end()
+        .to_owned()
 }
 
-fn omniex() -> Command {
-    let mut command = Command::cargo_bin("omniex").expect("binary is built");
-    command.env("COLUMNS", "120");
-    command
-}
-
-fn render(hashes: &[Box<dyn omniex::HashValue>], tool: Tool) -> Vec<String> {
-    hashes
+fn render(values: &[Box<dyn HashValue>], tool: Tool) -> Vec<String> {
+    values
         .iter()
         .map(|value| {
             value
@@ -52,306 +63,263 @@ fn render(hashes: &[Box<dyn omniex::HashValue>], tool: Tool) -> Vec<String> {
         .collect()
 }
 
-#[test]
-fn keepass_probe_and_extract_v3() {
-    let extractor = extract::by_slug("keepass").expect("KeePass extractor");
-    let data = artifact("keepass", "sample.kdbx");
-    assert!(matches!(extractor.probe(&data), Probe::Yes(_)));
-
-    let hashes = extractor.extract(&data).expect("extract v3 database");
-    assert_eq!(hashes.len(), 1);
-    let expected = expected("keepass", "sample.hash");
-    assert_eq!(render(&hashes, Tool::Hashcat), expected);
-    assert_eq!(render(&hashes, Tool::John), expected);
-
-    assert_eq!(
-        extractor.probe(&bytes_artifact("bad", b"not a keypass".to_vec())),
-        Probe::No
-    );
-    assert_eq!(
-        extractor.probe(&bytes_artifact("empty", Vec::new())),
-        Probe::No
-    );
+fn bytes(name: &str, data: Vec<u8>) -> Artifact {
+    Artifact::from_bytes(name, data)
 }
 
 #[test]
-fn keepass_rejects_v4_and_truncated_headers() {
-    let extractor = extract::by_slug("keepass").expect("KeePass extractor");
-    assert_eq!(
-        extractor.probe(&artifact("keepass4", "sample.kdbx")),
-        Probe::No
-    );
-
-    let data = std::fs::read(fixture("keepass", "sample.kdbx")).unwrap();
-    let truncated = bytes_artifact("truncated.kdbx", data[..40].to_vec());
-    assert!(extractor.extract(&truncated).is_err());
-}
-
-#[test]
-fn keepass4_probe_and_extract_v4() {
-    let extractor = extract::by_slug("keepass4").expect("KeePass4 extractor");
-    let data = artifact("keepass4", "sample.kdbx");
-    assert!(matches!(extractor.probe(&data), Probe::Yes(_)));
-
-    let hashes = extractor.extract(&data).expect("extract v4 database");
-    assert_eq!(hashes.len(), 1);
-    assert_eq!(
-        render(&hashes, Tool::Hashcat),
-        expected("keepass4", "sample.hash")
-    );
-    assert_eq!(
-        extractor.probe(&artifact("keepass", "sample.kdbx")),
-        Probe::No
-    );
-}
-
-#[test]
-fn keepass4_rejects_unsupported_kdf_and_truncation() {
-    let extractor = extract::by_slug("keepass4").expect("KeePass4 extractor");
-    let mut data = std::fs::read(fixture("keepass4", "sample.kdbx")).unwrap();
-    let uuid = data
-        .windows(5)
-        .position(|window| window == b"$UUID")
-        .expect("KDF UUID key");
-    data[uuid - 6] = 0x02;
-    let broken = bytes_artifact("bad-kdf.kdbx", data);
-    assert_eq!(extractor.probe(&broken), Probe::No);
-    assert!(extractor.extract(&broken).is_err());
-
-    let raw = std::fs::read(fixture("keepass4", "sample.kdbx")).unwrap();
-    let truncated = bytes_artifact("truncated.kdbx", raw[..60].to_vec());
-    assert!(extractor.extract(&truncated).is_err());
-}
-
-#[test]
-fn pwsafe_v2_probes_with_extension_and_extracts_header() {
-    let extractor = extract::by_slug("pwsafe-v2").expect("Password Safe v2 extractor");
-    let data = artifact("pwsafe-v2", "sample.dat");
+fn filevault2_probes_and_extracts_the_corestorage_user() {
+    let data = artifact("filevault2", "sample.img");
     assert!(matches!(
-        extractor.probe(&data),
-        Probe::Maybe(reason) if reason == "Password Safe v2 database header"
+        FILEVAULT2.probe(&data),
+        Probe::Yes(reason) if reason == "CoreStorage encryption context"
     ));
-    assert_eq!(
-        extractor.probe(&bytes_artifact(
-            "sample.psafe3",
-            std::fs::read(fixture("pwsafe-v2", "sample.dat")).unwrap()
-        )),
-        Probe::No
-    );
-
-    let hashes = extractor.extract(&data).expect("extract v2 header");
+    let hashes = FILEVAULT2
+        .extract(&data)
+        .expect("extract CoreStorage volume");
     assert_eq!(hashes.len(), 1);
-    assert_eq!(
-        render(&hashes, Tool::Hashcat),
-        expected("pwsafe-v2", "sample.hash")
-    );
-
-    let raw = std::fs::read(fixture("pwsafe-v2", "sample.dat")).unwrap();
-    assert!(
-        extractor
-            .extract(&bytes_artifact("short.dat", raw[..100].to_vec()))
-            .is_err()
-    );
-    assert!(
-        extractor
-            .probe(&bytes_artifact("empty.dat", Vec::new()))
-            .eq(&Probe::No)
-    );
+    assert_eq!(render(&hashes, Tool::Hashcat), [expected("filevault2")]);
+    assert_eq!(render(&hashes, Tool::John), [expected("filevault2")]);
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(16700)));
+    assert!(hashes[0].modes().contains(&Mode::John("FVDE")));
 }
 
 #[test]
-fn pwsafe_v2_never_auto_detects() {
-    let output = omniex()
-        .arg("extract")
-        .arg(fixture("pwsafe-v2", "sample.dat"))
-        .output()
-        .unwrap();
-    assert_eq!(output.status.code(), Some(1));
-    assert!(
-        String::from_utf8_lossy(&output.stderr).contains("has no reliable signature"),
-        "{}",
-        String::from_utf8_lossy(&output.stderr)
-    );
-
-    let all = omniex()
-        .arg("extract")
-        .arg("--all")
-        .arg(fixture("pwsafe-v2", "sample.dat"))
-        .output()
-        .unwrap();
-    assert_eq!(all.status.code(), Some(1));
-    assert!(all.stdout.is_empty());
-
-    let explicit = omniex()
-        .arg("extract")
-        .arg("--type")
-        .arg("pwsafe-v2")
-        .arg(fixture("pwsafe-v2", "sample.dat"))
-        .output()
-        .unwrap();
-    assert!(explicit.status.success());
-    assert_eq!(
-        String::from_utf8_lossy(&explicit.stdout).trim_end(),
-        expected("pwsafe-v2", "sample.hash")[0]
-    );
-}
-
-#[test]
-fn pwsafe_v2_rejects_v3_databases() {
-    let extractor = extract::by_slug("pwsafe-v2").expect("Password Safe v2 extractor");
-    let mut data = vec![0; 200];
-    data[..4].copy_from_slice(b"PWS3");
-    assert!(
-        extractor
-            .extract(&bytes_artifact("sample.dat", data))
-            .is_err()
-    );
-}
-
-#[test]
-fn xca_probes_sqlite_and_extracts_settings_hash() {
-    let extractor = extract::by_slug("xca").expect("XCA extractor");
-    let data = artifact("xca", "sample.xdb");
-    assert!(matches!(extractor.probe(&data), Probe::Yes(_)));
-
-    let hashes = extractor.extract(&data).expect("extract XCA database");
-    assert_eq!(hashes.len(), 1);
-    assert_eq!(
-        render(&hashes, Tool::Hashcat),
-        expected("xca", "sample.hash")
-    );
-
-    assert_eq!(
-        extractor.probe(&bytes_artifact("empty", Vec::new())),
-        Probe::No
-    );
-    assert_eq!(
-        extractor.probe(&bytes_artifact("text", b"not a database at all".to_vec())),
-        Probe::No
-    );
-}
-
-#[test]
-fn xca_requires_the_password_setting() {
-    let extractor = extract::by_slug("xca").expect("XCA extractor");
-    let mut data = std::fs::read(fixture("xca", "sample.xdb")).unwrap();
-    let key = data
-        .windows(6)
-        .position(|window| window == b"pwhash")
-        .unwrap();
-    data[key + 5] = b'x';
-    let broken = bytes_artifact("broken.xdb", data);
-    assert_eq!(extractor.probe(&broken), Probe::No);
-    assert!(extractor.extract(&broken).is_err());
-
-    let raw = std::fs::read(fixture("xca", "sample.xdb")).unwrap();
-    assert!(
-        extractor
-            .extract(&bytes_artifact("short.xdb", raw[..100].to_vec()))
-            .is_err()
-    );
-}
-
-#[test]
-fn xca_rejects_corrupt_page_size() {
-    let extractor = extract::by_slug("xca").expect("XCA extractor");
-    let mut data = std::fs::read(fixture("xca", "sample.xdb")).unwrap();
-    data[16] = 0x00;
-    data[17] = 0x03;
-    let corrupt = bytes_artifact("corrupt.xdb", data);
-    assert!(matches!(extractor.probe(&corrupt), Probe::Maybe(_)));
-    assert!(extractor.extract(&corrupt).is_err());
-}
-
-#[test]
-fn clipperz_probes_and_extracts_every_user() {
-    let extractor = extract::by_slug("clipperz").expect("Clipperz extractor");
-    let data = artifact("clipperz", "sample.html");
-    assert!(matches!(extractor.probe(&data), Probe::Yes(_)));
-
-    let hashes = extractor.extract(&data).expect("extract Clipperz export");
+fn filevault2_scan_collects_every_volume() {
+    let mut data = std::fs::read(fixture("filevault2", "sample.img")).unwrap();
+    let copy = data.clone();
+    data.extend_from_slice(&copy);
+    let hashes = FILEVAULT2
+        .extract(&bytes("two-volumes.img", data))
+        .expect("extract two volumes");
     assert_eq!(hashes.len(), 2);
+    assert_eq!(render(&hashes, Tool::Hashcat)[0], expected("filevault2"));
+}
+
+#[test]
+fn filevault2_rejects_empty_wrong_and_truncated_input() {
+    assert_eq!(FILEVAULT2.probe(&bytes("empty", Vec::new())), Probe::No);
     assert_eq!(
-        render(&hashes, Tool::John),
-        expected("clipperz", "sample.hash")
-    );
-    assert_eq!(
-        extractor.probe(&bytes_artifact("empty", Vec::new())),
+        FILEVAULT2.probe(&bytes("text", b"not a corestorage volume".to_vec())),
         Probe::No
     );
+    let data = std::fs::read(fixture("filevault2", "sample.img")).unwrap();
+    let truncated = bytes("truncated.img", data[..data.len() - 100].to_vec());
+    assert_eq!(FILEVAULT2.probe(&truncated), Probe::No);
+    assert!(FILEVAULT2.extract(&truncated).is_err());
+
+    let mut unsupported = data.clone();
+    unsupported[172..176].copy_from_slice(&3u32.to_le_bytes());
     assert_eq!(
-        extractor.probe(&bytes_artifact("text", b"nothing here".to_vec())),
+        FILEVAULT2.probe(&bytes("unsupported.img", unsupported)),
         Probe::No
     );
+
+    let mut corrupt = data;
+    corrupt[88] = b'X';
+    assert_eq!(FILEVAULT2.probe(&bytes("corrupt.img", corrupt)), Probe::No);
 }
 
 #[test]
-fn clipperz_rejects_broken_exports() {
-    let extractor = extract::by_slug("clipperz").expect("Clipperz extractor");
-    let no_users = bytes_artifact(
-        "empty.html",
-        b"_clipperz_dump_data_ = { users: { } };".to_vec(),
-    );
-    assert!(extractor.extract(&no_users).is_err());
-
-    let broken = bytes_artifact(
-        "broken.html",
-        b"_clipperz_dump_data_ = { users: { 'a': { s: '1', v: '2'".to_vec(),
-    );
-    assert!(extractor.extract(&broken).is_err());
+fn apfs_probes_and_extracts_the_volume_user() {
+    let data = artifact("apfs", "sample.img");
+    assert!(matches!(
+        APFS.probe(&data),
+        Probe::Yes(reason) if reason == "APFS container keybag"
+    ));
+    let hashes = APFS.extract(&data).expect("extract APFS container");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(render(&hashes, Tool::Hashcat), [expected("apfs")]);
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(18300)));
 }
 
 #[test]
-fn auto_detection_finds_the_unique_extractors() {
-    let cases = [
-        ("keepass", "sample.kdbx", "hashcat"),
-        ("keepass4", "sample.kdbx", "hashcat"),
-        ("xca", "sample.xdb", "hashcat"),
-    ];
-    for (slug, name, format) in cases {
-        let output = omniex()
-            .arg("extract")
-            .arg(fixture(slug, name))
-            .args(["--format", format])
-            .output()
-            .unwrap();
-        assert!(output.status.success(), "{slug}: {output:?}");
-        assert_eq!(
-            String::from_utf8_lossy(&output.stdout).trim_end(),
-            expected(slug, "sample.hash")[0],
-            "{slug}"
-        );
-    }
+fn apfs_scan_collects_every_container() {
+    let mut data = std::fs::read(fixture("apfs", "sample.img")).unwrap();
+    let copy = data.clone();
+    data.extend_from_slice(&copy);
+    let hashes = APFS
+        .extract(&bytes("two-containers.img", data))
+        .expect("extract two containers");
+    assert_eq!(hashes.len(), 2);
+}
 
-    let clipperz = omniex()
-        .arg("extract")
-        .arg(fixture("clipperz", "sample.html"))
-        .args(["--format", "john"])
-        .output()
-        .unwrap();
-    assert!(clipperz.status.success());
+#[test]
+fn apfs_rejects_empty_wrong_and_truncated_input() {
+    assert_eq!(APFS.probe(&bytes("empty", Vec::new())), Probe::No);
     assert_eq!(
-        String::from_utf8_lossy(&clipperz.stdout)
-            .lines()
-            .map(str::to_owned)
-            .collect::<Vec<_>>(),
-        expected("clipperz", "sample.hash")
+        APFS.probe(&bytes("text", b"not an apfs container".to_vec())),
+        Probe::No
     );
+    let data = std::fs::read(fixture("apfs", "sample.img")).unwrap();
+    let truncated = bytes("truncated.img", data[..20 * 1024].to_vec());
+    assert_eq!(APFS.probe(&truncated), Probe::No);
+    assert!(APFS.extract(&truncated).is_err());
 }
 
 #[test]
-fn explicit_wrong_type_reports_extraction_failure() {
-    let output = omniex()
-        .arg("extract")
-        .arg("--type")
-        .arg("clipperz")
-        .arg(fixture("keepass", "sample.kdbx"))
-        .output()
-        .unwrap();
-    assert_eq!(output.status.code(), Some(1));
-    assert!(
-        String::from_utf8_lossy(&output.stderr).contains("cannot extract `clipperz`"),
-        "{}",
-        String::from_utf8_lossy(&output.stderr)
+fn samsung_probes_and_extracts_the_dek_footer() {
+    let data = artifact("android-fde-samsung", "sample.img");
+    assert!(matches!(
+        SAMSUNG.probe(&data),
+        Probe::Yes(reason) if reason == "Samsung Android FDE footer"
+    ));
+    let hashes = SAMSUNG
+        .extract(&data)
+        .expect("extract Samsung Android FDE footer");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(
+        render(&hashes, Tool::Hashcat),
+        [expected("android-fde-samsung")]
     );
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(12900)));
+}
+
+#[test]
+fn samsung_rejects_unknown_key_sizes() {
+    let mut data = std::fs::read(fixture("android-fde-samsung", "sample.img")).unwrap();
+    let footer = data.len() - 0x4000;
+    data[footer + 16..footer + 20].copy_from_slice(&16u32.to_le_bytes());
+    let unsupported = bytes("unsupported.img", data);
+    assert_eq!(SAMSUNG.probe(&unsupported), Probe::No);
+    assert!(SAMSUNG.extract(&unsupported).is_err());
+}
+
+#[test]
+fn samsung_scan_collects_every_footer() {
+    let mut data = std::fs::read(fixture("android-fde-samsung", "sample.img")).unwrap();
+    let copy = data.clone();
+    data.extend_from_slice(&copy);
+    let hashes = SAMSUNG
+        .extract(&bytes("two-footers.img", data))
+        .expect("extract two footers");
+    assert_eq!(hashes.len(), 2);
+}
+
+#[test]
+fn samsung_rejects_empty_wrong_and_truncated_input() {
+    assert_eq!(SAMSUNG.probe(&bytes("empty", Vec::new())), Probe::No);
+    assert_eq!(
+        SAMSUNG.probe(&bytes("text", b"not a footer at all".to_vec())),
+        Probe::No
+    );
+    let data = std::fs::read(fixture("android-fde-samsung", "sample.img")).unwrap();
+    let truncated = bytes("truncated.img", data[..0x2080].to_vec());
+    assert_eq!(SAMSUNG.probe(&truncated), Probe::No);
+    assert!(SAMSUNG.extract(&truncated).is_err());
+}
+
+#[test]
+fn fscrypt_probes_as_a_candidate_and_extracts_the_protector() {
+    let data = artifact("fscrypt", "sample.bin");
+    assert!(!FSCRYPT.exact());
+    assert!(matches!(
+        FSCRYPT.probe(&data),
+        Probe::Maybe(reason) if reason == "fscrypt ProtectorData protobuf"
+    ));
+    assert!(matches!(
+        select(&[&FSCRYPT], &data),
+        Selection::Unconfirmed(candidates) if candidates.len() == 1
+    ));
+    let hashes = FSCRYPT.extract(&data).expect("extract fscrypt protector");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(render(&hashes, Tool::Hashcat), [expected("fscrypt")]);
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(38900)));
+}
+
+#[test]
+fn fscrypt_extracts_every_protector_member() {
+    let first = std::fs::read(fixture("fscrypt", "sample.bin")).unwrap();
+    let second = std::fs::read(fixture("fscrypt", "second.bin")).unwrap();
+    let data =
+        Artifact::from_bytes("protectors", first).with_member("second", MemorySource::from(second));
+    let hashes = FSCRYPT.extract(&data).expect("extract two protectors");
+    assert_eq!(hashes.len(), 2);
+    let rendered = render(&hashes, Tool::Hashcat);
+    assert_eq!(rendered[0], expected("fscrypt"));
+    assert!(rendered[1].starts_with("$fscrypt$2*8192*1*"));
+}
+
+#[test]
+fn fscrypt_rejects_empty_and_malformed_input() {
+    assert_eq!(FSCRYPT.probe(&bytes("empty", Vec::new())), Probe::No);
+    assert_eq!(
+        FSCRYPT.probe(&bytes("text", b"not a protector".to_vec())),
+        Probe::No
+    );
+    let data = std::fs::read(fixture("fscrypt", "sample.bin")).unwrap();
+    let truncated = bytes("truncated.bin", data[..20].to_vec());
+    assert_eq!(FSCRYPT.probe(&truncated), Probe::No);
+    assert!(FSCRYPT.extract(&truncated).is_err());
+}
+
+#[test]
+fn vmware_probes_and_extracts_the_hashcat_metadata() {
+    let data = artifact("vmware-vmx", "sample.vmx");
+    assert!(matches!(
+        VMWARE.probe(&data),
+        Probe::Yes(reason) if reason == "VMware VMX encryption.keySafe"
+    ));
+    let hashes = VMWARE.extract(&data).expect("extract VMX keySafe");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(render(&hashes, Tool::Hashcat), [expected("vmware-vmx")]);
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(27400)));
+}
+
+#[test]
+fn vmware_rejects_empty_plain_and_truncated_input() {
+    assert_eq!(VMWARE.probe(&bytes("empty", Vec::new())), Probe::No);
+    assert_eq!(
+        VMWARE.probe(&bytes("plain", b"displayName = \"fixture\"".to_vec())),
+        Probe::No
+    );
+    let data = std::fs::read(fixture("vmware-vmx", "sample.vmx")).unwrap();
+    let truncated = bytes("truncated.vmx", data[..100].to_vec());
+    assert_eq!(VMWARE.probe(&truncated), Probe::No);
+    assert!(VMWARE.extract(&truncated).is_err());
+}
+
+#[test]
+fn vmware_rejects_unsupported_key_safe_parameters() {
+    let text = std::fs::read_to_string(fixture("vmware-vmx", "sample.vmx")).unwrap();
+    let unsupported = bytes(
+        "unsupported.vmx",
+        text.replace("cipher=AES-256", "cipher=AES-128")
+            .into_bytes(),
+    );
+    assert_eq!(VMWARE.probe(&unsupported), Probe::No);
+    assert!(VMWARE.extract(&unsupported).is_err());
+}
+
+#[test]
+fn probes_distinguish_the_disk_formats() {
+    assert!(matches!(
+        select(
+            &[&FILEVAULT2, &APFS, &SAMSUNG, &VMWARE],
+            &artifact("filevault2", "sample.img")
+        ),
+        Selection::Unique(extractor) if extractor.slug() == "filevault2"
+    ));
+    assert!(matches!(
+        select(&[&FILEVAULT2, &APFS], &artifact("apfs", "sample.img")),
+        Selection::Unique(extractor) if extractor.slug() == "apfs"
+    ));
+    assert!(matches!(
+        select(
+            &[&FILEVAULT2, &APFS, &SAMSUNG],
+            &artifact("android-fde-samsung", "sample.img")
+        ),
+        Selection::Unique(extractor) if extractor.slug() == "android-fde-samsung"
+    ));
+    assert!(matches!(
+        select(&[&VMWARE], &artifact("vmware-vmx", "sample.vmx")),
+        Selection::Unique(extractor) if extractor.slug() == "vmware-vmx"
+    ));
+    assert!(matches!(
+        select(
+            &[&FILEVAULT2, &APFS, &SAMSUNG, &FSCRYPT, &VMWARE],
+            &bytes("empty", Vec::new())
+        ),
+        Selection::None
+    ));
 }

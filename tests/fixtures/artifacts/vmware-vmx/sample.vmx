@@ -1,0 +1,2 @@
+displayName = "fixture"
+encryption.keySafe = "phrase/a2V5LWlk/pass2key=PBKDF2-HMAC-SHA-1:cipher=AES-256:rounds=10000:salt=AAECAwQFBgcICQoLDA0ODw%3D%3D,HMAC-SHA-1,AAcOFRwjKjE4P0ZNVFtiaXB3foWMk5qhqK%2B2vcTL0tng5%2B71/AMKERgfJi00O0JJUFdeZWxzeoGIj5adpKuyucDHztXc4%2Brx%2BP8GDRQbIikwNz5FTFNaYWhvdn2Ei5KZ"
