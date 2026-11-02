@@ -1,0 +1,3 @@
+type = "ospf-md5"
+generator = "synthetic OSPFv2 and RIPv2 MD5 authentication packets"
+notes = "Synthetic routing packets; no real credentials."

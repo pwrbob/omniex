@@ -1,0 +1,3 @@
+type = "tcp-md5"
+generator = "synthetic TCP MD5 signature packets"
+notes = "Synthetic BGP segment; no real credentials."

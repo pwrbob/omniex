@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 
 use assert_cmd::Command;
 use omniex::extract::{self, Artifact, Probe};
-use omniex::{Mode, RenderOptions};
+use omniex::{Mode, RenderOptions, Tool};
 
 fn fixture(kind: &str, name: &str) -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -37,7 +37,17 @@ fn hashes(slug: &str, artifact: &Artifact) -> Vec<String> {
         .extract(artifact)
         .expect("extract")
         .iter()
-        .map(|value| value.render(&RenderOptions::default()).unwrap())
+        .map(|value| {
+            value
+                .render(&RenderOptions::default())
+                .or_else(|_| {
+                    value.render(&RenderOptions {
+                        tool: Tool::John,
+                        ..RenderOptions::default()
+                    })
+                })
+                .unwrap()
+        })
         .collect()
 }
 
@@ -329,6 +339,150 @@ fn captures_auto_detect_and_accept_explicit_types() {
         .arg("--type")
         .arg("krb5tgs23")
         .arg(fixture("krb5asrep23", "asrep.pcap"))
+        .output()
+        .unwrap();
+    assert!(!wrong.status.success());
+}
+
+#[test]
+fn routing_extractors_match_their_fixtures() {
+    for (slug, name, hash) in [
+        ("ospf-md5", "ospf.pcap", "ospf.hash"),
+        ("ospf-md5", "rip.pcap", "rip.hash"),
+        ("tcp-md5", "tcp.pcap", "tcp.hash"),
+        ("hsrp", "hsrp.pcap", "hsrp.hash"),
+        ("hsrp", "hsrp2.pcap", "hsrp2.hash"),
+        ("eigrp", "eigrp.pcap", "eigrp.hash"),
+        ("eigrp", "eigrp-sha256.pcap", "eigrp-sha256.hash"),
+        ("sntp-ms", "sntp.pcap", "sntp.hash"),
+    ] {
+        assert_eq!(
+            hashes(slug, &artifact(slug, name)),
+            vec![expected(slug, hash)],
+            "{slug}/{name}"
+        );
+    }
+}
+
+#[test]
+fn routing_extractors_scan_every_record() {
+    let values: BTreeSet<String> = hashes("ospf-md5", &artifact("ospf-md5", "multi.pcap"))
+        .into_iter()
+        .collect();
+    let wanted: BTreeSet<String> = [
+        expected("ospf-md5", "ospf.hash"),
+        expected("ospf-md5", "rip.hash"),
+    ]
+    .into_iter()
+    .collect();
+    assert_eq!(values, wanted);
+}
+
+#[test]
+fn routing_probes_require_structural_evidence() {
+    for (slug, name) in [
+        ("ospf-md5", "ospf.pcap"),
+        ("ospf-md5", "rip.pcap"),
+        ("tcp-md5", "tcp.pcap"),
+        ("hsrp", "hsrp.pcap"),
+        ("hsrp", "hsrp2.pcap"),
+        ("eigrp", "eigrp.pcap"),
+        ("eigrp", "eigrp-sha256.pcap"),
+        ("sntp-ms", "sntp.pcap"),
+    ] {
+        assert!(
+            matches!(probe(slug, &artifact(slug, name)), Probe::Yes(_)),
+            "{slug}/{name}"
+        );
+    }
+
+    for (slug, kind, name) in [
+        ("ospf-md5", "tcp-md5", "tcp.pcap"),
+        ("tcp-md5", "ospf-md5", "ospf.pcap"),
+        ("hsrp", "eigrp", "eigrp.pcap"),
+        ("eigrp", "sntp-ms", "sntp.pcap"),
+        ("sntp-ms", "hsrp", "hsrp.pcap"),
+    ] {
+        assert_eq!(
+            probe(slug, &artifact(kind, name)),
+            Probe::No,
+            "{slug} {kind}/{name}"
+        );
+        assert!(
+            extract::by_slug(slug)
+                .unwrap()
+                .extract(&artifact(kind, name))
+                .is_err()
+        );
+    }
+
+    let text = Artifact::from_bytes("note.txt", b"not a capture".to_vec());
+    for slug in ["ospf-md5", "tcp-md5", "hsrp", "eigrp", "sntp-ms"] {
+        assert_eq!(probe(slug, &text), Probe::No, "{slug}");
+        assert!(extract::by_slug(slug).unwrap().extract(&text).is_err());
+    }
+}
+
+#[test]
+fn routing_truncated_captures_probe_maybe_and_fail_to_extract() {
+    let bytes = std::fs::read(fixture("ospf-md5", "ospf.pcap")).unwrap();
+    let truncated = Artifact::from_bytes("truncated.pcap", bytes[..30].to_vec());
+    for slug in ["ospf-md5", "tcp-md5", "hsrp", "eigrp", "sntp-ms"] {
+        assert!(matches!(probe(slug, &truncated), Probe::Maybe(_)), "{slug}");
+        assert!(extract::by_slug(slug).unwrap().extract(&truncated).is_err());
+    }
+}
+
+#[test]
+fn routing_empty_input_is_never_recognized() {
+    let empty = Artifact::from_bytes("empty", Vec::new());
+    for slug in ["ospf-md5", "tcp-md5", "hsrp", "eigrp", "sntp-ms"] {
+        assert_eq!(probe(slug, &empty), Probe::No, "{slug}");
+        assert!(extract::by_slug(slug).unwrap().extract(&empty).is_err());
+    }
+}
+
+#[test]
+fn routing_captures_auto_detect_and_accept_explicit_types() {
+    let auto = omniex()
+        .arg("extract")
+        .arg("--json")
+        .arg(fixture("ospf-md5", "multi.pcap"))
+        .output()
+        .unwrap();
+    assert!(auto.status.success());
+    let value: serde_json::Value = serde_json::from_slice(&auto.stdout).unwrap();
+    assert_eq!(value.as_array().unwrap().len(), 2);
+    assert_eq!(value[0]["type"], "ospf-md5");
+
+    let explicit = omniex()
+        .arg("extract")
+        .arg("--type")
+        .arg("sntp-ms")
+        .arg(fixture("sntp-ms", "sntp.pcap"))
+        .output()
+        .unwrap();
+    assert!(explicit.status.success());
+
+    let all = omniex()
+        .arg("extract")
+        .arg("--all")
+        .arg("--format")
+        .arg("john")
+        .arg("--json")
+        .arg(fixture("hsrp", "hsrp2.pcap"))
+        .output()
+        .unwrap();
+    assert!(all.status.success());
+    let value: serde_json::Value = serde_json::from_slice(&all.stdout).unwrap();
+    assert_eq!(value.as_array().unwrap().len(), 1);
+    assert_eq!(value[0]["type"], "hsrp");
+
+    let wrong = omniex()
+        .arg("extract")
+        .arg("--type")
+        .arg("tcp-md5")
+        .arg(fixture("ospf-md5", "ospf.pcap"))
         .output()
         .unwrap();
     assert!(!wrong.status.success());
