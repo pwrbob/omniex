@@ -44,3 +44,7 @@ This file documents the extractors currently registered in
 - `ethereum-pbkdf2` - Ethereum keystore wallets using PBKDF2.
 - `ethereum-presale` - Ethereum pre-sale wallets.
 - `ethereum-scrypt` - Ethereum keystore wallets using scrypt.
+- `adxcrypt` - IBM/Toshiba 4690 ADXCSOUF user databases.
+- `bitshares-john` - BitShares backup wallets in the John serialization.
+- `multibit` - MultiBit Classic `.key` files.
+- `multibit-hd` - MultiBit HD `.wallet.aes` files.

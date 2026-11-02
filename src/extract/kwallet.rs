@@ -25,12 +25,15 @@ fn parse(artifact: &Artifact) -> Result<Kwallet, ExtractError> {
             "unsupported KWallet major version".to_owned(),
         ));
     }
-    if version[1] != 0 {
+    let modern = version[1] == 1;
+    if version[1] > 1 {
         return Err(ExtractError::Unsupported(
-            "salted KWallet files need their .salt sidecar and are not supported".to_owned(),
+            "unsupported KWallet minor version".to_owned(),
         ));
     }
-    if !matches!(version[2], 0 | 3) || version[3] != 0 {
+    let hash = version[3];
+    if !matches!(version[2], 0 | 3) || (modern && !matches!(hash, 0 | 2)) || (!modern && hash != 0)
+    {
         return Err(ExtractError::Unsupported(
             "unsupported KWallet cipher or hash".to_owned(),
         ));
@@ -75,9 +78,26 @@ fn parse(artifact: &Artifact) -> Result<Kwallet, ExtractError> {
     let size = u32::try_from(encrypted.len())
         .map_err(|_| ExtractError::Invalid("KWallet payload is too large".to_owned()))?;
     let prefix = &encrypted[..65.min(encrypted.len())];
+    let data = if modern {
+        let salt = artifact
+            .member("salt")
+            .ok_or_else(|| ExtractError::Unsupported("missing KWallet .salt sidecar".to_owned()))?
+            .read_all()
+            .map_err(|error| ExtractError::Invalid(format!("cannot read KWallet salt: {error}")))?;
+        format!(
+            "{}${}${}${}${}",
+            crate::format::hex(prefix),
+            version[1],
+            salt.len(),
+            crate::format::hex(&salt),
+            50000
+        )
+    } else {
+        crate::format::hex(prefix)
+    };
     Ok(Kwallet {
         version: size,
-        data: crate::format::hex(prefix),
+        data,
     })
 }
 

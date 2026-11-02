@@ -172,10 +172,15 @@ impl Artifact {
 
     /// Opens a file as an artifact.
     pub fn from_file(path: &Path) -> io::Result<Self> {
-        Ok(Self::new(
-            path.display().to_string(),
-            FileSource::open(path)?,
-        ))
+        let mut artifact = Self::new(path.display().to_string(), FileSource::open(path)?);
+        let salt = path.with_extension("salt");
+        if salt.is_file() {
+            artifact.members.push(ArtifactMember {
+                role: MemberRole::Named("salt".to_owned()),
+                source: Box::new(FileSource::open(&salt)?),
+            });
+        }
+        Ok(artifact)
     }
 
     /// Adds a named companion member.
@@ -338,7 +343,9 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
     }
 }
 
+mod adxcrypt;
 mod ansible;
+mod bitshares;
 mod bks;
 mod blockchain;
 mod dashlane;
@@ -357,6 +364,7 @@ mod jwt;
 mod known_hosts;
 mod kwallet;
 mod monero;
+mod multibit;
 mod odf;
 mod onepassword_agile;
 mod openbsd_softraid;
@@ -365,7 +373,9 @@ mod pwsafe;
 mod winzip;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
+    &adxcrypt::AdxcryptExtractor,
     &ansible::AnsibleVaultExtractor,
+    &bitshares::BitsharesExtractor,
     &bks::BksExtractor,
     &blockchain::BlockchainExtractor,
     &dashlane::DashlaneExtractor,
@@ -387,6 +397,8 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &kwallet::KwalletExtractor,
     &winzip::WinZipExtractor,
     &monero::MoneroExtractor,
+    &multibit::MultibitHdExtractor,
+    &multibit::MultibitKeyExtractor,
     &odf::OdfExtractor,
     &onepassword_agile::AgileKeychainExtractor,
     &onepassword_agile::OnepasswordAgileExtractor,
