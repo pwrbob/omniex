@@ -15,27 +15,6 @@ Status: early development. Hashcat and John mode coverage is tracked in
 
 AI use: this project was entirely developed by AI with only minor human guidance.
 
-## Goals
-
-- Support hashcat modes and named John formats that can be parsed or extracted.
-- Use one strongly typed Rust struct per logical hash type.
-- Parse hash strings and extract artifacts into that same struct.
-- Render a struct back to hashcat or John format.
-- Describe every field in human-readable form.
-- Report the modes that work for a concrete hash, not just its broad type.
-- Support hash lists.
-- Test compatibility against real hashcat and John builds in CI.
-
-## Non-Goals
-
-- Run cracking attacks in CI.
-- Link against or vendor hashcat or John.
-- Add a C shim, FFI module harness, or long-running server.
-- Support John ad-hoc `dynamic=...` formats.
-- Merge different algorithms, or merge a salt with an HMAC key.
-- Claim compatibility without a conformance test.
-- Support Windows or macOS initially.
-
 ## Core model
 
 A hash type is one logical hash format: the algorithm, the fields needed to
@@ -57,6 +36,70 @@ artifact ─────────────▶ instance ──────�
                           └────────── parse ─────────┘
 ```
 
+### Example: a three-field hash type
+
+`grub2` is a compact example with an iteration count, a salt, and a digest.
+
+```rust
+use crate::parse;
+use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
+
+#[derive(Debug, Clone, PartialEq, Eq, HashType)]
+#[hash(name = "GRUB 2", slug = "grub2", hashcat = [40019])]
+pub struct Grub2 {
+    #[field(role = iterations, encoding = decimal)]
+    pub iterations: u32,
+
+    #[field(role = salt, encoding = hex)]
+    pub salt: Vec<u8>,
+
+    #[field(role = digest, encoding = hex)]
+    pub digest: [u8; 64],
+}
+
+impl Parse for Grub2 {
+    fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
+        if input.is_empty() {
+            return Err(parse::empty());
+        }
+        let rest = parse::strip_prefix(input, "grub.pbkdf2.sha512.", 0)?;
+        let fields = parse::split_fields(rest, '.', 3)?;
+        let iterations = fields[0].0.parse::<u32>().map_err(|_| {
+            parse::error(
+                ParseErrorKind::InvalidCharacter,
+                fields[0].1,
+                "invalid GRUB iteration count",
+            )
+        })?;
+        Ok(Self {
+            iterations,
+            salt: parse::decode_hex(fields[1].0, fields[1].1)?,
+            digest: parse::decode_hex_field::<64>(fields[2].0, fields[2].1, "digest")?,
+        })
+    }
+}
+
+impl Render for Grub2 {
+    fn render_value(&self, _opts: &RenderOptions) -> String {
+        format!(
+            "grub.pbkdf2.sha512.{}.{}.{}",
+            self.iterations,
+            crate::format::hex(&self.salt),
+            crate::format::hex(self.digest)
+        )
+    }
+}
+```
+
+`#[derive(HashType)]` generates the `HashType` metadata, `Describe` (used by
+`--verbose` and JSON), and `ModeCompat` (the modes that can attack a concrete
+value). `Parse` and `Render` are manual because each format has its own syntax
+and byte-offset error reporting. `HashValue` is a blanket trait over
+`Render + Describe + ModeCompat`, so one `Grub2` value can be rendered, shown,
+or returned from an extractor. Extractors implement `Extractor` and return
+`Box<dyn HashValue>` values of the same struct; `--type grub2` selects the same
+slug for parsing and extraction.
+
 ## Features
 
 - Parse a hash string into a strongly typed value with named, documented fields.
@@ -65,6 +108,29 @@ artifact ─────────────▶ instance ──────�
 - Inspect field values as a table or JSON.
 - Process hash lists from an argument, a file, or standard input.
 - Run conformance tests against pinned hashcat and John builds.
+
+## Goals and non-goals
+
+Primary goals:
+
+- Support hashcat modes and named John formats that can be parsed or extracted.
+- Use one strongly typed Rust struct per logical hash type.
+- Parse hash strings and extract artifacts into that same struct.
+- Render a struct back to hashcat or John format.
+- Describe every field in human-readable form.
+- Report the modes that work for a concrete hash, not just its broad type.
+- Support hash lists.
+- Test compatibility against real hashcat and John builds in CI.
+
+Non-goals:
+
+- Run cracking attacks in CI.
+- Link against or vendor hashcat or John.
+- Add a C shim, FFI module harness, or long-running server.
+- Support John ad-hoc `dynamic=...` formats.
+- Merge different algorithms, or merge a salt with an HMAC key.
+- Claim compatibility without a conformance test.
+- Support Windows or macOS initially.
 
 ## Install
 
