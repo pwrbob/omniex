@@ -1,0 +1,4 @@
+type = "tacacs-plus"
+hashcat = "$tacacs-plus$0$5fde8e68$4e13e8fb33df00112233445566778899$c002"
+generator = "synthetic TACACS+ authentication response in a TCP capture"
+notes = "Synthetic encrypted body; no real shared secret."
