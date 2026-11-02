@@ -44,7 +44,7 @@ README badge counts checked lines in this file.
 - [x] Login keychain (`apple-keychain`)
 - [x] Secure Notes (`apple-secure-notes`)
 - [x] macOS local account password plists (`macos-sha1`, `macos-sha512`, `macos-pbkdf2-sha512`)
-- [ ] iCloud keychain records
+- [x] iCloud keychain records
 - [x] iOS keychain records from a backup (`keyring`, `iphone-passcode`)
 - [x] iTunes and Finder iOS backups (`itunes-backup`)
 - [x] Apple iWork 2013/2014 documents with an iwpv2 verifier (`iwork`)
@@ -142,7 +142,7 @@ README badge counts checked lines in this file.
 - [ ] Firefox `logins.json` saved-password records
 - [x] Firefox `key3.db` master-password verifier (`mozilla-key3`)
 - [ ] Firefox `signons.sqlite` saved-password records
-- [ ] Safari saved-password records in the login keychain
+- [x] Safari saved-password records in the login keychain
 
 ## Wallets and cryptocurrency stores
 
@@ -241,7 +241,7 @@ README badge counts checked lines in this file.
 
 - [x] WPA/WPA2 EAPOL handshakes (`wpa-pmkid`)
 - [x] WPA PMKID captures (`wpa-pmkid`)
-- [ ] Legacy WPA handshakes (`wpa-pmkid-legacy`)
+- [x] Legacy WPA handshakes (`wpa-pmkid`)
 - [x] Kerberos AS-REP, etype 23 (`krb5asrep23`)
 - [x] Kerberos AS-REP, etype 17/18 (`krb5asrep-aes`)
 - [x] Kerberos TGS-REP, etype 23 (`krb5tgs23`)
