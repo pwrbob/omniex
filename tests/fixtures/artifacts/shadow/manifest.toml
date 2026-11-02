@@ -1,0 +1,3 @@
+type = "md5crypt"
+generator = "synthetic Unix shadow file with crypt scheme variants"
+notes = "Synthetic hashes from canonical test vectors; no real accounts."

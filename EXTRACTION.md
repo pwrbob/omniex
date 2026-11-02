@@ -28,12 +28,15 @@ README badge counts checked lines in this file.
 
 - [x] IBM/Toshiba 4690 ADXCSOUF user database (`adxcrypt`)
 
-- [ ] Linux `/etc/shadow` (`descrypt`, `md5crypt`, `sha256crypt`, `sha512crypt`, `yescrypt`)
-- [ ] BSD `/etc/master.passwd` (`bsdicrypt`)
+- [x] Linux `/etc/shadow` (`descrypt`, `md5crypt`, `sha256crypt`, `sha512crypt`, `yescrypt`)
+- [x] BSD `/etc/master.passwd` (`bsdicrypt`)
 - [ ] AIX `/etc/security/passwd` (`aix-smd5`, `aix-ssha1`, `aix-ssha256`, `aix-ssha512`)
 - [ ] AS/400 user profiles (`as400-des`, `as400-ssha1`)
 - [ ] RACF database extracts (`racf`, `racf-kdfaes`, `racf-passphrase`, `racf-kdfaes-passphrase`)
 - [x] LDAP password attributes (`ldap-sha1`, `ldap-ssha1`, `ldap-ssha256`, `ldap-ssha512`)
+- [x] Apache htpasswd `$apr1$` hashes (`apr1`)
+- [x] bcrypt password files (`bcrypt`)
+- [x] Solaris shadow entries (`sunmd5`, `sha1crypt`)
 
 ## Apple and macOS
 
