@@ -1,0 +1,3 @@
+type = "iphone-passcode"
+generator = "synthetic iOS keybag with a companion UID key"
+notes = "The device UID key is not part of a real backup; it is provided as a companion file."

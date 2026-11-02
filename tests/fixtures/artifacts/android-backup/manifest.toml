@@ -1,0 +1,3 @@
+type = "android-backup"
+generator = "synthetic Android Backup encrypted headers"
+notes = "Synthetic .ab headers; the advertised payload is not included."

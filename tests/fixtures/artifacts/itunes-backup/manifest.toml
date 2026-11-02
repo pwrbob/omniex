@@ -1,0 +1,3 @@
+type = "itunes-backup"
+generator = "synthetic binary-plist keybag records"
+notes = "Synthetic Manifest.plist fragments; no real backup data."
