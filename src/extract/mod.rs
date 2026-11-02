@@ -465,6 +465,7 @@ mod macos_sha512;
 mod mschapv2_naive;
 mod netntlmv1;
 mod netntlmv2;
+mod ntlm;
 mod ospf_md5;
 mod racf_kdfaes_passphrase;
 mod radius;
@@ -553,7 +554,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &hashlist::Md2Extractor,
     &hashlist::Md4Extractor,
     &hashlist::Md5Extractor,
-    &hashlist::NtlmExtractor,
+    &ntlm::NtlmExtractor,
     &hashlist::RipemdExtractor,
     &hashlist::Sha0Extractor,
     &hashlist::Sha1Extractor,

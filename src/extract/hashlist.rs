@@ -5,17 +5,14 @@ use std::str;
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::{
     Blake2b256, Blake2b512, Blake2s256, EdonR256, EdonR512, Fugue, Gost, Groestl, Hamsi, Has160,
-    Jh, Keccak, Lm, Luffa, Md2, Md4, Md5, Md6, Mdc2, Ntlm, Panama, RadioGatun, Ripemd, Sha0, Sha1,
-    Sha3, Sha224, Sha256, Sha384, Sha512, Shabal, Shavite3, Simd, Skein512, Sm3, Snefru, Streebog,
-    Tiger, Whirlpool,
+    Jh, Keccak, Lm, Luffa, Md2, Md4, Md5, Md6, Mdc2, Panama, RadioGatun, Ripemd, Sha0, Sha1, Sha3,
+    Sha224, Sha256, Sha384, Sha512, Shabal, Shavite3, Simd, Skein512, Sm3, Snefru, Streebog, Tiger,
+    Whirlpool,
 };
 use crate::{HashType, HashValue, Parse, ParseOptions};
 
-fn candidates(artifact: &Artifact) -> Result<Vec<String>, ExtractError> {
-    let data = artifact.primary().read_all().map_err(|error| {
-        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
-    })?;
-    let text = str::from_utf8(&data)
+pub(crate) fn candidates(data: &[u8]) -> Result<Vec<String>, ExtractError> {
+    let text = str::from_utf8(data)
         .map_err(|_| ExtractError::Invalid("hash list is not UTF-8".to_owned()))?;
     let mut values = Vec::new();
     for line in text.lines() {
@@ -29,13 +26,13 @@ fn candidates(artifact: &Artifact) -> Result<Vec<String>, ExtractError> {
     Ok(values)
 }
 
-fn extract<T>(artifact: &Artifact) -> Result<Vec<T>, ExtractError>
+pub(crate) fn extract_from_data<T>(data: &[u8]) -> Result<Vec<T>, ExtractError>
 where
     T: Parse + HashValue + 'static,
 {
     let opts = ParseOptions::default();
     let mut hashes = Vec::new();
-    for value in candidates(artifact)? {
+    for value in candidates(data)? {
         if let Ok(hash) = T::parse(&value, &opts) {
             hashes.push(hash);
         }
@@ -48,12 +45,35 @@ where
     Ok(hashes)
 }
 
+pub(crate) fn probe_data<T>(data: &[u8]) -> Probe
+where
+    T: Parse + HashValue + 'static,
+{
+    match extract_from_data::<T>(data) {
+        Ok(_) => Probe::maybe("hash list entry"),
+        Err(_) => Probe::No,
+    }
+}
+
+fn read_data(artifact: &Artifact) -> Result<Vec<u8>, ExtractError> {
+    artifact.primary().read_all().map_err(|error| {
+        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
+    })
+}
+
+fn extract<T>(artifact: &Artifact) -> Result<Vec<T>, ExtractError>
+where
+    T: Parse + HashValue + 'static,
+{
+    extract_from_data::<T>(&read_data(artifact)?)
+}
+
 fn probe<T>(artifact: &Artifact) -> Probe
 where
     T: Parse + HashValue + 'static,
 {
-    match extract::<T>(artifact) {
-        Ok(_) => Probe::maybe("hash list entry"),
+    match read_data(artifact) {
+        Ok(data) => probe_data::<T>(&data),
         Err(_) => Probe::No,
     }
 }
@@ -85,7 +105,6 @@ macro_rules! list_extractor {
 list_extractor!(LmExtractor, Lm);
 list_extractor!(Md4Extractor, Md4);
 list_extractor!(Md5Extractor, Md5);
-list_extractor!(NtlmExtractor, Ntlm);
 list_extractor!(RipemdExtractor, Ripemd);
 list_extractor!(Sha1Extractor, Sha1);
 list_extractor!(Sha224Extractor, Sha224);
