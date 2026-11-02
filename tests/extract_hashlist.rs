@@ -27,6 +27,15 @@ const SLUGS: &[&str] = &[
     "tiger",
     "whirlpool",
     "skein-512",
+    "edon-r-512",
+    "fugue",
+    "groestl",
+    "hamsi",
+    "jh",
+    "luffa",
+    "shabal",
+    "shavite3",
+    "simd",
 ];
 
 fn fixture(name: &str) -> PathBuf {
