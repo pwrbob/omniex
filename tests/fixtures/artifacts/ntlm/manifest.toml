@@ -1,0 +1,12 @@
+type = "ntlm"
+artifact = "sam.hive"
+generator = "synthetic SAM hive with two local accounts"
+notes = "Synthetic class names, account key data, and V records; no real credentials."
+hashcat = """
+aad3b435b51404ee0011223344556677
+0123456789abcdef8899aabbccddeeff
+"""
+john = """
+aad3b435b51404ee0011223344556677
+0123456789abcdef8899aabbccddeeff
+"""
