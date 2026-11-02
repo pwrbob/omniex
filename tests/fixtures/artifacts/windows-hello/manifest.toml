@@ -1,0 +1,5 @@
+type = "windows-hello"
+password = "password"
+hashcat = "$WINHELLO$*SHA512*10000*0011223344556677*aabbccdd00112233*eeff001122334455*66778899aabbccdd*0123456789abcdef*fedcba9876543210"
+generator = "synthetic Windows Hello container export with two records"
+notes = "Synthetic PIN containers; no real credentials."
