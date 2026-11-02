@@ -1,3 +1,6 @@
 type = "vdi"
 generator = "synthetic VirtualBox .vbox key store"
 notes = "Synthetic VM configuration; no real disk."
+artifact = "sample.vbox"
+# John 8.0.0 rejects the synthetic VDI serialization.
+john = "-"

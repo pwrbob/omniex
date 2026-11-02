@@ -1,3 +1,5 @@
 type = "aix-smd5"
 generator = "synthetic AIX /etc/security/passwd file"
 notes = "Synthetic AIX hashes from canonical vectors."
+artifact = "passwd"
+hashcat = "{smd5}17800721$WkGka7tXcrfpUQS6WOQyw/"

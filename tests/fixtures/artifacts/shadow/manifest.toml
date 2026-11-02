@@ -1,3 +1,6 @@
 type = "md5crypt"
 generator = "synthetic Unix shadow file with crypt scheme variants"
 notes = "Synthetic hashes from canonical test vectors; no real accounts."
+artifact = "shadow"
+hashcat = "$1$38652870$DUjsu4TTlTsOe/xxZ05uf/"
+john = "$1$38652870$DUjsu4TTlTsOe/xxZ05uf/"

@@ -1,3 +1,6 @@
 type = "as400-des"
 generator = "synthetic text export with legacy password hash formats"
 notes = "Synthetic hash lines from canonical vectors; no real credentials."
+artifact = "dump.txt"
+hashcat = "$as400$des$*OPEN3*EC76FC0DEF5B0A83"
+john = "$as400des$OPEN3*EC76FC0DEF5B0A83"

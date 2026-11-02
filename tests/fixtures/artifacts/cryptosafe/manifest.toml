@@ -1,3 +1,5 @@
 type = "cryptosafe"
 generator = "synthetic cryptoSafe base64 vault"
 notes = "Synthetic ciphertext; no real keys."
+artifact = "vault.b64"
+john = "$cryptosafe$1$AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8="
