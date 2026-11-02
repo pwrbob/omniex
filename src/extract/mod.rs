@@ -339,9 +339,11 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
 mod adxcrypt;
 mod aix;
 mod ansible;
+mod bisq;
 mod bitshares;
 mod bks;
 mod blockchain;
+mod cardano;
 mod cloudkeychain;
 mod dashlane;
 mod dmg;
@@ -350,6 +352,7 @@ mod electrum;
 mod encfs;
 mod enpass;
 mod ethereum;
+mod exodus;
 mod fernet;
 mod filezilla;
 mod geli;
@@ -362,6 +365,7 @@ mod known_hosts;
 mod kwallet;
 mod ldap;
 mod lotus;
+mod metamask;
 mod monero;
 mod multibit;
 mod odf;
@@ -387,7 +391,9 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ansible::AnsibleVaultExtractor,
     &bitshares::BitsharesExtractor,
     &bks::BksExtractor,
+    &bisq::BisqExtractor,
     &blockchain::BlockchainExtractor,
+    &cardano::CardanoExtractor,
     &cloudkeychain::CloudkeychainExtractor,
     &dashlane::DashlaneExtractor,
     &dmg::DmgExtractor,
@@ -398,6 +404,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ethereum::EthereumPresaleExtractor,
     &ethereum::EthereumScryptExtractor,
     &enpass::EnpassExtractor,
+    &exodus::ExodusExtractor,
     &fernet::FernetExtractor,
     &filezilla::FileZillaServerExtractor,
     &geli::GeliExtractor,
@@ -465,6 +472,8 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &vmx::VmxExtractor,
     &winzip::WinZipExtractor,
     &monero::MoneroExtractor,
+    &metamask::MetamaskExtractor,
+    &metamask::MetamaskMobileExtractor,
     &multibit::MultibitHdExtractor,
     &multibit::MultibitKeyExtractor,
     &odf::OdfExtractor,

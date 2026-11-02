@@ -1,0 +1,3 @@
+type = "exodus"
+generator = "synthetic Exodus seed.seco file with a valid checksum"
+notes = "Synthetic ciphertext; no real keys."

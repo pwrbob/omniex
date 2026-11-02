@@ -1,0 +1,12 @@
+{
+  "vault": {
+    "data": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4v",
+    "iv": "AAECAwQFBgcICQoLDA0ODw==",
+    "salt": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=",
+    "keyMetadata": {
+      "params": {
+        "iterations": 10000
+      }
+    }
+  }
+}

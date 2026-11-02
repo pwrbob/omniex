@@ -1,0 +1,3 @@
+type = "metamask"
+generator = "synthetic MetaMask browser-extension vault"
+notes = "Synthetic ciphertext; no real keys."
