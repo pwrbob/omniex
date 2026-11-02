@@ -74,10 +74,10 @@ fn scan_hashes(artifact: &Artifact) -> Result<Vec<String>, ExtractError> {
             if !buffer[index..].starts_with(KEY) {
                 continue;
             }
-            if let Some(hash) = password_hash(&buffer, index + KEY.len())
-                && !hashes.contains(&hash)
-            {
-                hashes.push(hash);
+            if let Some(hash) = password_hash(&buffer, index + KEY.len()) {
+                if !hashes.contains(&hash) {
+                    hashes.push(hash);
+                }
             }
         }
         offset += window;
