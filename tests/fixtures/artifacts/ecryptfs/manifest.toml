@@ -1,11 +1,6 @@
 type = "ecryptfs"
-<<<<<<< HEAD
-generator = "synthetic eCryptfs version 2 wrapped passphrase"
-notes = "Synthetic wrapped passphrase; no real key."
+generator = "synthetic eCryptfs version 2 wrapped passphrase and a version 1 wrapped passphrase"
+notes = "Synthetic wrapped passphrases; no real key. Version 1 has no encoded salt, so extraction uses the format's fixed default salt 0011223344556677."
 artifact = "wrapped-passphrase"
 hashcat = "$ecryptfs$0$1$0102030405060708$1122334455667788"
 john = "$ecryptfs$0$1$0102030405060708$1122334455667788"
-=======
-generator = "synthetic eCryptfs version 2 wrapped passphrase and a version 1 wrapped passphrase"
-notes = "Synthetic wrapped passphrases; no real key. Version 1 has no encoded salt, so extraction uses the format's fixed default salt 0011223344556677."
->>>>>>> extract-next-d
