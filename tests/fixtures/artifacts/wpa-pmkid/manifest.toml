@@ -1,0 +1,3 @@
+type = "wpa-pmkid"
+generator = "synthetic IEEE 802.11 EAPOL and PMKID captures"
+notes = "Synthetic frames; no real handshake or access point."
