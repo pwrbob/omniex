@@ -1,0 +1,4 @@
+type = "flask-session"
+hashcat = "eyJ1c2VybmFtZSI6ImFsaWNlIiwicm9sZSI6ImFkbWluIn0.Zx20gA.AAECAwQFBgcICQoLDA0ODxAREhM"
+generator = "synthetic Flask session request"
+notes = "Synthetic cookie; signature bytes are fixed test data."

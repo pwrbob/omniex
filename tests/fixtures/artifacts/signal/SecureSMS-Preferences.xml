@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <boolean name="pref_has_password" value="true" />
+    <int name="pref_password_iterations" value="6024" />
+    <string name="encryption_salt">AR2e7bY2ffIVMqzCLcu5sg==</string>
+    <string name="mac_salt">xJKpkGRDcyuCuoRqFPrR6w==</string>
+    <string name="master_secret">P1Ohzf90F/PldtOQmGIY/FgIrjoUcMpsE7H7DKGGc/dxjn8Yz2M81ChBxjBZU91DokPn/GvcLESD0BjSR5K3UH00sBo=</string>
+</map>

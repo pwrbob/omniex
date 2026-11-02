@@ -1,4 +1,4 @@
-//! 1Password, Bitwarden, and LastPass extraction.
+//! 1Password, Bitwarden, LastPass, and application store extraction.
 
 use std::path::{Path, PathBuf};
 
@@ -369,4 +369,274 @@ fn signatureless_extractors_need_an_explicit_type() {
         .unwrap();
     assert_eq!(output.status.code(), Some(1));
     assert!(String::from_utf8_lossy(&output.stderr).contains("has no reliable signature"));
+}
+
+#[test]
+fn signal_extracts_android_secure_preferences() {
+    let extractor = extractor!("signal");
+    assert!(extractor.exact());
+    assert!(matches!(
+        extractor.probe(&artifact("signal", "SecureSMS-Preferences.xml")),
+        Probe::Yes(reason) if reason == "Signal Android secure preferences"
+    ));
+    let hashes = extractor
+        .extract(&artifact("signal", "SecureSMS-Preferences.xml"))
+        .expect("extract");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(john(hashes[0].as_ref()), expected("signal", "prefs.hash"));
+    assert!(hashes[0].modes().contains(&Mode::John("Signal")));
+}
+
+#[test]
+fn signal_scans_every_preference_map() {
+    let extractor = extractor!("signal");
+    let artifact = artifact("signal", "multi.xml");
+    let hashes = extractor.extract(&artifact).expect("extract");
+    let rendered = hashes
+        .iter()
+        .map(|hash| john(hash.as_ref()))
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert_eq!(rendered, expected("signal", "multi.hash"));
+}
+
+#[test]
+fn signal_rejects_non_preferences_and_incomplete_maps() {
+    let extractor = extractor!("signal");
+    for data in [
+        Vec::new(),
+        b"not xml".to_vec(),
+        br#"<map><boolean value="false"/><int value="6024"/></map>"#.to_vec(),
+        br#"<map><boolean value="true"/><int value="6024"/></map>"#.to_vec(),
+    ] {
+        assert_eq!(
+            extractor.probe(&Artifact::from_bytes("prefs.xml", data.clone())),
+            Probe::No
+        );
+        assert!(
+            extractor
+                .extract(&Artifact::from_bytes("prefs.xml", data))
+                .is_err()
+        );
+    }
+}
+
+#[test]
+fn telegram_extracts_desktop_local_storage() {
+    let extractor = extractor!("telegram");
+    assert!(extractor.exact());
+    assert!(matches!(
+        extractor.probe(&artifact("telegram", "map0")),
+        Probe::Yes(reason) if reason == "Telegram Desktop local storage map"
+    ));
+    let hashes = extractor
+        .extract(&artifact("telegram", "map0"))
+        .expect("extract");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(
+        hashes[0].render(&RenderOptions::default()).unwrap(),
+        expected("telegram", "map0.hash")
+    );
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(22600)));
+}
+
+#[test]
+fn telegram_scans_the_whole_artifact() {
+    let extractor = extractor!("telegram");
+    let map = std::fs::read(fixture("telegram", "map0")).unwrap();
+    let mut data = b"leading bytes that are not a map\n".to_vec();
+    data.extend_from_slice(&map);
+    data.extend_from_slice(&map);
+    let hashes = extractor
+        .extract(&Artifact::from_bytes("combined.map", data))
+        .expect("extract");
+    assert_eq!(hashes.len(), 2);
+    assert_eq!(
+        hashes[1].render(&RenderOptions::default()).unwrap(),
+        expected("telegram", "map0.hash")
+    );
+}
+
+#[test]
+fn telegram_rejects_other_files_and_truncated_maps() {
+    let extractor = extractor!("telegram");
+    for data in [
+        Vec::new(),
+        b"not a telegram map".to_vec(),
+        b"TDF$".to_vec(),
+        b"TDF$\0\0\0\0".to_vec(),
+    ] {
+        assert_eq!(
+            extractor.probe(&Artifact::from_bytes("map0", data.clone())),
+            Probe::No
+        );
+        assert!(
+            extractor
+                .extract(&Artifact::from_bytes("map0", data))
+                .is_err()
+        );
+    }
+}
+
+#[test]
+fn flask_session_extracts_a_signed_cookie() {
+    let extractor = extractor!("flask-session");
+    assert!(extractor.exact());
+    assert!(matches!(
+        extractor.probe(&artifact("flask-session", "request.txt")),
+        Probe::Yes(reason) if reason == "Flask signed session cookie"
+    ));
+    let hashes = extractor
+        .extract(&artifact("flask-session", "request.txt"))
+        .expect("extract");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(
+        hashes[0].render(&RenderOptions::default()).unwrap(),
+        expected("flask-session", "session.hash")
+    );
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(40056)));
+}
+
+#[test]
+fn flask_session_scans_every_cookie() {
+    let extractor = extractor!("flask-session");
+    let hashes = extractor
+        .extract(&artifact("flask-session", "multi.txt"))
+        .expect("extract");
+    let rendered = hashes
+        .iter()
+        .map(|hash| hash.render(&RenderOptions::default()).unwrap())
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert_eq!(rendered, expected("flask-session", "multi.hash"));
+}
+
+#[test]
+fn flask_session_rejects_unsigned_values() {
+    let extractor = extractor!("flask-session");
+    for data in [
+        Vec::new(),
+        b"Cookie: session=not-a-cookie".to_vec(),
+        b"Cookie: session=eyJ1c2VyIjoiYSJ9.YjdgRQ.short".to_vec(),
+    ] {
+        assert_eq!(
+            extractor.probe(&Artifact::from_bytes("cookies.txt", data.clone())),
+            Probe::No
+        );
+        assert!(
+            extractor
+                .extract(&Artifact::from_bytes("cookies.txt", data))
+                .is_err()
+        );
+    }
+}
+
+#[test]
+fn racf_kdfaes_passphrase_extracts_the_records() {
+    let extractor = extractor!("racf-kdfaes-passphrase");
+    assert!(extractor.exact());
+    assert!(matches!(
+        extractor.probe(&artifact("racf-kdfaes-passphrase", "records.txt")),
+        Probe::Yes(reason) if reason == "RACF KDFAES passphrase record"
+    ));
+    let hashes = extractor
+        .extract(&artifact("racf-kdfaes-passphrase", "records.txt"))
+        .expect("extract");
+    let rendered = hashes
+        .iter()
+        .map(|hash| hash.render(&RenderOptions::default()).unwrap())
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert_eq!(rendered, expected("racf-kdfaes-passphrase", "records.hash"));
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(37500)));
+}
+
+#[test]
+fn racf_kdfaes_passphrase_does_not_claim_password_records() {
+    let extractor = extractor!("racf-kdfaes-passphrase");
+    let password = b"$racf-kdfaes$*USER*E7D7E66D000180000008003200100010*00112233445566778899AABBCCDDEEFF*5390653DEC0316FB5AD56053208056A6";
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("records.txt", password.to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("records.txt", Vec::new())),
+        Probe::No
+    );
+    let truncated = b"$racf-kdfaes$*USER*E7D7E66D000140000008003200100010*00*00";
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("records.txt", truncated.to_vec())),
+        Probe::No
+    );
+    assert!(
+        extractor
+            .extract(&Artifact::from_bytes("records.txt", truncated.to_vec()))
+            .is_err()
+    );
+}
+
+#[test]
+fn sqlcipher_extracts_a_database_header() {
+    let extractor = extractor!("sqlcipher");
+    assert!(!extractor.exact());
+    let artifact = with_members(
+        "sqlcipher",
+        "database.db",
+        &[
+            ("sqlcipher-type", "type.txt"),
+            ("sqlcipher-iterations", "iterations.txt"),
+        ],
+    );
+    assert!(matches!(
+        extractor.probe(&artifact),
+        Probe::Maybe(reason) if reason.contains("KDF parameters are external")
+    ));
+    let hashes = extractor.extract(&artifact).expect("extract");
+    assert_eq!(hashes.len(), 1);
+    assert_eq!(
+        hashes[0].render(&RenderOptions::default()).unwrap(),
+        expected("sqlcipher", "database.hash")
+    );
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(24600)));
+}
+
+#[test]
+fn sqlcipher_uses_an_explicit_preset() {
+    let extractor = extractor!("sqlcipher");
+    let artifact = with_members(
+        "sqlcipher",
+        "database.db",
+        &[("sqlcipher-preset", "type.txt")],
+    );
+    let hashes = extractor.extract(&artifact).expect("extract");
+    assert_eq!(
+        hashes[0].render(&RenderOptions::default()).unwrap(),
+        expected("sqlcipher", "database.hash")
+    );
+}
+
+#[test]
+fn sqlcipher_rejects_plain_sqlite_and_missing_parameters() {
+    let extractor = extractor!("sqlcipher");
+    let database = artifact("sqlcipher", "database.db");
+    assert!(extractor.extract(&database).is_err());
+
+    let mut plain = vec![0; 4096];
+    plain[..16].copy_from_slice(b"SQLite format 3\0");
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("plain.db", plain)),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("short.db", vec![0; 32])),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("odd.db", vec![0; 513])),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty.db", Vec::new())),
+        Probe::No
+    );
 }

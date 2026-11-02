@@ -1,0 +1,4 @@
+type = "racf-kdfaes-passphrase"
+hashcat = "$racf-kdfaes$*HASHCAT*E7D7E66D000140000008003200100010*00112233445566778899AABBCCDDEEFF*B0AA0E1CF87660F27154933C0D403044"
+generator = "synthetic RACF KDFAES passphrase export"
+notes = "Synthetic records; no real system."
