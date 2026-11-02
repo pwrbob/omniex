@@ -1,0 +1,6 @@
+type = "jks-private-key"
+password = "password"
+hashcat = "$jksprivk$*..."
+john = ""
+generator = "keytool -genkeypair -storetype JKS"
+notes = "Throwaway JKS test keys; no real credentials."

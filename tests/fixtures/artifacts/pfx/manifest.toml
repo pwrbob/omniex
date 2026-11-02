@@ -1,0 +1,6 @@
+type = "pkcs12"
+password = "password"
+hashcat = "$pkcs12$256$2048$8$abaa68a8e1bc99aa$..."
+john = "$pfxng$256$32$2048$8$abaa68a8e1bc99aa$..."
+generator = "openssl pkcs12 -export -macalg sha256"
+notes = "Self-signed test certificate; no real credentials."

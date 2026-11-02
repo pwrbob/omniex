@@ -1,0 +1,6 @@
+type = "pem-private-key"
+password = "password"
+hashcat = "$PEM$1$4$..."
+john = ""
+generator = "openssl pkcs8 -topk8 -v2 aes-256-cbc"
+notes = "Throwaway PKCS#8 test keys; no real credentials."
