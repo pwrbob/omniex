@@ -1,0 +1,9 @@
+{
+  "guid": "00010203-0405-0607-0809-0a0b0c0d0e0f",
+  "sharedKey": "32393735-3033-3739-3735-363332383034",
+  "double_encryption": true,
+  "dpasswordhash": "5981118c97e1c707a94fbcd5ea8756a04533d57e1eb1841be1b437299edb6d90",
+  "options": {
+    "pbkdf2_iterations": 10000
+  }
+}
