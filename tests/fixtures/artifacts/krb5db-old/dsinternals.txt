@@ -1,0 +1,6 @@
+SamAccountName: test
+    Kerberos:
+      Credentials:
+        DES_CBC_MD5
+          Key: 8899aabbccddeeff
+      Salt: TEST.LOCALtest

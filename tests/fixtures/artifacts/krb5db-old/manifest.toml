@@ -1,0 +1,6 @@
+type = "krb5db-old"
+password = "password"
+hashcat = "$krb5db$1$test$TEST.LOCAL$7f153708497ae385"
+john = ""
+generator = "synthetic mimikatz and DSInternals Kerberos credential exports"
+notes = "Throwaway keys from hashcat mode 38400 examples; no real credentials."
