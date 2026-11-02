@@ -87,3 +87,4 @@ This file documents the extractors currently registered in
 - Plain hash lists for `md4`, `md5`, `ntlm`, `lm`, `sha1`, `ripemd`, `sha224`, `sha256`, `sha384`, and `sha512`.
 - Plain hash lists also cover `gost`, `keccak`, `md2`, `sha0`, `sha3`, `sm3`, `streebog`, `tiger`, `whirlpool`, and `skein-512`.
 - Plain hash lists also cover `blake2b-512`, `blake2b-256`, `blake2s-256`, `snefru`, `md6`, `has-160`, `panama`, `mdc2`, `radiogatun`, and `edon-r-256`.
+- Plain hash lists also cover `edon-r-512`, `fugue`, `groestl`, `hamsi`, `jh`, `luffa`, `shabal`, `shavite3`, and `simd`.

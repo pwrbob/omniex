@@ -215,6 +215,15 @@ README badge counts checked lines in this file.
 - [x] MDC-2 hash lists (`mdc2`)
 - [x] RadioGatun hash lists (`radiogatun`)
 - [x] EDON-R-256 hash lists (`edon-r-256`)
+- [x] EDON-R-512 hash lists (`edon-r-512`)
+- [x] Fugue hash lists (`fugue`)
+- [x] Groestl hash lists (`groestl`)
+- [x] Hamsi hash lists (`hamsi`)
+- [x] JH hash lists (`jh`)
+- [x] Luffa hash lists (`luffa`)
+- [x] Shabal hash lists (`shabal`)
+- [x] SHAvite-3 hash lists (`shavite3`)
+- [x] SIMD hash lists (`simd`)
 
 ## Textual credential exports
 

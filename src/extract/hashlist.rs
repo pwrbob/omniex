@@ -4,9 +4,10 @@ use std::str;
 
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::{
-    Blake2b256, Blake2b512, Blake2s256, EdonR256, Gost, Has160, Keccak, Lm, Md2, Md4, Md5, Md6,
-    Mdc2, Ntlm, Panama, RadioGatun, Ripemd, Sha0, Sha1, Sha3, Sha224, Sha256, Sha384, Sha512,
-    Skein512, Sm3, Snefru, Streebog, Tiger, Whirlpool,
+    Blake2b256, Blake2b512, Blake2s256, EdonR256, EdonR512, Fugue, Gost, Groestl, Hamsi, Has160,
+    Jh, Keccak, Lm, Luffa, Md2, Md4, Md5, Md6, Mdc2, Ntlm, Panama, RadioGatun, Ripemd, Sha0, Sha1,
+    Sha3, Sha224, Sha256, Sha384, Sha512, Shabal, Shavite3, Simd, Skein512, Sm3, Snefru, Streebog,
+    Tiger, Whirlpool,
 };
 use crate::{HashType, HashValue, Parse, ParseOptions};
 
@@ -111,3 +112,12 @@ list_extractor!(Md6Extractor, Md6);
 list_extractor!(PanamaExtractor, Panama);
 list_extractor!(RadioGatunExtractor, RadioGatun);
 list_extractor!(SnefruExtractor, Snefru);
+list_extractor!(EdonR512Extractor, EdonR512);
+list_extractor!(FugueExtractor, Fugue);
+list_extractor!(GroestlExtractor, Groestl);
+list_extractor!(HamsiExtractor, Hamsi);
+list_extractor!(JhExtractor, Jh);
+list_extractor!(LuffaExtractor, Luffa);
+list_extractor!(ShabalExtractor, Shabal);
+list_extractor!(Shavite3Extractor, Shavite3);
+list_extractor!(SimdExtractor, Simd);
