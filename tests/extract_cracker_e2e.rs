@@ -34,7 +34,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use common::{reference, selected_modes, work_dir};
 use omniex::extract::{Artifact, MemorySource, by_slug};
-use omniex::{HashTypeDescriptor, Mode, RenderOptions, Tool, registry};
+use omniex::{HashTypeDescriptor, Mode, ParseOptions, RenderOptions, Tool, registry};
 use toml::Value;
 
 struct Case {
@@ -273,7 +273,69 @@ fn selected_cases(cases: Vec<Case>, labels: Option<&[String]>, hashcat: bool) ->
     selected
 }
 
-fn extract(case: &Case, tool: Tool, expected: &[String]) -> Result<Vec<String>, String> {
+fn tool_name(tool: Tool) -> &'static str {
+    match tool {
+        Tool::Hashcat => "hashcat",
+        Tool::John => "john",
+    }
+}
+
+fn dedup(hashes: impl IntoIterator<Item = String>) -> Vec<String> {
+    let mut seen = HashSet::new();
+    let mut output = Vec::new();
+    for hash in hashes {
+        if seen.insert(hash.clone()) {
+            output.push(hash);
+        }
+    }
+    output
+}
+
+fn cli_extract(case: &Case, tool: Tool) -> Result<Vec<String>, String> {
+    let output = assert_cmd::Command::cargo_bin("omniex")
+        .expect("binary is built")
+        .args([
+            "extract",
+            "--type",
+            case.descriptor.slug,
+            "--format",
+            tool_name(tool),
+            "--json",
+        ])
+        .arg(&case.artifact)
+        .output()
+        .map_err(|error| format!("run omniex extract --json: {error}"))?;
+    if !output.status.success() {
+        return Err(format!(
+            "omniex extract --type {} --format {} --json failed for {}\nstatus: {}\nstdout:\n{}\nstderr:\n{}",
+            case.descriptor.slug,
+            tool_name(tool),
+            case.artifact.display(),
+            output.status,
+            text_or_empty(&output.stdout),
+            text_or_empty(&output.stderr),
+        ));
+    }
+
+    let entries = serde_json::from_slice::<serde_json::Value>(&output.stdout)
+        .map_err(|error| format!("parse omniex extract JSON: {error}"))?;
+    let entries = entries
+        .as_array()
+        .ok_or_else(|| "omniex extract JSON is not an array".to_owned())?;
+    let hashes = entries
+        .iter()
+        .map(|entry| {
+            entry
+                .get("hash")
+                .and_then(serde_json::Value::as_str)
+                .map(str::to_owned)
+                .ok_or_else(|| format!("extract JSON entry has no hash: {entry}"))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    Ok(dedup(hashes))
+}
+
+fn library_extract(case: &Case, tool: Tool) -> Result<Vec<String>, String> {
     let mut artifact = Artifact::from_file(&case.artifact)
         .map_err(|error| format!("read artifact {}: {error}", case.artifact.display()))?;
     for (name, path) in &case.companions {
@@ -292,25 +354,66 @@ fn extract(case: &Case, tool: Tool, expected: &[String]) -> Result<Vec<String>, 
         )
     })?;
 
-    let mut seen = HashSet::new();
-    let mut hashes = Vec::new();
-    for value in values {
-        let rendered = value
-            .render(&RenderOptions {
-                tool,
-                ..RenderOptions::default()
-            })
-            .map_err(|error| {
-                format!(
-                    "render `{}` from {}: {error}",
-                    case.descriptor.slug,
-                    case.artifact.display()
-                )
-            })?;
-        if seen.insert(rendered.clone()) {
-            hashes.push(rendered);
+    values
+        .iter()
+        .map(|value| {
+            value
+                .render(&RenderOptions {
+                    tool,
+                    ..RenderOptions::default()
+                })
+                .map_err(|error| {
+                    format!(
+                        "render `{}` from {}: {error}",
+                        case.descriptor.slug,
+                        case.artifact.display()
+                    )
+                })
+        })
+        .collect::<Result<Vec<_>, _>>()
+        .map(dedup)
+}
+
+fn round_trip(case: &Case, tool: Tool, hashes: &[String]) -> Result<(), String> {
+    let parse_opts = ParseOptions {
+        tool,
+        ..ParseOptions::default()
+    };
+    let render_opts = RenderOptions {
+        tool,
+        ..RenderOptions::default()
+    };
+
+    for hash in hashes {
+        let value = registry::parse(case.descriptor, hash, &parse_opts).map_err(|error| {
+            format!(
+                "parsed output of `{}` does not parse back: {error}\nhash: {hash}",
+                case.descriptor.slug
+            )
+        })?;
+        let rendered = value.render(&render_opts).map_err(|error| {
+            format!(
+                "parsed output of `{}` does not render again: {error}\nhash: {hash}",
+                case.descriptor.slug
+            )
+        })?;
+        if rendered != *hash {
+            return Err(format!(
+                "round trip changed `{}` output\nbefore: {hash}\nafter:  {rendered}",
+                case.descriptor.slug
+            ));
         }
     }
+
+    Ok(())
+}
+
+fn extract(case: &Case, tool: Tool, expected: &[String]) -> Result<Vec<String>, String> {
+    let hashes = if case.companions.is_empty() {
+        cli_extract(case, tool)?
+    } else {
+        library_extract(case, tool)?
+    };
 
     if hashes != expected {
         return Err(format!(
@@ -320,6 +423,7 @@ fn extract(case: &Case, tool: Tool, expected: &[String]) -> Result<Vec<String>, 
         ));
     }
 
+    round_trip(case, tool, &hashes)?;
     Ok(hashes)
 }
 
@@ -552,6 +656,135 @@ where
         "{} extract-to-cracker failure(s):\n{}",
         failures.len(),
         failures.join("\n")
+    );
+}
+
+const PENDING_E2E: &[&str] = &[
+    "android-backup",
+    "android-fde",
+    "apple-dmg",
+    "apple-secure-notes",
+    "armory",
+    "bitcoin-wif",
+    "bitshares",
+    "bks",
+    "blockchain",
+    "chap",
+    "cloudkeychain",
+    "dashlane",
+    "diskcryptor",
+    "eigrp",
+    "ethereum-pbkdf2",
+    "ethereum-presale",
+    "ethereum-scrypt",
+    "fernet",
+    "gpg",
+    "hsrp",
+    "iphone-passcode",
+    "itunes-backup",
+    "jwt",
+    "krb4",
+    "krb5asrep-aes",
+    "krb5asrep23",
+    "krb5pa17",
+    "krb5pa18",
+    "krb5pa23",
+    "krb5tgs17",
+    "krb5tgs18",
+    "krb5tgs23",
+    "kwallet",
+    "luks-v1",
+    "luks-v2",
+    "mozilla-key4",
+    "mschapv2-naive",
+    "multibit",
+    "netntlmv1",
+    "netntlmv2",
+    "odf",
+    "office",
+    "office2016-sheetprotection",
+    "oldoffice",
+    "openbsd-softraid",
+    "openssl-enc",
+    "ospf-md5",
+    "pdf",
+    "pkcs12",
+    "pst",
+    "pwsafe-v2",
+    "rar5",
+    "sappse",
+    "sevenzip",
+    "truecrypt",
+    "veracrypt",
+    "wpa-pmkid",
+];
+
+fn manifest_has_tool(root: &Value, tool: &str) -> bool {
+    if root.get(tool).is_some() {
+        return true;
+    }
+    root.get("case")
+        .and_then(Value::as_array)
+        .is_some_and(|cases| cases.iter().any(|case| case.get(tool).is_some()))
+}
+
+#[test]
+fn new_extractor_fixtures_declare_e2e_coverage() {
+    let root = Path::new("tests/fixtures/artifacts");
+    let mut manifests = Vec::new();
+    collect_manifests(root, &mut manifests);
+
+    let mut missing = Vec::new();
+    for path in manifests {
+        let Ok(text) = fs::read_to_string(&path) else {
+            continue;
+        };
+        let Ok(manifest) = toml::from_str::<Value>(&text) else {
+            panic!("invalid TOML manifest: {}", path.display());
+        };
+        let Some(slug) = manifest.get("type").and_then(Value::as_str) else {
+            continue;
+        };
+        if registry::by_slug(slug).is_none() || by_slug(slug).is_none() {
+            continue;
+        }
+        let disabled = manifest
+            .get("e2e")
+            .and_then(Value::as_bool)
+            .is_some_and(|enabled| !enabled);
+        if disabled
+            || manifest_has_tool(&manifest, "hashcat")
+            || manifest_has_tool(&manifest, "john")
+        {
+            continue;
+        }
+        let name = path
+            .parent()
+            .and_then(Path::file_name)
+            .expect("fixture directory")
+            .to_string_lossy()
+            .into_owned();
+        missing.push(name);
+    }
+    missing.sort();
+
+    let mut expected = PENDING_E2E
+        .iter()
+        .map(|name| (*name).to_owned())
+        .collect::<Vec<_>>();
+    expected.sort();
+
+    let new = missing
+        .iter()
+        .filter(|name| !expected.contains(name))
+        .collect::<Vec<_>>();
+    let stale = expected
+        .iter()
+        .filter(|name| !missing.contains(name))
+        .collect::<Vec<_>>();
+    assert!(
+        missing == expected,
+        "E2E metadata changed; add hashcat/john expectations or an e2e = false reason.\nnew: {new:?}\nremove from PENDING_E2E: {stale:?}"
     );
 }
 

@@ -260,10 +260,11 @@ as AES ZIP archives and checks extraction against the reference output.
 ### Extractor-to-cracker conformance
 
 Fixtures that declare a `hashcat` or `john` serialization in their manifest are
-exercised end to end: `omniex` extracts the artifact, verifies the rendered
-hashes match the manifest, and then asks the pinned hashcat build to identify
-and load each hash with `--show`, or the pinned John build to report the
-declared format with `--show=formats`. Neither path runs an attack.
+exercised end to end: `omniex` extracts the artifact through the real CLI JSON
+output, verifies the rendered hashes match the manifest, parses and renders each
+hash again, and then asks the pinned hashcat build to identify and load it with
+`--show`, or the pinned John build to report the declared format with
+`--show=formats`. Neither path runs an attack.
 
 This checks the extractor's real output rather than a separately curated hash
 string: if the extractor serialization drifts, the cracker call fails. Fixtures
