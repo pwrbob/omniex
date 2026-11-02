@@ -362,6 +362,7 @@ mod filezilla;
 mod geli;
 mod gpg;
 mod hashdump;
+mod hashlist;
 mod iwork;
 mod jwt;
 mod known_hosts;
@@ -420,6 +421,16 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &hashdump::RacfKdfaesExtractor,
     &hashdump::RacfPassphraseExtractor,
     &hashdump::SybasePropExtractor,
+    &hashlist::LmExtractor,
+    &hashlist::Md4Extractor,
+    &hashlist::Md5Extractor,
+    &hashlist::NtlmExtractor,
+    &hashlist::RipemdExtractor,
+    &hashlist::Sha1Extractor,
+    &hashlist::Sha224Extractor,
+    &hashlist::Sha256Extractor,
+    &hashlist::Sha384Extractor,
+    &hashlist::Sha512Extractor,
     &known_hosts::KnownHostsExtractor,
     &kwallet::KwalletExtractor,
     &lotus::Lotus5Extractor,

@@ -1,0 +1,3 @@
+type = "sha256"
+generator = "synthetic plain hash list"
+notes = "Synthetic hexadecimal hashes; no real credentials."

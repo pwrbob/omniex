@@ -84,3 +84,4 @@ This file documents the extractors currently registered in
 - `oracle11`, `oracle12c`, `oracle-otm` - Oracle hash exports.
 - `racf-kdfaes`, `racf-passphrase` - RACF KDFAES and passphrase exports.
 - `sybase-prop` - Sybase hash exports.
+- Plain hash lists for `md4`, `md5`, `ntlm`, `lm`, `sha1`, `ripemd`, `sha224`, `sha256`, `sha384`, and `sha512`.
