@@ -205,6 +205,16 @@ README badge counts checked lines in this file.
 - [x] Tiger hash lists (`tiger`)
 - [x] Whirlpool hash lists (`whirlpool`)
 - [x] Skein-512 hash lists (`skein-512`)
+- [x] BLAKE2b-512 hash lists (`blake2b-512`)
+- [x] BLAKE2b-256 hash lists (`blake2b-256`)
+- [x] BLAKE2s-256 hash lists (`blake2s-256`)
+- [x] Snefru hash lists (`snefru`)
+- [x] MD6 hash lists (`md6`)
+- [x] HAS-160 hash lists (`has-160`)
+- [x] PANAMA hash lists (`panama`)
+- [x] MDC-2 hash lists (`mdc2`)
+- [x] RadioGatun hash lists (`radiogatun`)
+- [x] EDON-R-256 hash lists (`edon-r-256`)
 
 ## Textual credential exports
 
