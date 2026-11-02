@@ -1,0 +1,3 @@
+type = "luks-v2"
+generator = "synthetic LUKS2 JSON header with two Argon2id keyslots"
+notes = "Synthetic header; no real volume."
