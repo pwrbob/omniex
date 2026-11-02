@@ -15,7 +15,7 @@ README badge counts checked lines in this file.
 
 ## Windows
 
-- [ ] SAM hive local account NT hashes (`ntlm`)
+- [x] SAM hive local account NT hashes (`ntlm`)
 - [x] SECURITY hive cached domain credentials (`dcc2`)
 - [x] SECURITY hive DPAPI masterkeys (`dpapi`)
 - [x] User DPAPI masterkey files (`dpapi`)

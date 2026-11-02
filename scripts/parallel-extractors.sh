@@ -140,7 +140,7 @@ cd "$repo_root"
 [[ -z "$(git status --porcelain --untracked-files=no)" ]] ||
     die "commit or stash tracked changes before creating worker worktrees"
 
-worktree_root="${OMNIEX_WORKTREE_ROOT:-$(dirname "$repo_root")/${repo_name}-workers}"
+worktree_root="${OMNIEX_WORKTREE_ROOT:-$repo_root/tmp/worktrees}"
 log_root="${OMNIEX_WORKER_LOG_DIR:-$repo_root/tmp/extractor-workers}"
 target_root="${OMNIEX_WORKER_TARGET_ROOT:-$repo_root/tmp/extractor-targets}"
 data_root="${OMNIEX_WORKER_DATA_ROOT:-$repo_root/tmp/extractor-crush-data}"
