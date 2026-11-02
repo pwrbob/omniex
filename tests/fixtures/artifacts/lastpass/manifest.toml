@@ -1,0 +1,5 @@
+type = "lastpass"
+generator = "synthetic LastPass LPB64 vault with an ENCU record"
+notes = "Synthetic LastPass vault; username and iterations are companion files."
+hashcat = "404142434445464748494a4b4c4d4e4f:100100:lulu@mailinator.com:101112131415161718191a1b1c1d1e1f"
+john = "-"
