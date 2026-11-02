@@ -1,5 +1,7 @@
 //! FreeBSD GELI metadata extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Geli;
 use crate::{HashType, HashValue};
@@ -34,22 +36,22 @@ fn parse(artifact: &Artifact) -> Result<Geli, ExtractError> {
         return Err(ExtractError::Invalid("truncated GELI metadata".to_owned()));
     }
 
-    let version = u32::from_le_bytes(number::<4>(data, 16)?);
+    let version = LittleEndian::read_u32(&number::<4>(data, 16)?);
     if !(1..=7).contains(&version) {
         return Err(ExtractError::Unsupported(format!(
             "unsupported GELI metadata version {version}"
         )));
     }
-    let ealgo = u16::from_le_bytes(number::<2>(data, 24)?);
+    let ealgo = LittleEndian::read_u16(&number::<2>(data, 24)?);
     if !matches!(ealgo, 11 | 22) {
         return Err(ExtractError::Unsupported(format!(
             "unsupported GELI encryption algorithm {ealgo}"
         )));
     }
-    let keylen = u16::from_le_bytes(number::<2>(data, 26)?);
-    let aalgo = u16::from_le_bytes(number::<2>(data, 28)?);
+    let keylen = LittleEndian::read_u16(&number::<2>(data, 26)?);
+    let aalgo = LittleEndian::read_u16(&number::<2>(data, 28)?);
     let keys = data[42];
-    let iterations = i32::from_le_bytes(number::<4>(data, 43)?);
+    let iterations = LittleEndian::read_i32(&number::<4>(data, 43)?);
     let salt = &data[47..111];
     let mkeys = &data[111..495];
 

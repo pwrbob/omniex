@@ -1,5 +1,7 @@
 //! Password Safe v3 extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::{Pwsafe, PwsafeV3};
 use crate::{HashType, HashValue};
@@ -31,7 +33,7 @@ fn header(artifact: &Artifact) -> Result<Vec<u8>, ExtractError> {
 
 fn fields(data: &[u8]) -> ([u8; 32], u32, [u8; 32]) {
     let salt = data[4..36].try_into().expect("32-byte salt");
-    let iterations = u32::from_le_bytes(data[36..40].try_into().expect("4-byte iterations"));
+    let iterations = LittleEndian::read_u32(&data[36..40]);
     let digest = data[40..72].try_into().expect("32-byte digest");
     (salt, iterations, digest)
 }

@@ -4,6 +4,7 @@ use std::str;
 
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
+use byteorder::{ByteOrder, LittleEndian};
 use serde_json::Value;
 
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
@@ -51,7 +52,7 @@ fn parse(artifact: &Artifact) -> Result<CloudkeychainJohn, ExtractError> {
             "unsupported 1Password master key envelope".to_owned(),
         ));
     }
-    let plaintext_length = u64::from_le_bytes(master[8..16].try_into().expect("8 bytes"));
+    let plaintext_length = LittleEndian::read_u64(&master[8..16]);
     let iv = &master[16..32];
     let cryptext = &master[32..master.len() - 32];
     let hmac = &master[master.len() - 32..];

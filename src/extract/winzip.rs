@@ -1,5 +1,7 @@
 //! WinZip AES ZIP entry extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::WinZip;
 use crate::{HashType, HashValue};
@@ -21,12 +23,11 @@ fn entries(data: &[u8]) -> Result<Vec<WinZip>, ExtractError> {
         let header = data
             .get(start..start + 30)
             .ok_or_else(|| ExtractError::Invalid("truncated WinZip local header".to_owned()))?;
-        let flags = u16::from_le_bytes(header[6..8].try_into().expect("2 bytes"));
-        let method = u16::from_le_bytes(header[8..10].try_into().expect("2 bytes"));
-        let compressed_size =
-            u32::from_le_bytes(header[18..22].try_into().expect("4 bytes")) as usize;
-        let name_len = u16::from_le_bytes(header[26..28].try_into().expect("2 bytes")) as usize;
-        let extra_len = u16::from_le_bytes(header[28..30].try_into().expect("2 bytes")) as usize;
+        let flags = LittleEndian::read_u16(&header[6..8]);
+        let method = LittleEndian::read_u16(&header[8..10]);
+        let compressed_size = LittleEndian::read_u32(&header[18..22]) as usize;
+        let name_len = LittleEndian::read_u16(&header[26..28]) as usize;
+        let extra_len = LittleEndian::read_u16(&header[28..30]) as usize;
         let extra_start = start + 30 + name_len;
         let data_start = extra_start + extra_len;
         let Some(extra) = data.get(extra_start..data_start) else {
@@ -80,8 +81,8 @@ fn entries(data: &[u8]) -> Result<Vec<WinZip>, ExtractError> {
 fn aes_extra(extra: &[u8]) -> Option<(u8, [u8; 2])> {
     let mut offset = 0;
     while offset + 4 <= extra.len() {
-        let id = u16::from_le_bytes(extra[offset..offset + 2].try_into().ok()?);
-        let size = u16::from_le_bytes(extra[offset + 2..offset + 4].try_into().ok()?) as usize;
+        let id = LittleEndian::read_u16(&extra[offset..offset + 2]);
+        let size = LittleEndian::read_u16(&extra[offset + 2..offset + 4]) as usize;
         let value = extra.get(offset + 4..offset + 4 + size)?;
         if id == AES_EXTRA && value.len() >= 7 {
             let vendor = [value[2], value[3]];

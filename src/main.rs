@@ -1,7 +1,6 @@
 //! `omniex` command-line interface.
 
 use std::collections::HashSet;
-use std::fmt;
 use std::io::{Read, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
@@ -140,9 +139,11 @@ impl From<FormatArg> for Tool {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 enum CliError {
+    #[error("{0}")]
     Input(String),
+    #[error("{0}")]
     Usage(String),
 }
 
@@ -151,14 +152,6 @@ impl CliError {
         match self {
             Self::Input(_) => 1,
             Self::Usage(_) => 2,
-        }
-    }
-}
-
-impl fmt::Display for CliError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Input(message) | Self::Usage(message) => f.write_str(message),
         }
     }
 }

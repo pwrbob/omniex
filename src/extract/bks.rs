@@ -2,6 +2,8 @@
 
 use std::str;
 
+use byteorder::{BigEndian, ByteOrder};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Bks;
 use crate::{HashType, HashValue};
@@ -34,15 +36,11 @@ impl<'a> Reader<'a> {
     }
 
     fn u16(&mut self) -> Result<u16, ExtractError> {
-        Ok(u16::from_be_bytes(
-            self.take(2)?.try_into().expect("2 bytes"),
-        ))
+        Ok(BigEndian::read_u16(self.take(2)?))
     }
 
     fn u32(&mut self) -> Result<u32, ExtractError> {
-        Ok(u32::from_be_bytes(
-            self.take(4)?.try_into().expect("4 bytes"),
-        ))
+        Ok(BigEndian::read_u32(self.take(4)?))
     }
 
     fn utf(&mut self) -> Result<String, ExtractError> {

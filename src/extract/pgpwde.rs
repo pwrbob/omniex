@@ -1,5 +1,7 @@
 //! PGP Whole Disk Encryption user-record extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Pgpwde;
 use crate::{HashType, HashValue};
@@ -13,17 +15,17 @@ fn records(data: &[u8]) -> Vec<Pgpwde> {
     let mut hashes = Vec::new();
     for offset in 0..data.len().saturating_sub(RECORD_SIZE) {
         let record = &data[offset..offset + RECORD_SIZE];
-        let size = u16::from_le_bytes(record[0..2].try_into().expect("2 bytes"));
+        let size = LittleEndian::read_u16(&record[0..2]);
         let version = record[2];
         let kind = record[3];
-        let magic = u32::from_le_bytes(record[4..8].try_into().expect("4 bytes"));
+        let magic = LittleEndian::read_u32(&record[4..8]);
         let current = record[9];
         if size != 512 || version != 0 || kind != 8 || magic != MAGIC || current != 0 {
             continue;
         }
         let algorithm = record[28];
         let s2k = record[162];
-        let iterations = u32::from_le_bytes(record[163..167].try_into().expect("4 bytes"));
+        let iterations = LittleEndian::read_u32(&record[163..167]);
         let salt = &record[170..186];
         let esk = &record[186..314]
             .iter()

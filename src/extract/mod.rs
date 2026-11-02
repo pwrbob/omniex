@@ -1,6 +1,5 @@
 //! Artifact extraction into the same hash type instances used by parsing.
 
-use std::fmt;
 use std::fs::File;
 use std::io::{self, Read, Seek, SeekFrom};
 use std::path::Path;
@@ -256,20 +255,14 @@ impl Probe {
 }
 
 /// A failure while extracting an artifact.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum ExtractError {
     /// The artifact is not in a shape this extractor understands.
+    #[error("{0}")]
     Unsupported(String),
     /// The artifact is in the expected shape but is malformed.
+    #[error("{0}")]
     Invalid(String),
-}
-
-impl fmt::Display for ExtractError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Unsupported(message) | Self::Invalid(message) => f.write_str(message),
-        }
-    }
 }
 
 /// One extractor for a hash type.

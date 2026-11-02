@@ -1,5 +1,7 @@
 //! PGP self-decrypting archive extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Pgpsda;
 use crate::{HashType, HashValue};
@@ -17,7 +19,7 @@ fn headers(data: &[u8]) -> Vec<&[u8]> {
                 return None;
             }
             let header = data.get(offset..offset + HEADER_SIZE)?;
-            let file_offset = u32::from_le_bytes(header[6..10].try_into().ok()?);
+            let file_offset = LittleEndian::read_u32(&header[6..10]);
             ((file_offset as usize) < data.len()).then_some(header)
         })
         .collect()
@@ -36,7 +38,7 @@ fn parse(artifact: &Artifact) -> Result<Extracted, ExtractError> {
     Ok(headers
         .into_iter()
         .map(|header| {
-            let iterations = u16::from_le_bytes(header[34..36].try_into().expect("2 bytes"));
+            let iterations = LittleEndian::read_u16(&header[34..36]);
             let salt = header[26..34].try_into().expect("8-byte salt");
             let digest = header[36..44].try_into().expect("8-byte digest");
             Box::new(Pgpsda {

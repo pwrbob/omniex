@@ -9,17 +9,7 @@
 /// ```
 #[must_use]
 pub fn hex(bytes: impl AsRef<[u8]>) -> String {
-    const DIGITS: &[u8; 16] = b"0123456789abcdef";
-
-    let bytes = bytes.as_ref();
-    let mut out = String::with_capacity(bytes.len() * 2);
-
-    for &byte in bytes {
-        out.push(DIGITS[usize::from(byte >> 4)] as char);
-        out.push(DIGITS[usize::from(byte & 0x0f)] as char);
-    }
-
-    out
+    hex::encode(bytes)
 }
 
 #[cfg(test)]

@@ -1,5 +1,7 @@
 //! Apple DMG encrcdsa v2 extraction.
 
+use byteorder::{BigEndian, ByteOrder};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::DmgJohn;
 use crate::{HashType, HashValue};
@@ -26,10 +28,10 @@ fn parse(artifact: &Artifact) -> Result<DmgJohn, ExtractError> {
             "not an encrcdsa v2 DMG".to_owned(),
         ));
     }
-    let datasize = u64::from_be_bytes(number::<8>(&header, 56)?);
-    let dataoffset = u64::from_be_bytes(number::<8>(&header, 64)?);
-    let iterations = u32::from_be_bytes(number::<4>(&header, 104)?);
-    let salt_len = u32::from_be_bytes(number::<4>(&header, 108)?);
+    let datasize = BigEndian::read_u64(&number::<8>(&header, 56)?);
+    let dataoffset = BigEndian::read_u64(&number::<8>(&header, 64)?);
+    let iterations = BigEndian::read_u32(&number::<4>(&header, 104)?);
+    let salt_len = BigEndian::read_u32(&number::<4>(&header, 108)?);
     if salt_len > 32 {
         return Err(ExtractError::Unsupported(
             "DMG salt length is too large".to_owned(),
@@ -37,7 +39,7 @@ fn parse(artifact: &Artifact) -> Result<DmgJohn, ExtractError> {
     }
     let salt = &header[112..112 + salt_len as usize];
     let blob_iv = &header[148..180];
-    let keyblob_size = u32::from_be_bytes(number::<4>(&header, 196)?);
+    let keyblob_size = BigEndian::read_u32(&number::<4>(&header, 196)?);
     let keyblob = &header[200..264];
     if keyblob_size > 64 {
         return Err(ExtractError::Unsupported(

@@ -187,33 +187,27 @@ impl Default for RenderOptions {
 }
 
 /// A rendering request that cannot be satisfied.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, thiserror::Error)]
 pub enum RenderError {
     /// The value has no mode for the requested tool.
+    #[error("{}", unsupported_tool(*.0))]
     UnsupportedTool(Tool),
     /// The requested hashcat release predates support.
+    #[error(
+        "hashcat {}.{}.{} is older than the first supported release",
+        .0.major,
+        .0.minor,
+        .0.patch
+    )]
     UnsupportedRelease(ReleaseVersion),
 }
 
-impl core::fmt::Display for RenderError {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        match self {
-            Self::UnsupportedTool(Tool::Hashcat) => {
-                f.write_str("no compatible hashcat mode for this value")
-            }
-            Self::UnsupportedTool(Tool::John) => {
-                f.write_str("no compatible John format for this value")
-            }
-            Self::UnsupportedRelease(version) => write!(
-                f,
-                "hashcat {}.{}.{} is older than the first supported release",
-                version.major, version.minor, version.patch
-            ),
-        }
+fn unsupported_tool(tool: Tool) -> &'static str {
+    match tool {
+        Tool::Hashcat => "no compatible hashcat mode for this value",
+        Tool::John => "no compatible John format for this value",
     }
 }
-
-impl core::error::Error for RenderError {}
 
 /// Serializes a hash type into the string consumed by hashcat or John.
 ///
@@ -291,7 +285,8 @@ impl Default for ParseOptions {
 }
 
 /// A parse failure with a byte offset into the input.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+#[error("{} (at byte {})", .message, .offset)]
 pub struct ParseError {
     /// Machine-readable error category.
     pub kind: ParseErrorKind,
@@ -300,14 +295,6 @@ pub struct ParseError {
     /// Human-readable explanation.
     pub message: String,
 }
-
-impl core::fmt::Display for ParseError {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        write!(f, "{} (at byte {})", self.message, self.offset)
-    }
-}
-
-impl core::error::Error for ParseError {}
 
 /// Categories for parse failures.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

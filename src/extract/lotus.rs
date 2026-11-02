@@ -1,5 +1,7 @@
 //! Lotus Notes/Domino 5 ID-file extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Lotus5;
 use crate::{HashType, HashValue};
@@ -17,7 +19,7 @@ fn parse(artifact: &Artifact) -> Result<Lotus5, ExtractError> {
     source
         .read_exact_at(0xD6, &mut size)
         .map_err(|error| ExtractError::Invalid(format!("cannot read Lotus ID: {error}")))?;
-    let size = u16::from_le_bytes(size) as usize;
+    let size = LittleEndian::read_u16(&size) as usize;
     if !(0x10..=0x64).contains(&size) || 0xD8 + size as u64 > source.len() {
         return Err(ExtractError::Invalid(
             "invalid Lotus ID blob length".to_owned(),

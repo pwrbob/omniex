@@ -1,5 +1,7 @@
 //! PGP Virtual Disk user-record extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Pgpdisk;
 use crate::{HashType, HashValue};
@@ -26,13 +28,13 @@ fn parse(artifact: &Artifact) -> Result<Extracted, ExtractError> {
     let offset = header.ok_or_else(|| {
         ExtractError::Unsupported("PGP Virtual Disk main header not found".to_owned())
     })?;
-    let algorithm = u32::from_le_bytes(data[offset + 60..offset + 64].try_into().expect("4 bytes"));
+    let algorithm = LittleEndian::read_u32(&data[offset + 60..offset + 64]);
     if !matches!(algorithm, 3..=7) {
         return Err(ExtractError::Unsupported(
             "unsupported PGP Virtual Disk algorithm".to_owned(),
         ));
     }
-    let next = u64::from_le_bytes(data[offset + 16..offset + 24].try_into().expect("8 bytes"));
+    let next = LittleEndian::read_u64(&data[offset + 16..offset + 24]);
     let salt = &data[offset + 64..offset + 80];
     let salt = salt.to_vec();
 
@@ -48,7 +50,7 @@ fn parse(artifact: &Artifact) -> Result<Extracted, ExtractError> {
         if &record[..4] != b"USER" || &record[4..8] != b"SYMM" {
             continue;
         }
-        let iterations = u16::from_le_bytes(record[304..306].try_into().expect("2 bytes"));
+        let iterations = LittleEndian::read_u16(&record[304..306]);
         let check = &record[288..304];
         hashes.push(Pgpdisk {
             version: 0,

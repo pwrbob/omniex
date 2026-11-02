@@ -4,6 +4,7 @@ use std::str;
 
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
+use byteorder::{ByteOrder, LittleEndian};
 use roxmltree::Document;
 
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
@@ -40,10 +41,7 @@ fn parse(artifact: &Artifact) -> Result<Vdi, ExtractError> {
     let blob = STANDARD
         .decode(blob.replace("&#13;&#10;", ""))
         .map_err(|_| ExtractError::Invalid("invalid VirtualBox key store base64".to_owned()))?;
-    let version = blob
-        .get(4..6)
-        .and_then(|value| value.try_into().ok())
-        .map(u16::from_le_bytes);
+    let version = blob.get(4..6).map(LittleEndian::read_u16);
     if blob.get(..4) != Some(b"SCNE") || version != Some(0x100) {
         return Err(ExtractError::Unsupported(
             "unsupported VirtualBox key store version".to_owned(),
@@ -57,14 +55,14 @@ fn parse(artifact: &Artifact) -> Result<Vdi, ExtractError> {
     }
     let algo = &rest[..32];
     let kdf = &rest[32..64];
-    let gen_keylen = u32::from_le_bytes(rest[64..68].try_into().expect("4 bytes"));
+    let gen_keylen = LittleEndian::read_u32(&rest[64..68]);
     let final_hash = &rest[68..100];
-    let keylen = u32::from_le_bytes(rest[100..104].try_into().expect("4 bytes"));
+    let keylen = LittleEndian::read_u32(&rest[100..104]);
     let salt2 = &rest[104..136];
-    let salt2_iter = u32::from_le_bytes(rest[136..140].try_into().expect("4 bytes"));
+    let salt2_iter = LittleEndian::read_u32(&rest[136..140]);
     let salt1 = &rest[140..172];
-    let salt1_iter = u32::from_le_bytes(rest[172..176].try_into().expect("4 bytes"));
-    let evp_len = u32::from_le_bytes(rest[176..180].try_into().expect("4 bytes")) as usize;
+    let salt1_iter = LittleEndian::read_u32(&rest[172..176]);
+    let evp_len = LittleEndian::read_u32(&rest[176..180]) as usize;
     let enc_pass = rest.get(180..180 + evp_len).ok_or_else(|| {
         ExtractError::Invalid("truncated VirtualBox encrypted password".to_owned())
     })?;

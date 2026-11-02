@@ -2,6 +2,8 @@
 
 use std::io::{Cursor, Read};
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Iwork;
 use crate::{HashType, HashValue};
@@ -36,14 +38,14 @@ fn parse(artifact: &Artifact) -> Result<Iwork, ExtractError> {
             "iWork password verifier has the wrong length".to_owned(),
         ));
     }
-    let version = u16::from_le_bytes(data[0..2].try_into().expect("2 bytes"));
-    let format = u16::from_le_bytes(data[2..4].try_into().expect("2 bytes"));
+    let version = LittleEndian::read_u16(&data[0..2]);
+    let format = LittleEndian::read_u16(&data[2..4]);
     if version != 2 || format != 1 {
         return Err(ExtractError::Unsupported(format!(
             "unsupported iWork verifier version {version} format {format}"
         )));
     }
-    let iterations = u32::from_le_bytes(data[4..8].try_into().expect("4 bytes"));
+    let iterations = LittleEndian::read_u32(&data[4..8]);
     let salt = data[8..24].to_vec();
     let iv: [u8; 16] = data[24..40].try_into().expect("16-byte IV");
     let blob = data[40..104].to_vec();

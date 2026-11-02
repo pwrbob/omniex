@@ -22,12 +22,17 @@ license.workspace = true
 
 [dependencies]
 base64 = "0.22"
+byteorder = "1"
 clap = { version = "4", features = ["derive"] }
+comfy-table = "8"
+hex = "0.4"
 omniex-core.workspace = true
 omniex-macros.workspace = true
 pgp = "0.10"
 roxmltree = "0.20"
 serde_json = "1"
+textwrap = "0.16"
+thiserror = "1"
 zip = { version = "2", default-features = false, features = ["deflate"] }
 terminal_size = "0.4"
 unicode-width = "0.2"

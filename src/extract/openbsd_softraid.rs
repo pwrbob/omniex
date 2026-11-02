@@ -1,5 +1,7 @@
 //! OpenBSD softraid crypto metadata extraction.
 
+use byteorder::{ByteOrder, LittleEndian};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::OpenbsdSoftraid;
 use crate::{HashType, HashValue};
@@ -36,8 +38,7 @@ fn parse(artifact: &Artifact) -> Result<OpenbsdSoftraid, ExtractError> {
     }
     let kdf = headers
         .get(2416..2420)
-        .and_then(|value| value.try_into().ok())
-        .map(u32::from_le_bytes)
+        .map(LittleEndian::read_u32)
         .ok_or_else(|| ExtractError::Invalid("truncated softraid metadata".to_owned()))?;
     if !matches!(kdf, 1 | 3) {
         return Err(ExtractError::Unsupported(format!(
@@ -46,8 +47,7 @@ fn parse(artifact: &Artifact) -> Result<OpenbsdSoftraid, ExtractError> {
     }
     let iterations = headers
         .get(2420..2424)
-        .and_then(|value| value.try_into().ok())
-        .map(u32::from_le_bytes)
+        .map(LittleEndian::read_u32)
         .ok_or_else(|| ExtractError::Invalid("truncated softraid metadata".to_owned()))?;
     let salt = headers
         .get(2424..2552)

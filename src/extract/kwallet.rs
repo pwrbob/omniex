@@ -1,5 +1,7 @@
 //! Legacy KDE KWallet extraction.
 
+use byteorder::{BigEndian, ByteOrder};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Kwallet;
 use crate::{HashType, HashValue};
@@ -42,8 +44,7 @@ fn parse(artifact: &Artifact) -> Result<Kwallet, ExtractError> {
     let mut offset = 16;
     let count = data
         .get(offset..offset + 4)
-        .and_then(|value| value.try_into().ok())
-        .map(u32::from_be_bytes)
+        .map(BigEndian::read_u32)
         .ok_or_else(|| ExtractError::Invalid("truncated KWallet folder count".to_owned()))?
         as usize;
     offset += 4;
@@ -58,8 +59,7 @@ fn parse(artifact: &Artifact) -> Result<Kwallet, ExtractError> {
             .ok_or_else(|| ExtractError::Invalid("truncated KWallet folder".to_owned()))?;
         let size = data
             .get(offset..offset + 4)
-            .and_then(|value| value.try_into().ok())
-            .map(u32::from_be_bytes)
+            .map(BigEndian::read_u32)
             .ok_or_else(|| ExtractError::Invalid("truncated KWallet entry".to_owned()))?
             as usize;
         offset += 4;

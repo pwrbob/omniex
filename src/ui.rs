@@ -5,9 +5,11 @@
 //! title.
 
 use std::env;
-use std::fmt;
 use std::io::{self, IsTerminal};
 
+use comfy_table::presets::NOTHING;
+use comfy_table::{Attribute, Cell, ContentArrangement, Table};
+use textwrap::{Options, WordSeparator, WordSplitter};
 use unicode_width::UnicodeWidthStr;
 
 /// Smallest terminal this UI will render into.
@@ -18,21 +20,11 @@ pub const MIN_HEIGHT: usize = 10;
 const GAP: usize = 2;
 
 /// A terminal sizing or styling failure.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum UiError {
     /// The terminal is smaller than the supported minimum.
+    #[error("terminal is too small ({width}x{height}); need at least {MIN_WIDTH}x{MIN_HEIGHT}")]
     TooSmall { width: usize, height: usize },
-}
-
-impl fmt::Display for UiError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::TooSmall { width, height } => write!(
-                f,
-                "terminal is too small ({width}x{height}); need at least {MIN_WIDTH}x{MIN_HEIGHT}"
-            ),
-        }
-    }
 }
 
 /// Resolved terminal context for one invocation.
@@ -143,66 +135,45 @@ pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> Strin
         return String::new();
     }
 
-    let columns = headers.len();
-    let mut widths = vec![0usize; columns];
-
-    for (index, header) in headers.iter().enumerate() {
-        widths[index] = header.width();
+    let mut table = Table::new();
+    table.load_style(NOTHING);
+    table.set_content_arrangement(ContentArrangement::Dynamic);
+    table.set_width(u16::try_from(context.width).unwrap_or(u16::MAX));
+    if context.bold {
+        table.enforce_styling();
     }
-    for row in rows {
-        for (index, cell) in row.iter().enumerate().take(columns) {
-            widths[index] = widths[index].max(cell.width());
+
+    let mut header_cells = Vec::with_capacity(headers.len());
+    for header in headers {
+        let mut cell = Cell::new(header);
+        if context.bold {
+            cell = cell.add_attribute(Attribute::Bold);
+        }
+        header_cells.push(cell);
+    }
+    table.set_header(header_cells);
+
+    for index in 0..headers.len() {
+        if let Some(column) = table.column_mut(index) {
+            column.set_padding((0, GAP as u16));
         }
     }
 
-    let minimums = headers
-        .iter()
-        .map(|header| {
-            header
-                .split_whitespace()
-                .map(|word| word.width())
-                .max()
-                .unwrap_or(1)
-                .max(1)
-        })
-        .collect::<Vec<_>>();
-
-    let total = |widths: &[usize]| widths.iter().sum::<usize>() + GAP * columns.saturating_sub(1);
-    while total(&widths) > context.width {
-        let Some((index, _)) = widths
-            .iter()
-            .enumerate()
-            .filter(|(index, width)| **width > minimums[*index])
-            .max_by_key(|(_, width)| **width)
-        else {
-            break;
-        };
-        widths[index] -= 1;
-    }
-
-    while total(&widths) > context.width {
-        let Some((index, _)) = widths.iter().enumerate().max_by_key(|(_, width)| **width) else {
-            break;
-        };
-        if widths[index] <= 1 {
-            break;
-        }
-        widths[index] -= 1;
-    }
-
-    let mut output = Vec::new();
-    output.extend(render_row(context, headers, &widths, true));
-
     for row in rows {
-        let cells = row
+        let cells = headers
             .iter()
             .enumerate()
-            .map(|(index, cell)| wrap_text(cell_or_dash(cell), widths[index]))
+            .map(|(index, _)| Cell::new(cell_or_dash(row.get(index).map_or("", String::as_str))))
             .collect::<Vec<_>>();
-        output.extend(render_cells(context, &cells, &widths, false));
+        table.add_row(cells);
     }
 
-    output.join("\n")
+    table
+        .to_string()
+        .lines()
+        .map(str::trim_end)
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
 /// Renders aligned key/value rows.
@@ -238,82 +209,20 @@ pub fn key_values(context: &Context, pairs: &[(&str, String)]) -> String {
 #[must_use]
 pub fn wrap_text(text: &str, width: usize) -> Vec<String> {
     let width = width.max(1);
-    let mut lines = Vec::new();
-    let mut current = String::new();
-
-    for word in text.split_whitespace() {
-        if word.width() > width {
-            if !current.is_empty() {
-                lines.push(std::mem::take(&mut current));
-            }
-
-            let mut chunk = String::new();
-            for character in word.chars() {
-                chunk.push(character);
-                if chunk.width() == width {
-                    lines.push(std::mem::take(&mut chunk));
-                }
-            }
-            current = chunk;
-            continue;
-        }
-
-        let candidate = current.width() + usize::from(!current.is_empty()) + word.width();
-        if candidate <= width {
-            if !current.is_empty() {
-                current.push(' ');
-            }
-            current.push_str(word);
-        } else {
-            lines.push(std::mem::take(&mut current));
-            current.push_str(word);
-        }
-    }
-
-    if !current.is_empty() {
-        lines.push(current);
-    }
-    if lines.is_empty() {
-        lines.push(String::new());
-    }
-
-    lines
-}
-
-fn render_row(context: &Context, cells: &[&str], widths: &[usize], bold: bool) -> Vec<String> {
-    let wrapped = cells
-        .iter()
-        .enumerate()
-        .map(|(index, cell)| wrap_text(cell, widths[index]))
+    let options = Options::new(width)
+        .break_words(true)
+        .word_separator(WordSeparator::AsciiSpace)
+        .word_splitter(WordSplitter::NoHyphenation);
+    let lines = textwrap::wrap(text, options)
+        .into_iter()
+        .map(|line| line.into_owned())
         .collect::<Vec<_>>();
 
-    render_cells(context, &wrapped, widths, bold)
-}
-
-fn render_cells(
-    context: &Context,
-    cells: &[Vec<String>],
-    widths: &[usize],
-    bold: bool,
-) -> Vec<String> {
-    let height = cells.iter().map(Vec::len).max().unwrap_or(0);
-    let mut output = Vec::new();
-
-    for line in 0..height {
-        let mut parts = Vec::new();
-        for (index, cell) in cells.iter().enumerate() {
-            let text = cell.get(line).map_or("", String::as_str);
-            let padding = " ".repeat(widths[index].saturating_sub(text.width()));
-            if bold {
-                parts.push(format!("{}{padding}", context.bold(text)));
-            } else {
-                parts.push(format!("{text}{padding}"));
-            }
-        }
-        output.push(parts.join(&" ".repeat(GAP)).trim_end().to_owned());
+    if lines.is_empty() {
+        vec![String::new()]
+    } else {
+        lines
     }
-
-    output
 }
 
 fn cell_or_dash(cell: &str) -> &str {
@@ -375,6 +284,19 @@ mod tests {
         let bold = Context::from_parts(80, 20, false, true).unwrap();
         assert_eq!(plain.bold("x"), "x");
         assert_eq!(bold.bold("x"), "\u{1b}[1mx\u{1b}[0m");
+    }
+
+    #[test]
+    fn table_bolds_the_header_only_when_requested() {
+        let plain = Context::from_parts(80, 20, false, false).unwrap();
+        let bold = Context::from_parts(80, 20, false, true).unwrap();
+        let rows = [vec!["md5".to_owned(), "MD5".to_owned()]];
+
+        let plain_output = table(&plain, &["Slug", "Name"], &rows);
+        let bold_output = table(&bold, &["Slug", "Name"], &rows);
+
+        assert!(!plain_output.contains('\u{1b}'));
+        assert!(bold_output.contains("\u{1b}[1mSlug"));
     }
 
     #[test]
