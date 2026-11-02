@@ -30,9 +30,10 @@ README badge counts checked lines in this file.
 
 - [x] Linux `/etc/shadow` (`descrypt`, `md5crypt`, `sha256crypt`, `sha512crypt`, `yescrypt`)
 - [x] BSD `/etc/master.passwd` (`bsdicrypt`)
-- [ ] AIX `/etc/security/passwd` (`aix-smd5`, `aix-ssha1`, `aix-ssha256`, `aix-ssha512`)
+- [x] AIX `/etc/security/passwd` (`aix-smd5`, `ssha1-aix`, `ssha256-aix`, `ssha512-aix`)
 - [ ] AS/400 user profiles (`as400-des`, `as400-ssha1`)
-- [ ] RACF database extracts (`racf`, `racf-kdfaes`, `racf-passphrase`, `racf-kdfaes-passphrase`)
+- [x] RACF DES records (`racf`)
+- [ ] RACF KDFAES and passphrase records (`racf-kdfaes`, `racf-passphrase`, `racf-kdfaes-passphrase`)
 - [x] LDAP password attributes (`ldap-sha1`, `ldap-ssha1`, `ldap-ssha256`, `ldap-ssha512`)
 - [x] Apache htpasswd `$apr1$` hashes (`apr1`)
 - [x] bcrypt password files (`bcrypt`)
@@ -163,6 +164,9 @@ README badge counts checked lines in this file.
 - [ ] Raw WIF private keys (`bitcoin-wif`)
 
 ## Mobile and application stores
+
+- [x] Lotus Notes/Domino 5 user ID files (`lotus5`)
+- [ ] Lotus Notes/Domino 6/8 user ID files (`lotus-notes`)
 
 - [x] FileZilla Server XML configuration (`filezilla-server`)
 

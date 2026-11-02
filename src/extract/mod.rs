@@ -344,6 +344,7 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
 }
 
 mod adxcrypt;
+mod aix;
 mod ansible;
 mod bitshares;
 mod bks;
@@ -365,6 +366,7 @@ mod jwt;
 mod known_hosts;
 mod kwallet;
 mod ldap;
+mod lotus;
 mod monero;
 mod multibit;
 mod odf;
@@ -374,6 +376,7 @@ mod pgpdisk;
 mod pgpsda;
 mod pgpwde;
 mod pwsafe;
+mod racf;
 mod shadow;
 mod vdi;
 mod vmx;
@@ -381,6 +384,10 @@ mod winzip;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &adxcrypt::AdxcryptExtractor,
+    &aix::AixSmd5Extractor,
+    &aix::AixSsha1Extractor,
+    &aix::AixSsha256Extractor,
+    &aix::AixSsha512Extractor,
     &ansible::AnsibleVaultExtractor,
     &bitshares::BitsharesExtractor,
     &bks::BksExtractor,
@@ -403,6 +410,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &jwt::JwtExtractor,
     &known_hosts::KnownHostsExtractor,
     &kwallet::KwalletExtractor,
+    &lotus::Lotus5Extractor,
     &ldap::LdapSha1Extractor,
     &ldap::LdapSsha1Extractor,
     &ldap::LdapSsha256Extractor,
@@ -423,6 +431,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &pgpwde::PgpwdeExtractor,
     &pwsafe::PwsafeExtractor,
     &pwsafe::PwsafeV3Extractor,
+    &racf::RacfExtractor,
     &shadow::Apr1Extractor,
     &shadow::BcryptExtractor,
     &shadow::BsdiCryptExtractor,

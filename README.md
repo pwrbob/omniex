@@ -6,8 +6,8 @@ that understands both hashcat and John the Ripper serializations.
 
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-261%2F261-1f6feb)
-![extractor formats](https://img.shields.io/badge/extractor_formats-43%2F157-8957e5)
-![exact extractors](https://img.shields.io/badge/exact_extractors-49%2F53-8957e5)
+![extractor formats](https://img.shields.io/badge/extractor_formats-46%2F160-8957e5)
+![exact extractors](https://img.shields.io/badge/exact_extractors-55%2F59-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in

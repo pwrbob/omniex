@@ -68,3 +68,9 @@ This file documents the extractors currently registered in
 - `sha512crypt` - sha512crypt hashes from shadow files.
 - `sunmd5` - Solaris SunMD5 hashes.
 - `yescrypt` - yescrypt hashes from shadow files.
+- `aix-smd5` - AIX `{smd5}` password hashes.
+- `ssha1-aix` - AIX `{ssha1}` password hashes.
+- `ssha256-aix` - AIX `{ssha256}` password hashes.
+- `ssha512-aix` - AIX `{ssha512}` password hashes.
+- `lotus5` - Lotus Notes/Domino 5 user ID blobs.
+- `racf` - RACF DES records from CRACF.TXT.
