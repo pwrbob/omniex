@@ -183,6 +183,19 @@ README badge counts checked lines in this file.
 - [ ] Flask signed session cookies (`flask-session`)
 - [x] JSON Web Tokens (`jwt`)
 
+## Plain hash lists
+
+- [x] MD5 hash lists (`md5`)
+- [x] MD4 hash lists (`md4`)
+- [x] NTLM hash lists (`ntlm`)
+- [x] LM hash lists (`lm`)
+- [x] SHA-1 hash lists (`sha1`)
+- [x] RIPEMD hash lists (`ripemd`)
+- [x] SHA-224 hash lists (`sha224`)
+- [x] SHA-256 hash lists (`sha256`)
+- [x] SHA-384 hash lists (`sha384`)
+- [x] SHA-512 hash lists (`sha512`)
+
 ## Textual credential exports
 
 - [x] AS/400 password hash exports (`as400-des`, `as400-ssha1`)

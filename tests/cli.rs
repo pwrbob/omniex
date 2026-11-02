@@ -149,7 +149,7 @@ fn identify_fails_when_nothing_matches() {
 #[test]
 fn extract_reports_that_no_extractor_exists() {
     omniex()
-        .args(["extract", "artifact.bin", "--type", "md5"])
+        .args(["extract", "artifact.bin", "--type", "md2"])
         .assert()
         .code(1)
         .stderr(predicate::str::contains("no extractor is registered"));
