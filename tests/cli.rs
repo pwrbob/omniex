@@ -286,9 +286,7 @@ fn show_reports_one_type_without_a_hash() {
         .assert()
         .success()
         .stdout(predicate::str::contains("Oracle H (oracle-h)"))
-        .stdout(predicate::str::contains("Hashcat"))
-        .stdout(predicate::str::contains("3100"))
-        .stdout(predicate::str::contains("Fields"))
+        .stdout(predicate::str::contains("Hashcat: 3100 / John: -"))
         .stdout(predicate::str::contains("digest"))
         .stdout(predicate::str::contains("salt"))
         .stdout(predicate::str::contains("Decimal salt."));

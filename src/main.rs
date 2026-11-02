@@ -197,12 +197,8 @@ fn run_show(args: ShowArgs) -> Result<(), CliError> {
         &format!("{} ({})", descriptor.name, descriptor.slug),
     );
     block.push('\n');
-    block.push_str(&ui::key_values(
-        &context,
-        &[("Hashcat", hashcat), ("John", john)],
-    ));
+    block.push_str(&ui::modes(&context, &hashcat, &john));
     block.push('\n');
-    block.push_str(&context.bold("Fields"));
     block.push('\n');
 
     let rows = descriptor

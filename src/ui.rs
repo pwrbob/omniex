@@ -205,6 +205,20 @@ pub fn key_values(context: &Context, pairs: &[(&str, String)]) -> String {
     output.join("\n")
 }
 
+/// Renders the hashcat and John modes for one type on one line.
+#[must_use]
+pub fn modes(context: &Context, hashcat: &str, john: &str) -> String {
+    let line = format!("Hashcat: {hashcat} / John: {john}");
+    wrap_text(&line, context.width)
+        .into_iter()
+        .map(|line| {
+            line.replace("Hashcat:", &context.bold("Hashcat:"))
+                .replace("John:", &context.bold("John:"))
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 /// Wraps text to `width` characters, breaking at whitespace first.
 #[must_use]
 pub fn wrap_text(text: &str, width: usize) -> Vec<String> {
@@ -257,6 +271,15 @@ mod tests {
         );
 
         assert!(output.lines().all(|line| line.width() <= 40));
+    }
+
+    #[test]
+    fn modes_share_one_line() {
+        let context = Context::from_parts(80, 20, false, false).unwrap();
+        assert_eq!(
+            modes(&context, "0, 70", "Raw-MD5, Raw-MD5u"),
+            "Hashcat: 0, 70 / John: Raw-MD5, Raw-MD5u"
+        );
     }
 
     #[test]
