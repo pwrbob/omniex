@@ -1,0 +1,3 @@
+type = "office2016-sheetprotection"
+generator = "synthetic XLSX package with SHA-512 sheet protection records"
+notes = "Synthetic workbook; no real content or credentials."

@@ -1,0 +1,3 @@
+type = "sevenzip"
+generator = "7z a -t7z -p password123 -mhe=off -mx=0 archive.7z secret.txt"
+notes = "Synthetic archive containing one text file; no real credentials."

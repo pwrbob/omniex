@@ -1,0 +1,3 @@
+type = "rar5"
+generator = "synthetic RAR5 blocks with encrypted header and file extra records"
+notes = "Synthetic archive; no real credentials. archive.rar holds two encrypted file records, header.rar holds an encrypted header."

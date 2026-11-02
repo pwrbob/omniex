@@ -1,0 +1,3 @@
+type = "office"
+generator = "synthetic OLE compound files with standard and agile EncryptionInfo streams"
+notes = "Synthetic documents; no real content or credentials."
