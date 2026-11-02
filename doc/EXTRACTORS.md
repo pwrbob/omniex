@@ -78,3 +78,9 @@ This file documents the extractors currently registered in
 - `mysql323`, `mysql-sha1`, `mysql-a` - MySQL user-table hashes in SQL dumps.
 - `oracle-h`, `oracle-t` - Oracle password hashes in SQL dumps.
 - `postgres-scram-sha256` - PostgreSQL SCRAM verifiers in SQL dumps.
+- `as400-des`, `as400-ssha1` - AS/400 hash exports.
+- `lotus-notes` - Lotus Notes/Domino 6/8 hash exports.
+- `openvms` - OpenVMS hash exports.
+- `oracle11`, `oracle12c`, `oracle-otm` - Oracle hash exports.
+- `racf-kdfaes`, `racf-passphrase` - RACF KDFAES and passphrase exports.
+- `sybase-prop` - Sybase hash exports.

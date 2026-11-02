@@ -361,6 +361,7 @@ mod fernet;
 mod filezilla;
 mod geli;
 mod gpg;
+mod hashdump;
 mod iwork;
 mod jwt;
 mod known_hosts;
@@ -409,6 +410,16 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &gpg::GpgExtractor,
     &iwork::IworkExtractor,
     &jwt::JwtExtractor,
+    &hashdump::As400DesExtractor,
+    &hashdump::As400Ssha1Extractor,
+    &hashdump::LotusNotesExtractor,
+    &hashdump::OpenvmsExtractor,
+    &hashdump::Oracle11Extractor,
+    &hashdump::Oracle12cExtractor,
+    &hashdump::OracleOtmExtractor,
+    &hashdump::RacfKdfaesExtractor,
+    &hashdump::RacfPassphraseExtractor,
+    &hashdump::SybasePropExtractor,
     &known_hosts::KnownHostsExtractor,
     &kwallet::KwalletExtractor,
     &lotus::Lotus5Extractor,
