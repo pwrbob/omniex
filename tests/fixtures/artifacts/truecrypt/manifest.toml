@@ -1,0 +1,3 @@
+type = "truecrypt"
+generator = "synthetic 512-byte TrueCrypt volume header"
+notes = "Synthetic header; no real volume."

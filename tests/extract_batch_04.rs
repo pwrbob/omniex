@@ -1,7 +1,13 @@
 //! Extraction fixtures for PFX, PEM, JKS, OpenSSH, and PuTTY keys.
 
+#[path = "../src/extract/diskcryptor.rs"]
+mod diskcryptor;
 #[path = "../src/extract/jks_private_key.rs"]
 mod jks_private_key;
+#[path = "../src/extract/luks_v1.rs"]
+mod luks_v1;
+#[path = "../src/extract/luks_v2.rs"]
+mod luks_v2;
 #[path = "../src/extract/pem_private_key.rs"]
 mod pem_private_key;
 #[path = "../src/extract/pfx.rs"]
@@ -10,6 +16,10 @@ mod pfx;
 mod putty;
 #[path = "../src/extract/sshng.rs"]
 mod sshng;
+#[path = "../src/extract/truecrypt.rs"]
+mod truecrypt;
+#[path = "../src/extract/veracrypt.rs"]
+mod veracrypt;
 
 use std::path::{Path, PathBuf};
 
@@ -65,6 +75,11 @@ static PEM: pem_private_key::PemPrivateKeyExtractor = pem_private_key::PemPrivat
 static JKS: jks_private_key::JksPrivateKeyExtractor = jks_private_key::JksPrivateKeyExtractor;
 static SSHNG: sshng::SshngExtractor = sshng::SshngExtractor;
 static PUTTY: putty::PuttyExtractor = putty::PuttyExtractor;
+static LUKS_V1: luks_v1::LuksV1Extractor = luks_v1::LuksV1Extractor;
+static LUKS_V2: luks_v2::LuksV2Extractor = luks_v2::LuksV2Extractor;
+static TRUECRYPT: truecrypt::TrueCryptExtractor = truecrypt::TrueCryptExtractor;
+static VERACRYPT: veracrypt::VeraCryptExtractor = veracrypt::VeraCryptExtractor;
+static DISKCRYPTOR: diskcryptor::DiskcryptorExtractor = diskcryptor::DiskcryptorExtractor;
 
 #[test]
 fn select_reports_unique_ambiguous_and_unconfirmed_probes() {
@@ -291,4 +306,123 @@ fn putty_ignores_unencrypted_keys() {
     let empty = artifact("putty", "empty.ppk");
     assert_eq!(PUTTY.probe(&empty), Probe::No);
     assert!(PUTTY.extract(&empty).is_err());
+}
+
+#[test]
+fn luks_v1_extracts_every_active_keyslot() {
+    let volume = artifact("luks-v1", "volume.img");
+    assert!(matches!(LUKS_V1.probe(&volume), Probe::Yes(_)));
+    assert_eq!(
+        render(&LUKS_V1, &volume),
+        [
+            expected("luks-v1", "slot1.hash"),
+            expected("luks-v1", "slot2.hash"),
+        ]
+    );
+    assert_eq!(modes(&LUKS_V1, &volume), [Mode::Hashcat(29521)]);
+}
+
+#[test]
+fn luks_v1_rejects_other_versions_and_malformed_headers() {
+    let v2 = artifact("luks-v2", "volume.img");
+    assert_eq!(LUKS_V1.probe(&v2), Probe::No);
+    assert!(matches!(
+        extract_error(&LUKS_V1, &v2),
+        ExtractError::Unsupported(_)
+    ));
+
+    for name in ["empty.img", "truncated.img", "random.bin"] {
+        let artifact = artifact("luks-v1", name);
+        assert_eq!(LUKS_V1.probe(&artifact), Probe::No, "{name}");
+        assert!(LUKS_V1.extract(&artifact).is_err(), "{name}");
+    }
+}
+
+#[test]
+fn luks_v2_extracts_every_keyslot() {
+    let volume = artifact("luks-v2", "volume.img");
+    assert!(matches!(LUKS_V2.probe(&volume), Probe::Yes(_)));
+    assert_eq!(
+        render(&LUKS_V2, &volume),
+        [
+            expected("luks-v2", "slot0.hash"),
+            expected("luks-v2", "slot1.hash"),
+        ]
+    );
+    assert_eq!(modes(&LUKS_V2, &volume), [Mode::Hashcat(34100)]);
+}
+
+#[test]
+fn luks_v2_rejects_other_versions_and_malformed_headers() {
+    let v1 = artifact("luks-v1", "volume.img");
+    assert_eq!(LUKS_V2.probe(&v1), Probe::No);
+    assert!(matches!(
+        extract_error(&LUKS_V2, &v1),
+        ExtractError::Unsupported(_)
+    ));
+
+    for name in ["empty.img", "truncated.img", "random.bin"] {
+        let artifact = artifact("luks-v2", name);
+        assert_eq!(LUKS_V2.probe(&artifact), Probe::No, "{name}");
+        assert!(LUKS_V2.extract(&artifact).is_err(), "{name}");
+    }
+}
+
+#[test]
+fn truecrypt_extracts_the_volume_header_without_autodetection() {
+    let volume = artifact("truecrypt", "volume.img");
+    assert!(!TRUECRYPT.exact());
+    assert!(matches!(TRUECRYPT.probe(&volume), Probe::Maybe(_)));
+    assert_eq!(
+        render(&TRUECRYPT, &volume),
+        [expected("truecrypt", "volume.hash")]
+    );
+    assert!(matches!(
+        select(&[&TRUECRYPT, &VERACRYPT], &volume),
+        Selection::Unconfirmed(candidates) if candidates.len() == 2
+    ));
+
+    for name in ["empty.img", "truncated.img"] {
+        let artifact = artifact("truecrypt", name);
+        assert_eq!(TRUECRYPT.probe(&artifact), Probe::No, "{name}");
+        assert!(TRUECRYPT.extract(&artifact).is_err(), "{name}");
+    }
+}
+
+#[test]
+fn veracrypt_extracts_the_volume_header_without_autodetection() {
+    let volume = artifact("veracrypt", "volume.img");
+    assert!(!VERACRYPT.exact());
+    assert!(matches!(VERACRYPT.probe(&volume), Probe::Maybe(_)));
+    assert_eq!(
+        render(&VERACRYPT, &volume),
+        [expected("veracrypt", "volume.hash")]
+    );
+
+    for name in ["empty.img", "truncated.img"] {
+        let artifact = artifact("veracrypt", name);
+        assert_eq!(VERACRYPT.probe(&artifact), Probe::No, "{name}");
+        assert!(VERACRYPT.extract(&artifact).is_err(), "{name}");
+    }
+}
+
+#[test]
+fn diskcryptor_extracts_the_volume_header_without_autodetection() {
+    let volume = artifact("diskcryptor", "volume.img");
+    assert!(!DISKCRYPTOR.exact());
+    assert!(matches!(DISKCRYPTOR.probe(&volume), Probe::Maybe(_)));
+    assert_eq!(
+        render(&DISKCRYPTOR, &volume),
+        [expected("diskcryptor", "volume.hash")]
+    );
+    assert!(matches!(
+        select(&[&DISKCRYPTOR], &volume),
+        Selection::Unconfirmed(candidates) if candidates.len() == 1
+    ));
+
+    for name in ["empty.img", "truncated.img"] {
+        let artifact = artifact("diskcryptor", name);
+        assert_eq!(DISKCRYPTOR.probe(&artifact), Probe::No, "{name}");
+        assert!(DISKCRYPTOR.extract(&artifact).is_err(), "{name}");
+    }
 }

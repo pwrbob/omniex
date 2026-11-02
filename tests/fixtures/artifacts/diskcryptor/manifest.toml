@@ -1,0 +1,3 @@
+type = "diskcryptor"
+generator = "synthetic 2048-byte DiskCryptor volume header"
+notes = "Synthetic header; no real volume."
