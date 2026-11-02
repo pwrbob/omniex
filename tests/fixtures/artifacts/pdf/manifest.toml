@@ -1,0 +1,4 @@
+type = "pdf"
+password = "user"
+generator = "gs -sDEVICE=pdfwrite -sOwnerPassword=owner -sUserPassword=user"
+notes = "Synthetic encrypted PDFs. The R3 fixture uses V=2 R=3 with a 128-bit key; the R2 fixture uses V=1 R=2 with a 40-bit key."

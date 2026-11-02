@@ -1,0 +1,4 @@
+type = "pst"
+password = "openwall"
+generator = "synthetic PST 32-bit headers with PidTagPstPassword record entries"
+notes = "Synthetic message-store headers. The password checksum is CRC-32 over the password, not the password itself."
