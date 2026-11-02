@@ -348,6 +348,7 @@ mod ansible;
 mod bitshares;
 mod bks;
 mod blockchain;
+mod cloudkeychain;
 mod dashlane;
 mod dmg;
 mod ecryptfs;
@@ -363,13 +364,18 @@ mod iwork;
 mod jwt;
 mod known_hosts;
 mod kwallet;
+mod ldap;
 mod monero;
 mod multibit;
 mod odf;
 mod onepassword_agile;
 mod openbsd_softraid;
+mod pgpdisk;
 mod pgpsda;
+mod pgpwde;
 mod pwsafe;
+mod vdi;
+mod vmx;
 mod winzip;
 
 pub static EXTRACTORS: &[&dyn Extractor] = &[
@@ -378,6 +384,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &bitshares::BitsharesExtractor,
     &bks::BksExtractor,
     &blockchain::BlockchainExtractor,
+    &cloudkeychain::CloudkeychainExtractor,
     &dashlane::DashlaneExtractor,
     &dmg::DmgExtractor,
     &ecryptfs::EcryptfsExtractor,
@@ -395,6 +402,13 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &jwt::JwtExtractor,
     &known_hosts::KnownHostsExtractor,
     &kwallet::KwalletExtractor,
+    &ldap::LdapSha1Extractor,
+    &ldap::LdapSsha1Extractor,
+    &ldap::LdapSsha256Extractor,
+    &ldap::LdapSsha512Extractor,
+    &vdi::VdiExtractor,
+    &vdi::VirtualboxExtractor,
+    &vmx::VmxExtractor,
     &winzip::WinZipExtractor,
     &monero::MoneroExtractor,
     &multibit::MultibitHdExtractor,
@@ -403,7 +417,9 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &onepassword_agile::AgileKeychainExtractor,
     &onepassword_agile::OnepasswordAgileExtractor,
     &openbsd_softraid::OpenbsdSoftraidExtractor,
+    &pgpdisk::PgpdiskExtractor,
     &pgpsda::PgpsdaExtractor,
+    &pgpwde::PgpwdeExtractor,
     &pwsafe::PwsafeExtractor,
     &pwsafe::PwsafeV3Extractor,
 ];

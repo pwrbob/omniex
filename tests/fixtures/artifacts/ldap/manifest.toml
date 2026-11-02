@@ -1,0 +1,3 @@
+type = "ldap-sha1"
+generator = "synthetic LDIF export with SHA and salted SHA attributes"
+notes = "Synthetic directory data; no real credentials."

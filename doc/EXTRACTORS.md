@@ -48,3 +48,13 @@ This file documents the extractors currently registered in
 - `bitshares-john` - BitShares backup wallets in the John serialization.
 - `multibit` - MultiBit Classic `.key` files.
 - `multibit-hd` - MultiBit HD `.wallet.aes` files.
+- `vdi` - VirtualBox VDI key stores from `.vbox` configuration files.
+- `vmx-john` - VMware VMX encryption keySafe entries.
+- `virtualbox` - VirtualBox hashcat disk metadata from `.vbox` files.
+- `cloudkeychain` - 1Password cloudkeychain `profile.js` files.
+- `pgpdisk` - PGP Virtual Disk headers and user records.
+- `pgpwde` - PGP Whole Disk Encryption user records.
+- `ldap-sha1` - LDAP `{SHA}` attributes in LDIF exports.
+- `ldap-ssha1` - LDAP `{SSHA}` attributes in LDIF exports.
+- `ldap-ssha256` - LDAP `{SSHA256}` attributes in LDIF exports.
+- `ldap-ssha512` - LDAP `{SSHA512}` attributes in LDIF exports.
