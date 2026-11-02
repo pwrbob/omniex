@@ -81,7 +81,10 @@ jobs:
 
       - name: Fingerprint CPU features
         id: cpu
-        run: echo "flags=$(grep -m1 '^flags' /proc/cpuinfo | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+        run: |
+          flags="$(grep -m1 '^flags' /proc/cpuinfo)"
+          echo "CPU flags: $flags"
+          echo "flags=$(printf '%s\n' "$flags" | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
       - name: Cache reference hashcat
         uses: actions/cache@v5
@@ -129,6 +132,21 @@ jobs:
           name: hashcat-8.0.0
           path: tmp/reference/hashcat-8.0.0
 
+      - name: Inspect hashcat runtime
+        run: |
+          set -x
+          HASHCAT="$PWD/tmp/reference/hashcat-8.0.0/hashcat"
+          file "$HASHCAT"
+          ls -l "$HASHCAT" "$PWD/tmp/reference/hashcat-8.0.0"
+          find "$PWD/tmp/reference/hashcat-8.0.0/modules" -maxdepth 1 -type f | wc -l || true
+          ldd "$HASHCAT" || true
+          "$HASHCAT" --version || true
+          uname -a
+          nproc
+          free -m || true
+          ulimit -a || true
+          grep -m1 '^flags' /proc/cpuinfo || true
+
       - name: Run hashcat conformance
         env:
           OMNIEX_HASHCAT: ${{ github.workspace }}/tmp/reference/hashcat-8.0.0/hashcat
@@ -137,9 +155,24 @@ jobs:
           OMNIEX_CONFORMANCE_SHARD: ${{ matrix.shard }}
           OMNIEX_CONFORMANCE_SHARDS: 4
           OMNIEX_CONFORMANCE_WORKERS: 4
+          RUST_BACKTRACE: full
+        shell: bash
         run: |
+          set -o pipefail
           chmod +x "$OMNIEX_HASHCAT"
-          cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
+          cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture 2>&1 \
+            | tee "hashcat-conformance-${{ matrix.shard }}.log"
+
+      - name: Upload hashcat conformance diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hashcat-conformance-${{ matrix.shard }}-diagnostics
+          path: |
+            hashcat-conformance-${{ matrix.shard }}.log
+            target/tmp/hashcat-conformance
+          if-no-files-found: ignore
+          retention-days: 7
 
   john:
     name: John conformance
@@ -162,7 +195,10 @@ jobs:
 
       - name: Fingerprint CPU features
         id: cpu
-        run: echo "flags=$(grep -m1 '^flags' /proc/cpuinfo | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+        run: |
+          flags="$(grep -m1 '^flags' /proc/cpuinfo)"
+          echo "CPU flags: $flags"
+          echo "flags=$(printf '%s\n' "$flags" | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
 
       - name: Cache reference John
         uses: actions/cache@v5

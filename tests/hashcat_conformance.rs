@@ -28,7 +28,7 @@ fn hashcat_identifies_and_loads_every_vector() {
     };
     let work = work_dir("hashcat-conformance");
     let potfile = work.join("empty.pot");
-    let _ = std::fs::remove_file(&potfile);
+    std::fs::File::create(&potfile).expect("create empty potfile");
     let selected = selected_modes();
     let subset = std::env::var("OMNIEX_CONFORMANCE_SUBSET").as_deref() == Ok("1");
     let shard = std::env::var("OMNIEX_CONFORMANCE_SHARD")
@@ -131,6 +131,8 @@ fn shard_selection_partitions_every_vector() {
 }
 
 fn run_parallel(hashcat: &Path, potfile: &Path, items: &[WorkItem], workers: usize) {
+    report_environment(hashcat, items.len(), workers);
+
     let next = AtomicUsize::new(0);
     let failures = Mutex::new(Vec::new());
 
@@ -143,7 +145,11 @@ fn run_parallel(hashcat: &Path, potfile: &Path, items: &[WorkItem], workers: usi
                         break;
                     };
                     if let Err(message) = check_item(hashcat, potfile, item) {
-                        failures.lock().expect("failure list").push(message);
+                        eprintln!("hashcat conformance failure:\n{message}");
+                        failures
+                            .lock()
+                            .expect("failure list")
+                            .push((index, message));
                     }
                 }
             });
@@ -151,58 +157,99 @@ fn run_parallel(hashcat: &Path, potfile: &Path, items: &[WorkItem], workers: usi
     });
 
     let failures = failures.into_inner().expect("failure list");
+
+    for (index, _) in failures.iter().take(10) {
+        let item = &items[*index];
+        eprintln!(
+            "serial rerun of failed item {index} (`{}` mode {}):",
+            item.slug, item.mode
+        );
+        match check_item(hashcat, potfile, item) {
+            Ok(()) => eprintln!("  serial rerun passed"),
+            Err(message) => eprintln!("  serial rerun failed:\n{message}"),
+        }
+    }
+
+    let messages = failures
+        .iter()
+        .map(|(_, message)| message.as_str())
+        .collect::<Vec<_>>();
     assert!(
         failures.is_empty(),
         "{} hashcat conformance failure(s):\n{}",
         failures.len(),
-        failures.join("\n")
+        messages.join("\n")
     );
 }
 
 fn check_item(hashcat: &Path, potfile: &Path, item: &WorkItem) -> Result<(), String> {
     if item.identify {
+        let args = ["--session", &item.session, "--identify"];
         let identify = Command::new(hashcat)
-            .args(["--session", &item.session, "--identify"])
+            .args(args)
             .arg(&item.path)
             .output()
-            .map_err(|error| format!("run hashcat --identify: {error}"))?;
+            .map_err(|error| {
+                format!(
+                    "run hashcat --identify failed to start\ncommand: {}\ninput: {}\nerror: {error}",
+                    command_line(hashcat, &args, &[&item.path]),
+                    describe_input(&item.path),
+                )
+            })?;
         if !identify.status.success() {
             return Err(format!(
-                "hashcat --identify failed for `{}` mode {}: {}",
+                "hashcat --identify failed for `{}` mode {}\ncommand: {}\ninput: {}\n{}",
                 item.slug,
                 item.mode,
-                String::from_utf8_lossy(&identify.stderr)
+                command_line(hashcat, &args, &[&item.path]),
+                describe_input(&item.path),
+                describe_output(&identify),
             ));
         }
 
-        let modes = identified_modes(&String::from_utf8_lossy(&identify.stdout));
+        let stdout = String::from_utf8_lossy(&identify.stdout);
+        let modes = identified_modes(&stdout);
         if !modes.contains(&item.mode) {
             return Err(format!(
-                "hashcat did not identify mode {} for `{}` (saw {modes:?})",
-                item.mode, item.slug
+                "hashcat did not identify mode {} for `{}`\ncommand: {}\ninput: {}\n{}",
+                item.mode,
+                item.slug,
+                command_line(hashcat, &args, &[&item.path]),
+                describe_input(&item.path),
+                describe_output(&identify),
             ));
         }
     }
 
+    let mode = item.mode.to_string();
+    let args = [
+        "--session",
+        &item.session,
+        "--show",
+        "-m",
+        &mode,
+        "--potfile-path",
+    ];
     let show = Command::new(hashcat)
-        .args([
-            "--session",
-            &item.session,
-            "--show",
-            "-m",
-            &item.mode.to_string(),
-            "--potfile-path",
-        ])
+        .args(args)
         .arg(potfile)
         .arg(&item.path)
         .output()
-        .map_err(|error| format!("run hashcat --show: {error}"))?;
+        .map_err(|error| {
+            format!(
+                "run hashcat --show failed to start\ncommand: {}\ninput: {}\nerror: {error}",
+                command_line(hashcat, &args, &[potfile, &item.path]),
+                describe_input(&item.path),
+            )
+        })?;
     if !show.status.success() {
         return Err(format!(
-            "hashcat --show -m {} failed for `{}`: {}",
+            "hashcat --show -m {} failed for `{}`\ncommand: {}\ninput: {}\n{}",
             item.mode,
             item.slug,
-            String::from_utf8_lossy(&show.stderr)
+            command_line(hashcat, &args, &[potfile, &item.path]),
+            describe_input(&item.path),
+            describe_output(&show),
         ));
     }
 
@@ -213,12 +260,83 @@ fn check_item(hashcat: &Path, potfile: &Path, item: &WorkItem) -> Result<(), Str
     );
     if output.contains("No hashes loaded") {
         return Err(format!(
-            "hashcat --show -m {} rejected `{}`: {output}",
-            item.mode, item.slug
+            "hashcat --show -m {} rejected `{}`\ncommand: {}\ninput: {}\n{}",
+            item.mode,
+            item.slug,
+            command_line(hashcat, &args, &[potfile, &item.path]),
+            describe_input(&item.path),
+            describe_output(&show),
         ));
     }
 
     Ok(())
+}
+
+fn command_line(hashcat: &Path, args: &[&str], paths: &[&Path]) -> String {
+    let mut parts = vec![format!("{:?}", hashcat)];
+    parts.extend(args.iter().map(|arg| format!("{arg:?}")));
+    parts.extend(paths.iter().map(|path| format!("{path:?}")));
+    parts.join(" ")
+}
+
+fn describe_input(path: &Path) -> String {
+    match std::fs::metadata(path) {
+        Ok(metadata) => format!("{} ({} bytes)", path.display(), metadata.len()),
+        Err(error) => format!("{} (metadata unavailable: {error})", path.display()),
+    }
+}
+
+fn describe_output(output: &std::process::Output) -> String {
+    format!(
+        "status: {}\nstdout:\n{}\nstderr:\n{}",
+        output.status,
+        text_or_empty(&output.stdout),
+        text_or_empty(&output.stderr),
+    )
+}
+
+fn text_or_empty(bytes: &[u8]) -> String {
+    if bytes.is_empty() {
+        "<empty>".to_owned()
+    } else {
+        String::from_utf8_lossy(bytes).into_owned()
+    }
+}
+
+fn report_environment(hashcat: &Path, items: usize, workers: usize) {
+    eprintln!("hashcat conformance: {items} item(s), {workers} worker(s)");
+    eprintln!("hashcat: {}", hashcat.display());
+    eprintln!("host: {} {}", std::env::consts::OS, std::env::consts::ARCH);
+    if let Ok(parallelism) = std::thread::available_parallelism() {
+        eprintln!("available parallelism: {}", parallelism);
+    }
+
+    for name in [
+        "OMNIEX_CONFORMANCE_MODES",
+        "OMNIEX_CONFORMANCE_SUBSET",
+        "OMNIEX_CONFORMANCE_SHARD",
+        "OMNIEX_CONFORMANCE_SHARDS",
+        "OMNIEX_CONFORMANCE_WORKERS",
+        "LD_LIBRARY_PATH",
+    ] {
+        match std::env::var(name) {
+            Ok(value) => eprintln!("{name}={value}"),
+            Err(_) => eprintln!("{name}=<unset>"),
+        }
+    }
+
+    match Command::new(hashcat).arg("--version").output() {
+        Ok(output) => {
+            eprintln!("hashcat --version: {}", output.status);
+            for line in String::from_utf8_lossy(&output.stdout).lines() {
+                eprintln!("  {line}");
+            }
+            for line in String::from_utf8_lossy(&output.stderr).lines() {
+                eprintln!("  {line}");
+            }
+        }
+        Err(error) => eprintln!("hashcat --version failed to start: {error}"),
+    }
 }
 
 fn worker_count(items: usize) -> usize {
