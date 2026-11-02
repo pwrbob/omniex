@@ -89,6 +89,53 @@ This file documents the extractors currently registered in
 - `oracle11`, `oracle12c`, `oracle-otm` - Oracle hash exports.
 - `racf-kdfaes`, `racf-passphrase` - RACF KDFAES and passphrase exports.
 - `sybase-prop` - Sybase hash exports.
+- `pkzip` - ZIP archives with ZipCrypto entry encryption.
+- `securezip` - SecureZIP AES archives.
+- `rar3p`, `rar3hp` - RAR3 archives with password and header encryption.
+- `rar5` - RAR5 archives.
+- `sevenzip` - 7-Zip archives.
+- `oldoffice` - MS Office 97-2003 documents.
+- `office` - MS Office 2007+ documents.
+- `office2016-sheetprotection` - MS Office sheet protection records.
+- `pdf` - PDF user and owner password encryption dictionaries.
+- `pst` - PST mail stores.
+- `sappse` - SAP PSE files.
+- `openssl-enc` - OpenSSL `enc` files, requiring `--type` when the cipher is not recoverable.
+- `pkcs12`, `pfx` - PKCS#12 and PFX bundle MAC records.
+- `pem-private-key` - PEM private keys.
+- `jks-private-key` - JKS and JCEKS private keys.
+- `sshng` - OpenSSH private keys.
+- `putty` - PuTTY private keys.
+- `xca` - XCA databases.
+- `keepass` - KeePass KDBX v2 and v3 databases.
+- `keepass4` - KeePass KDBX v4 databases.
+- `pwsafe-v2` - Password Safe v2 databases.
+- `clipperz` - Clipperz exports.
+- `onepassword-cloud` - 1Password cloudkeychain hashcat serialization.
+- `onepassword-mobile` - 1Password mobile account records.
+- `bitwarden` - Bitwarden encrypted exports.
+- `lastpass` - LastPass vaults with companion username and iteration records.
+- `lpcli` - LastPass CLI state with companion username and iteration records.
+- `cryptosafe` - cryptoSafe vaults.
+- `keyring` - GNOME Keyring files.
+- `mozilla-key4` - Firefox `key4.db` master-password verifiers.
+- `mozilla-key3` - Firefox `key3.db` master-password verifiers.
+- `armory` - Armory wallets.
+- `blockchain-second` - Blockchain.com second-password wallets.
+- `dogechain` - Dogechain wallets.
+- `tezos` - Tezos wallets.
+- `keplr` - Keplr wallet records and LevelDB logs.
+- `stellar` - Stellar wallets.
+- `terra` - Terra wallets.
+- `bitcoin-wif` - raw WIF private keys.
+- `bitcoin-wallet` - Bitcoin Core `wallet.dat` files.
+- `multibit-wallet` - MultiBit Classic `.wallet` files.
+- `bitshares` - BitShares SQLite and LevelDB wallets.
+- `wpa-pmkid` - WPA/WPA2 EAPOL handshakes and PMKID captures.
+- `wpa-pmkid-legacy` - legacy WPA PMKID captures.
+- `krb5asrep23` - Kerberos AS-REP etype 23 exchanges.
+- `krb5asrep-aes` - Kerberos AS-REP etype 17 and 18 exchanges.
+- `krb5tgs23` - Kerberos TGS-REP etype 23 exchanges.
 - Plain hash lists for `md4`, `md5`, `ntlm`, `lm`, `sha1`, `ripemd`, `sha224`, `sha256`, `sha384`, and `sha512`.
 - Plain hash lists also cover `gost`, `keccak`, `md2`, `sha0`, `sha3`, `sm3`, `streebog`, `tiger`, `whirlpool`, and `skein-512`.
 - Plain hash lists also cover `blake2b-512`, `blake2b-256`, `blake2s-256`, `snefru`, `md6`, `has-160`, `panama`, `mdc2`, `radiogatun`, and `edon-r-256`.

@@ -214,8 +214,7 @@ pub(crate) mod kerberos {
             message.kind == kind
                 && message.etype == etype
                 && message.cipher.len() > checksum
-                && (kind != Kind::TgsRep
-                    || message.spn.as_ref().is_some_and(|spn| !spn.is_empty()))
+                && (kind != Kind::TgsRep || message.spn.as_ref().is_some_and(|spn| !spn.is_empty()))
         }))
     }
 

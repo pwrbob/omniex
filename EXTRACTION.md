@@ -78,33 +78,34 @@ README badge counts checked lines in this file.
 
 ## Archives and documents
 
-- [ ] ZIP with ZipCrypto (`pkzip`)
+- [x] ZIP with ZipCrypto (`pkzip`)
 - [x] ZIP with WinZip AES (`winzip`)
-- [ ] SecureZIP AES archives (`securezip`)
+- [x] SecureZIP AES archives (`securezip`)
 - [ ] PKZIP master-key archives (`pkzip-master-key`)
-- [ ] RAR3 archives (`rar3p`, `rar3hp`)
-- [ ] RAR5 archives (`rar5`)
-- [ ] 7-Zip archives (`sevenzip`)
-- [ ] MS Office 97-2003 documents (`oldoffice`)
-- [ ] MS Office 2007+ documents (`office`)
-- [ ] MS Office sheet protection (`office2016-sheetprotection`)
-- [ ] PDF user and owner passwords (`pdf`)
+- [x] RAR3 archives (`rar3p`, `rar3hp`)
+- [x] RAR5 archives (`rar5`)
+- [x] 7-Zip archives (`sevenzip`)
+- [x] MS Office 97-2003 documents (`oldoffice`)
+- [x] MS Office 2007+ documents (`office`)
+- [x] MS Office sheet protection (`office2016-sheetprotection`)
+- [x] PDF user and owner passwords (`pdf`)
 - [x] Encrypted OpenDocument packages (`odf`)
-- [ ] PST mail stores (`pst`)
-- [ ] SAP PSE files (`sappse`)
-- [ ] OpenSSL `enc` files (`openssl-enc`)
+- [x] PST mail stores (`pst`)
+- [x] SAP PSE files (`sappse`)
+- [x] OpenSSL `enc` files (`openssl-enc`)
 - [x] Ansible Vault files (`ansible-vault`)
 
 ## Keys and certificate containers
 
 - [x] Hashed SSH known_hosts entries (`known-hosts`)
 
-- [ ] PKCS#12 and PFX bundles (`pkcs12`, `pfx`)
-- [ ] PKCS#8 and PEM private keys (`pem-private-key`, `pem`)
-- [ ] JKS and JCEKS private keys (`jks-private-key`)
-- [ ] OpenSSH private keys (`sshng`)
-- [ ] PuTTY private keys (`putty`)
-- [ ] XCA databases (`xca`)
+- [x] PKCS#12 and PFX bundles (`pkcs12`, `pfx`)
+- [x] PKCS#8 and PEM private keys (`pem-private-key`)
+- [ ] PEM private keys in the John serialization (`pem`)
+- [x] JKS and JCEKS private keys (`jks-private-key`)
+- [x] OpenSSH private keys (`sshng`)
+- [x] PuTTY private keys (`putty`)
+- [x] XCA databases (`xca`)
 
 ## Password managers
 
@@ -113,60 +114,62 @@ README badge counts checked lines in this file.
 - [x] PostgreSQL SCRAM verifier dumps (`postgres-scram-sha256`)
 - [x] Oracle H and T password hashes (`oracle-h`, `oracle-t`)
 
-- [ ] KeePass KDBX v2/v3 (`keepass`)
-- [ ] KeePass KDBX v4 (`keepass4`)
+- [x] KeePass KDBX v2/v3 (`keepass`)
+- [x] KeePass KDBX v4 (`keepass4`)
 - [x] 1Password agilekeychain (`onepassword-agile`, `agilekeychain`)
 - [x] 1Password cloudkeychain profiles (`cloudkeychain`)
-- [ ] 1Password cloudkeychain hashcat serialization (`onepassword-cloud`)
-- [ ] 1Password mobile keychain (`onepassword-mobile`)
-- [ ] Bitwarden encrypted export (`bitwarden`)
-- [ ] LastPass vault (`lastpass`)
-- [ ] LastPass CLI state (`lpcli`)
-- [ ] Password Safe v2 (`pwsafe-v2`)
+- [x] 1Password cloudkeychain hashcat serialization (`onepassword-cloud`)
+- [x] 1Password mobile keychain (`onepassword-mobile`)
+- [x] Bitwarden encrypted export (`bitwarden`)
+- [x] LastPass vault (`lastpass`)
+- [x] LastPass CLI state (`lpcli`)
+- [x] Password Safe v2 (`pwsafe-v2`)
 - [x] Password Safe v3 (`pwsafe-v3`, `pwsafe`)
 - [x] Legacy KDE KWallet files (`kwallet`)
 - [x] Salted KDE KWallet 4.13+ files with `.salt` sidecars (`kwallet`)
 - [x] Enpass databases (`enpass`)
 - [x] Dashlane vaults (`dashlane`)
 - [x] BKS keystores (`bks`)
-- [ ] Clipperz exports (`clipperz`)
-- [ ] cryptoSafe vaults (`cryptosafe`)
-- [ ] GNOME Keyring files (`keyring`)
+- [x] Clipperz exports (`clipperz`)
+- [x] cryptoSafe vaults (`cryptosafe`)
+- [x] GNOME Keyring files (`keyring`)
 
 ## Browsers
 
 - [ ] Chromium Login Data with DPAPI or Linux keyring encryption
 - [ ] Chromium Cookies with encrypted values
-- [ ] Firefox `logins.json` and `key4.db` (`mozilla-key4`)
-- [ ] Firefox `signons.sqlite` and `key3.db` (`mozilla-key3`)
+- [x] Firefox `key4.db` master-password verifier (`mozilla-key4`)
+- [ ] Firefox `logins.json` saved-password records
+- [x] Firefox `key3.db` master-password verifier (`mozilla-key3`)
+- [ ] Firefox `signons.sqlite` saved-password records
 - [ ] Safari saved-password records in the login keychain
 
 ## Wallets and cryptocurrency stores
 
-- [ ] Bitcoin Core `wallet.dat` (`bitcoin-wallet`)
+- [x] Bitcoin Core `wallet.dat` (`bitcoin-wallet`)
 - [x] Electrum wallets (`electrum`)
 - [x] MultiBit Classic `.key` (`multibit`)
 - [x] MultiBit HD wallets (`multibit-hd`)
-- [ ] MultiBit Classic `.wallet` (`multibit-wallet`)
+- [x] MultiBit Classic `.wallet` (`multibit-wallet`)
 - [x] Ethereum keystore v3 JSON (`ethereum-pbkdf2`, `ethereum-scrypt`)
 - [x] Ethereum presale wallets (`ethereum-presale`)
 - [x] MetaMask extension vaults (`metamask`)
 - [x] MetaMask mobile vaults (`metamask-mobile`)
-- [ ] Armory wallets (`armory`)
+- [x] Armory wallets (`armory`)
 - [x] Blockchain.com wallet JSON (`blockchain`)
-- [ ] Blockchain.com second-password wallets (`blockchain-second`)
-- [ ] Dogechain wallets (`dogechain`)
+- [x] Blockchain.com second-password wallets (`blockchain-second`)
+- [x] Dogechain wallets (`dogechain`)
 - [x] Exodus wallets (`exodus`)
 - [x] Bisq wallets (`bisq`)
 - [x] Monero wallets (`monero`)
-- [ ] Tezos wallets (`tezos`)
+- [x] Tezos wallets (`tezos`)
 - [x] Cardano wallets (`cardano-john`)
-- [ ] Keplr wallets (`keplr`)
-- [ ] Stellar wallets (`stellar`)
-- [ ] Terra wallets (`terra`)
+- [x] Keplr wallets (`keplr`)
+- [x] Stellar wallets (`stellar`)
+- [x] Terra wallets (`terra`)
 - [x] BitShares backup wallets (`bitshares-john`)
-- [ ] BitShares SQLite and LevelDB wallets (`bitshares`)
-- [ ] Raw WIF private keys (`bitcoin-wif`)
+- [x] BitShares SQLite and LevelDB wallets (`bitshares`)
+- [x] Raw WIF private keys (`bitcoin-wif`)
 
 ## Mobile and application stores
 
@@ -236,12 +239,12 @@ README badge counts checked lines in this file.
 
 ## Network captures
 
-- [ ] WPA/WPA2 EAPOL handshakes (`wpa-pmkid`)
-- [ ] WPA PMKID captures (`wpa-pmkid`)
+- [x] WPA/WPA2 EAPOL handshakes (`wpa-pmkid`)
+- [x] WPA PMKID captures (`wpa-pmkid`)
 - [ ] Legacy WPA handshakes (`wpa-pmkid-legacy`)
-- [ ] Kerberos AS-REP, etype 23 (`krb5asrep23`)
-- [ ] Kerberos AS-REP, etype 17/18 (`krb5asrep-aes`)
-- [ ] Kerberos TGS-REP, etype 23 (`krb5tgs23`)
+- [x] Kerberos AS-REP, etype 23 (`krb5asrep23`)
+- [x] Kerberos AS-REP, etype 17/18 (`krb5asrep-aes`)
+- [x] Kerberos TGS-REP, etype 23 (`krb5tgs23`)
 - [ ] Kerberos TGS-REP, etype 17/18 (`krb5tgs17`, `krb5tgs18`)
 - [ ] Kerberos AS-REQ pre-authentication (`krb5pa23`, `krb5pa17`, `krb5pa18`)
 - [ ] Kerberos database extracts (`krb5db17`, `krb5db18`, `krb5db-old`)

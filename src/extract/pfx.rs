@@ -229,7 +229,7 @@ impl Extractor for Pkcs12Extractor {
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         match bundle(artifact) {
-            Ok(_) => Probe::yes("PKCS#12 PFX MAC"),
+            Ok(_) => Probe::yes("PKCS#12 PFX MAC structure"),
             Err(_) => Probe::No,
         }
     }
@@ -263,7 +263,7 @@ impl Extractor for PfxJohnExtractor {
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         match bundle(artifact) {
-            Ok(_) => Probe::yes("PKCS#12 PFX MAC"),
+            Ok(_) => Probe::yes("PKCS#12 PFX MAC structure"),
             Err(_) => Probe::No,
         }
     }

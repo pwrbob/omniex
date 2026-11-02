@@ -91,7 +91,10 @@ fn value(data: &[u8]) -> Result<(Cbor, &[u8]), ExtractError> {
         }
         5 => {
             let (count, mut rest) = length(rest, additional)?;
-            for _ in 0..count * 2 {
+            let pairs = count
+                .checked_mul(2)
+                .ok_or_else(|| ExtractError::Invalid("Cardano CBOR map is too large".to_owned()))?;
+            for _ in 0..pairs {
                 let (_, next) = value(rest)?;
                 rest = next;
             }

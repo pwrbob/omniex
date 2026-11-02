@@ -94,9 +94,7 @@ fn parse(artifact: &Artifact) -> Result<Vec<Armory>, ExtractError> {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
     })?;
     if data.get(..MAGIC.len()) != Some(MAGIC) {
-        return Err(ExtractError::Unsupported(
-            "not an Armory wallet".to_owned(),
-        ));
+        return Err(ExtractError::Unsupported("not an Armory wallet".to_owned()));
     }
     if data.len() < HEADER_LEN {
         return Err(ExtractError::Invalid("truncated Armory wallet".to_owned()));

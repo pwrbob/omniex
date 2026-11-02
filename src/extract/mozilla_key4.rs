@@ -87,9 +87,7 @@ impl<'a> Sqlite<'a> {
             Some(1) => 65536,
             Some(size) if size >= 512 && size.is_power_of_two() => usize::from(size),
             _ => {
-                return Err(ExtractError::Invalid(
-                    "invalid SQLite page size".to_owned(),
-                ));
+                return Err(ExtractError::Invalid("invalid SQLite page size".to_owned()));
             }
         };
         let reserved = usize::from(*data.get(20).unwrap_or(&0));
@@ -132,13 +130,16 @@ impl<'a> Sqlite<'a> {
         let mut remaining = length - max_local;
         while remaining > 0 {
             let page_start = self.page_start(next)?;
-            next = be_u32(self.data, page_start)
-                .ok_or_else(|| ExtractError::Invalid("truncated SQLite overflow page".to_owned()))?;
+            next = be_u32(self.data, page_start).ok_or_else(|| {
+                ExtractError::Invalid("truncated SQLite overflow page".to_owned())
+            })?;
             let chunk = remaining.min(self.usable.saturating_sub(4));
             let bytes = self
                 .data
                 .get(page_start + 4..page_start + 4 + chunk)
-                .ok_or_else(|| ExtractError::Invalid("truncated SQLite overflow data".to_owned()))?;
+                .ok_or_else(|| {
+                    ExtractError::Invalid("truncated SQLite overflow data".to_owned())
+                })?;
             payload.extend_from_slice(bytes);
             remaining -= chunk;
         }
@@ -182,9 +183,9 @@ impl<'a> Sqlite<'a> {
                 self.walk_table(child, callback)?;
             } else {
                 let mut offset = cell;
-                let length = varint(self.data, &mut offset)
-                    .ok_or_else(|| ExtractError::Invalid("truncated SQLite payload length".to_owned()))?
-                    as usize;
+                let length = varint(self.data, &mut offset).ok_or_else(|| {
+                    ExtractError::Invalid("truncated SQLite payload length".to_owned())
+                })? as usize;
                 varint(self.data, &mut offset)
                     .ok_or_else(|| ExtractError::Invalid("truncated SQLite rowid".to_owned()))?;
                 let payload = self.read_payload(offset, length)?;
@@ -286,7 +287,8 @@ fn metadata_row(data: &[u8]) -> Result<(Vec<u8>, Vec<u8>), ExtractError> {
         }
         Ok(())
     })?;
-    let root = root.ok_or_else(|| ExtractError::Unsupported("missing key4.db metadata table".to_owned()))?;
+    let root =
+        root.ok_or_else(|| ExtractError::Unsupported("missing key4.db metadata table".to_owned()))?;
 
     let mut row = None;
     sqlite.walk_table(root, &mut |payload| {
@@ -377,7 +379,9 @@ fn oid<'a>(der: &'a Der<'a>) -> Result<&'a [u8], ExtractError> {
 
 fn octets<'a>(der: &'a Der<'a>) -> Result<&'a [u8], ExtractError> {
     if der.tag != 0x04 {
-        return Err(ExtractError::Invalid("expected DER octet string".to_owned()));
+        return Err(ExtractError::Invalid(
+            "expected DER octet string".to_owned(),
+        ));
     }
     Ok(der.value)
 }

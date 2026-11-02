@@ -382,6 +382,55 @@ mod vdi;
 mod vmx;
 mod winzip;
 
+mod armory;
+mod bitcoin_wallet;
+mod bitcoin_wif;
+mod bitshares_wallet;
+mod bitwarden;
+mod blockchain_second;
+mod clipperz;
+mod cryptosafe;
+mod dogechain;
+mod jks_private_key;
+mod keepass;
+mod keepass4;
+mod keplr;
+mod keyring;
+mod krb5asrep23;
+mod krb5asrep_aes;
+mod krb5tgs23;
+mod lastpass;
+mod lpcli;
+mod mozilla_key3;
+mod mozilla_key4;
+mod multibit_wallet;
+mod office;
+mod office2016_sheetprotection;
+mod oldoffice;
+mod onepassword_cloud;
+mod onepassword_mobile;
+mod openssl_enc;
+mod pdf;
+mod pem_private_key;
+mod pfx;
+mod pkzip;
+mod pst;
+mod putty;
+mod pwsafe_v2;
+mod rar3hp;
+mod rar3p;
+mod rar5;
+mod sappse;
+mod securezip;
+mod sevenzip;
+mod sshng;
+mod stellar;
+mod terra;
+mod tezos;
+mod wpa_pmkid;
+mod wpa_pmkid_legacy;
+mod xca;
+
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &adxcrypt::AdxcryptExtractor,
     &aix::AixSmd5Extractor,
@@ -506,6 +555,55 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &sql::OracleHExtractor,
     &sql::OracleTExtractor,
     &sql::PostgresScramSha256Extractor,
+    &pkzip::PkzipExtractor,
+    &securezip::SecurezipExtractor,
+    &rar3p::Rar3pExtractor,
+    &rar3hp::Rar3hpExtractor,
+    &office::OfficeExtractor,
+    &office2016_sheetprotection::Office2016SheetprotectionExtractor,
+    &oldoffice::OldOfficeExtractor,
+    &rar5::Rar5Extractor,
+    &sevenzip::SevenZipExtractor,
+    &pdf::PdfExtractor,
+    &pst::PstExtractor,
+    &sappse::SappseExtractor,
+    &openssl_enc::OpensslEncExtractor,
+    &pfx::Pkcs12Extractor,
+    &pfx::PfxJohnExtractor,
+    &pem_private_key::PemPrivateKeyExtractor,
+    &jks_private_key::JksPrivateKeyExtractor,
+    &sshng::SshngExtractor,
+    &putty::PuttyExtractor,
+    &clipperz::ClipperzExtractor,
+    &keepass::KeepassExtractor,
+    &keepass4::Keepass4Extractor,
+    &pwsafe_v2::PwsafeV2Extractor,
+    &xca::XcaExtractor,
+    &bitwarden::BitwardenExtractor,
+    &lastpass::LastpassExtractor,
+    &lpcli::LpcliExtractor,
+    &onepassword_cloud::OnepasswordCloudExtractor,
+    &onepassword_mobile::OnepasswordMobileExtractor,
+    &armory::ArmoryExtractor,
+    &cryptosafe::CryptosafeExtractor,
+    &keyring::KeyringExtractor,
+    &mozilla_key3::MozillaKey3Extractor,
+    &mozilla_key4::MozillaKey4Extractor,
+    &blockchain_second::BlockchainSecondExtractor,
+    &dogechain::DogechainExtractor,
+    &tezos::TezosExtractor,
+    &keplr::KeplrExtractor,
+    &stellar::StellarExtractor,
+    &terra::TerraExtractor,
+    &bitcoin_wif::BitcoinWifExtractor,
+    &bitcoin_wallet::BitcoinWalletExtractor,
+    &multibit_wallet::MultibitWalletExtractor,
+    &bitshares_wallet::BitsharesWalletExtractor,
+    &krb5asrep23::Krb5AsRep23Extractor,
+    &krb5asrep_aes::Krb5AsrepAesExtractor,
+    &krb5tgs23::Krb5Tgs23Extractor,
+    &wpa_pmkid::WpaPmkidExtractor,
+    &wpa_pmkid_legacy::WpaPmkidLegacyExtractor,
 ];
 
 /// Returns the extractor registered for a slug.

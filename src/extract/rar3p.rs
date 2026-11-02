@@ -165,7 +165,8 @@ fn parse(data: &[u8]) -> Result<Vec<Rar3p>, ExtractError> {
                         "truncated RAR3 file header".to_owned(),
                     ));
                 }
-                let mut pack_size = u64::from(LittleEndian::read_u32(&data[offset + 7..offset + 11]));
+                let mut pack_size =
+                    u64::from(LittleEndian::read_u32(&data[offset + 7..offset + 11]));
                 if flags & FLAG_LARGE != 0 {
                     let Some(high) = data.get(offset + 32..offset + 36) else {
                         return Err(ExtractError::Invalid(
