@@ -242,6 +242,8 @@ reliable signature. An extractor that accepts arbitrary bytes must not claim
 
 An extractor is registered once in `EXTRACTORS`. `--type <slug>` selects the
 extractor with the same slug as the hash type and bypasses probe selection.
+There is no separate extractor-slug namespace: `Extractor::slug` reports the
+hash type slug that the extractor produces.
 Without `--type`, auto-detection succeeds only when exactly one extractor
 returns `Yes`. Multiple `Yes` results are ambiguous. With no `Yes`, any `Maybe`
 results are reported as unconfirmed candidates and also require `--type`.

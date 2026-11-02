@@ -43,7 +43,8 @@ becomes an instance of it.
 
 Every hash type has a stable slug, such as `md5` or `salted-md5`. Use
 `--type <slug>` to name the same type when parsing or extracting. A slug
-identifies the struct; it is not a hashcat mode number or an extractor slug.
+identifies the struct; it is not a hashcat mode number. Extractors use the
+same slug as the hash type they produce.
 
 `instance` is the common representation in both directions:
 
