@@ -17,7 +17,6 @@ README badge counts checked lines in this file.
 
 - [ ] SAM hive local account NT hashes (`ntlm`)
 - [x] SECURITY hive cached domain credentials (`dcc2`)
-- [ ] SECURITY hive LSA secrets
 - [x] SECURITY hive DPAPI masterkeys (`dpapi`)
 - [x] User DPAPI masterkey files (`dpapi`)
 - [x] Windows Credential Manager vaults (`dpapi`)
@@ -81,7 +80,6 @@ README badge counts checked lines in this file.
 - [x] ZIP with ZipCrypto (`pkzip`)
 - [x] ZIP with WinZip AES (`winzip`)
 - [x] SecureZIP AES archives (`securezip`)
-- [ ] PKZIP master-key archives (`pkzip-master-key`)
 - [x] RAR3 archives (`rar3p`, `rar3hp`)
 - [x] RAR5 archives (`rar5`)
 - [x] 7-Zip archives (`sevenzip`)
@@ -136,12 +134,8 @@ README badge counts checked lines in this file.
 
 ## Browsers
 
-- [ ] Chromium Login Data with DPAPI or Linux keyring encryption
-- [ ] Chromium Cookies with encrypted values
 - [x] Firefox `key4.db` master-password verifier (`mozilla-key4`)
-- [ ] Firefox `logins.json` saved-password records
 - [x] Firefox `key3.db` master-password verifier (`mozilla-key3`)
-- [ ] Firefox `signons.sqlite` saved-password records
 - [x] Safari saved-password records in the login keychain
 
 ## Wallets and cryptocurrency stores
@@ -263,3 +257,12 @@ README badge counts checked lines in this file.
 - [x] HSRP authentication (`hsrp`)
 - [x] EIGRP authentication (`eigrp`)
 - [x] MS SNTP authenticated packets (`sntp-ms`)
+
+## Excluded extraction targets
+
+These artifacts do not currently map to a crackable hash serialization or cannot provide the material their hash type requires:
+
+- SECURITY hive LSA secrets: not a single hash format. Recoverable records map to existing types such as `ntlm` or `dcc2`, while others are not password hashes.
+- PKZIP master-key archives: the hash carries no artifact-derived salt or ciphertext.
+- Chromium Login Data and Cookies: encrypted with OS-protected keys and no crackable verifier is present in the files.
+- Firefox `logins.json` and `signons.sqlite`: encrypted login records contain no master-password verifier; use `mozilla-key4` or `mozilla-key3` instead.
