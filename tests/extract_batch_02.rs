@@ -296,3 +296,213 @@ fn cli_rejects_wrong_type_and_empty_input() {
         .unwrap();
     assert!(!empty.status.success());
 }
+
+#[test]
+fn apple_keychain_extracts_the_database_blob() {
+    assert_eq!(
+        extracted("apple-keychain", "apple-keychain", "login.keychain"),
+        expected_hashes("apple-keychain", "login.hash")
+    );
+}
+
+#[test]
+fn apple_keychain_probe_and_negative_inputs() {
+    let extractor = extract::by_slug("apple-keychain").expect("Apple keychain extractor");
+    assert!(matches!(
+        extractor.probe(&artifact("apple-keychain", "login.keychain")),
+        Probe::Yes(reason) if reason.contains("keychain")
+    ));
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("text", b"not a keychain".to_vec())),
+        Probe::No
+    );
+    let data = std::fs::read(fixture("apple-keychain", "login.keychain")).unwrap();
+    assert!(
+        extractor
+            .extract(&Artifact::from_bytes("short", data[..80].to_vec()))
+            .is_err()
+    );
+    assert!(
+        extractor
+            .extract(&Artifact::from_bytes("truncated", data[..300].to_vec()))
+            .is_err()
+    );
+}
+
+#[test]
+fn apple_secure_notes_extracts_every_protected_note() {
+    assert_eq!(
+        extracted(
+            "apple-secure-notes",
+            "apple-secure-notes",
+            "NoteStore.sqlite"
+        ),
+        expected_hashes("apple-secure-notes", "NoteStore.hash")
+    );
+}
+
+#[test]
+fn apple_secure_notes_probe_and_negative_inputs() {
+    let extractor = extract::by_slug("apple-secure-notes").expect("Apple Notes extractor");
+    assert!(matches!(
+        extractor.probe(&artifact("apple-secure-notes", "NoteStore.sqlite")),
+        Probe::Yes(reason) if reason.contains("Notes")
+    ));
+    assert_eq!(
+        extractor.probe(&artifact("apple-secure-notes", "empty.sqlite")),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert_eq!(
+        extractor.probe(&Artifact::from_bytes("text", b"not a database".to_vec())),
+        Probe::No
+    );
+    assert!(
+        extractor
+            .extract(&artifact("apple-secure-notes", "empty.sqlite"))
+            .is_err()
+    );
+    let data = std::fs::read(fixture("apple-secure-notes", "NoteStore.sqlite")).unwrap();
+    assert!(
+        extractor
+            .extract(&Artifact::from_bytes("short", data[..512].to_vec()))
+            .is_err()
+    );
+}
+
+#[test]
+fn macos_shadow_hash_plists_extract() {
+    assert_eq!(
+        extracted("macos-sha1", "macos-sha1", "user.plist"),
+        expected_hashes("macos-sha1", "user.hash")
+    );
+    assert_eq!(
+        extracted("macos-sha512", "macos-sha512", "user.plist"),
+        expected_hashes("macos-sha512", "user.hash")
+    );
+    assert_eq!(
+        extracted("macos-pbkdf2-sha512", "macos-pbkdf2-sha512", "user.plist"),
+        expected_hashes("macos-pbkdf2-sha512", "user.hash")
+    );
+}
+
+#[test]
+fn macos_shadow_hash_probe_and_negative_inputs() {
+    for (slug, directory) in [
+        ("macos-sha1", "macos-sha1"),
+        ("macos-sha512", "macos-sha512"),
+        ("macos-pbkdf2-sha512", "macos-pbkdf2-sha512"),
+    ] {
+        let extractor = extract::by_slug(slug).expect("macOS extractor");
+        assert!(matches!(
+            extractor.probe(&artifact(directory, "user.plist")),
+            Probe::Yes(reason) if reason.contains("macOS")
+        ));
+        assert_eq!(
+            extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
+            Probe::No
+        );
+        assert_eq!(
+            extractor.probe(&Artifact::from_bytes("text", b"not a plist".to_vec())),
+            Probe::No
+        );
+        let data = std::fs::read(fixture(directory, "user.plist")).unwrap();
+        assert!(
+            extractor
+                .extract(&Artifact::from_bytes("short", data[..32].to_vec()))
+                .is_err()
+        );
+    }
+
+    assert_eq!(
+        extract::by_slug("macos-sha1")
+            .unwrap()
+            .probe(&artifact("macos-sha512", "user.plist")),
+        Probe::No
+    );
+    assert_eq!(
+        extract::by_slug("macos-pbkdf2-sha512")
+            .unwrap()
+            .probe(&artifact("macos-sha512", "user.plist")),
+        Probe::No
+    );
+}
+
+#[test]
+fn apple_cli_auto_detects_and_selects_by_type() {
+    for (directory, name, slug) in [
+        ("apple-keychain", "login.keychain", "apple-keychain"),
+        (
+            "apple-secure-notes",
+            "NoteStore.sqlite",
+            "apple-secure-notes",
+        ),
+        ("macos-sha1", "user.plist", "macos-sha1"),
+        ("macos-sha512", "user.plist", "macos-sha512"),
+        ("macos-pbkdf2-sha512", "user.plist", "macos-pbkdf2-sha512"),
+    ] {
+        let auto = omniex()
+            .arg("extract")
+            .arg(fixture(directory, name))
+            .output()
+            .unwrap();
+        assert!(auto.status.success(), "{directory}/{name}: {auto:?}");
+
+        let typed = omniex()
+            .arg("extract")
+            .arg("--type")
+            .arg(slug)
+            .arg(fixture(directory, name))
+            .arg("--json")
+            .output()
+            .unwrap();
+        assert!(typed.status.success(), "{directory}/{name}: {typed:?}");
+        let value: serde_json::Value = serde_json::from_slice(&typed.stdout).unwrap();
+        assert_eq!(value[0]["type"], slug);
+
+        let all = omniex()
+            .arg("extract")
+            .arg("--all")
+            .arg(fixture(directory, name))
+            .arg("--json")
+            .output()
+            .unwrap();
+        assert!(all.status.success(), "{directory}/{name}: {all:?}");
+        let value: serde_json::Value = serde_json::from_slice(&all.stdout).unwrap();
+        assert!(
+            value
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|entry| entry["type"] == slug)
+        );
+    }
+}
+
+#[test]
+fn apple_cli_rejects_wrong_type_and_empty_input() {
+    let wrong = omniex()
+        .arg("extract")
+        .arg("--type")
+        .arg("macos-sha1")
+        .arg(fixture("macos-sha512", "user.plist"))
+        .output()
+        .unwrap();
+    assert!(!wrong.status.success());
+
+    let empty = omniex()
+        .arg("extract")
+        .arg("--type")
+        .arg("apple-keychain")
+        .arg(fixture("apple-keychain", "manifest.toml"))
+        .output()
+        .unwrap();
+    assert!(!empty.status.success());
+}
