@@ -1,0 +1,4 @@
+type = "sappse"
+password = "1234"
+generator = "hand-encoded DER PSE v2 container"
+notes = "Synthetic SAP PSE container with PKCS#12 PBE-SHA1-3DES parameters."

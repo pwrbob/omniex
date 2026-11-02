@@ -1,0 +1,4 @@
+type = "openssl-enc"
+password = "secret"
+generator = "openssl enc -aes-256-cbc -md sha256 -salt -pass pass:password"
+notes = "OpenSSL salted payload. The envelope does not record its cipher or digest; the fixture uses the OpenSSL 1.1 default pair AES-256-CBC and SHA-256."
