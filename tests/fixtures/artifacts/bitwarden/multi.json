@@ -1,0 +1,19 @@
+{
+  "global_account_activeAccountId": "acct-1",
+  "global_account_accounts": {
+    "acct-1": {
+      "email": "first@example.test"
+    },
+    "acct-2": {
+      "email": "second@example.test"
+    }
+  },
+  "user_acct-1_masterPassword_masterKeyHash": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=",
+  "user_acct-1_kdfConfig_kdfConfig": {
+    "iterations": 600000
+  },
+  "user_acct-2_masterPassword_masterKeyHash": "ICEiIyQlJicoKSorLC0uLzAxMjM0NTY3ODk6Ozw9Pj8=",
+  "user_acct-2_kdfConfig_kdfConfig": {
+    "iterations": 100000
+  }
+}
