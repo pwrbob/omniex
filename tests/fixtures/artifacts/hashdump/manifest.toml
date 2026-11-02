@@ -1,0 +1,3 @@
+type = "as400-des"
+generator = "synthetic text export with legacy password hash formats"
+notes = "Synthetic hash lines from canonical vectors; no real credentials."
