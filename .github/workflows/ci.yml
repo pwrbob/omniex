@@ -162,6 +162,9 @@ jobs:
           chmod +x "$OMNIEX_HASHCAT"
           cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture 2>&1 \
             | tee "hashcat-conformance-${{ matrix.shard }}.log"
+          cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
+            hashcat_loads_extracted_artifacts 2>&1 \
+            | tee -a "hashcat-conformance-${{ matrix.shard }}.log"
 
       - name: Upload hashcat conformance diagnostics
         if: failure()
@@ -171,6 +174,7 @@ jobs:
           path: |
             hashcat-conformance-${{ matrix.shard }}.log
             target/tmp/hashcat-conformance
+            target/tmp/extract-cracker-e2e-hashcat
           if-no-files-found: ignore
           retention-days: 7
 
@@ -213,4 +217,7 @@ jobs:
         env:
           OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
           OMNIEX_CONFORMANCE_SUBSET: ${{ github.event_name == 'pull_request' && '1' || '0' }}
-        run: cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
+        run: |
+          cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
+          cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
+            john_loads_extracted_artifacts

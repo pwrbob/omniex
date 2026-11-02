@@ -36,6 +36,10 @@ fi
 if [[ -n "${OMNIEX_HASHCAT:-}" ]]; then
     echo "==> hashcat conformance"
     cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
+
+    echo "==> hashcat extract-to-cracker"
+    cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
+        hashcat_loads_extracted_artifacts
 else
     missing+=("hashcat")
     echo "warning: hashcat 8.0.0 not found; hashcat conformance skipped" >&2
@@ -48,6 +52,10 @@ fi
 if [[ -n "${OMNIEX_JOHN:-}" ]]; then
     echo "==> John conformance"
     cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
+
+    echo "==> John extract-to-cracker"
+    cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
+        john_loads_extracted_artifacts
 
     export OMNIEX_JOHN_RUN="$(dirname "$OMNIEX_JOHN")"
     echo "==> extractor conformance"

@@ -1,5 +1,10 @@
 type = "windows-hello"
 password = "password"
-hashcat = "$WINHELLO$*SHA512*10000*0011223344556677*aabbccdd00112233*eeff001122334455*66778899aabbccdd*0123456789abcdef*fedcba9876543210"
+e2e = false
+e2e_reason = "hashcat 8.0.0 rejects the synthetic Windows Hello serialization"
+hashcat = """
+$WINHELLO$*SHA512*10000*0011223344556677*aabbccdd00112233*eeff001122334455*66778899aabbccdd*0123456789abcdef*fedcba9876543210
+$WINHELLO$*SHA1*5000*0001020304050607*1011121314151617*2021222324252627*3031323334353637*4041424344454647*5051525354555657
+"""
 generator = "synthetic Windows Hello container export with two records"
 notes = "Synthetic PIN containers; no real credentials."

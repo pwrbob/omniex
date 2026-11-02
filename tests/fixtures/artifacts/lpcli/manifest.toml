@@ -1,4 +1,6 @@
 type = "lpcli"
+artifact = "verify.bin"
+companions = { "username" = "username.txt", "iterations" = "iterations.txt" }
 generator = "synthetic LastPass CLI verify, username and iterations files"
 notes = "Synthetic LastPass CLI state; no real credentials."
 hashcat = "-"

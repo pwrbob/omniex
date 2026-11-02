@@ -1,6 +1,12 @@
 type = "dcc2"
 password = "password"
-hashcat = "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"
-john = "$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626"
+hashcat = """
+$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626
+$DCC2$10240#alice#0123456789abcdef0123456789abcdef
+"""
+john = """
+$DCC2$10240#6848#e2829c8af2232fa53797e2f0e35e4626
+$DCC2$10240#alice#0123456789abcdef0123456789abcdef
+"""
 generator = "synthetic SECURITY hive cache export with two DCC2 records"
 notes = "Synthetic cached credentials; no real accounts or passwords."

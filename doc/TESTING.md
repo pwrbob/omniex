@@ -110,6 +110,14 @@ the expected hash strings. Extractors whose reference script is broken under
 Python 3, emits a different serialization, or has no reference script remain
 covered by fixture tests; the conformance test documents those exceptions.
 
+When the cracker builds are available, `tests/extract_cracker_e2e.rs` runs the
+full artifact-to-cracker path for fixtures that declare `hashcat` or `john` in
+their manifest. Hashcat must identify the declared mode and load it with
+`--show`; John must report the declared format with `--show=formats`. Neither
+path runs an attack. Use `[[case]]` tables to add another artifact or parameter
+set for the same hash type, and `e2e = false` with `e2e_reason` only for a
+synthetic serialization the reference cracker genuinely rejects.
+
 Committed fixtures are supplemented by `tests/extract_real_files.rs`, which
 creates real artifacts with external tools and extracts them with `omniex`. It
 currently generates a 7-Zip-created AES ZIP and compares the result with
@@ -147,6 +155,7 @@ Use `assert_cmd` or `trycmd` plus `insta` for snapshots:
 cargo test --workspace
 cargo test --test hashcat_conformance -- --ignored
 cargo test --test john_conformance -- --ignored
+cargo test --test extract_cracker_e2e -- --ignored
 ```
 
 Conformance tests are `#[ignore]`d so the fast suite never needs a reference

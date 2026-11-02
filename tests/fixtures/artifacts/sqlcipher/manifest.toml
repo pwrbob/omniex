@@ -1,4 +1,15 @@
 type = "sqlcipher"
-hashcat = "SQLCIPHER*1*64000*25548249195677404156261816261456*85b5e156e1cf1e0be5e9f4217186817b*33435c230bbc7989bbd027630e3f47cd"
 generator = "synthetic SQLCipher database header"
 notes = "Synthetic page data; KDF type and iteration count are supplied as companions."
+
+[[case]]
+artifact = "database.db"
+companions = { "sqlcipher-type" = "type.txt", "sqlcipher-iterations" = "iterations.txt" }
+hashcat = "SQLCIPHER*1*64000*25548249195677404156261816261456*85b5e156e1cf1e0be5e9f4217186817b*33435c230bbc7989bbd027630e3f47cd"
+john = "-"
+
+[[case]]
+artifact = "database.db"
+companions = { "sqlcipher-preset" = "preset2.txt" }
+hashcat = "SQLCIPHER*3*256000*25548249195677404156261816261456*85b5e156e1cf1e0be5e9f4217186817b*33435c230bbc7989bbd027630e3f47cd"
+john = "-"

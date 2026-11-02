@@ -1,4 +1,7 @@
 type = "winzip"
+artifact = "aes.zip"
 password = "password"
+hashcat = "$zip2$*0*3*0*39ecc5edb598c43aea2b706b93773d22*f767*d*6c41fe4ed2a5067481e3cbc7fe*8be5dc8a8ba4c5ab7b70*$/zip2$"
+john = "$zip2$*0*3*0*39ecc5edb598c43aea2b706b93773d22*f767*d*6c41fe4ed2a5067481e3cbc7fe*8be5dc8a8ba4c5ab7b70*$/zip2$"
 generator = "7z a -tzip -mem=AES256 -p password"
 notes = "Encrypted ZIP generated for extractor integration tests."
