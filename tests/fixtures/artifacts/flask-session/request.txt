@@ -1,0 +1,4 @@
+GET /account HTTP/1.1
+Host: example.test
+Cookie: theme=dark; session=eyJ1c2VybmFtZSI6ImFsaWNlIiwicm9sZSI6ImFkbWluIn0.Zx20gA.AAECAwQFBgcICQoLDA0ODxAREhM; lang=en
+User-Agent: test
