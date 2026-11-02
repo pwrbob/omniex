@@ -351,3 +351,253 @@ fn auto_detection_and_all_respect_probe_confidence() {
         Selection::Unique(extractor) if extractor.slug() == "pst"
     ));
 }
+
+fn with_companion(slug: &str, name: &str, member: &str, member_name: &str) -> Artifact {
+    Artifact::from_file(&fixture(slug, name))
+        .expect("fixture opens")
+        .with_member(
+            member,
+            extract::MemorySource::from(std::fs::read(fixture(slug, member_name)).unwrap()),
+        )
+}
+
+#[test]
+fn android_backup_extracts_every_header() {
+    assert_eq!(
+        extracted("android-backup", "sample.ab", Tool::Hashcat),
+        expected("android-backup", "sample.hash")
+    );
+    assert_eq!(
+        extracted("android-backup", "two-records.ab", Tool::Hashcat),
+        expected("android-backup", "two-records.hash")
+    );
+}
+
+#[test]
+fn android_backup_probe_and_errors() {
+    let android = extractor("android-backup");
+    assert!(matches!(
+        android.probe(&artifact("android-backup", "sample.ab")),
+        Probe::Yes(reason) if reason == "Android Backup encrypted header"
+    ));
+    assert_eq!(
+        android.probe(&Artifact::from_bytes("junk", b"not a backup".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        android.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    let mut data = std::fs::read(fixture("android-backup", "sample.ab")).unwrap();
+    data.truncate(40);
+    assert!(android
+        .extract(&Artifact::from_bytes("short", data.clone()))
+        .is_err());
+    assert!(matches!(
+        android.probe(&Artifact::from_bytes("short", data)),
+        Probe::Maybe(_)
+    ));
+    let mut unsupported = std::fs::read(fixture("android-backup", "sample.ab")).unwrap();
+    let position = unsupported
+        .windows(7)
+        .position(|window| window == b"AES-256")
+        .unwrap();
+    unsupported[position + 4..position + 7].copy_from_slice(b"128");
+    assert!(matches!(
+        android.probe(&Artifact::from_bytes("unsupported", unsupported)),
+        Probe::Maybe(_)
+    ));
+    assert!(matches!(
+        extract::select(extract::EXTRACTORS, &artifact("android-backup", "sample.ab")),
+        Selection::Unique(candidate) if candidate.slug() == "android-backup"
+    ));
+}
+
+#[test]
+fn android_fde_extracts_footer() {
+    assert_eq!(
+        extracted("android-fde", "sample.img", Tool::Hashcat),
+        expected("android-fde", "sample.hash")
+    );
+}
+
+#[test]
+fn android_fde_probe_and_errors() {
+    let fde = extractor("android-fde");
+    assert!(matches!(
+        fde.probe(&artifact("android-fde", "sample.img")),
+        Probe::Yes(reason) if reason == "Android FDE encryption footer"
+    ));
+    assert_eq!(
+        fde.probe(&Artifact::from_bytes("junk", b"not a footer".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        fde.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    assert!(matches!(
+        fde.probe(&artifact("android-fde", "wrong-cipher.img")),
+        Probe::Maybe(_)
+    ));
+    assert!(fde
+        .extract(&artifact("android-fde", "wrong-cipher.img"))
+        .is_err());
+    let data = std::fs::read(fixture("android-fde", "sample.img")).unwrap();
+    assert!(fde
+        .extract(&Artifact::from_bytes("short", data[..100].to_vec()))
+        .is_err());
+    assert!(matches!(
+        extract::select(extract::EXTRACTORS, &artifact("android-fde", "sample.img")),
+        Selection::Unique(candidate) if candidate.slug() == "android-fde"
+    ));
+}
+
+#[test]
+fn apple_dmg_extracts_aes_key_blob() {
+    assert_eq!(
+        extracted("apple-dmg", "aes.dmg", Tool::Hashcat),
+        expected("apple-dmg", "aes.hash")
+    );
+}
+
+#[test]
+fn apple_dmg_probe_and_errors() {
+    let dmg = extractor("apple-dmg");
+    assert!(matches!(
+        dmg.probe(&artifact("apple-dmg", "aes.dmg")),
+        Probe::Yes(reason) if reason == "Apple DMG encrcdsa AES-192 key blob"
+    ));
+    assert_eq!(
+        dmg.probe(&artifact("apple-dmg", "legacy.dmg")),
+        Probe::No
+    );
+    assert_eq!(
+        dmg.probe(&Artifact::from_bytes("junk", b"not a dmg".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        dmg.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    let data = std::fs::read(fixture("apple-dmg", "aes.dmg")).unwrap();
+    assert!(dmg
+        .extract(&Artifact::from_bytes("short", data[..100].to_vec()))
+        .is_err());
+    let selected = omniex()
+        .arg("extract")
+        .arg("--type")
+        .arg("apple-dmg")
+        .arg(fixture("apple-dmg", "aes.dmg"))
+        .output()
+        .unwrap();
+    assert!(selected.status.success());
+    assert_eq!(
+        String::from_utf8(selected.stdout).unwrap().trim_end(),
+        expected("apple-dmg", "aes.hash")[0]
+    );
+}
+
+#[test]
+fn itunes_backup_extracts_keybag_records() {
+    assert_eq!(
+        extracted("itunes-backup", "backup-v9.plist", Tool::Hashcat),
+        expected("itunes-backup", "backup-v9.hash")
+    );
+    assert_eq!(
+        extracted("itunes-backup", "backup-v10.plist", Tool::Hashcat),
+        expected("itunes-backup", "backup-v10.hash")
+    );
+    assert_eq!(
+        extracted("itunes-backup", "two-records.plist", Tool::Hashcat),
+        expected("itunes-backup", "two-records.hash")
+    );
+}
+
+#[test]
+fn itunes_backup_probe_and_errors() {
+    let itunes = extractor("itunes-backup");
+    assert!(matches!(
+        itunes.probe(&artifact("itunes-backup", "backup-v9.plist")),
+        Probe::Yes(reason) if reason == "iTunes backup binary plist keybag"
+    ));
+    let records = std::fs::read(fixture("itunes-backup", "backup-v9.plist")).unwrap();
+    let without_magic = Artifact::from_bytes("raw", records[8..].to_vec());
+    assert!(matches!(
+        itunes.probe(&without_magic),
+        Probe::Maybe(reason) if reason.contains("without a bplist")
+    ));
+    assert_eq!(
+        itunes.probe(&Artifact::from_bytes("junk", b"not a plist".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        itunes.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    let truncated = records[..28].to_vec();
+    assert!(itunes
+        .extract(&Artifact::from_bytes("short", truncated.clone()))
+        .is_err());
+    assert!(matches!(
+        itunes.probe(&Artifact::from_bytes("short", truncated)),
+        Probe::No
+    ));
+    assert!(matches!(
+        extract::select(extract::EXTRACTORS, &artifact("itunes-backup", "backup-v9.plist")),
+        Selection::Unique(candidate) if candidate.slug() == "itunes-backup"
+    ));
+}
+
+#[test]
+fn iphone_passcode_extracts_wrapped_class_keys() {
+    let keybag = with_companion(
+        "iphone-passcode",
+        "keybag.bin",
+        "uid-key",
+        "uid-key.txt",
+    );
+    let hashes = extractor("iphone-passcode")
+        .extract(&keybag)
+        .expect("keybag extraction succeeds");
+    let rendered = hashes
+        .iter()
+        .map(|hash| rendered(hash.as_ref(), Tool::Hashcat))
+        .collect::<Vec<_>>();
+    assert_eq!(rendered, expected("iphone-passcode", "keybag.hash"));
+
+    let manifest = with_companion(
+        "iphone-passcode",
+        "Manifest.plist",
+        "uid-key",
+        "uid-key.txt",
+    );
+    let hashes = extractor("iphone-passcode")
+        .extract(&manifest)
+        .expect("manifest extraction succeeds");
+    assert_eq!(hashes.len(), 2);
+}
+
+#[test]
+fn iphone_passcode_probe_and_errors() {
+    let iphone = extractor("iphone-passcode");
+    assert!(matches!(
+        iphone.probe(&artifact("iphone-passcode", "keybag.bin")),
+        Probe::Yes(reason) if reason == "iOS keybag with a wrapped class key"
+    ));
+    assert!(iphone
+        .extract(&artifact("iphone-passcode", "keybag.bin"))
+        .is_err());
+    assert_eq!(
+        iphone.probe(&Artifact::from_bytes("junk", b"not a keybag".to_vec())),
+        Probe::No
+    );
+    assert_eq!(
+        iphone.probe(&Artifact::from_bytes("empty", Vec::new())),
+        Probe::No
+    );
+    let data = std::fs::read(fixture("iphone-passcode", "keybag.bin")).unwrap();
+    let truncated = Artifact::from_bytes("short", data[..20].to_vec());
+    assert!(matches!(iphone.probe(&truncated), Probe::Maybe(_)));
+    assert!(iphone.extract(&truncated).is_err());
+}
