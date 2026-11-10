@@ -1,0 +1,13 @@
+commit = "9a9af701099001faa17c820ac3980d4b78414e6c"
+
+[[file]]
+path = "tests/hello128_deflate.zip"
+sha256 = "db057fdd4f7372aa1b3d597369f13531f121005a26576284cc0e870b86aefa3d"
+
+[[file]]
+path = "tests/hello256_deflate.zip"
+sha256 = "8203e79dbbf762f866a3add7026f21c23e736a3bc9bf7c629d3ec491003dfed5"
+
+[[file]]
+path = "tests/hello_pw_store.rar"
+sha256 = "51bdca18b594b6b8e9452610c3a4835a166729c21f9a4086e282857d7ada9c3e"

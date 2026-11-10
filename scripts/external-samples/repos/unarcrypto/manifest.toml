@@ -1,0 +1,25 @@
+id = "unarcrypto"
+repo = "https://github.com/lclevy/unarcrypto"
+commit = "9a9af701099001faa17c820ac3980d4b78414e6c"
+
+[[case]]
+name = "zip-aes128"
+path = "tests/hello128_deflate.zip"
+slug = "winzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "zip-aes256"
+path = "tests/hello256_deflate.zip"
+slug = "winzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "rar3-password"
+path = "tests/hello_pw_store.rar"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"

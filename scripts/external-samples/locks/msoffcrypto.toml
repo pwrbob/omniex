@@ -1,0 +1,13 @@
+commit = "bdb71ea5dfbdee2f3cd86f8852e74be7a6f15667"
+
+[[file]]
+path = "tests/inputs/ecma376agile_sha1_password.xlsx"
+sha256 = "4d6437ede946382c471b681c7721e2874de569f829238c5a6b25321b172f104b"
+
+[[file]]
+path = "tests/inputs/ecma376standard_password.docx"
+sha256 = "d265dcf02f7d552486229b8c67a627ef3752fe6802b02fd2d2d485fcfbbac5de"
+
+[[file]]
+path = "tests/inputs/rc4cryptoapi_password.doc"
+sha256 = "9c5217bea80fb1a7811ad7709dd9bb35f6c639bac7154580dd4c99d54e1fc0e0"

@@ -1,0 +1,13 @@
+commit = "ec10260989dbc48b9109e3d05d22beee19cf2333"
+
+[[file]]
+path = "tests/test-data/encrypted/encrypted.docx"
+sha256 = "539e4557975be726d0fc8d7813dba5470dd703272957b4476296f976b5678900"
+
+[[file]]
+path = "tests/test-data/encrypted/encrypted.doc"
+sha256 = "27448002fe365f2297bb76904181c1919b0ac8363be209f748d6b20e5a8b8cce"
+
+[[file]]
+path = "tests/test-data/encrypted/encrypted.xlsx"
+sha256 = "11ce84e8250179f18e948ce9d84524510115e9c4c9bbd7acaf65631f9fe51ad0"

@@ -1,0 +1,5 @@
+commit = "6bcb901aefdd6c7a525466d7dfe099c5ebc13c0e"
+
+[[file]]
+path = "tests/data/Format400.kdbx"
+sha256 = "4f23b3f5f6c71209e135dab92d0f06034315d3f70e3e2ef3ec3a77ff37b49435"

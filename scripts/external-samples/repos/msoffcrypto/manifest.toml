@@ -1,0 +1,24 @@
+id = "msoffcrypto"
+repo = "https://github.com/nolze/msoffcrypto-tool"
+commit = "bdb71ea5dfbdee2f3cd86f8852e74be7a6f15667"
+
+[[case]]
+name = "office-agile-sha1"
+path = "tests/inputs/ecma376agile_sha1_password.xlsx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-standard"
+path = "tests/inputs/ecma376standard_password.docx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-rc4"
+path = "tests/inputs/rc4cryptoapi_password.doc"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "john"

@@ -1,0 +1,11 @@
+id = "geth"
+repo = "https://github.com/ethereum/go-ethereum"
+commit = "ddaa6957127ef0c4b7d41e5cbd9c19e260c0a42f"
+
+[[case]]
+name = "keystore-scrypt"
+path = "accounts/keystore/testdata/keystore/UTC--2016-03-22T12-57-55.920751759Z--7ef5a6135f1fd6a02593eedc869c6d41d934aef8"
+slug = "ethereum-scrypt"
+reference = "john:ethereum2john.py"
+format = "hashcat"
+reference_format = "john"

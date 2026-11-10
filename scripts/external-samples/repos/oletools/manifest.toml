@@ -1,0 +1,24 @@
+id = "oletools"
+repo = "https://github.com/decalage2/oletools"
+commit = "ec10260989dbc48b9109e3d05d22beee19cf2333"
+
+[[case]]
+name = "office-docx"
+path = "tests/test-data/encrypted/encrypted.docx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-doc"
+path = "tests/test-data/encrypted/encrypted.doc"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-xlsx"
+path = "tests/test-data/encrypted/encrypted.xlsx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"

@@ -237,7 +237,9 @@ jobs:
         run: |
           python3 scripts/external-samples/run.py run \
             --repo omniex-fixtures --source "omniex-fixtures=$GITHUB_WORKSPACE"
-          python3 scripts/external-samples/run.py run --repo john-samples
+          python3 scripts/external-samples/run.py run \
+            --repo john-samples --repo unarcrypto --repo msoffcrypto \
+            --repo oletools --repo keepassxc --repo geth
 
   paired-samples:
     needs: [checks, msrv]
