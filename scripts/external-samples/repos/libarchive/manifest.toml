@@ -1,0 +1,31 @@
+id = "libarchive"
+repo = "https://github.com/libarchive/libarchive"
+commit = "d0bf2da07ebaa3964090ee936edea538d1602449"
+notes = "Encrypted ZIP fixtures stored as uuencoded reference data"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "winzip-aes128"
+path = "libarchive/test/test_read_format_zip_winzip_aes128.zip.uu"
+slug = "winzip"
+reference = "john:zip2john"
+format = "john"
+decode = "uu"
+
+[[case]]
+name = "winzip-aes256"
+path = "libarchive/test/test_read_format_zip_winzip_aes256.zip.uu"
+slug = "winzip"
+reference = "john:zip2john"
+format = "john"
+decode = "uu"
+
+[[case]]
+name = "winzip-aes256-stored"
+path = "libarchive/test/test_read_format_zip_winzip_aes256_stored.zip.uu"
+slug = "winzip"
+reference = "john:zip2john"
+format = "john"
+decode = "uu"
