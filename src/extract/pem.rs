@@ -1,4 +1,4 @@
-//! PEM private key extraction into the John `pem` serialization.
+//! PKCS#8 PBES2 private key extraction into the John `PEM` serialization.
 
 use omniex::extract::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use omniex::types::PemJohn;

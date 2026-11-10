@@ -1584,7 +1584,7 @@ fn john_only_serialized_types_require_their_prefix() {
         ("pbkdf2-hmac-sha1-john", "$pbkdf2-hmac-sha1$"),
         ("pbkdf2-hmac-sha256-john", "$pbkdf2-sha256$"),
         ("pbkdf2-hmac-sha512-john", "$pbkdf2-hmac-sha512$"),
-        ("pem-john", "$PEM$"),
+        ("pkcs8-pbes2", "$PEM$"),
         ("pfx", "$pfxng$"),
         ("racf-kdfaes-john", "$racf$"),
         ("restic", "$restic$"),

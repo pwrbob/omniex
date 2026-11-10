@@ -5209,7 +5209,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "pem-john",
+        slug: "pkcs8-pbes2",
         hashcat: &[],
         john: &[john!(
             "PEM",
