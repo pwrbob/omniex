@@ -437,6 +437,10 @@ path = "Office/office_2016_samples/hello-2016-lolcats.xlsx"
 sha256 = "5707b2b1e5aaaa68fb93cb96d820a8aa4af97dc5d675f47652c4086ff2af3760"
 
 [[file]]
+path = "Bitcoin/wallet-sqlite-12345.dat"
+sha256 = "8f2596d5c86f1b8bf37c31cc9a42b502cdc645bde90e1c3c2b21d60b442232ad"
+
+[[file]]
 path = "Bitcoin/wallet-isyourpasswordstronger.dat"
 sha256 = "e70bb411bb0b63bc0e54bfd78436814260110f235fe83f79dc3a3126097b279f"
 

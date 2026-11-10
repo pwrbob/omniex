@@ -1,6 +1,6 @@
 type = "bitcoin-wallet"
 generator = "synthetic Bitcoin Core wallet.dat"
-notes = "Synthetic BDB page; no real key."
+notes = "Synthetic BDB page and SQLite database; no real key."
 artifact = "wallet.dat"
 hashcat = "$bitcoin$96$030a11181f262d343b424950575e656c737a81888f969da4abb2b9c0c7ced5dce3eaf1f8ff060d141b222930373e454c$16$8017214013543185$200460$0$$0$"
 # John 8.0.0 rejects the synthetic wallet serialization.

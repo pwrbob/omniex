@@ -157,6 +157,19 @@ fn bitcoin_wallet_recognizes_the_mkey_record() {
 }
 
 #[test]
+fn bitcoin_sqlite_wallet_recognizes_the_mkey_row() {
+    let extractor = bitcoin_wallet::BitcoinWalletExtractor;
+    assert!(matches!(
+        extractor.probe(&artifact("bitcoin-wallet", "wallet.sqlite")),
+        Probe::Yes(reason) if reason.contains("mkey")
+    ));
+    assert_eq!(
+        rendered(extractor.extract(&artifact("bitcoin-wallet", "wallet.sqlite"))),
+        vec![expected("bitcoin-wallet", "wallet-sqlite.hash")]
+    );
+}
+
+#[test]
 fn bitcoin_wif_derives_the_matching_address() {
     let extractor = bitcoin_wif::BitcoinWifExtractor;
     assert_eq!(extractor.slug(), "bitcoin-wif");

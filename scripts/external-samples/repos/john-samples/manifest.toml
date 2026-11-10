@@ -236,8 +236,15 @@ slug = "office"
 reference = "john:office2john.py"
 format = "john"
 
-# wallet-sqlite-12345.dat uses the SQLite wallet format, which the extractor
-# does not support yet.
+[[case]]
+name = "bitcoin-wallet-sqlite-12345"
+path = "Bitcoin/wallet-sqlite-12345.dat"
+slug = "bitcoin-wallet"
+reference = "john:bitcoin2john.py"
+format = "hashcat"
+reference_format = "john"
+ignore_fields = ["master", "ckey", "public_key"]
+
 [[case]]
 name = "bitcoin-{base}"
 glob = "Bitcoin/wallet-isyourpasswordstronger.dat"
@@ -245,8 +252,9 @@ slug = "bitcoin-wallet"
 reference = "john:bitcoin2john.py"
 format = "hashcat"
 reference_format = "john"
-# bitcoin2john keeps only the last two AES blocks of the master key.
-ignore_fields = ["master"]
+# bitcoin2john keeps only the last two AES blocks of the master key and emits
+# placeholder empty ckey/public-key fields.
+ignore_fields = ["master", "ckey", "public_key"]
 requires = ["python:bsddb3"]
 
 [[case]]
@@ -256,8 +264,9 @@ slug = "bitcoin-wallet"
 reference = "john:bitcoin2john.py"
 format = "hashcat"
 reference_format = "john"
-# bitcoin2john keeps only the last two AES blocks of the master key.
-ignore_fields = ["master"]
+# bitcoin2john keeps only the last two AES blocks of the master key and emits
+# placeholder empty ckey/public-key fields.
+ignore_fields = ["master", "ckey", "public_key"]
 requires = ["python:bsddb3"]
 
 [[case]]
@@ -267,8 +276,9 @@ slug = "bitcoin-wallet"
 reference = "john:bitcoin2john.py"
 format = "hashcat"
 reference_format = "john"
-# bitcoin2john keeps only the last two AES blocks of the master key.
-ignore_fields = ["master"]
+# bitcoin2john keeps only the last two AES blocks of the master key and emits
+# placeholder empty ckey/public-key fields.
+ignore_fields = ["master", "ckey", "public_key"]
 requires = ["python:bsddb3"]
 
 # ENCDataVault/05-SanDiskPrivateAccess-123456Aa! is a PBKDF2 vault whose
