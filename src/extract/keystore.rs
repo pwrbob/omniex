@@ -54,7 +54,7 @@ impl<'a> Reader<'a> {
     }
 }
 
-fn parse(artifact: &Artifact) -> Result<Keystore, ExtractError> {
+fn values(artifact: &Artifact) -> Result<Vec<Keystore>, ExtractError> {
     if artifact.primary().len() > JKS_MAX_BYTES {
         return Err(ExtractError::Unsupported(format!(
             "{} is larger than the keystore limit",
@@ -86,16 +86,14 @@ fn parse(artifact: &Artifact) -> Result<Keystore, ExtractError> {
     }
 
     let count = reader.u32()?;
-    let mut first_key = None;
+    let mut keys = Vec::new();
     for _ in 0..count {
         match reader.u32()? {
             1 => {
                 reader.utf()?;
                 reader.take(8)?;
                 let protected_key = reader.field()?;
-                if first_key.is_none() {
-                    first_key = Some(protected_key);
-                }
+                keys.push(protected_key);
                 let certificates = reader.u32()?;
                 for _ in 0..certificates {
                     if version == 2 {
@@ -128,17 +126,32 @@ fn parse(artifact: &Artifact) -> Result<Keystore, ExtractError> {
         ));
     }
 
-    let (key_count, key_length, key_data) = match first_key {
-        Some(key) => (1, key.len(), crate::format::hex(key)),
-        None => (0, 0, String::new()),
-    };
-    Ok(Keystore {
+    if keys.is_empty() {
+        return Err(ExtractError::Unsupported(
+            "keystore has no private key entries".to_owned(),
+        ));
+    }
+    let body = crate::format::hex(&data[..body_length]);
+    let mac = crate::format::hex(mac);
+    let mut values = Vec::with_capacity(keys.len() + 1);
+    let first = keys[0];
+    values.push(Keystore {
         fields: format!(
-            "0${body_length}${}${}${key_count}${key_length}${key_data}",
-            crate::format::hex(&data[..body_length]),
-            crate::format::hex(mac)
+            "0${body_length}${body}${mac}$1${}${}",
+            first.len(),
+            crate::format::hex(first)
         ),
-    })
+    });
+    for key in keys {
+        values.push(Keystore {
+            fields: format!(
+                "1${body_length}${body}${mac}$1${}${}",
+                key.len(),
+                crate::format::hex(key)
+            ),
+        });
+    }
+    Ok(values)
 }
 
 fn has_jceks_magic(artifact: &Artifact) -> bool {
@@ -158,13 +171,16 @@ impl Extractor for KeystoreExtractor {
         if has_jceks_magic(artifact) {
             return Probe::maybe("JCEKS keystore container MAC is not modeled");
         }
-        match parse(artifact) {
+        match values(artifact) {
             Ok(_) => Probe::yes("JKS keystore container structure"),
             Err(_) => Probe::No,
         }
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
-        Ok(vec![Box::new(parse(artifact)?) as Box<dyn HashValue>])
+        Ok(values(artifact)?
+            .into_iter()
+            .map(|value| Box::new(value) as Box<dyn HashValue>)
+            .collect())
     }
 }

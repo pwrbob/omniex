@@ -24,7 +24,7 @@ fn data_at(data: &[u8], offset: usize, length: usize) -> Option<&[u8]> {
 fn parse_blob(data: &[u8], start: usize) -> Result<AppleKeychain, ExtractError> {
     let version = be_u32(data, start + 4)
         .ok_or_else(|| ExtractError::Invalid("truncated keychain blob header".to_owned()))?;
-    if !(1..=3).contains(&version) {
+    if !matches!(version, 1..=3 | 256) {
         return Err(ExtractError::Unsupported(format!(
             "unsupported keychain blob version {version}"
         )));
@@ -70,11 +70,17 @@ fn parse(artifact: &Artifact) -> Result<AppleKeychain, ExtractError> {
     if data.is_empty() {
         return Err(ExtractError::Invalid("keychain file is empty".to_owned()));
     }
-    let start = data
-        .windows(MAGIC.len())
-        .rposition(|window| window == MAGIC)
-        .ok_or_else(|| ExtractError::Unsupported("no keychain database blob".to_owned()))?;
-    parse_blob(&data, start)
+    let mut error = ExtractError::Unsupported("no keychain database blob".to_owned());
+    for (start, window) in data.windows(MAGIC.len()).enumerate() {
+        if window != MAGIC {
+            continue;
+        }
+        match parse_blob(&data, start) {
+            Ok(value) => return Ok(value),
+            Err(found) => error = found,
+        }
+    }
+    Err(error)
 }
 
 impl Extractor for AppleKeychainExtractor {

@@ -115,12 +115,13 @@ fn keystore_extracts_the_container_password() {
             .unwrap()
             .extract(&artifact("keystore", name))
             .expect("extract keystore");
-        assert_eq!(hashes.len(), 1, "{name}");
+        assert_eq!(hashes.len(), 2, "{name}");
         assert_eq!(
             john(hashes[0].as_ref()),
             expected("keystore", expected_file),
             "{name}"
         );
+        assert!(john(hashes[1].as_ref()).starts_with("$keystore$1$"));
         assert!(hashes[0].modes().contains(&Mode::John("keystore")));
     }
 }
@@ -141,10 +142,11 @@ fn keystore_is_ambiguous_with_private_key_extraction() {
         .output()
         .unwrap();
     assert!(explicit.status.success());
-    assert_eq!(
-        String::from_utf8_lossy(&explicit.stdout).trim_end(),
-        expected("keystore", "keystore-12345678.hash")
-    );
+    let stdout = String::from_utf8_lossy(&explicit.stdout);
+    let lines: Vec<&str> = stdout.lines().collect();
+    assert_eq!(lines.len(), 2);
+    assert_eq!(lines[0], expected("keystore", "keystore-12345678.hash"));
+    assert!(lines[1].starts_with("$keystore$1$"));
 }
 
 #[test]

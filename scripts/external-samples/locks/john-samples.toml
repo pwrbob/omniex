@@ -1155,3 +1155,235 @@ sha256 = "2b57dca7fa2c3bd0e942060b546028d961bfb698fb12ed8b2947b13f88d170c8"
 [[file]]
 path = "WPA-PSK/wpa-Induction.pcapng"
 sha256 = "a6cce380df29af9bdb68c30257a12f20c635f03f480eaca094494c1250ff4c94"
+
+[[file]]
+path = "1Password_Agile_Keychain/data/default/encryptionKeys.js"
+sha256 = "77bae6c3fb39a24f7868beea741ec01c4d6862e8ab64a24990e10d0d8cb75f2c"
+
+[[file]]
+path = "GNOME_Keyring/openwall.keyring"
+sha256 = "33e7c5c0d4d9c7a8ea5bb94b839066bc3aa73d566b8b0de9c42a658e5eb457a6"
+
+[[file]]
+path = "KeyStore/keystore-12345678.jks"
+sha256 = "2f2f8cfec25dcdd178702d2416613a863644b22c768a1da416b0f0068216f79d"
+
+[[file]]
+path = "KeyStore/keystore-password123.jks"
+sha256 = "e49319276b062d76187214686c45455e1cd425632016838859d9e806bb0c4c79"
+
+[[file]]
+path = "Monero/legacy-bitmonero-wallet-v0.8.6.295(0.1-g5ceffa8)-pre2016-test.keys"
+sha256 = "b79441f5f73039e9966043c91d409e93a33ffcfc3a043fd3fe51105672c55a02"
+
+[[file]]
+path = "Monero/monero-wallet-v0.17.1.9-post2016-test.keys"
+sha256 = "be4b98ec45d8c73241c0c69c1d227386d5a9af594409f6647801983a65bcbae6"
+
+[[file]]
+path = "Password_Safe/pwsafe-12345678.psafe3"
+sha256 = "624cafcba1f283dc81e503257a3f868ca37d3ad227b63b4aea000320dedfdfb8"
+
+[[file]]
+path = "Password_Safe/pwsafe-openwall.psafe3"
+sha256 = "52a1d06a9cd96a3f5bad70e49a1b901dd38bfaebee5274f8cb6cd6b33a1c5273"
+
+[[file]]
+path = "Password_Safe/pwsafe-password.psafe3"
+sha256 = "044d17502bdf068a0b9ed312d3c5152c98c7a7094f0675f1be7a1c0f3d1e5916"
+
+[[file]]
+path = "PGPdesktop9_win/pgpwde_Safeway21.raw"
+sha256 = "1f58cd3486ed810749bc57493ca2ca71e0f84ea8dbbcbed5a048991b61a91b5e"
+
+[[file]]
+path = "PuTTY/openwall.ppk"
+sha256 = "fa240f01b9a911c27d430999f1900ae1efadfee7d6a7e58b04935eafc4e02cdb"
+
+[[file]]
+path = "PuTTY/password.ppk"
+sha256 = "92acc762867ae17307194f8c042979148b442f591cbc53f316ff7aea04c8a4a3"
+
+[[file]]
+path = "PKCS#12/my_keystore.pfx"
+sha256 = "9cd1868a19532732499b8c98d519f63db0817c903f22013df7a4006d1e60ca1b"
+
+[[file]]
+path = "PKCS#12/openwall.pfx"
+sha256 = "cc9d53140cc2517bcd66bfceb6dd0a8f8ca6452d5eb9024f96723bedfd54230f"
+
+[[file]]
+path = "PKCS#12/xxx.p12"
+sha256 = "cde66c164ab14b5fc93514bf197a97a5b2c01e8133ebbdf3a8679c8b349cc1e3"
+
+[[file]]
+path = "Oracle_O5LOGON/11gR2-Nmap-sys-good.pcap"
+sha256 = "b86877fef9c5503f333f5dc48804f5c1b6c641f18dbc26c388f8092feccb263b"
+
+[[file]]
+path = "Oracle_O5LOGON/Oracle-1.pcap"
+sha256 = "4203ff90e7fc5945f81d76a04a96724a330f1c0861469ff6cf6a19f573b97786"
+
+[[file]]
+path = "Oracle_O5LOGON/Oracle-2.pcap"
+sha256 = "485d06ec9f7844e3099e30aae1b9168e48c8b8fd0c51c56dfa4239c5ea35bb1a"
+
+[[file]]
+path = "Oracle_O5LOGON/Oracle-3.pcap"
+sha256 = "391c47fcdb7ad6fb20288fe517b3ba48688a19c8d033da4766d74d8ca3835536"
+
+[[file]]
+path = "Oracle_O5LOGON/Oracle-WinWin-1.pcap"
+sha256 = "4dc0652288d88a591844d3756ea0acaeb90164179eebb5c9f5c3aca293cf5bf1"
+
+[[file]]
+path = "Oracle_O5LOGON/Oracle-good.pcap"
+sha256 = "b2bcfe1c235183ba6168e80a4eaf8819a3446401db3d7ca7c9a6df51c3991d79"
+
+[[file]]
+path = "Oracle_O5LOGON/Oracle-openwall-1.pcap"
+sha256 = "705cc4e1d937be842c40204af1fdc1cade1291357bd0fac19b752aafbe5f3f5e"
+
+[[file]]
+path = "Oracle_O5LOGON/oracle_11g_password1234567890.pcapng"
+sha256 = "47564bcd3855ee9c29aee1806b7c480194dbfe17750933a72bf759da7403e0ea"
+
+[[file]]
+path = "Cardano/secret.key"
+sha256 = "49b8aa4c6ae6160228b85ed51f6a67c1bc6fea5263def499fd9316659936f158"
+
+[[file]]
+path = "Apple_Keychain/Keychain Samples/TestUser1-password/login.keychain"
+sha256 = "af7f112629d18a088a41234a74c885e5993e52cd20da06fe38a73cafbd3ffeb0"
+
+[[file]]
+path = "Apple_Keychain/Keychain Samples/TestUser2-letmein/login.keychain"
+sha256 = "10a21b0e77af9be8381c1e4d39e60dfcef21b57d73b55706b428a053442e819c"
+
+[[file]]
+path = "Oubliette_Password_Manager/oubliette-blowfish-12345678.oub"
+sha256 = "df0f3b85f24a94b922345232106dddbe7dc23d7a7fe21f5001134b37ba707f6a"
+
+[[file]]
+path = "Oubliette_Password_Manager/oubliette-blowfish-complex.oub"
+sha256 = "4414e473020c15d4bd8a151a5267ac529e3765e312c32d20acc565ad1bc5d37d"
+
+[[file]]
+path = "Oubliette_Password_Manager/oubliette-blowfish-withdata-v15.oub"
+sha256 = "419f63541958e4d414d9cdc15c34d8baadedd85b8d0c307fa7bfae2804727024"
+
+[[file]]
+path = "Oubliette_Password_Manager/oubliette-idea-12345678.oub"
+sha256 = "f856e2264150d6ee3e53406d8bede6d930621f6962f656d3345a2ce683c1b697"
+
+[[file]]
+path = "Oubliette_Password_Manager/oubliette-idea-complex.oub"
+sha256 = "7936d34693df64b8ad7c553aa4bebc9f3d25697b74335b9fa22b93f4f85c0566"
+
+[[file]]
+path = "Oubliette_Password_Manager/oubliette-idea-withdata-v15.oub"
+sha256 = "0ca88f1ea8cb70c94ecf20252304157125ebfcbc94fe7ea4d68e5adb47181aef"
+
+[[file]]
+path = "Jetico_BestCrypt/container-openwall.jbc"
+sha256 = "babe503b3ad1ce28501ea96b268c7b1b5088842fa19c3129bcd94a95dad3ce6b"
+
+[[file]]
+path = "Jetico_BestCrypt/container-password@123.jbc"
+sha256 = "8a5451d618b8a8eaf80b0363bf341a86af8fb1b6cd1e74d1df5c2b32e60b0e09"
+
+[[file]]
+path = "EIGRP/10-0.0-1409947824.pcap"
+sha256 = "96406a91c898a518892aa3eb5ab69ca5daa5743b9bcf817d617d50e63fa3a035"
+
+[[file]]
+path = "EIGRP/20-0.0-1409947824.pcap"
+sha256 = "96406a91c898a518892aa3eb5ab69ca5daa5743b9bcf817d617d50e63fa3a035"
+
+[[file]]
+path = "EIGRP/eigrp-for-ipv6-auth.pcap"
+sha256 = "d4e38e5bce6a1fb25fd6f8ffc6be9a8c0f50257be5aa295c569573d95a3ac5ef"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408898406.pcap"
+sha256 = "69c1cae2c38cc44a918730c171d2b1dd0c122d9c4a77bb093580b1c1f11de4e7"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903444.pcap"
+sha256 = "69990b5ed97016b54bae129b3e6787e19a403782d543ef5ca693cbe7d07e798f"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903523.pcap"
+sha256 = "842a7050dfbbbdeeba89c37f21219df9cab123269466c1373c985c9d27d19619"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903582.pcap"
+sha256 = "0f9b3590b4f54c13b379b7c4d1868d7ec939a44ab492fb132e7d6892a5df8ea0"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903630.pcap"
+sha256 = "79d03d9cf9c99aa089269fa486f3e6cc321762c11f5b02c38cdb4c2814a13e30"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903633.pcap"
+sha256 = "bd83c7d78c17740ec22f11053139775385e7db9c51b1b732565721bd593e6f92"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903874.pcap"
+sha256 = "8e9fa272601371ddd7e761307d166ebf1e52283fbf8a1969db21549d36044ff1"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903906.pcap"
+sha256 = "8ffe4b9f9277217fa595df18f85534c92a50a7894ac0f1e0616760ebbebc22cd"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1408903949.pcap"
+sha256 = "99ca7415c40b42aaf50b706fc49273a53e12c6a5c8d089972f6b5d2e3fd0d6cb"
+
+[[file]]
+path = "HSRP/packet-captures/10-0.1-1409591337.pcap"
+sha256 = "489e901e0b453b35f5e22279cb4144fb5910ab07d4f7d19764ff093906387cc2"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408898406.pcap"
+sha256 = "69c1cae2c38cc44a918730c171d2b1dd0c122d9c4a77bb093580b1c1f11de4e7"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903444.pcap"
+sha256 = "69990b5ed97016b54bae129b3e6787e19a403782d543ef5ca693cbe7d07e798f"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903523.pcap"
+sha256 = "842a7050dfbbbdeeba89c37f21219df9cab123269466c1373c985c9d27d19619"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903582.pcap"
+sha256 = "0f9b3590b4f54c13b379b7c4d1868d7ec939a44ab492fb132e7d6892a5df8ea0"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903630.pcap"
+sha256 = "79d03d9cf9c99aa089269fa486f3e6cc321762c11f5b02c38cdb4c2814a13e30"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903633.pcap"
+sha256 = "bd83c7d78c17740ec22f11053139775385e7db9c51b1b732565721bd593e6f92"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903874.pcap"
+sha256 = "8e9fa272601371ddd7e761307d166ebf1e52283fbf8a1969db21549d36044ff1"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903906.pcap"
+sha256 = "8ffe4b9f9277217fa595df18f85534c92a50a7894ac0f1e0616760ebbebc22cd"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1408903949.pcap"
+sha256 = "99ca7415c40b42aaf50b706fc49273a53e12c6a5c8d089972f6b5d2e3fd0d6cb"
+
+[[file]]
+path = "HSRP/packet-captures/20-0.0-1409591337.pcap"
+sha256 = "489e901e0b453b35f5e22279cb4144fb5910ab07d4f7d19764ff093906387cc2"
+
+[[file]]
+path = "HSRP/packet-captures/HSRP-auth-md5-openwall.pcap"
+sha256 = "d77c0ba234ce00f07e65b4524638bea2c7606269d75791af7b53f744a9a98028"

@@ -727,3 +727,141 @@ name = "wpa-{base}"
 glob = "WPA-PSK/wpa-Induction.pcap*"
 slug = "wpa-pmkid"
 reference = "structural"
+
+[[case]]
+name = "agilekeychain"
+path = "1Password_Agile_Keychain/data/default/encryptionKeys.js"
+slug = "agilekeychain"
+reference = "john:1password2john.py"
+reference_path = "1Password_Agile_Keychain/"
+format = "john"
+
+[[case]]
+name = "keyring-{base}"
+glob = "GNOME_Keyring/*.keyring"
+slug = "keyring"
+reference = "john:keyring2john.py"
+format = "john"
+
+[[case]]
+name = "keystore-{base}"
+glob = "KeyStore/*.jks"
+slug = "keystore"
+reference = "john:keystore2john.py"
+format = "john"
+
+[[case]]
+name = "monero-{base}"
+glob = "Monero/*.keys"
+slug = "monero"
+reference = "john:monero2john.py"
+format = "john"
+
+[[case]]
+name = "pwsafe-{base}"
+glob = "Password_Safe/*.psafe3"
+slug = "pwsafe"
+reference = "john:pwsafe2john.py"
+format = "john"
+exclude = ["Password_Safe/Password Gorilla - openwall.psafe3"]
+
+[[case]]
+name = "pgpwde-{base}"
+glob = "PGPdesktop9_win/*.raw"
+slug = "pgpwde"
+reference = "john:pgpwde2john.py"
+format = "john"
+
+[[case]]
+name = "putty-{base}"
+glob = "PuTTY/*.ppk"
+slug = "putty"
+reference = "john:putty2john"
+format = "john"
+exclude = ["PuTTY/open.ppk"]
+
+[[case]]
+name = "pfx-{base}"
+glob = "PKCS#12/*.pfx"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+requires = ["python:asn1crypto"]
+
+[[case]]
+name = "pfx-{base}"
+glob = "PKCS#12/*.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+requires = ["python:asn1crypto"]
+
+[[case]]
+name = "o5logon-{base}"
+glob = "Oracle_O5LOGON/*.pcap"
+slug = "o5logon"
+reference = "john:oracle2john.py"
+format = "john"
+subset = true
+requires = ["python:scapy"]
+
+[[case]]
+name = "o5logon-{base}"
+glob = "Oracle_O5LOGON/*.pcapng"
+slug = "o5logon"
+reference = "john:oracle2john.py"
+format = "john"
+subset = true
+requires = ["python:scapy"]
+
+[[case]]
+name = "cardano-secret-key"
+path = "Cardano/secret.key"
+slug = "cardano-payload"
+reference = "john:cardano2john.py"
+format = "john"
+requires = ["python:cbor2"]
+
+[[case]]
+name = "apple-keychain-{dir}"
+glob = "Apple_Keychain/Keychain Samples/*/login.keychain"
+slug = "apple-keychain"
+reference = "john:keychain2john.py"
+format = "john"
+
+[[case]]
+name = "oubliette-blowfish-{base}"
+glob = "Oubliette_Password_Manager/oubliette-blowfish-*.oub"
+slug = "oubliette-blowfish"
+reference = "john:oubliette2john.py"
+format = "john"
+
+[[case]]
+name = "oubliette-idea-{base}"
+glob = "Oubliette_Password_Manager/oubliette-idea-*.oub"
+slug = "oubliette-idea"
+reference = "john:oubliette2john.py"
+format = "john"
+
+[[case]]
+name = "bestcrypt-{base}"
+glob = "Jetico_BestCrypt/*.jbc"
+slug = "bestcrypt-payload"
+reference = "john:bestcrypt2john.py"
+format = "john"
+
+# John has no EIGRP or HSRP extractor, so these only guard against regressions.
+[[case]]
+name = "eigrp-{base}"
+glob = "EIGRP/*.pcap"
+slug = "eigrp"
+reference = "structural"
+format = "john"
+
+[[case]]
+name = "hsrp-{base}"
+glob = "HSRP/packet-captures/*.pcap"
+slug = "hsrp"
+reference = "structural"
+format = "john"
+exclude = ["HSRP/packet-captures/hello.pcap"]

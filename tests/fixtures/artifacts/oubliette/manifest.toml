@@ -1,0 +1,5 @@
+type = "oubliette-blowfish"
+generator = "synthetic Oubliette database headers"
+notes = "Synthetic digest bytes; no real password."
+e2e = false
+e2e_reason = "Oubliette has no hashcat mode; the John serialization is covered by fixture tests"

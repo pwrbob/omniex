@@ -280,13 +280,7 @@ fn leveldb_hashes(data: &[u8]) -> Result<Vec<Keplr>, ExtractError> {
         if key != b"keyring/key-store" && key != b"keyring/key-multi-store" {
             continue;
         }
-        let stores = json_hashes(&value)?;
-        if stores.is_empty() {
-            return Err(ExtractError::Invalid(
-                "Keplr keyring entry has no stores".to_owned(),
-            ));
-        }
-        for hash in stores {
+        for hash in json_hashes(&value)? {
             if !hashes.iter().any(|existing| existing.fields == hash.fields) {
                 hashes.push(hash);
             }

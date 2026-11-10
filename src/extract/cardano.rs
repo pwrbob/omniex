@@ -65,6 +65,11 @@ fn value(data: &[u8]) -> Result<(Cbor, &[u8]), ExtractError> {
     let (&initial, rest) = data
         .split_first()
         .ok_or_else(|| ExtractError::Invalid("truncated Cardano CBOR".to_owned()))?;
+    if initial == 0xff {
+        return Err(ExtractError::Invalid(
+            "unexpected Cardano CBOR break".to_owned(),
+        ));
+    }
     let major = initial >> 5;
     let additional = initial & 0x1f;
     match major {
@@ -72,12 +77,41 @@ fn value(data: &[u8]) -> Result<(Cbor, &[u8]), ExtractError> {
             let (_, rest) = length(rest, additional)?;
             Ok((Cbor::Other, rest))
         }
+        2 | 3 if additional == 31 => {
+            let mut bytes = Vec::new();
+            let mut rest = rest;
+            loop {
+                if rest.first() == Some(&0xff) {
+                    return Ok((Cbor::Bytes(bytes), &rest[1..]));
+                }
+                let (item, next) = value(rest)?;
+                let Cbor::Bytes(chunk) = item else {
+                    return Err(ExtractError::Invalid(
+                        "invalid Cardano CBOR indefinite string".to_owned(),
+                    ));
+                };
+                bytes.extend_from_slice(&chunk);
+                rest = next;
+            }
+        }
         2 | 3 => {
             let (length, rest) = length(rest, additional)?;
             let bytes = rest
                 .get(..length)
                 .ok_or_else(|| ExtractError::Invalid("truncated Cardano CBOR".to_owned()))?;
             Ok((Cbor::Bytes(bytes.to_vec()), &rest[length..]))
+        }
+        4 if additional == 31 => {
+            let mut items = Vec::new();
+            let mut rest = rest;
+            loop {
+                if rest.first() == Some(&0xff) {
+                    return Ok((Cbor::Array(items), &rest[1..]));
+                }
+                let (item, next) = value(rest)?;
+                items.push(item);
+                rest = next;
+            }
         }
         4 => {
             let (count, mut rest) = length(rest, additional)?;
@@ -88,6 +122,17 @@ fn value(data: &[u8]) -> Result<(Cbor, &[u8]), ExtractError> {
                 rest = next;
             }
             Ok((Cbor::Array(items), rest))
+        }
+        5 if additional == 31 => {
+            let mut rest = rest;
+            loop {
+                if rest.first() == Some(&0xff) {
+                    return Ok((Cbor::Other, &rest[1..]));
+                }
+                let (_, next) = value(rest)?;
+                let (_, next) = value(next)?;
+                rest = next;
+            }
         }
         5 => {
             let (count, mut rest) = length(rest, additional)?;

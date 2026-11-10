@@ -20,6 +20,8 @@ struct Key {
 }
 
 fn decode_base64(value: &str) -> Option<Vec<u8>> {
+    let value =
+        value.trim_matches(|character: char| character.is_whitespace() || character == '\0');
     STANDARD
         .decode(value)
         .or_else(|_| STANDARD_NO_PAD.decode(value.trim_end_matches('=')))

@@ -497,6 +497,7 @@ mod bestcrypt;
 mod encdv;
 mod keystore;
 mod o5logon;
+mod oubliette;
 mod pop3_apop;
 mod strip;
 
@@ -629,6 +630,8 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &rar3p::Rar3pExtractor,
     &rar3hp::Rar3hpExtractor,
     &office::OfficeExtractor,
+    &oubliette::OublietteBlowfishExtractor,
+    &oubliette::OublietteIdeaExtractor,
     &office2016_sheetprotection::Office2016SheetprotectionExtractor,
     &oldoffice::OldOfficeExtractor,
     &rar5::Rar5Extractor,
