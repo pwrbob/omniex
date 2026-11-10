@@ -1,0 +1,14 @@
+id = "test-pdf-files"
+repo = "https://github.com/ArturT/Test-PDF-Files"
+commit = "69a7fd050e9dda2dd87769853660ca1b58f8b408"
+notes = "Small encrypted PDF fixture, password kanbanery"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "encrypted"
+path = "encrypted.pdf"
+slug = "pdf"
+reference = "john:pdf2john.pl"
+format = "john"
