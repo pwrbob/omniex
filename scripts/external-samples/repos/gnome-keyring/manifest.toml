@@ -1,0 +1,14 @@
+id = "gnome-keyring"
+repo = "https://github.com/GNOME/gnome-keyring"
+commit = "e970619902bf662ce3f182e87f3f7dda00caff43"
+notes = "Login keyring fixture from the gnome-keyring D-Bus tests"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "test-keyring"
+path = "daemon/dbus/fixtures/test.keyring"
+slug = "keyring"
+reference = "john:keyring2john.py"
+format = "john"

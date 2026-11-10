@@ -1,0 +1,5 @@
+commit = "2cc5cc7d49a158254742e3f73ba7ad89afff2367"
+
+[[file]]
+path = "picky-test-data/test_assets/putty/ed25519_v2_encrypted.ppk"
+sha256 = "3c961dcacd0d059f8b323b33c2685a6297165698f235ff8bf0f30d760759e9d7"

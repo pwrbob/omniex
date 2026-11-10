@@ -1,0 +1,5 @@
+commit = "e970619902bf662ce3f182e87f3f7dda00caff43"
+
+[[file]]
+path = "daemon/dbus/fixtures/test.keyring"
+sha256 = "46abd9a48e01cb660dc163fe548530b5c4b36067b27597132656cdc6aede82d8"

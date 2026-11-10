@@ -11,3 +11,27 @@ sha256 = "a7b8f2cf403ff9054dd7337e0d9bccfb72742b859bd73b1e7833ae800cceb213"
 [[file]]
 path = "vectors/cryptography_vectors/pkcs12/name-unicode-pwd.p12"
 sha256 = "566614621a1c47672437d03f3c3426949bd51720344a36a415f01b3341f0ae75"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/enc2-rsa-pkcs8.pem"
+sha256 = "9047ef4bad21bbec02540c3f6a372ad345915d27e28d98a0f06b87a7e471c2cd"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/enc-rsa-3des.pem"
+sha256 = "bfc660a33fa33733904a6ccbd35051f61aac857b6e647549444ca6438c50cbe6"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha512.pem"
+sha256 = "948f06fc1775e2ef3ffa518bef5b047801cd0c6ad5515285451704ecd873280b"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key2.pem"
+sha256 = "2ca80b71838d24e2475d2ba689e6d0decee87414a9f19b6c37a7cdd96777669e"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1.pem"
+sha256 = "1a040b2b4670dec68a6a9eeb01e63676fb77734988079904dbb94f97cd13e64d"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/testrsa-encrypted.pem"
+sha256 = "d2cae25445c077340dc2278884e9a584bbb8f04a0ed75e2a62912474f0439541"
