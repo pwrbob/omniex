@@ -47,3 +47,17 @@ path = "KeePass/kdbx4/a2id.kdbx"
 slug = "keepass4"
 reference = "john:keepass2john"
 format = "john"
+
+[[case]]
+name = "rar3-headers-encrypted"
+path = "RAR/hp0.rar"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "john"
+
+[[case]]
+name = "dmg-hard"
+path = "Apple_DMG/dmg-hard.dmg"
+slug = "dmg-john"
+reference = "john:dmg2john.py"
+format = "john"

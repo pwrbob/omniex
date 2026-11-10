@@ -55,3 +55,11 @@ sha256 = "e9274250d51b3bef89f887adb8b527501bf331e6ae54867065b847c080328b04"
 [[file]]
 path = "KeePass/kdbx4/a2id.kdbx"
 sha256 = "699c5b5840dbb80b454c373b5e836e043c2a11d66ad7c27e004248f1f7249f7a"
+
+[[file]]
+path = "RAR/hp0.rar"
+sha256 = "ab2b58c43ecd7a2005a2fd78ac8cdeb84e488542f5f5f6807f9da59952e6ea1b"
+
+[[file]]
+path = "Apple_DMG/dmg-hard.dmg"
+sha256 = "6593a17aa839407e8aa9357316058525b88adbf4ec66fb8dd43e4ac04bbd5bbf"
