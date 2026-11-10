@@ -63,8 +63,22 @@ fn parse(artifact: &Artifact) -> Result<Odf, ExtractError> {
     }
     let encryption = document
         .descendants()
-        .find(|node| node.is_element() && attribute(*node, "checksum").is_some())
-        .ok_or_else(|| ExtractError::Unsupported("ODF package is not encrypted".to_owned()))?;
+        .find(|node| {
+            node.is_element()
+                && node.tag_name().name() == "file-entry"
+                && attribute(*node, "full-path") == Some("content.xml")
+        })
+        .and_then(|entry| {
+            entry
+                .descendants()
+                .find(|node| node.is_element() && node.tag_name().name() == "encryption-data")
+        })
+        .or_else(|| {
+            document
+                .descendants()
+                .find(|node| node.is_element() && node.tag_name().name() == "encryption-data")
+        })
+        .ok_or_else(|| ExtractError::Unsupported("ODF content.xml is not encrypted".to_owned()))?;
 
     let algorithm = nested_required(encryption, "algorithm", "algorithm-name")?;
     let cipher_type = if algorithm.contains("aes256-cbc") {

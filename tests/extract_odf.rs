@@ -70,6 +70,28 @@ fn odf_extracts_the_package_hash() {
 }
 
 #[test]
+fn odf_uses_the_content_entry_encryption_parameters() {
+    let manifest = br#"<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0">
+ <manifest:file-entry manifest:full-path="meta.xml">
+  <manifest:encryption-data manifest:checksum="AAECAwQFBgcICQoLDA0ODxAREhM=" manifest:checksum-type="SHA1" manifest:algorithm-name="aes256-cbc" manifest:initialisation-vector="AAECAwQFBgc=" manifest:salt="AAAAAAAAAAAAAAAAAAAAAA==" manifest:iteration-count="1" manifest:key-size="256" manifest:start-key-generation-name="SHA1"/>
+ </manifest:file-entry>
+ <manifest:file-entry manifest:full-path="content.xml">
+  <manifest:encryption-data manifest:checksum="AAECAwQFBgcICQoLDA0ODxAREhM=" manifest:checksum-type="SHA1" manifest:algorithm-name="aes256-cbc" manifest:initialisation-vector="AAECAwQFBgc=" manifest:salt="AAECAwQFBgcICQoLDA0ODw==" manifest:iteration-count="10240" manifest:key-size="256" manifest:start-key-generation-name="SHA1"/>
+ </manifest:file-entry>
+</manifest:manifest>"#;
+    let extractor = extract::by_slug("odf").expect("ODF extractor");
+    let hashes = extractor
+        .extract(&Artifact::from_bytes(
+            "multi-entry.odt",
+            scratch_zip("multi-entry.odt", manifest),
+        ))
+        .expect("extract");
+    let rendered = hashes[0].render(&RenderOptions::default()).unwrap();
+    assert!(rendered.contains("*10240*256*"), "{rendered}");
+    assert!(rendered.contains("*16*000102030405060708090a0b0c0d0e0f*"));
+}
+
+#[test]
 fn odf_auto_detects_and_reports_json() {
     let auto = omniex()
         .arg("extract")

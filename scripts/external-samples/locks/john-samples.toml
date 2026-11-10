@@ -759,3 +759,23 @@ sha256 = "002292db57a71d77262c0b03d3f82990afee3070b84bc2813232e92d94b45a98"
 [[file]]
 path = "Office/вα¢к тσ єηgℓαη∂.doc"
 sha256 = "ba099d72603b3239ea6e5828e110e03e3f7220109b8c08a898b27cac505e24fd"
+
+[[file]]
+path = "Office/Office_Secrets/LibreOffice_3.5.1/Libre-Default_myhovercraftisfullofeels_.odt"
+sha256 = "f2b0c33d2b0fb1effa52f17750b788565b6446dc0396bc6f6d52a93fe549eb75"
+
+[[file]]
+path = "Office/Office_Secrets/LibreOffice_3.5.1/Libre-Default_myhovercraftisfullofeels_.ods"
+sha256 = "5b78e2b58ae7c21fdf4b3db344b9a15c1b285c0c9344c96953ec83d588aa11ae"
+
+[[file]]
+path = "Office/Office_Secrets/LibreOffice_3.5.1/Libre-Default_myhovercraftisfullofeels_.ots"
+sha256 = "2a73690df98203e9948ea81a1d97597283f95c5f8bda475ca6bd2f295bf8dd3e"
+
+[[file]]
+path = "Office/Office_Secrets/LibreOffice_3.5.1/Libre-Default_myhovercraftisfullofeels_.ott"
+sha256 = "bfa299f6a28d67d0f1f7d54e35f7e370b82cbbd91bbebd275a732f92d9bc6af6"
+
+[[file]]
+path = "Office/Libre-v7_123456.odt"
+sha256 = "fa5c8e37c2173d23931fc4cd07cc70680d954f1382974bf88c587e9cc98d3227"

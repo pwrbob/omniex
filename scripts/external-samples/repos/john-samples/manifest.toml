@@ -464,3 +464,39 @@ format = "hashcat"
 
 # The LibreOffice ODF samples are encrypted, but office2john reports them as
 # unencrypted, so no reference serialization is available.
+
+[[case]]
+name = "odf-{path}"
+glob = "Office/Office_Secrets/**/*.odt"
+slug = "odf"
+reference = "john:libreoffice2john.py"
+format = "hashcat"
+exclude = ["Office/Office_Secrets/LibreOffice_3.5.1/Test File.odt"]
+
+[[case]]
+name = "odf-{path}"
+glob = "Office/Office_Secrets/**/*.ods"
+slug = "odf"
+reference = "john:libreoffice2john.py"
+format = "hashcat"
+
+[[case]]
+name = "odf-{path}"
+glob = "Office/Office_Secrets/**/*.ots"
+slug = "odf"
+reference = "john:libreoffice2john.py"
+format = "hashcat"
+
+[[case]]
+name = "odf-{path}"
+glob = "Office/Office_Secrets/**/*.ott"
+slug = "odf"
+reference = "john:libreoffice2john.py"
+format = "hashcat"
+
+[[case]]
+name = "odf-libre-v7"
+path = "Office/Libre-v7_123456.odt"
+slug = "odf"
+reference = "john:libreoffice2john.py"
+format = "hashcat"
