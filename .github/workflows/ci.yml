@@ -246,6 +246,15 @@ jobs:
       - name: Build John jumbo
         run: scripts/build-john.sh
 
+      - name: Cache reference hashcat
+        uses: actions/cache@v5
+        with:
+          path: tmp/reference/hashcat-8.0.0
+          key: ${{ runner.os }}-reference-hashcat-8.0.0-${{ hashFiles('scripts/build-hashcat.sh') }}
+
+      - name: Build hashcat
+        run: scripts/build-hashcat.sh
+
       - name: Cache external samples
         uses: actions/cache@v5
         with:
@@ -265,6 +274,7 @@ jobs:
         env:
           OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
           OMNIEX_JOHN_RUN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run
+          OMNIEX_HASHCAT: ${{ github.workspace }}/tmp/reference/hashcat-8.0.0/hashcat
         run: |
           python3 scripts/external-samples/run.py run \
             --repo omniex-fixtures --source "omniex-fixtures=$GITHUB_WORKSPACE"
