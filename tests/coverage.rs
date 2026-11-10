@@ -284,6 +284,60 @@ fn readme_extraction_badge_matches_the_checklist() {
 }
 
 #[test]
+fn readme_external_sample_badge_matches_the_runner() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let base = root.join("scripts/external-samples");
+    let mut formats = std::collections::BTreeSet::new();
+
+    for entry in std::fs::read_dir(base.join("repos")).expect("read external sample repos") {
+        let path = entry.expect("repo entry").path().join("manifest.toml");
+        if !path.is_file() {
+            continue;
+        }
+        let text = std::fs::read_to_string(&path).expect("read manifest");
+        let manifest: toml::Value = toml::from_str(&text).expect("parse manifest");
+        if manifest.get("id").and_then(toml::Value::as_str) == Some("omniex-fixtures") {
+            continue;
+        }
+        for case in manifest
+            .get("case")
+            .and_then(toml::Value::as_array)
+            .into_iter()
+            .flatten()
+        {
+            if let Some(slug) = case.get("slug").and_then(toml::Value::as_str) {
+                formats.insert(slug.to_owned());
+            }
+        }
+    }
+
+    let mut cases = 0;
+    for entry in std::fs::read_dir(base.join("locks")).expect("read external sample locks") {
+        let path = entry.expect("lock entry").path();
+        if path.extension().and_then(|ext| ext.to_str()) != Some("toml") {
+            continue;
+        }
+        let text = std::fs::read_to_string(&path).expect("read lock");
+        let lock: toml::Value = toml::from_str(&text).expect("parse lock");
+        cases += lock
+            .get("file")
+            .and_then(toml::Value::as_array)
+            .map_or(0, Vec::len);
+    }
+
+    let readme = std::fs::read_to_string(root.join("README.md")).expect("read README.md");
+    let expected = format!(
+        "external_samples-{}_formats_%2F_{}_cases-",
+        formats.len(),
+        cases
+    );
+    assert!(
+        readme.contains(&expected),
+        "README must advertise `{expected}`; found no matching badge"
+    );
+}
+
+#[test]
 fn readme_mode_badge_matches_the_registry_and_checklist() {
     let root = env!("CARGO_MANIFEST_DIR");
     let readme = std::fs::read_to_string(std::path::Path::new(root).join("README.md"))
