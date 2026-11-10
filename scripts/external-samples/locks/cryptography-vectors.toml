@@ -35,3 +35,27 @@ sha256 = "1a040b2b4670dec68a6a9eeb01e63676fb77734988079904dbb94f97cd13e64d"
 [[file]]
 path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/testrsa-encrypted.pem"
 sha256 = "d2cae25445c077340dc2278884e9a584bbb8f04a0ed75e2a62912474f0439541"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/dsa-psw.key"
+sha256 = "ee0d783c305a62d98485a7f0b19e885d24d3bc262e5272d570ec7df8b238f6ce"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/ecdsa-psw.key"
+sha256 = "c86900894fe0d3116932c88179fe366305b4c880d27ccad11fc3bc1b69bc10d9"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/ed25519-psw.key"
+sha256 = "236afaa2e656c6f61787f8049363901974426883a4180e983cc3871b7126d8f7"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/rsa-psw.key"
+sha256 = "20bd88e243351656ee3dd410c7846c60b8b91ca364d8a52a53bfdf6fb8bf1d15"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ecdsa-psw.key"
+sha256 = "5509709d810ecafc5b97a932bb29334f46f5988b49bab0ea80fcdef4587a8fbd"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ed25519-psw.key"
+sha256 = "35353e777a173cf0f8b1386a9db723948986fb86f340badf4900d952db7d4d03"

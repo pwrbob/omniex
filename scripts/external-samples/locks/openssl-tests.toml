@@ -15,3 +15,7 @@ sha256 = "0e8abdb7bb893639631bdde642b93036a51df8f754664664948223be9600cdcb"
 [[file]]
 path = "test/shibboleth.pfx"
 sha256 = "f0e2ba3dbff295a1d8490d34a3bf153b3a51a28bfe5c59fb02eb175a69a23fb7"
+
+[[file]]
+path = "test/recipes/80-test_cmp_http_data/Mock/new_pass_12345.key"
+sha256 = "476eb2372b191eb4c3cfe456258c4d752c2402388979ec99454ec2dd7f23ceca"

@@ -68,3 +68,45 @@ path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serializatio
 slug = "sshng"
 reference = "john:ssh2john.py"
 format = "john"
+
+[[case]]
+name = "openssh-dsa-aes256-ctr"
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/dsa-psw.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "openssh-ecdsa-aes256-ctr"
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/ecdsa-psw.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "openssh-ed25519-aes256-ctr"
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/ed25519-psw.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "openssh-rsa-aes256-ctr"
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/rsa-psw.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "openssh-sk-ecdsa-aes256-ctr"
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ecdsa-psw.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "openssh-sk-ed25519-aes256-ctr"
+path = "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ed25519-psw.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"

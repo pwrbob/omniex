@@ -33,3 +33,10 @@ path = "test/shibboleth.pfx"
 slug = "pfx"
 reference = "john:pfx2john.py"
 format = "john"
+
+[[case]]
+name = "cmp-mock-new-pass-12345"
+path = "test/recipes/80-test_cmp_http_data/Mock/new_pass_12345.key"
+slug = "pkcs8-pbes2"
+reference = "john:pem2john.py"
+format = "john"
