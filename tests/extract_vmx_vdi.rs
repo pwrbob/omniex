@@ -25,7 +25,7 @@ fn omniex() -> Command {
 
 #[test]
 fn vmx_probe_requires_a_supported_key_safe() {
-    let extractor = extract::by_slug("vmx-john").expect("VMX extractor");
+    let extractor = extract::by_slug("vmx-keysafe").expect("VMX extractor");
     assert!(matches!(
         extractor.probe(&artifact("vmx", "sample.vmx")),
         Probe::Yes(reason) if reason == "VMware VMX encryption.keySafe"
@@ -41,7 +41,7 @@ fn vmx_probe_requires_a_supported_key_safe() {
 
 #[test]
 fn vmx_extracts_the_john_serialization() {
-    let extractor = extract::by_slug("vmx-john").expect("VMX extractor");
+    let extractor = extract::by_slug("vmx-keysafe").expect("VMX extractor");
     let hashes = extractor
         .extract(&artifact("vmx", "sample.vmx"))
         .expect("extract");
@@ -112,7 +112,7 @@ fn vmx_and_vdi_auto_detect_in_the_cli() {
     let vmx = omniex()
         .arg("extract")
         .arg(fixture("vmx", "sample.vmx"))
-        .args(["--type", "vmx-john", "--format", "john"])
+        .args(["--type", "vmx-keysafe", "--format", "john"])
         .output()
         .unwrap();
     assert!(vmx.status.success());
@@ -146,7 +146,7 @@ fn vmx_and_vdi_auto_detect_in_the_cli() {
 
 #[test]
 fn vmx_and_vdi_reject_truncated_input() {
-    let vmx = extract::by_slug("vmx-john").expect("VMX extractor");
+    let vmx = extract::by_slug("vmx-keysafe").expect("VMX extractor");
     assert!(
         vmx.extract(&Artifact::from_bytes(
             "bad.vmx",

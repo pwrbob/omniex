@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// BestCrypt hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "BestCrypt", slug = "bestcrypt-john", hashcat = [], john = ["BestCrypt"])]
+#[hash(name = "BestCrypt payload", slug = "bestcrypt-payload", hashcat = [], john = ["BestCrypt"])]
 pub struct BestcryptJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

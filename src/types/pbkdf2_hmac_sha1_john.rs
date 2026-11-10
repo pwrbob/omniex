@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// PBKDF2-HMAC-SHA1 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "PBKDF2-HMAC-SHA1", slug = "pbkdf2-hmac-sha1-john", hashcat = [], john = ["PBKDF2-HMAC-SHA1"])]
+#[hash(name = "PBKDF2-HMAC-SHA1 legacy", slug = "pbkdf2-hmac-sha1-legacy", hashcat = [], john = ["PBKDF2-HMAC-SHA1"])]
 pub struct Pbkdf2HmacSha1John {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

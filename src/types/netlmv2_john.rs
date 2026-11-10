@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// netlmv2 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "netlmv2", slug = "netlmv2-john", hashcat = [], john = ["netlmv2"])]
+#[hash(name = "NetLMv2 payload", slug = "netlmv2-payload", hashcat = [], john = ["netlmv2"])]
 pub struct Netlmv2John {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

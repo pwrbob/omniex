@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// krb5tgs hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "krb5tgs", slug = "krb5tgs-john", hashcat = [], john = ["krb5tgs"])]
+#[hash(name = "Kerberos 5 TGS-REP payload", slug = "krb5tgs-payload", hashcat = [], john = ["krb5tgs"])]
 pub struct Krb5tgsJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

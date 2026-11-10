@@ -6,8 +6,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 /// John HMAC hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "HMAC",
-    slug = "john-hmac",
+    name = "HMAC legacy",
+    slug = "hmac-legacy",
     hashcat = [],
     john = ["HMAC-MD5", "HMAC-SHA1", "HMAC-SHA256", "HMAC-SHA512"],
     modes_fn = john_hmac_modes,

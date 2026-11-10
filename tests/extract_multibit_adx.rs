@@ -66,7 +66,7 @@ fn multibit_extracts_classic_and_hd_serializations() {
 
 #[test]
 fn bitshares_backup_requires_explicit_type_and_round_trips() {
-    let extractor = extract::by_slug("bitshares-john").expect("BitShares extractor");
+    let extractor = extract::by_slug("bitshares-payload").expect("BitShares extractor");
     assert!(!extractor.exact());
     assert!(matches!(
         extractor.probe(&artifact("bitshares", "wallet.bin")),

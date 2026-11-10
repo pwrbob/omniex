@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// vmx hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "vmx", slug = "vmx-john", hashcat = [], john = ["vmx"])]
+#[hash(name = "VMX keySafe", slug = "vmx-keysafe", hashcat = [], john = ["vmx"])]
 pub struct VmxJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

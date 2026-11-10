@@ -48,7 +48,7 @@ README badge counts checked lines in this file.
 - [x] iTunes and Finder iOS backups (`itunes-backup`)
 - [x] Apple iWork 2013/2014 documents with an iwpv2 verifier (`iwork`)
 - [x] Apple iWork 2009 documents (`iwork`)
-- [x] Apple DMG encrcdsa v2 images (`dmg-john`)
+- [x] Apple DMG encrcdsa v2 images (`dmg-payload`)
 - [x] Apple DMG encrcdsa v3 images (`apple-dmg`)
 
 ## Disk and filesystem encryption
@@ -71,10 +71,10 @@ README badge counts checked lines in this file.
 - [x] EncFS configuration and key files (`encfs`)
 - [x] VirtualBox VDI key stores from `.vbox` files (`vdi`)
 - [x] VirtualBox hashcat disk metadata (`virtualbox`)
-- [x] VMware VMX encryption keySafe (`vmx-john`)
+- [x] VMware VMX encryption keySafe (`vmx-keysafe`)
 - [x] VMware VMX hashcat metadata (`vmware-vmx`)
 - [x] Veeam backup metadata (`veeam`)
-- [x] BestCrypt containers (`bestcrypt`, `bestcrypt-john`)
+- [x] BestCrypt containers (`bestcrypt`, `bestcrypt-payload`)
 - [x] ENCDataVault containers (`encdv`)
 
 ## Archives and documents
@@ -159,11 +159,11 @@ README badge counts checked lines in this file.
 - [x] Bisq wallets (`bisq`)
 - [x] Monero wallets (`monero`)
 - [x] Tezos wallets (`tezos`)
-- [x] Cardano wallets (`cardano-john`)
+- [x] Cardano wallets (`cardano-payload`)
 - [x] Keplr wallets (`keplr`)
 - [x] Stellar wallets (`stellar`)
 - [x] Terra wallets (`terra`)
-- [x] BitShares backup wallets (`bitshares-john`)
+- [x] BitShares backup wallets (`bitshares-payload`)
 - [x] BitShares SQLite and LevelDB wallets (`bitshares`)
 - [x] Raw WIF private keys (`bitcoin-wif`)
 
@@ -253,7 +253,7 @@ README badge counts checked lines in this file.
 - [x] RADIUS shared-secret exchanges (`radius`)
 - [x] TACACS+ exchanges (`tacacs-plus`)
 - [x] SIP digest authentication (`sip-digest`)
-- [x] IKE pre-shared-key exchanges (`ike-psk-md5`, `ike-psk-sha1`, `ike-john`)
+- [x] IKE pre-shared-key exchanges (`ike-psk-md5`, `ike-psk-sha1`, `ike-payload`)
 - [x] OSPFv2 and RIPv2 MD5 authentication (`ospf-md5`)
 - [x] TCP MD5 signatures (`tcp-md5`)
 - [x] HSRP authentication (`hsrp`)

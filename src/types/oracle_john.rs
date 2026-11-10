@@ -6,8 +6,8 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 /// Oracle hashes in the John serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "Oracle (John)",
-    slug = "oracle-john",
+    name = "Oracle legacy",
+    slug = "oracle-legacy",
     hashcat = [],
     john = ["oracle"]
 )]

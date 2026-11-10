@@ -58,7 +58,7 @@ format = "john"
 [[case]]
 name = "dmg-hard"
 path = "Apple_DMG/dmg-hard.dmg"
-slug = "dmg-john"
+slug = "dmg-payload"
 reference = "john:dmg2john.py"
 format = "john"
 

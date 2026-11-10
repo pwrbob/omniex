@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// nsec3 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "nsec3", slug = "nsec3-john", hashcat = [], john = ["nsec3"])]
+#[hash(name = "NSEC3 payload", slug = "nsec3-payload", hashcat = [], john = ["nsec3"])]
 pub struct Nsec3John {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

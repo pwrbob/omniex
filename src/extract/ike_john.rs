@@ -35,7 +35,7 @@ fn probe_records(artifact: &Artifact) -> Probe {
                 .iter()
                 .any(|exchange| exchange.hash_r.len() == 16 || exchange.hash_r.len() == 20)
             {
-                Probe::maybe("IKEv1 aggressive-mode exchange; use --type ike-john")
+                Probe::maybe("IKEv1 aggressive-mode exchange; use --type ike-payload")
             } else if exchanges.is_empty() && saw_ike {
                 Probe::maybe("IKEv1 aggressive-mode packets without a complete exchange")
             } else {

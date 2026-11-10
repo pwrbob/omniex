@@ -6,8 +6,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 /// Cardano hashes in the John serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "Cardano (John)",
-    slug = "cardano-john",
+    name = "Cardano payload",
+    slug = "cardano-payload",
     hashcat = [],
     john = ["cardano"]
 )]

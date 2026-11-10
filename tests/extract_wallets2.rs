@@ -37,7 +37,7 @@ fn wallet_probes_are_structural() {
         ("metamask-mobile", "metamask-mobile", "vault.json"),
         ("exodus", "exodus", "seed.seco"),
         ("bisq", "bisq", "bisq.wallet"),
-        ("cardano-john", "cardano", "secret.key"),
+        ("cardano-payload", "cardano", "secret.key"),
     ] {
         let extractor = extract::by_slug(slug).expect("wallet extractor");
         assert!(matches!(
@@ -102,7 +102,7 @@ fn exodus_bisq_and_cardano_extract_reference_hashes() {
         expected("bisq", "bisq.hash")
     );
 
-    let cardano = extract::by_slug("cardano-john").expect("Cardano extractor");
+    let cardano = extract::by_slug("cardano-payload").expect("Cardano extractor");
     assert_eq!(
         cardano.extract(&artifact("cardano", "secret.key")).unwrap()[0]
             .render(&RenderOptions {
@@ -155,7 +155,7 @@ fn truncated_wallets_are_rejected() {
         ("metamask-mobile", "metamask-mobile", "vault.json"),
         ("exodus", "exodus", "seed.seco"),
         ("bisq", "bisq", "bisq.wallet"),
-        ("cardano-john", "cardano", "secret.key"),
+        ("cardano-payload", "cardano", "secret.key"),
     ] {
         let data = std::fs::read(fixture(kind, name)).unwrap();
         let extractor = extract::by_slug(slug).expect("wallet extractor");

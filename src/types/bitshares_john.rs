@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// bitshares hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "bitshares", slug = "bitshares-john", hashcat = [], john = ["bitshares"])]
+#[hash(name = "BitShares payload", slug = "bitshares-payload", hashcat = [], john = ["bitshares"])]
 pub struct BitsharesJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

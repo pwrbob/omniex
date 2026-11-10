@@ -1,11 +1,11 @@
-//! John Password Safe hashes, rendered as `$pwsafe$*<version>*<salt>*<iterations>*<digest>`.
+//! Password Safe hashes, rendered as `$pwsafe$*<version>*<salt>*<iterations>*<digest>`.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
-/// Password Safe hashes in the John serialization.
+/// Password Safe hashes in the `$pwsafe$` serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Password Safe (John)", slug = "pwsafe", hashcat = [], john = ["pwsafe"])]
+#[hash(name = "Password Safe", slug = "pwsafe", hashcat = [], john = ["pwsafe"])]
 pub struct Pwsafe {
     /// Format version.
     #[field(role = other, encoding = decimal)]
