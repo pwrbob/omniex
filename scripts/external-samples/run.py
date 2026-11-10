@@ -786,7 +786,6 @@ def main() -> int:
                 help="local checkout for a repository",
             )
         if name == "run":
-            sub.add_argument("--json", action="store_true")
             sub.add_argument(
                 "--structural",
                 action="store_true",
