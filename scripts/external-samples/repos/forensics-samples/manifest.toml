@@ -1,0 +1,21 @@
+id = "forensics-samples"
+repo = "https://github.com/eribertomota/forensics-samples"
+commit = "b938bbea0d8bec5c1795433cf6227bedd9623532"
+notes = "Password-protected PDFs with passwords encoded in filenames"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "text-pass-A5d"
+path = "original-files/text1/a-text-pass-A5d.pdf"
+slug = "pdf"
+reference = "john:pdf2john.pl"
+format = "john"
+
+[[case]]
+name = "text-pass-peanuts"
+path = "original-files/text1/a-text-pass-peanuts.pdf"
+slug = "pdf"
+reference = "john:pdf2john.pl"
+format = "john"
