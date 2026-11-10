@@ -115,12 +115,18 @@ pub(crate) mod net {
         let mut buffer = Vec::new();
         while offset < len {
             if offset + 16 > len {
-                return Err(truncated());
+                if len - offset > 1 {
+                    return Err(truncated());
+                }
+                break;
             }
             let captured = u64::from(u32_at(source, offset + 8, big_endian)?);
             offset += 16;
             if offset + captured > len {
-                return Err(truncated());
+                if len - offset > 1 {
+                    return Err(truncated());
+                }
+                break;
             }
             if captured <= MAX_PACKET {
                 buffer.resize(captured as usize, 0);
@@ -367,6 +373,16 @@ pub(crate) mod net {
             }
         }
         Some((source, destination, payload))
+    }
+
+    /// Returns the TCP source and destination ports with the payload.
+    pub(crate) fn tcp_payload(link_type: u32, frame: &[u8]) -> Option<(u16, u16, &[u8])> {
+        let (ethertype, payload) = ethertype_payload(link_type, frame)?;
+        let (protocol, data) = ip_payload(ethertype, payload)?;
+        if protocol != 6 {
+            return None;
+        }
+        tcp(data)
     }
 
     /// Returns the payload of a Kerberos (TCP/UDP port 88) packet.

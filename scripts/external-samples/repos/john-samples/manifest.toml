@@ -865,3 +865,28 @@ slug = "hsrp"
 reference = "structural"
 format = "john"
 exclude = ["HSRP/packet-captures/hello.pcap"]
+
+# John's vncpcap2john is not built by the pinned build, so these only guard the
+# extractor against regressions.
+[[case]]
+name = "vnc-{base}"
+glob = "VNC/*.pcap"
+slug = "vnc"
+reference = "structural"
+format = "john"
+
+[[case]]
+name = "vnc-{base}"
+glob = "VNC/*.cap"
+slug = "vnc"
+reference = "structural"
+format = "john"
+
+# John emits its dynamic APOP format, which is not the hashcat $apop$ line the
+# extractor renders, so this only guards extraction.
+[[case]]
+name = "apop-sample"
+path = "APOP/apop-sample.pcapng"
+slug = "pop3-apop"
+reference = "structural"
+format = "hashcat"
