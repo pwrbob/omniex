@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// dmg hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "dmg", slug = "dmg-john", hashcat = [], john = ["dmg"])]
+#[hash(name = "DMG payload", slug = "dmg-payload", hashcat = [], john = ["dmg"])]
 pub struct DmgJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

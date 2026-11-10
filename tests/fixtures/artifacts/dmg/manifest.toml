@@ -1,4 +1,4 @@
-type = "dmg-john"
+type = "dmg-payload"
 generator = "synthetic encrcdsa v2 DMG header and data chunks"
 notes = "Synthetic image; no real disk."
 artifact = "sample.dmg"

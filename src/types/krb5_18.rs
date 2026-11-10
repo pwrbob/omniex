@@ -1,11 +1,11 @@
-//! Kerberos 5 etype 18 DB hashes (John), rendered as `<realm>$<digest>`.
+//! Kerberos 5 etype 18 DB hashes, rendered as `<realm>$<digest>`.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
-/// Kerberos 5 etype 18 DB hashes in the John serialization.
+/// Kerberos 5 etype 18 DB hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "krb5-18 (John)", slug = "krb5-18", hashcat = [], john = ["krb5-18"])]
+#[hash(name = "Kerberos 5 etype 18", slug = "krb5-18", hashcat = [], john = ["krb5-18"])]
 pub struct Krb5_18 {
     /// Kerberos principal.
     #[field(role = username, encoding = ascii)]

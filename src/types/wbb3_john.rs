@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// wbb3 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "wbb3", slug = "wbb3-john", hashcat = [], john = ["wbb3"])]
+#[hash(name = "WBB3 payload", slug = "wbb3-payload", hashcat = [], john = ["wbb3"])]
 pub struct Wbb3John {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

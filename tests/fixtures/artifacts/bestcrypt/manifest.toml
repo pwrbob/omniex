@@ -1,4 +1,4 @@
-type = "bestcrypt-john"
+type = "bestcrypt-payload"
 generator = "Jetico BestCrypt keygen containers"
 notes = "Real BestCrypt 1 MiB+ containers from the John test corpus, truncated to the 4 KiB header the extractor reads."
 

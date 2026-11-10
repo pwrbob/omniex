@@ -6,8 +6,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 /// LastPass hashes in the John serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "LastPass (John)",
-    slug = "lastpass-john",
+    name = "LastPass legacy",
+    slug = "lastpass-legacy",
     hashcat = [],
     john = ["LastPass"]
 )]

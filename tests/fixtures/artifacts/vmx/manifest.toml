@@ -1,4 +1,4 @@
-type = "vmx-john"
+type = "vmx-keysafe"
 generator = "synthetic VMware VMX keySafe"
 notes = "Synthetic VM configuration; no real disk."
 artifact = "sample.vmx"

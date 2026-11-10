@@ -84,15 +84,15 @@ fn ike_extractors_match_their_fixtures() {
     );
 
     assert_eq!(
-        john_hashes(&JOHN, &artifact("ike-john", "aggressive.pcap")),
-        expected("ike-john", "aggressive.john")
+        john_hashes(&JOHN, &artifact("ike-payload", "aggressive.pcap")),
+        expected("ike-payload", "aggressive.john")
             .lines()
             .map(str::to_owned)
             .collect::<Vec<_>>()
     );
     assert_eq!(
-        john_hashes(&JOHN, &artifact("ike-john", "aggressive.pcapng")),
-        expected("ike-john", "aggressive.john")
+        john_hashes(&JOHN, &artifact("ike-payload", "aggressive.pcapng")),
+        expected("ike-payload", "aggressive.john")
             .lines()
             .map(str::to_owned)
             .collect::<Vec<_>>()
@@ -110,10 +110,10 @@ fn ike_extractors_scan_every_exchange() {
         .collect();
     assert_eq!(values, wanted);
 
-    let values: BTreeSet<String> = john_hashes(&JOHN, &artifact("ike-john", "aggressive.pcap"))
+    let values: BTreeSet<String> = john_hashes(&JOHN, &artifact("ike-payload", "aggressive.pcap"))
         .into_iter()
         .collect();
-    let wanted: BTreeSet<String> = expected("ike-john", "aggressive.john")
+    let wanted: BTreeSet<String> = expected("ike-payload", "aggressive.john")
         .lines()
         .map(str::to_owned)
         .collect();
@@ -133,7 +133,7 @@ fn ike_extractors_report_their_modes() {
     assert!(values[0].modes().contains(&Mode::Hashcat(5400)));
 
     let values = JOHN
-        .extract(&artifact("ike-john", "aggressive.pcap"))
+        .extract(&artifact("ike-payload", "aggressive.pcap"))
         .unwrap();
     assert!(values[0].modes().contains(&Mode::John("IKE")));
 }
@@ -156,8 +156,8 @@ fn ike_probes_require_structural_evidence() {
     // only selected explicitly.
     for name in ["aggressive.pcap", "aggressive.pcapng"] {
         assert!(
-            matches!(JOHN.probe(&artifact("ike-john", name)), Probe::Maybe(_)),
-            "ike-john {name}"
+            matches!(JOHN.probe(&artifact("ike-payload", name)), Probe::Maybe(_)),
+            "ike-payload {name}"
         );
     }
 
@@ -187,7 +187,7 @@ fn truncated_captures_probe_maybe_and_fail_to_extract() {
     for (extractor, kind) in [
         (&MD5 as &dyn Extractor, "ike-psk-md5"),
         (&SHA1, "ike-psk-sha1"),
-        (&JOHN, "ike-john"),
+        (&JOHN, "ike-payload"),
     ] {
         let truncated = artifact(kind, "truncated.pcap");
         assert!(matches!(extractor.probe(&truncated), Probe::Maybe(_)));

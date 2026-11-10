@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// Django hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Django", slug = "django-john", hashcat = [], john = ["Django"])]
+#[hash(name = "Django payload", slug = "django-payload", hashcat = [], john = ["Django"])]
 pub struct DjangoJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

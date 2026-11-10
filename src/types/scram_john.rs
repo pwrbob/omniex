@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// SCRAM-PBKDF2-SHA1-MongoDB hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "SCRAM-PBKDF2-SHA1-MongoDB", slug = "scram-john", hashcat = [], john = ["SCRAM-PBKDF2-SHA1-MongoDB"])]
+#[hash(name = "SCRAM-PBKDF2-SHA1-MongoDB legacy", slug = "scram-pbkdf2-sha1-mongodb", hashcat = [], john = ["SCRAM-PBKDF2-SHA1-MongoDB"])]
 pub struct ScramJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

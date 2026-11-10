@@ -6,8 +6,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 /// MongoDB hashes in the John serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "MongoDB (John)",
-    slug = "mongodb-john",
+    name = "MongoDB legacy",
+    slug = "mongodb-legacy",
     hashcat = [],
     john = ["MongoDB"]
 )]

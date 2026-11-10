@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// IKE hashes in the John serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "IKE (John)", slug = "ike-john", hashcat = [], john = ["IKE"])]
+#[hash(name = "IKE payload", slug = "ike-payload", hashcat = [], john = ["IKE"])]
 pub struct IkeJohn {
     /// Version-specific fields, preserved verbatim.
     #[field(role = other, encoding = ascii)]

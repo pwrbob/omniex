@@ -7,48 +7,17 @@ use common::{VECTORS, vector_for, vector_modes};
 use omniex::extract::EXTRACTORS;
 use omniex::{Mode, ParseOptions, RenderOptions, Tool, registry};
 
-const LEGACY_TOOL_SLUGS: &[&str] = &[
-    "bestcrypt-john",
-    "bitshares-john",
-    "bitwarden-john",
-    "cardano-john",
-    "django-john",
-    "dmg-john",
-    "ike-john",
-    "john-hmac",
-    "krb5-john",
-    "krb5asrep-john",
-    "krb5tgs-john",
-    "lastpass-john",
-    "luks-john",
-    "mongodb-john",
-    "mozilla-john",
-    "netlmv2-john",
-    "nsec3-john",
-    "oracle-john",
-    "pbkdf2-hmac-md5-john",
-    "pbkdf2-hmac-sha1-john",
-    "pbkdf2-hmac-sha256-john",
-    "pbkdf2-hmac-sha512-john",
-    "racf-kdfaes-john",
-    "scram-john",
-    "truecrypt-john",
-    "vmx-john",
-    "wbb3-john",
-];
-
 #[test]
-fn new_slugs_do_not_name_the_cracker() {
+fn slugs_and_names_do_not_name_the_cracker() {
     for descriptor in registry::all() {
-        let slug = descriptor.slug;
-        let tool_named = slug.starts_with("john-")
-            || slug.contains("-john")
-            || slug.contains("-opencl")
-            || slug.contains("hashcat");
-        if tool_named {
+        for label in [descriptor.slug, descriptor.name] {
+            let lowered = label.to_ascii_lowercase();
+            let tool_named = lowered.contains("john")
+                || lowered.contains("-opencl")
+                || lowered.contains("hashcat");
             assert!(
-                LEGACY_TOOL_SLUGS.contains(&slug),
-                "slug `{slug}` names the target tool; describe the algorithm or format instead"
+                !tool_named,
+                "`{label}` names the target tool; describe the algorithm or format instead"
             );
         }
     }

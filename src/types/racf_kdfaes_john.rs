@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// RACF-KDFAES hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "RACF-KDFAES", slug = "racf-kdfaes-john", hashcat = [], john = ["RACF-KDFAES"])]
+#[hash(name = "RACF-KDFAES legacy", slug = "racf-kdfaes-legacy", hashcat = [], john = ["RACF-KDFAES"])]
 pub struct RacfKdfaesJohn {
     /// Serialized hash payload.
     #[field(role = other, encoding = ascii)]

@@ -3,9 +3,9 @@
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
-/// SASL DIGEST-MD5 hashes in the John serialization.
+/// SASL DIGEST-MD5 hashes in the `$DIGEST-MD5$` serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "DIGEST-MD5 (John)", slug = "dmd5", hashcat = [], john = ["dmd5"])]
+#[hash(name = "SASL DIGEST-MD5", slug = "dmd5", hashcat = [], john = ["dmd5"])]
 pub struct Dmd5 {
     /// Version-specific fields, preserved verbatim.
     #[field(role = other, encoding = ascii)]

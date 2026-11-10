@@ -367,7 +367,7 @@ checked against that command in CI.
 | `bitcoin-wif` | Bitcoin WIF private key | 28501, 28502, 28503, 28504, 28505, 28506, 30901, 30902, 30903, 30904, 30905, 30906 | - |
 | `virtualbox` | VirtualBox | 27500, 27600 | - |
 | `truecrypt` | TrueCrypt | 29311, 29312, 29313, 29321, 29322, 29323, 29331, 29332, 29333, 29341, 29342, 29343 | - |
-| `truecrypt-john` | TrueCrypt (John) | - | `TrueCrypt-opencl` |
+| `truecrypt-header` | TrueCrypt header | - | `TrueCrypt-opencl` |
 | `truecrypt-legacy` | TrueCrypt (legacy) | 6211, 6212, 6213, 6221, 6222, 6223, 6231, 6232, 6233, 6241, 6242, 6243 | - |
 | `veracrypt` | VeraCrypt | 29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493 | - |
 | `veracrypt-legacy` | VeraCrypt (legacy) | 13711, 13712, 13713, 13721, 13722, 13723, 13731, 13732, 13733, 13741, 13742, 13743, 13751, 13752, 13753, 13761, 13762, 13763, 13771, 13772, 13773, 13781, 13782, 13783 | - |
@@ -481,7 +481,7 @@ checked against that command in CI.
 | `pkzip` | PKZIP | 17200, 17210, 17220, 17225, 17230 | `PKZIP` |
 | `yescrypt` | yescrypt | 36100 | - |
 | `gost-yescrypt` | gost-yescrypt | 36200 | - |
-| `john-hmac` | HMAC | - | `HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512` |
+| `hmac-legacy` | HMAC legacy | - | `HMAC-MD5, HMAC-SHA1, HMAC-SHA256, HMAC-SHA512` |
 | `adxcrypt` | adxcrypt | - | `adxcrypt` |
 | `afs` | AFS | - | `AFS` |
 | `bfegg` | bfegg | - | `bfegg` |
@@ -489,16 +489,16 @@ checked against that command in CI.
 | `ipb2` | IPB2 | - | `ipb2` |
 | `iterated-sha1` | Iterated-SHA1 | - | `Iterated-SHA1` |
 | `mscash` | mscash | - | `mscash` |
-| `lastpass-john` | LastPass (John) | - | `LastPass` |
+| `lastpass-legacy` | LastPass legacy | - | `LastPass` |
 | `lp` | LP | - | `lp` |
 | `lpcli` | LastPass CLI | - | `lpcli` |
-| `mongodb-john` | MongoDB (John) | - | `MongoDB` |
+| `mongodb-legacy` | MongoDB legacy | - | `MongoDB` |
 | `money` | Money | - | `money` |
-| `oracle-john` | Oracle (John) | - | `oracle` |
+| `oracle-legacy` | Oracle legacy | - | `oracle` |
 | `oracle11` | Oracle 11 | - | `oracle11` |
 | `oracle12c` | Oracle 12c | - | `Oracle12C` |
 | `osc` | OSC | - | `osc` |
-| `pwsafe` | Password Safe (John) | - | `pwsafe` |
+| `pwsafe` | Password Safe | - | `pwsafe` |
 | `radius` | RADIUS | - | `radius` |
 | `rvary` | RVARY | - | `RVARY` |
 | `skey` | S/Key | - | `skey` |
@@ -517,7 +517,7 @@ checked against that command in CI.
 | `pst` | PST | - | `PST` |
 | `sappse` | SAP PSE | - | `sappse` |
 | `known-hosts` | known_hosts | - | `known_hosts` |
-| `krb5-18` | krb5-18 (John) | - | `krb5-18` |
+| `krb5-18` | Kerberos 5 etype 18 | - | `krb5-18` |
 | `leet` | leet | - | `leet` |
 | `md5ns` | md5ns | - | `md5ns` |
 | `monero` | Monero | - | `Monero` |
@@ -533,15 +533,15 @@ checked against that command in CI.
 | `vdi` | VDI | - | `vdi` |
 | `keystore` | Keystore | - | `keystore` |
 | `chap` | CHAP | - | `chap` |
-| `cardano-john` | Cardano (John) | - | `cardano` |
-| `dmd5` | DIGEST-MD5 (John) | - | `dmd5` |
+| `cardano-payload` | Cardano payload | - | `cardano` |
+| `dmd5` | SASL DIGEST-MD5 | - | `dmd5` |
 | `eigrp` | EIGRP | - | `eigrp` |
 | `hdaa` | HDAA | - | `hdaa` |
 | `hsrp` | HSRP | - | `hsrp` |
-| `ike-john` | IKE (John) | - | `IKE` |
+| `ike-payload` | IKE payload | - | `IKE` |
 | `krb4` | Kerberos 4 | - | `krb4` |
-| `krb5-john` | Kerberos 5 (John) | - | `krb5` |
-| `rakp` | RAKP (John) | - | `RAKP-MD5, RAKP-SHA1, RAKP-SHA256` |
+| `krb5-legacy` | Kerberos 5 legacy | - | `krb5` |
+| `rakp` | RAKP | - | `RAKP-MD5, RAKP-SHA1, RAKP-SHA256` |
 | `wowsrp` | WoWSRP | - | `WoWSRP` |
 | `andotp` | andOTP | - | `andOTP` |
 | `bks` | BKS | - | `BKS` |
@@ -561,44 +561,44 @@ checked against that command in CI.
 | `lotus85` | Lotus Notes 8.5 | - | `lotus85` |
 | `po` | PO | - | `po` |
 | `cloudkeychain` | cloudkeychain | - | `cloudkeychain` |
-| `bestcrypt-john` | BestCrypt | - | `BestCrypt` |
-| `bitshares-john` | bitshares | - | `bitshares` |
-| `bitwarden-john` | Bitwarden | - | `Bitwarden` |
-| `django-john` | Django | - | `Django` |
+| `bestcrypt-payload` | BestCrypt payload | - | `BestCrypt` |
+| `bitshares-payload` | BitShares payload | - | `bitshares` |
+| `bitwarden-payload` | Bitwarden payload | - | `Bitwarden` |
+| `django-payload` | Django payload | - | `Django` |
 | `django-scrypt` | django-scrypt | - | `django-scrypt` |
-| `dmg-john` | dmg | - | `dmg` |
+| `dmg-payload` | DMG payload | - | `dmg` |
 | `dominosec` | dominosec | - | `dominosec` |
 | `dominosec8` | dominosec8 | - | `dominosec8` |
-| `krb5asrep-john` | krb5asrep | - | `krb5asrep` |
+| `krb5asrep-payload` | Kerberos 5 AS-REP payload | - | `krb5asrep` |
 | `krb5pa-md5` | krb5pa-md5 | - | `krb5pa-md5` |
 | `krb5pa-sha1` | krb5pa-sha1 | - | `krb5pa-sha1` |
-| `krb5tgs-john` | krb5tgs | - | `krb5tgs` |
-| `mozilla-john` | Mozilla | - | `Mozilla` |
+| `krb5tgs-payload` | Kerberos 5 TGS-REP payload | - | `krb5tgs` |
+| `mozilla-payload` | Mozilla payload | - | `Mozilla` |
 | `mschapv2-naive` | mschapv2-naive | - | `mschapv2-naive` |
 | `nethalflm` | nethalflm | - | `nethalflm` |
-| `netlmv2-john` | netlmv2 | - | `netlmv2` |
+| `netlmv2-payload` | NetLMv2 payload | - | `netlmv2` |
 | `netlm` | netlm | - | `netlm` |
 | `netntlm-naive` | netntlm-naive | - | `netntlm-naive` |
-| `nsec3-john` | nsec3 | - | `nsec3` |
+| `nsec3-payload` | NSEC3 payload | - | `nsec3` |
 | `ospf` | ospf | - | `ospf` |
 | `padlock` | Padlock | - | `Padlock` |
 | `palshop` | Palshop | - | `Palshop` |
 | `pbkdf2-hmac-md4` | PBKDF2-HMAC-MD4 | - | `PBKDF2-HMAC-MD4` |
-| `pbkdf2-hmac-md5-john` | PBKDF2-HMAC-MD5 | - | `PBKDF2-HMAC-MD5` |
-| `pbkdf2-hmac-sha1-john` | PBKDF2-HMAC-SHA1 | - | `PBKDF2-HMAC-SHA1` |
-| `pbkdf2-hmac-sha256-john` | PBKDF2-HMAC-SHA256 | - | `PBKDF2-HMAC-SHA256` |
-| `pbkdf2-hmac-sha512-john` | PBKDF2-HMAC-SHA512 | - | `PBKDF2-HMAC-SHA512` |
+| `pbkdf2-hmac-md5-legacy` | PBKDF2-HMAC-MD5 legacy | - | `PBKDF2-HMAC-MD5` |
+| `pbkdf2-hmac-sha1-legacy` | PBKDF2-HMAC-SHA1 legacy | - | `PBKDF2-HMAC-SHA1` |
+| `pbkdf2-hmac-sha256-legacy` | PBKDF2-HMAC-SHA256 legacy | - | `PBKDF2-HMAC-SHA256` |
+| `pbkdf2-hmac-sha512-legacy` | PBKDF2-HMAC-SHA512 legacy | - | `PBKDF2-HMAC-SHA512` |
 | `pkcs8-pbes2` | PKCS#8 PBES2 | - | `PEM` |
 | `pfx` | pfx | - | `pfx` |
-| `racf-kdfaes-john` | RACF-KDFAES | - | `RACF-KDFAES` |
+| `racf-kdfaes-legacy` | RACF-KDFAES legacy | - | `RACF-KDFAES` |
 | `restic` | restic | - | `restic` |
 | `rsvp` | rsvp | - | `rsvp` |
-| `scram-john` | SCRAM-PBKDF2-SHA1-MongoDB | - | `SCRAM-PBKDF2-SHA1-MongoDB` |
+| `scram-pbkdf2-sha1-mongodb` | SCRAM-PBKDF2-SHA1-MongoDB legacy | - | `SCRAM-PBKDF2-SHA1-MongoDB` |
 | `scram-pbkdf2-sha256` | SCRAM-PBKDF2-SHA256 | - | `SCRAM-PBKDF2-SHA256` |
 | `siemens-s7` | Siemens-S7 | - | `Siemens-S7` |
 | `streebog256crypt` | streebog256crypt | - | `streebog256crypt` |
-| `vmx-john` | vmx | - | `vmx` |
-| `wbb3-john` | wbb3 | - | `wbb3` |
+| `vmx-keysafe` | VMX keySafe | - | `vmx` |
+| `wbb3-payload` | WBB3 payload | - | `wbb3` |
 | `wpapsk` | wpapsk | - | `wpapsk` |
 | `wpapsk-pmk` | wpapsk-pmk | - | `wpapsk-pmk` |
 | `signal` | Signal | - | `Signal` |
@@ -631,7 +631,7 @@ checked against that command in CI.
 | `samsung-android` | Samsung Android | 5800 | - |
 | `whirlpool` | Whirlpool | 6100, 40174, 40175 | `whirlpool, whirlpool0, whirlpool1` |
 | `gost` | GOST R 34.11-94 | 6900, 40088 | `gost` |
-| `luks-john` | LUKS (John) | - | `LUKS` |
+| `luks-header` | LUKS header | - | `LUKS` |
 | `luks-v1` | LUKS v1 | 29511, 29512, 29513, 29521, 29522, 29523, 29531, 29532, 29533, 29541, 29542, 29543 | - |
 | `luks-v2` | LUKS v2 Argon2 | 34100 | - |
 | `pwsafe-v2` | Password Safe v2 | 9000 | - |

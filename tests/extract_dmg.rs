@@ -24,7 +24,7 @@ fn omniex() -> Command {
 
 #[test]
 fn dmg_probe_requires_encrcdsa_v2() {
-    let extractor = extract::by_slug("dmg-john").expect("DMG extractor");
+    let extractor = extract::by_slug("dmg-payload").expect("DMG extractor");
     assert!(matches!(
         extractor.probe(&artifact()),
         Probe::Yes(reason) if reason == "Apple DMG encrcdsa v2 header"
@@ -37,7 +37,7 @@ fn dmg_probe_requires_encrcdsa_v2() {
 
 #[test]
 fn dmg_extracts_the_legacy_john_serialization() {
-    let extractor = extract::by_slug("dmg-john").expect("DMG extractor");
+    let extractor = extract::by_slug("dmg-payload").expect("DMG extractor");
     let hashes = extractor.extract(&artifact()).expect("extract");
     assert_eq!(hashes.len(), 1);
     assert_eq!(
@@ -73,12 +73,12 @@ fn dmg_auto_detects_and_reports_json() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "dmg-john");
+    assert_eq!(value[0]["type"], "dmg-payload");
 }
 
 #[test]
 fn dmg_rejects_truncated_and_oversized_parameters() {
-    let extractor = extract::by_slug("dmg-john").expect("DMG extractor");
+    let extractor = extract::by_slug("dmg-payload").expect("DMG extractor");
     let data = std::fs::read(fixture("sample.dmg")).unwrap();
     assert!(
         extractor

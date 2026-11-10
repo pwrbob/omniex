@@ -4395,7 +4395,7 @@ pub const VECTORS: &[Vector] = &[
         john: &[],
     },
     Vector {
-        slug: "john-hmac",
+        slug: "hmac-legacy",
         hashcat: &[],
         john: &[
             john!(
@@ -4458,7 +4458,7 @@ pub const VECTORS: &[Vector] = &[
         john: &[john!("mscash", "root:176a4c2bd45ac73687676c2f09045353")],
     },
     Vector {
-        slug: "lastpass-john",
+        slug: "lastpass-legacy",
         hashcat: &[],
         john: &[john!(
             "LastPass",
@@ -4482,7 +4482,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "mongodb-john",
+        slug: "mongodb-legacy",
         hashcat: &[],
         john: &[john!(
             "MongoDB",
@@ -4495,7 +4495,7 @@ pub const VECTORS: &[Vector] = &[
         john: &[john!("money", "$money$1*fdb51efac3f4e440*bdaa2deb")],
     },
     Vector {
-        slug: "oracle-john",
+        slug: "oracle-legacy",
         hashcat: &[],
         john: &[john!("oracle", "O$SYSTEM#9EEDFA0AD26C6D52")],
     },
@@ -4810,7 +4810,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "cardano-john",
+        slug: "cardano-payload",
         hashcat: &[],
         john: &[john!(
             "cardano",
@@ -4850,7 +4850,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "ike-john",
+        slug: "ike-payload",
         hashcat: &[],
         john: &[john!(
             "IKE",
@@ -4866,7 +4866,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "krb5-john",
+        slug: "krb5-legacy",
         hashcat: &[],
         john: &[john!(
             "krb5",
@@ -4996,7 +4996,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "bestcrypt-john",
+        slug: "bestcrypt-payload",
         hashcat: &[],
         john: &[john!(
             "BestCrypt",
@@ -5004,7 +5004,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "bitshares-john",
+        slug: "bitshares-payload",
         hashcat: &[],
         john: &[john!(
             "bitshares",
@@ -5012,7 +5012,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "bitwarden-john",
+        slug: "bitwarden-payload",
         hashcat: &[],
         john: &[john!(
             "Bitwarden",
@@ -5020,7 +5020,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "django-john",
+        slug: "django-payload",
         hashcat: &[],
         john: &[john!(
             "Django",
@@ -5036,7 +5036,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "dmg-john",
+        slug: "dmg-payload",
         hashcat: &[],
         john: &[john!(
             "dmg",
@@ -5057,7 +5057,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "krb5asrep-john",
+        slug: "krb5asrep-payload",
         hashcat: &[],
         john: &[john!(
             "krb5asrep",
@@ -5081,7 +5081,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "krb5tgs-john",
+        slug: "krb5tgs-payload",
         hashcat: &[],
         john: &[john!(
             "krb5tgs",
@@ -5089,7 +5089,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "mozilla-john",
+        slug: "mozilla-payload",
         hashcat: &[],
         john: &[john!(
             "Mozilla",
@@ -5113,7 +5113,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "netlmv2-john",
+        slug: "netlmv2-payload",
         hashcat: &[],
         john: &[john!(
             "netlmv2",
@@ -5137,7 +5137,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "nsec3-john",
+        slug: "nsec3-payload",
         hashcat: &[],
         john: &[john!(
             "nsec3",
@@ -5177,7 +5177,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "pbkdf2-hmac-md5-john",
+        slug: "pbkdf2-hmac-md5-legacy",
         hashcat: &[],
         john: &[john!(
             "PBKDF2-HMAC-MD5",
@@ -5185,7 +5185,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "pbkdf2-hmac-sha1-john",
+        slug: "pbkdf2-hmac-sha1-legacy",
         hashcat: &[],
         john: &[john!(
             "PBKDF2-HMAC-SHA1",
@@ -5193,7 +5193,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "pbkdf2-hmac-sha256-john",
+        slug: "pbkdf2-hmac-sha256-legacy",
         hashcat: &[],
         john: &[john!(
             "PBKDF2-HMAC-SHA256",
@@ -5201,7 +5201,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "pbkdf2-hmac-sha512-john",
+        slug: "pbkdf2-hmac-sha512-legacy",
         hashcat: &[],
         john: &[john!(
             "PBKDF2-HMAC-SHA512",
@@ -5225,7 +5225,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "racf-kdfaes-john",
+        slug: "racf-kdfaes-legacy",
         hashcat: &[],
         john: &[john!(
             "RACF-KDFAES",
@@ -5249,7 +5249,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "scram-john",
+        slug: "scram-pbkdf2-sha1-mongodb",
         hashcat: &[],
         john: &[john!(
             "SCRAM-PBKDF2-SHA1-MongoDB",
@@ -5281,7 +5281,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "vmx-john",
+        slug: "vmx-keysafe",
         hashcat: &[],
         john: &[john!(
             "vmx",
@@ -5289,7 +5289,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "wbb3-john",
+        slug: "wbb3-payload",
         hashcat: &[],
         john: &[john!(
             "wbb3",
@@ -5580,12 +5580,12 @@ pub const VECTORS: &[Vector] = &[
         john: &[],
     },
     Vector {
-        slug: "luks-john",
+        slug: "luks-header",
         hashcat: &[],
         john: &[john_fixture!("LUKS", "tests/fixtures/john/LUKS.txt")],
     },
     Vector {
-        slug: "truecrypt-john",
+        slug: "truecrypt-header",
         hashcat: &[],
         john: &[john_fixture!(
             "TrueCrypt-opencl",

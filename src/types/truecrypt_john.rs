@@ -6,8 +6,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 /// TrueCrypt header in John's OpenCL serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "TrueCrypt (John)",
-    slug = "truecrypt-john",
+    name = "TrueCrypt header",
+    slug = "truecrypt-header",
     john = ["TrueCrypt-opencl"],
 )]
 pub struct TrueCryptJohn {

@@ -71,7 +71,8 @@ When adding a mode:
 Slugs are lowercase kebab-case and describe the hash type, not the tool that
 consumes it. Encode the algorithm plus the distinguishing parameter or
 representation, for example `salted-md5`, `pkcs8-pbes2`, `dmg-encrcdsa-v2`, or
-`office-agile`.
+`office-agile`. The rule applies to display names too: `slugs_and_names_do_not_name_the_cracker`
+`tests/coverage.rs` test enforces it for both.
 
 Do not put `hashcat`, `john`, `opencl`, mode numbers, product names, or a file
 extension in a slug unless that extension is the format's established name. A
@@ -79,10 +80,10 @@ tool-specific serialization is not a separate hash type: prefer one logical
 type with both modes, or name the type after the KDF, cipher, or encoding that
 actually distinguishes it.
 
-Slugs ending in `-john` or `-opencl` are legacy. Rename them as their types are
-next touched, and do not add new ones. Before the first release, renames may be
-made freely, but fixtures, documentation, manifests, and references must change
-in the same commit.
+Never add a tool name, mode number, product name, or file extension to a slug
+as a shortcut. Before the first release, renames may be made freely, but
+fixtures, documentation, manifests, and references must change in the same
+commit.
 
 Fields hold one value in v0. `Vec<u8>` is allowed as a byte string; optional and
 repeated fields are added only when a format needs them.

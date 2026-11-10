@@ -5,7 +5,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 
 /// Kerberos 5 hashes in the John serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "Kerberos 5 (John)", slug = "krb5-john", hashcat = [], john = ["krb5"])]
+#[hash(name = "Kerberos 5 legacy", slug = "krb5-legacy", hashcat = [], john = ["krb5"])]
 pub struct Krb5John {
     /// Version-specific fields, preserved verbatim.
     #[field(role = other, encoding = ascii)]

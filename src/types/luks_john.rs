@@ -6,8 +6,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 /// Inlined LUKS header in John's native serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "LUKS (John)",
-    slug = "luks-john",
+    name = "LUKS header",
+    slug = "luks-header",
     john = ["LUKS"],
 )]
 pub struct LuksJohn {

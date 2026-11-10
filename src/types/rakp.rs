@@ -1,12 +1,12 @@
-//! John RAKP hashes, rendered as `$rakp$<data>$<digest>`.
+//! RAKP hashes, rendered as `$rakp$<data>$<digest>`.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
-/// RAKP hashes in the John serialization.
+/// RAKP hashes in the `$rakp$` serialization.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "RAKP (John)",
+    name = "RAKP",
     slug = "rakp",
     hashcat = [],
     john = ["RAKP-MD5", "RAKP-SHA1", "RAKP-SHA256"],

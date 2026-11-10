@@ -38,10 +38,10 @@ This file documents the extractors currently registered in
 - `kwallet` - legacy KDE KWallet files.
 - `odf` - encrypted OpenDocument packages.
 - `winzip` - WinZip AES ZIP entries.
-- `dmg-john` - Apple DMG encrcdsa v2 images.
+- `dmg-payload` - Apple DMG encrcdsa v2 images.
 - `bisq` - Bisq bitcoinj wallets.
 - `blockchain` - Blockchain.com wallet JSON.
-- `cardano-john` - Cardano legacy secret key files.
+- `cardano-payload` - Cardano legacy secret key files.
 - `electrum` - encrypted Electrum wallets.
 - `exodus` - Exodus `seed.seco` wallets.
 - `ethereum-pbkdf2` - Ethereum keystore wallets using PBKDF2.
@@ -50,11 +50,11 @@ This file documents the extractors currently registered in
 - `metamask` - MetaMask browser-extension vaults.
 - `metamask-mobile` - MetaMask mobile vaults.
 - `adxcrypt` - IBM/Toshiba 4690 ADXCSOUF user databases.
-- `bitshares-john` - BitShares backup wallets in the John serialization.
+- `bitshares-payload` - BitShares backup wallets in the John serialization.
 - `multibit` - MultiBit Classic `.key` files.
 - `multibit-hd` - MultiBit HD `.wallet.aes` files.
 - `vdi` - VirtualBox VDI key stores from `.vbox` configuration files.
-- `vmx-john` - VMware VMX encryption keySafe entries.
+- `vmx-keysafe` - VMware VMX encryption keySafe entries.
 - `virtualbox` - VirtualBox hashcat disk metadata from `.vbox` files.
 - `cloudkeychain` - 1Password cloudkeychain `profile.js` files.
 - `pgpdisk` - PGP Virtual Disk headers and user records.
@@ -178,14 +178,14 @@ This file documents the extractors currently registered in
 - `sntp-ms` - MS SNTP authenticated packets.
 - `pkcs8-pbes2` - PKCS#8 PBES2 private keys in the John serialization.
 - `krb5db17`, `krb5db18`, `krb5db-old` - Kerberos database extracts.
-- `ike-psk-md5`, `ike-psk-sha1`, `ike-john` - IKE pre-shared-key exchanges.
+- `ike-psk-md5`, `ike-psk-sha1`, `ike-payload` - IKE pre-shared-key exchanges.
 - `ntlm` - SAM registry hives and plain NTLM hash lists.
 - Plain hash lists for `md4`, `md5`, `lm`, `sha1`, `ripemd`, `sha224`, `sha256`, `sha384`, and `sha512`.
 - Plain hash lists also cover `gost`, `keccak`, `md2`, `sha0`, `sha3`, `sm3`, `streebog`, `tiger`, `whirlpool`, and `skein-512`.
 - Plain hash lists also cover `blake2b-512`, `blake2b-256`, `blake2s-256`, `snefru`, `md6`, `has-160`, `panama`, `mdc2`, `radiogatun`, and `edon-r-256`.
 - Plain hash lists also cover `edon-r-512`, `fugue`, `groestl`, `hamsi`, `jh`, `luffa`, `shabal`, `shavite3`, and `simd`.
 - `bestcrypt` - BestCrypt containers in the hashcat serialization.
-- `bestcrypt-john` - BestCrypt containers in the John serialization.
+- `bestcrypt-payload` - BestCrypt containers in the John serialization.
 - `encdv` - ENCDataVault key and vault containers.
 - `keystore` - Java KeyStore container passwords.
 - `strip` - STRIP database password verifiers.

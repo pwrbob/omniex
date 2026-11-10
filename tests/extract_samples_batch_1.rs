@@ -209,13 +209,13 @@ fn bestcrypt_extracts_every_key_slot() {
         let entry = artifact("bestcrypt", name);
         assert!(
             matches!(
-                probe("bestcrypt-john", &entry),
+                probe("bestcrypt-payload", &entry),
                 omniex::extract::Probe::Yes(reason)
                     if reason == "BestCrypt keygen container header"
             ),
             "{name}"
         );
-        let hashes = extract::by_slug("bestcrypt-john")
+        let hashes = extract::by_slug("bestcrypt-payload")
             .unwrap()
             .extract(&entry)
             .expect("extract BestCrypt");
@@ -234,7 +234,7 @@ fn bestcrypt_extracts_every_key_slot() {
 
 #[test]
 fn bestcrypt_probe_requires_the_keygen_header() {
-    let extractor = extract::by_slug("bestcrypt-john").unwrap();
+    let extractor = extract::by_slug("bestcrypt-payload").unwrap();
     assert_eq!(
         extractor.probe(&Artifact::from_bytes("empty", Vec::new())),
         omniex::extract::Probe::No
@@ -289,7 +289,7 @@ fn bestcrypt_auto_detects_and_honors_json() {
     let json = omniex()
         .arg("extract")
         .arg("--type")
-        .arg("bestcrypt-john")
+        .arg("bestcrypt-payload")
         .args(["--format", "john"])
         .arg("--json")
         .arg(&path)
@@ -297,7 +297,7 @@ fn bestcrypt_auto_detects_and_honors_json() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "bestcrypt-john");
+    assert_eq!(value[0]["type"], "bestcrypt-payload");
     assert_eq!(
         value[0]["hash"],
         expected("bestcrypt", "container-openwall.hash")
@@ -307,7 +307,7 @@ fn bestcrypt_auto_detects_and_honors_json() {
 #[test]
 fn bestcrypt_does_not_claim_encdv_vaults() {
     assert_eq!(
-        probe("bestcrypt-john", &artifact("encdv", "filesystem-v1.dat")),
+        probe("bestcrypt-payload", &artifact("encdv", "filesystem-v1.dat")),
         omniex::extract::Probe::No
     );
 }
@@ -315,7 +315,7 @@ fn bestcrypt_does_not_claim_encdv_vaults() {
 #[test]
 fn extracted_bestcrypt_values_round_trip_through_the_registry() {
     let entry = artifact("bestcrypt", "container-openwall.jbc");
-    let value = &extract::by_slug("bestcrypt-john")
+    let value = &extract::by_slug("bestcrypt-payload")
         .unwrap()
         .extract(&entry)
         .unwrap()[0];
@@ -339,7 +339,7 @@ fn extracted_bestcrypt_values_round_trip_through_the_registry() {
 
 fn parse_bestcrypt(hash: &str) -> Box<dyn omniex::HashValue> {
     omniex::registry::parse(
-        omniex::registry::by_slug("bestcrypt-john").unwrap(),
+        omniex::registry::by_slug("bestcrypt-payload").unwrap(),
         hash,
         &omniex::ParseOptions {
             tool: Tool::John,
