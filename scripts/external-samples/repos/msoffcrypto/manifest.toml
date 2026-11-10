@@ -22,3 +22,24 @@ path = "tests/inputs/rc4cryptoapi_password.doc"
 slug = "oldoffice"
 reference = "john:office2john.py"
 format = "john"
+
+[[case]]
+name = "office-example-docx"
+path = "tests/inputs/example_password.docx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-example-xlsx"
+path = "tests/inputs/example_password.xlsx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-rc4-xls"
+path = "tests/inputs/rc4cryptoapi_password.xls"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "john"

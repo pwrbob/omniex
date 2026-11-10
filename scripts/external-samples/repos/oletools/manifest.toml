@@ -22,3 +22,31 @@ path = "tests/test-data/encrypted/encrypted.xlsx"
 slug = "office"
 reference = "john:office2john.py"
 format = "john"
+
+[[case]]
+name = "office-xls"
+path = "tests/test-data/encrypted/encrypted.xls"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-docm"
+path = "tests/test-data/encrypted/encrypted.docm"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-xlsm"
+path = "tests/test-data/encrypted/encrypted.xlsm"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-pptm"
+path = "tests/test-data/encrypted/encrypted.pptm"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"

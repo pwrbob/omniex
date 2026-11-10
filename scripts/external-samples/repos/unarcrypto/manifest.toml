@@ -30,3 +30,32 @@ path = "tests/hello5_pw_store.rar"
 slug = "rar5"
 reference = "john:rar2john"
 format = "john"
+
+[[case]]
+name = "rar3-headers"
+path = "tests/hello_pw_store_headers.rar"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "john"
+
+[[case]]
+name = "rar3-headers2"
+path = "tests/hello_pw_store_headers2.rar"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "john"
+
+[[case]]
+name = "rar3-encrypted-names"
+path = "tests/hello_pw_store_encryptednames2.rar"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "john"
+
+[[case]]
+name = "rar3-normal"
+path = "tests/hello_pw_normal.rar"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"

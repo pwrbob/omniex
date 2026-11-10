@@ -11,3 +11,15 @@ sha256 = "d265dcf02f7d552486229b8c67a627ef3752fe6802b02fd2d2d485fcfbbac5de"
 [[file]]
 path = "tests/inputs/rc4cryptoapi_password.doc"
 sha256 = "9c5217bea80fb1a7811ad7709dd9bb35f6c639bac7154580dd4c99d54e1fc0e0"
+
+[[file]]
+path = "tests/inputs/example_password.docx"
+sha256 = "0605624697328060fdc75ca9929ea20b9d63ebed9387ff1a97aaf9979757234a"
+
+[[file]]
+path = "tests/inputs/example_password.xlsx"
+sha256 = "3f792e3902a615bf0e91771f3f3016b80d59098b8e492efcdc0752748e15b997"
+
+[[file]]
+path = "tests/inputs/rc4cryptoapi_password.xls"
+sha256 = "b804cba40c27ea88f2ea994b6b7d75145661532f9356e7246d2499f63d58abfe"

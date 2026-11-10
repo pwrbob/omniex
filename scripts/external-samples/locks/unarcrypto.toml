@@ -15,3 +15,19 @@ sha256 = "51bdca18b594b6b8e9452610c3a4835a166729c21f9a4086e282857d7ada9c3e"
 [[file]]
 path = "tests/hello5_pw_store.rar"
 sha256 = "0a3cedec495e8e103b6bf2b0d35e39ec2151118af4df65a22c5b403f9f212fe5"
+
+[[file]]
+path = "tests/hello_pw_store_headers.rar"
+sha256 = "4bd12dbfcd1fe9b19f916866d42e96714cbd5a9a85cef47d6efc25d2345fe0f8"
+
+[[file]]
+path = "tests/hello_pw_store_headers2.rar"
+sha256 = "ad1b152cc03d053317e660c2e07c1124cf71ff299fefd93a0277d35f3b14f66d"
+
+[[file]]
+path = "tests/hello_pw_store_encryptednames2.rar"
+sha256 = "ad1b152cc03d053317e660c2e07c1124cf71ff299fefd93a0277d35f3b14f66d"
+
+[[file]]
+path = "tests/hello_pw_normal.rar"
+sha256 = "64e3831d897f28f1c627b7272a815cbaed6f17a263cddeee96c459c6303dc9fe"

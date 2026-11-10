@@ -111,3 +111,327 @@ sha256 = "41c0b29e2f94706cb3323ea3677750595799c36b64bc39ae75de9c4b72960ad2"
 [[file]]
 path = "RAR/p2-comment.rar"
 sha256 = "a210d6ca33de81b660d57358d2a7fe9f526236a0489ba9ddf7a9189a52a11166"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-3DES.sec"
+sha256 = "7c03a0cf2204a5b38b0a9330754c613a7f17595abf4e6ec7270d5198dcff6ed8"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-AES.sec"
+sha256 = "ea71ed6cdb62039eb2d2402861f0ab5b05bf60a36673c07c224957becdc36936"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-AES192.sec"
+sha256 = "68b2c7df6395a8054286a130976eb79a0d0b1ab86662942c447d9104548c08b2"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-AES256.sec"
+sha256 = "951fb325374d82cd38e34106482cbe91e107dbaca37aeaa7ffef2956ecdcc99e"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-BLOWFISH.sec"
+sha256 = "5a7b161b09fe62b5cd38e37d0625a7ac0e5c7df747084176e6b82aacd61c6c87"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-CAMELLIA128.sec"
+sha256 = "b44bc76c6e61a6330a579cde4a5a2bba4de99766ff164974fec328f32574b10f"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-CAMELLIA192.sec"
+sha256 = "f32a38cd88e25429bf2e2fd900a6493095d0de57ca1229e67b94934475171763"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-CAMELLIA256.sec"
+sha256 = "98fe840e6d519365dc7e0e480849974db9d4ff17b2313b155687c53365c31b7f"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-CAST5.sec"
+sha256 = "542a78d85c1c30cb58328ea36720bdcf03b6052623f8d587fe879d85c4906145"
+
+[[file]]
+path = "GPG/gpg-70_flavors/MD5-TWOFISH.sec"
+sha256 = "049128c15db47a0eb8d05d662473cd383b6c405f9f1077da428b443adf89cf91"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-3DES.sec"
+sha256 = "bc6ca34a823c1fa8c4338fd2c481cf36365c2cafd08190261de2e69ca4db29d2"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-AES.sec"
+sha256 = "b34ac13024b957beeec2ea1e56ffcb77e52fe2423b1fabf9eb62f262f47400e5"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-AES192.sec"
+sha256 = "1eaf5fc65f667b1659347a9476c69af173192353caa1826336281a6a8288ecb1"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-AES256.sec"
+sha256 = "89264c673201e200fe50b571f74b11e8836c4611fdd57269631553f1804edaf1"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-BLOWFISH.sec"
+sha256 = "05f2b40c8d775621ab9776f10851f9fc8fe9b17288fd7ff2c66e0f7f81c68345"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-CAMELLIA128.sec"
+sha256 = "6094f34cdbd25b6b66a79470cccbb9ec24b1b4188a95e412e8d46ae38d40061d"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-CAMELLIA192.sec"
+sha256 = "293d4ef64ab42a877c87d40a8953ffa209519ab3a2268b1ccdd129ecee1bac72"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-CAMELLIA256.sec"
+sha256 = "ce6e129ab652b8f8ee052c1326ef6c5a97b4926da06c4a92da54816324cc52b2"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-CAST5.sec"
+sha256 = "393bfdc4e14df87d1f9f457eefdf14932ea3e4d873e07f2d936970a05b6e71b0"
+
+[[file]]
+path = "GPG/gpg-70_flavors/RIPEMD160-TWOFISH.sec"
+sha256 = "c0362a39d0ea7f46ea6d900b761ce8affc26b2997c04a19ee0120688ecdf6704"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-3DES.sec"
+sha256 = "b9892ce36dac86e5add82c3bf4261929c07dda4298f88059f539975bcdd4ad90"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-AES.sec"
+sha256 = "0185fad12920e3843b29f7439fa46dd392c62aad2f829df08cea90c4ab57fb7c"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-AES192.sec"
+sha256 = "a6d99701d8579937d34fc954319864f8d0bd891b28fd00269b24b97ce58a5f80"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-AES256.sec"
+sha256 = "3a241eda454ce4f46b782038046587ee4d999c90c6a9ca84671236e5afd0e49c"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-BLOWFISH.sec"
+sha256 = "477794b9786dbaa855326317b24a1ab112774c82bdfddb23f9ec93550d45fd4d"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-CAMELLIA128.sec"
+sha256 = "ea1641e91e9568f105752db89b3f5c6587ab0fb56da868c2fc94ab30d8a3c8d8"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-CAMELLIA192.sec"
+sha256 = "ae4e851a5bdeb8e4363b4eff0d7ef83b472ec202e6f8c2d328a974ec8671fd4a"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-CAMELLIA256.sec"
+sha256 = "b56c8d1d21600d7f94d0611371b0a1bc7e8d06f09a39a2215fb35029c42921fb"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-CAST5.sec"
+sha256 = "fdab911e76c5cdc44dc95d90d32e50e4323b4b385d737d12511d5ee081d9a154"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA1-TWOFISH.sec"
+sha256 = "f5d3bdcc078cd23ee6cd0731971ef059f06c622aaa08c1107f1395295bd0548a"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-3DES.sec"
+sha256 = "cae281c5a99c0be092751b1eeb75342266a33f6f0af51cc25a2ba5c9f30854fe"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-AES.sec"
+sha256 = "3f8bae6c4566311701115eb9cee31c17312daf6ff50e1c609d4d1bbf830d4445"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-AES192.sec"
+sha256 = "fc94c99134be96d7658c4efba16017076c93af26edb348dfed14877a3aa24cd2"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-AES256.sec"
+sha256 = "75b6924770257139d159b5256be75c4a29903fdf848a416c342e1dc536bb437b"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-BLOWFISH.sec"
+sha256 = "6d00ba0d9ec5a46d62ff0dc22032f10ca7b46be38133c99d426d0b038f4ab582"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-CAMELLIA128.sec"
+sha256 = "0b7311ecf62a6f96a29f742584eacdbb6e4749bd103e698ba5762c86ad182742"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-CAMELLIA192.sec"
+sha256 = "1024f9681853de47060446b58adc4fe8aa119f85edb40ef5b152193bf32ca092"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-CAMELLIA256.sec"
+sha256 = "fb1ead7129a64036293128885d337898227984dc1bca2416bf59532f478dcbfe"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-CAST5.sec"
+sha256 = "e7fd93e0a49810ea559c933e29dacb5c99f8d1ae679af33013f06fd34a68f2f8"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA224-TWOFISH.sec"
+sha256 = "c15e66f374108ff380f1d65776147a3f728cceec02f76bac14a62cac6602d7aa"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-3DES.sec"
+sha256 = "e10241e575072bd9da6ba11ac125204096bfa7f1bd0f9375e988b615383d246f"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-AES.sec"
+sha256 = "6212c325884087048e8c7abc8044c2d62a9e3c09ac19fb741a6c0ecdddf9337c"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-AES192.sec"
+sha256 = "5ae1a99d083235d314a0716d4a9f6050b20ef917b49218d52bf96436e505444c"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-AES256.sec"
+sha256 = "c8bb6b7f12711aacd5d01a09c9b12cea5cbefa384d9375759bd5f9eda6e15037"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-BLOWFISH.sec"
+sha256 = "ed1152d0d495eab70b9e3283df940ae7a5ec22bd10534e069606e52b1be1cd88"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-CAMELLIA128.sec"
+sha256 = "6e635960caa101a058a75002affd2c967901ef2184660b6acb5bef705f6dd1c4"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-CAMELLIA192.sec"
+sha256 = "5d457fa71c6c1b5e66e694776958ca422a32f291d51efe7bd8d5c5b6c43a9348"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-CAMELLIA256.sec"
+sha256 = "922f742aa8d0d20e2917d5fd96a5ca5de87b3ecb5994f6fe503b4de4c98f3342"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-CAST5.sec"
+sha256 = "bc090631b72fd4596270c1c0d62084edbc37bd014fe1f44a1de0df39bf0e7809"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA256-TWOFISH.sec"
+sha256 = "492ee3675b72c58b4036801f99d96a70fb0752306d3e1f4d3490d707921ae02d"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-3DES.sec"
+sha256 = "4d3529defe6cdc2b54bcdf433f7d6b76662d71c9834cf026429fc4a03108d494"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-AES.sec"
+sha256 = "0cdb01f52c5cece406e6b0e4165675edb37ba7c24d11313f87bdeb2037b91c5b"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-AES192.sec"
+sha256 = "f8355c8745e689f9a3257633d5a12b1d3b5ad1dcc975c1042c4dcd4000c644c2"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-AES256.sec"
+sha256 = "44b324c2537a7eb2707cb05817f18da5e3b74f3b64e12622146a7be09f9bb6dc"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-BLOWFISH.sec"
+sha256 = "5348252d507af899fca7944a2a556b1f8f921e7a21c8469f8f0274f330aab5f3"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-CAMELLIA128.sec"
+sha256 = "ee3adf9646f21f5e58cd10cd8c9d39f93bac0bd2c96dc6c595f31e8b9d96b352"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-CAMELLIA192.sec"
+sha256 = "a833fd52c0eb2b2a09ea450feabb226c570918fd9cc27c6e478957192a709399"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-CAMELLIA256.sec"
+sha256 = "6fc51f6b8c928486ee315d672af733786c985a6800e1278d69ceb8474ed3dd83"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-CAST5.sec"
+sha256 = "eb3641f4e1b118654b4a8ef13d60019495db7c6e06763a8e8c037acc55b6c1fa"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA384-TWOFISH.sec"
+sha256 = "be558db8ba8e7410aa948980ee1a4ed39ea647afb551f99fdbfd004f3a0ad4b1"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-3DES.sec"
+sha256 = "dce9730867ed3e0825b788e0d38000457d64c03b7c748d91e6ccd9b5998aacae"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-AES.sec"
+sha256 = "09d7fff99cef3f64d21963c3f2549ed8bbab361c4dad9023c416959289442edf"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-AES192.sec"
+sha256 = "310c803a38a01cc88cacf8d6875fbe6b9cf27d760ddceab105dafedbd5035177"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-AES256.sec"
+sha256 = "f597e87ab0a7f9c88b7107bdd7a08dfde2e1efc88771f562d3706ac4a11dedf3"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-BLOWFISH.sec"
+sha256 = "d75eaf9729b5d5eed5b43efb36bd92c766d608213003fc2a0b17e5a9061e1e1f"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-CAMELLIA128.sec"
+sha256 = "bb8cfe487df6860180902b65ba7acf4c859bf29ce5551fd744e68087d5a7a335"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-CAMELLIA192.sec"
+sha256 = "6f3c37508aef6bc1a397fc78714badb3c805f1e32ee94326dca45ca748b240ac"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-CAMELLIA256.sec"
+sha256 = "ce6fa5ef73f44b449ebd97c22e9cc0603d22952f4716fef28b7dba524711fc70"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-CAST5.sec"
+sha256 = "2f721dd0c93e274aeeee7e5ea1b27a39d4735a4a07ad34211bdfe1995824889f"
+
+[[file]]
+path = "GPG/gpg-70_flavors/SHA512-TWOFISH.sec"
+sha256 = "fdc5b41a22dc05490eb10b1cc0df36d9e5b2fcac3bd186079b7a986419415247"
+
+[[file]]
+path = "KeePass/kdbx4/Passwords-AES-K4.kdbx"
+sha256 = "cbb332880ca0252cd61f8ff74286f03b63fee498bb8001950bf484468405d716"
+
+[[file]]
+path = "KeePass/kdbx4/Passwords-Argon2d.kdbx"
+sha256 = "8706c3bf11e7a0ab0d00cd630c0a65c806f7e51f282959d9bb147bb27299b7b4"
+
+[[file]]
+path = "KeePass/kdbx4/Passwords-Argon2id.kdbx"
+sha256 = "27220fd63b2ab3e57d9e4a4fe9fe57afda62d9b14acfbe65bd31f7d16df3a282"
+
+[[file]]
+path = "KeePass/kdbx4/Passwords-k3.kdbx"
+sha256 = "4c6c282cdee262b69b687d8cfd7f0c4fdb393279b4bfc5a590863d1c54f1fa5e"
+
+[[file]]
+path = "KeePass/kdbx4/d431.kdbx"
+sha256 = "580bb7a87482930e8e97511052644d734fd120771322e1df1036ae5e30c8a450"
+
+[[file]]
+path = "KeePass/kdbx4/lightdb.kdbx"
+sha256 = "860f5b7c34ace84103b1ad560eb8b7e9d9e49f1798b0b9f6ca1991fbdae5ac42"
+
+[[file]]
+path = "Office/Office-2013-samples/365-2013-password.xlsx"
+sha256 = "8a2ac554922ce94ed2ca1197d82b2c82aa39df4f50928dddbe35d5c649f8492c"
+
+[[file]]
+path = "Office/Office-2013-samples/2013-openwall.pptx"
+sha256 = "ea5a3aa63bf2a112a6025b8fbf87b13991e7c4c83b4d2e4bec5d7e3112d608dd"
+
+[[file]]
+path = "Office/office_2016_samples/hello-2016-openwall.docx"
+sha256 = "c8cd3af1e214732f2ce414d68d9a184ed3d47e0085658337f72f2cb5f134aae5"
+
+[[file]]
+path = "Office/office_2016_samples/hello-2016-password123.pptx"
+sha256 = "d278e0c2d3718f405818f5d22db09f2f4b4b9334298a47137a49d55979f7b6ff"
+
+[[file]]
+path = "Office/office_2016_samples/hello-2016-lolcats.xlsx"
+sha256 = "5707b2b1e5aaaa68fb93cb96d820a8aa4af97dc5d675f47652c4086ff2af3760"

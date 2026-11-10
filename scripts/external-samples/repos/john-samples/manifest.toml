@@ -150,3 +150,88 @@ slug = "rar3p"
 reference = "john:rar2john"
 format = "hashcat"
 reference_format = "john"
+
+[[case]]
+name = "gpg-{base}"
+glob = "GPG/gpg-70_flavors/*.sec"
+slug = "gpg"
+reference = "john:gpg2john"
+format = "john"
+subset = true
+
+[[case]]
+name = "keepass4-passwords-aes"
+path = "KeePass/kdbx4/Passwords-AES-K4.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass4-passwords-argon2d"
+path = "KeePass/kdbx4/Passwords-Argon2d.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass4-passwords-argon2id"
+path = "KeePass/kdbx4/Passwords-Argon2id.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass3-passwords"
+path = "KeePass/kdbx4/Passwords-k3.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass4-d431"
+path = "KeePass/kdbx4/d431.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass4-lightdb"
+path = "KeePass/kdbx4/lightdb.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "office2013-{base}"
+glob = "Office/Office-2013-samples/*.xlsx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office2013-pptx-{base}"
+glob = "Office/Office-2013-samples/*.pptx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office2016-{base}"
+glob = "Office/office_2016_samples/*.docx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office2016-pptx-{base}"
+glob = "Office/office_2016_samples/*.pptx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office2016-xlsx-{base}"
+glob = "Office/office_2016_samples/*.xlsx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
