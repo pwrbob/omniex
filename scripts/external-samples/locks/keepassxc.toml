@@ -11,3 +11,15 @@ sha256 = "ba2e4b5372b34e9856a51edc97481e03380ce64b9338c081b3ea43dd309ae506"
 [[file]]
 path = "tests/data/Format400.kdbx"
 sha256 = "4f23b3f5f6c71209e135dab92d0f06034315d3f70e3e2ef3ec3a77ff37b49435"
+
+[[file]]
+path = "tests/data/Compressed.kdbx"
+sha256 = "392b089bf3f17f7e507dc2d97584493f1b709f6989b37c2b964bfc8b21e994b8"
+
+[[file]]
+path = "tests/data/ProtectedStrings.kdbx"
+sha256 = "15efb80917ffff30173e75d5bb53c270a10076b26a90f4a80d2071b71f318d8c"
+
+[[file]]
+path = "tests/data/NewDatabase.kdbx"
+sha256 = "5fdee9fff96df5ce58c331a56f4b253ad32e864dba1a86b98df14659283daa29"
