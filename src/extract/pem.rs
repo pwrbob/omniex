@@ -12,6 +12,8 @@ const END: &str = "-----END ENCRYPTED PRIVATE KEY-----";
 const OID_PBES2: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x05, 0x0d];
 const OID_PBKDF2: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x05, 0x0c];
 const OID_HMAC_SHA1: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x07];
+const OID_HMAC_SHA256: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x09];
+const OID_HMAC_SHA512: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x0b];
 const OID_DES_EDE3_CBC: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x03, 0x07];
 const OID_AES128_CBC: &[u8] = &[0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x01, 0x02];
 const OID_AES192_CBC: &[u8] = &[0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x01, 0x16];
@@ -122,8 +124,46 @@ fn decode_armor(text: &str) -> Result<Vec<u8>, ExtractError> {
         .map_err(|error| ExtractError::Invalid(format!("invalid PEM base64: {error}")))
 }
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Prf {
+    Sha1,
+    Sha256,
+    Sha512,
+}
+
+impl Prf {
+    const fn name(self) -> &'static str {
+        match self {
+            Self::Sha1 => "sha1",
+            Self::Sha256 => "sha256",
+            Self::Sha512 => "sha512",
+        }
+    }
+}
+
+fn cipher_name(cipher: u8) -> &'static str {
+    match cipher {
+        1 => "des3_cbc",
+        2 => "aes128_cbc",
+        3 => "aes192_cbc",
+        4 => "aes256_cbc",
+        _ => "unknown",
+    }
+}
+
+fn cipher_label(cipher: u8) -> &'static str {
+    match cipher {
+        1 => "3DES",
+        2 => "AES-128",
+        3 => "AES-192",
+        4 => "AES-256",
+        _ => "unknown",
+    }
+}
+
 struct KeyParts {
     cipher: u8,
+    prf: Prf,
     salt: [u8; 8],
     iterations: u32,
     iv: Vec<u8>,
@@ -162,18 +202,24 @@ fn parse_private_key(der: &[u8]) -> Result<KeyParts, ExtractError> {
         ));
     }
 
+    let mut prf = Prf::Sha1;
     if !kdf_parameters.is_empty() {
         if kdf_parameters.peek_tag() == Some(0x02) {
             kdf_parameters.integer("PBKDF2 key length")?;
         }
         if !kdf_parameters.is_empty() {
-            let mut prf = kdf_parameters.sequence()?;
-            let oid = prf.oid("PBKDF2 PRF")?;
-            if oid != OID_HMAC_SHA1 {
-                return Err(ExtractError::Unsupported(
-                    "John's PEM format only derives keys with PBKDF2-HMAC-SHA1".to_owned(),
-                ));
-            }
+            let mut prf_sequence = kdf_parameters.sequence()?;
+            let oid = prf_sequence.oid("PBKDF2 PRF")?;
+            prf = match oid {
+                OID_HMAC_SHA1 => Prf::Sha1,
+                OID_HMAC_SHA256 => Prf::Sha256,
+                OID_HMAC_SHA512 => Prf::Sha512,
+                _ => {
+                    return Err(ExtractError::Unsupported(
+                        "unsupported PKCS#8 PBKDF2 PRF".to_owned(),
+                    ));
+                }
+            };
         }
     }
 
@@ -208,6 +254,7 @@ fn parse_private_key(der: &[u8]) -> Result<KeyParts, ExtractError> {
 
     Ok(KeyParts {
         cipher,
+        prf,
         salt,
         iterations,
         iv: iv.to_vec(),
@@ -254,8 +301,8 @@ fn parts_from_artifact(artifact: &Artifact) -> Result<Vec<KeyParts>, ExtractErro
     Ok(parts)
 }
 
-fn john_compatible(part: &KeyParts) -> bool {
-    part.cipher == 1
+fn john_compatible(_part: &KeyParts) -> bool {
+    true
 }
 
 pub struct PemExtractor;
@@ -268,7 +315,12 @@ impl Extractor for PemExtractor {
     fn probe(&self, artifact: &Artifact) -> Probe {
         match parts_from_artifact(artifact) {
             Ok(parts) if parts.iter().any(john_compatible) => {
-                Probe::yes("encrypted PKCS#8 private key using PBKDF2-HMAC-SHA1 with 3DES")
+                let part = parts.first().expect("non-empty parts");
+                Probe::yes(format!(
+                    "encrypted PKCS#8 private key using PBKDF2-HMAC-{} with {}",
+                    part.prf.name().to_ascii_uppercase(),
+                    cipher_label(part.cipher),
+                ))
             }
             Ok(_) => Probe::No,
             Err(ExtractError::Unsupported(_)) => Probe::No,
@@ -288,15 +340,23 @@ impl Extractor for PemExtractor {
         for part in parts {
             let length = u32::try_from(part.data.len())
                 .map_err(|_| ExtractError::Invalid("private key is too long".to_owned()))?;
-            let payload = format!(
-                "1${}${}${}${}${}${}",
-                part.cipher,
-                omniex::format::hex(part.salt),
-                part.iterations,
-                omniex::format::hex(&part.iv),
-                length,
-                omniex::format::hex(&part.data)
-            );
+            let salt = omniex::format::hex(part.salt);
+            let iv = omniex::format::hex(&part.iv);
+            let data = omniex::format::hex(&part.data);
+            let payload = if part.prf == Prf::Sha1 {
+                format!(
+                    "1${}${salt}${}${iv}${length}${data}",
+                    part.cipher, part.iterations
+                )
+            } else {
+                format!(
+                    "2$pbkdf2${}${}${}${salt}${}${iv}${length}${data}",
+                    part.prf.name(),
+                    cipher_name(part.cipher),
+                    part.cipher,
+                    part.iterations,
+                )
+            };
             extracted.push(Box::new(PemJohn { data: payload }) as Box<dyn HashValue>);
         }
         Ok(extracted)
