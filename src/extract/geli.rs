@@ -37,7 +37,7 @@ fn parse(artifact: &Artifact) -> Result<Geli, ExtractError> {
     }
 
     let version = LittleEndian::read_u32(&number::<4>(data, 16)?);
-    if !(1..=7).contains(&version) {
+    if !(0..=7).contains(&version) {
         return Err(ExtractError::Unsupported(format!(
             "unsupported GELI metadata version {version}"
         )));
@@ -49,11 +49,20 @@ fn parse(artifact: &Artifact) -> Result<Geli, ExtractError> {
         )));
     }
     let keylen = LittleEndian::read_u16(&number::<2>(data, 26)?);
-    let aalgo = LittleEndian::read_u16(&number::<2>(data, 28)?);
-    let keys = data[42];
-    let iterations = LittleEndian::read_i32(&number::<4>(data, 43)?);
-    let salt = &data[47..111];
-    let mkeys = &data[111..495];
+    let (aalgo, keys, iterations_offset, salt_offset, mkeys_offset) = if version == 0 {
+        (0, data[40], 41, 45, 109)
+    } else {
+        (
+            LittleEndian::read_u16(&number::<2>(data, 28)?),
+            data[42],
+            43,
+            47,
+            111,
+        )
+    };
+    let iterations = LittleEndian::read_i32(&number::<4>(data, iterations_offset)?);
+    let salt = &data[salt_offset..salt_offset + 64];
+    let mkeys = &data[mkeys_offset..mkeys_offset + 384];
 
     Ok(Geli {
         data: format!(

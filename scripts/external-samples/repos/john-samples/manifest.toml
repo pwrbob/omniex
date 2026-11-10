@@ -296,24 +296,9 @@ slug = "geli"
 reference = "john:geli2john.py"
 format = "john"
 
-# GELI version 0 metadata is not supported.
 [[case]]
-name = "geli-6.2-fast-openwall123"
-path = "GELI/FreeBSD_6.0to9.3/geli-6.2-fast-openwall123.raw"
-slug = "geli"
-reference = "john:geli2john.py"
-format = "john"
-
-[[case]]
-name = "geli-7.0-fast-openwall123"
-path = "GELI/FreeBSD_6.0to9.3/geli-7.0-fast-openwall123.raw"
-slug = "geli"
-reference = "john:geli2john.py"
-format = "john"
-
-[[case]]
-name = "geli-9.3-fast-openwall"
-path = "GELI/FreeBSD_6.0to9.3/geli-9.3-fast-openwall.raw"
+name = "geli-{base}"
+glob = "GELI/FreeBSD_6.0to9.3/*.raw"
 slug = "geli"
 reference = "john:geli2john.py"
 format = "john"
