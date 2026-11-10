@@ -51,6 +51,7 @@ ALLOWED_CASE = {
     "reference_path",
     "reference_format",
     "subset",
+    "requires",
     "companions",
 }
 ALLOWED_FETCH = {"mode"}
@@ -72,6 +73,7 @@ class Case:
     reference_path: str = ""
     reference_format: str = ""
     subset: bool = False
+    requires: list[str] = field(default_factory=list)
     companions: list[str] = field(default_factory=list)
 
 
@@ -406,6 +408,7 @@ def expand_cases(
             reference_path=str(raw.get("reference_path", "")),
             reference_format=str(raw.get("reference_format", "")),
             subset=bool(raw.get("subset", False)),
+            requires=list(raw.get("requires", [])),
             companions=list(raw.get("companions", [])),
         )
         pattern = raw.get("glob")
@@ -649,6 +652,18 @@ def compare(
 
 
 def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: bool) -> None:
+    for requirement in case.requires:
+        kind, _, name = requirement.partition(":")
+        if kind == "perl":
+            result = subprocess.run(
+                ["perl", f"-M{name}", "-e", "1"],
+                capture_output=True,
+            )
+            if result.returncode != 0:
+                print(f"skip {manifest.ident}/{case.name}: Perl module `{name}` is missing")
+                return
+        else:
+            fail(f"{manifest.ident}/{case.name}: unknown requirement `{requirement}`")
     artifact = artifact_path(manifest, case, sources, offline)
     if not artifact.exists():
         fail(f"{manifest.ident}/{case.name}: artifact is missing: {artifact}")

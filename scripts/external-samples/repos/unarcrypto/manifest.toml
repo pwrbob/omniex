@@ -23,3 +23,10 @@ slug = "rar3p"
 reference = "john:rar2john"
 format = "hashcat"
 reference_format = "john"
+
+[[case]]
+name = "rar5-password"
+path = "tests/hello5_pw_store.rar"
+slug = "rar5"
+reference = "john:rar2john"
+format = "john"

@@ -61,3 +61,92 @@ path = "Apple_DMG/dmg-hard.dmg"
 slug = "dmg-john"
 reference = "john:dmg2john.py"
 format = "john"
+
+[[case]]
+name = "truecrypt-standard"
+path = "TrueCrypt/tc-openwall"
+slug = "truecrypt"
+reference = "hashcat:truecrypt2hashcat.py"
+format = "hashcat"
+
+[[case]]
+name = "veracrypt-standard"
+path = "VeraCrypt/VC-STD-Volume/Test1.vc"
+slug = "veracrypt"
+reference = "hashcat:veracrypt2hashcat.py"
+format = "hashcat"
+
+[[case]]
+name = "luks-v1"
+path = "LUKS/LUKS-openwall"
+slug = "luks-v1"
+reference = "hashcat:luks2hashcat.py"
+format = "hashcat"
+
+[[case]]
+name = "7z-encrypted-single"
+path = "7-Zip/encrypted-single.7z"
+slug = "sevenzip"
+reference = "john:7z2john.pl"
+format = "john"
+requires = ["perl:Compress::Raw::Lzma"]
+
+[[case]]
+name = "7z-header-encrypted"
+path = "7-Zip/header-encrypted.7z"
+slug = "sevenzip"
+reference = "john:7z2john.pl"
+format = "john"
+requires = ["perl:Compress::Raw::Lzma"]
+
+[[case]]
+name = "zip-pkzip-zip1"
+path = "ZIP/zip1_testpassword#.zip"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "zip-pkzip-issue4300"
+path = "ZIP/issue4300_123456.zip"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "office-2016-pptx"
+path = "Office/office_2016_samples/hello-2016-password123.pptx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-2010-pptx"
+path = "Office/2010-powerpoint-openwall.pptx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "rar3-pm0"
+path = "RAR/pm0.rar"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+
+[[case]]
+name = "rar3-p1-comment"
+path = "RAR/p1-comment.rar"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+
+[[case]]
+name = "rar3-p2-comment"
+path = "RAR/p2-comment.rar"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"

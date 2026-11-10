@@ -63,3 +63,51 @@ sha256 = "ab2b58c43ecd7a2005a2fd78ac8cdeb84e488542f5f5f6807f9da59952e6ea1b"
 [[file]]
 path = "Apple_DMG/dmg-hard.dmg"
 sha256 = "6593a17aa839407e8aa9357316058525b88adbf4ec66fb8dd43e4ac04bbd5bbf"
+
+[[file]]
+path = "TrueCrypt/tc-openwall"
+sha256 = "33b3a387a0d79e6e9be1bfde79207f34f249849b7953c37c2c87961c4c45007f"
+
+[[file]]
+path = "VeraCrypt/VC-STD-Volume/Test1.vc"
+sha256 = "71490adb12ebc2233f483d26a1bdbef85b10a6fbb2b702e1919d2077c9336b18"
+
+[[file]]
+path = "LUKS/LUKS-openwall"
+sha256 = "d8c66299d70930b2d28e7c2f3832afd94213c17b6f699ff654f208b14e1cb1a8"
+
+[[file]]
+path = "7-Zip/encrypted-single.7z"
+sha256 = "bc29f2237211847c02cc9338c38789ebac587c6c9b1590673a74a00a51c1ca06"
+
+[[file]]
+path = "7-Zip/header-encrypted.7z"
+sha256 = "5c611b9d83fc043afd5961384efa623e69f8ef6a152ea0d0874d3b7964ec6a44"
+
+[[file]]
+path = "ZIP/zip1_testpassword#.zip"
+sha256 = "c1a56c1f9335cc0e281b5adde52ce74f145793770b8a46ef85f5c42e059df8cb"
+
+[[file]]
+path = "ZIP/issue4300_123456.zip"
+sha256 = "aeef9704d36adfc56de9579b57169f7ef246fff94531eb7c245804f83d85b718"
+
+[[file]]
+path = "Office/office_2016_samples/hello-2016-password123.pptx"
+sha256 = "d278e0c2d3718f405818f5d22db09f2f4b4b9334298a47137a49d55979f7b6ff"
+
+[[file]]
+path = "Office/2010-powerpoint-openwall.pptx"
+sha256 = "2bcff426f5a6677dc6ea01dcdc39f634894192e28ed913dda7f9bb0ec1758fac"
+
+[[file]]
+path = "RAR/pm0.rar"
+sha256 = "b794ed85220ff5b0c5469c6ffca468357ec4bfce1f406eb7115f222c70948abc"
+
+[[file]]
+path = "RAR/p1-comment.rar"
+sha256 = "41c0b29e2f94706cb3323ea3677750595799c36b64bc39ae75de9c4b72960ad2"
+
+[[file]]
+path = "RAR/p2-comment.rar"
+sha256 = "a210d6ca33de81b660d57358d2a7fe9f526236a0489ba9ddf7a9189a52a11166"
