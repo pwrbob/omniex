@@ -483,6 +483,7 @@ mod truecrypt;
 mod veeam;
 mod veracrypt;
 mod vmware_vmx;
+mod vnc;
 mod windows_hello;
 
 mod ike_john;
@@ -695,6 +696,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &luks_v2::LuksV2Extractor,
     &truecrypt::TrueCryptExtractor,
     &veracrypt::VeraCryptExtractor,
+    &vnc::VncExtractor,
     &diskcryptor::DiskcryptorExtractor,
     &filevault2::FileVault2Extractor,
     &apfs::ApfsExtractor,

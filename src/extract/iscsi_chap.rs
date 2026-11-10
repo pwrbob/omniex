@@ -132,12 +132,18 @@ pub(crate) mod capture {
         let mut buffer = Vec::new();
         while offset < len {
             if offset + 16 > len {
-                return Err(truncated());
+                if len - offset > 1 {
+                    return Err(truncated());
+                }
+                break;
             }
             let captured = u64::from(u32_at(source, offset + 8, big_endian)?);
             offset += 16;
             if offset + captured > len {
-                return Err(truncated());
+                if len - offset > 1 {
+                    return Err(truncated());
+                }
+                break;
             }
             if captured <= MAX_FRAME {
                 buffer.resize(captured as usize, 0);
