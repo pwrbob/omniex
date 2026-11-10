@@ -163,11 +163,12 @@ impl Cfb {
             .find(|entry| entry.kind == 2 && entry.name.eq_ignore_ascii_case(name))?;
         let size = usize::try_from(entry.size).unwrap_or(usize::MAX);
         if entry.size < self.mini_cutoff {
-            let data = read_chain(
+            let data = read_chain_at(
                 &self.mini_stream,
                 &self.mini_fat,
                 entry.start,
                 self.mini_sector_size,
+                0,
             )
             .ok()?;
             let mut data = data;
@@ -195,6 +196,16 @@ fn read_chain(
     start: u32,
     sector_size: usize,
 ) -> Result<Vec<u8>, ExtractError> {
+    read_chain_at(data, table, start, sector_size, sector_size)
+}
+
+fn read_chain_at(
+    data: &[u8],
+    table: &[u32],
+    start: u32,
+    sector_size: usize,
+    base: usize,
+) -> Result<Vec<u8>, ExtractError> {
     if start == FREE_SECTOR || start == END_OF_CHAIN {
         return Ok(Vec::new());
     }
@@ -202,7 +213,11 @@ fn read_chain(
     let mut sector = start;
     let limit = table.len().max(1);
     for _ in 0..limit {
-        let offset = sector_offset(sector, sector_size)?;
+        let offset = usize::try_from(sector)
+            .ok()
+            .and_then(|sector| sector.checked_mul(sector_size))
+            .and_then(|offset| offset.checked_add(base))
+            .ok_or_else(|| ExtractError::Invalid("OLE sector offset overflow".to_owned()))?;
         let bytes = data
             .get(offset..offset + sector_size)
             .ok_or_else(|| ExtractError::Invalid("truncated OLE sector".to_owned()))?;
@@ -276,11 +291,10 @@ fn take_u32(cursor: &mut &[u8]) -> Result<u32, ExtractError> {
 
 fn cryptoapi_verifier(data: &[u8], kind: &str) -> Result<Verifier, ExtractError> {
     let mut cursor = data;
-    let _major = take_u16(&mut cursor)?;
-    let _minor = take_u16(&mut cursor)?;
     let _flags = take_u32(&mut cursor)?;
     let mut header_len = take_u32(&mut cursor)?;
     let _skip_flags = take_u32(&mut cursor)?;
+    header_len = header_len.saturating_sub(4);
     let _size_extra = take_u32(&mut cursor)?;
     header_len = header_len.saturating_sub(4);
     let _alg_id = take_u32(&mut cursor)?;
@@ -295,6 +309,10 @@ fn cryptoapi_verifier(data: &[u8], kind: &str) -> Result<Verifier, ExtractError>
     header_len = header_len.saturating_sub(4);
     let _unused = take_u32(&mut cursor)?;
     header_len = header_len.saturating_sub(4);
+    if kind == "Excel" {
+        let _unused = take_u32(&mut cursor)?;
+        header_len = header_len.saturating_sub(4);
+    }
     let _csp = take(&mut cursor, header_len as usize)?;
     let version = match key_size {
         0 | 40 => 3,
@@ -357,9 +375,13 @@ fn word_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
 }
 
 fn excel_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
+    excel_verifier_stream(cfb, "Workbook")
+}
+
+fn excel_verifier_stream(cfb: &Cfb, name: &str) -> Result<Verifier, ExtractError> {
     let stream = cfb
-        .stream("Workbook")
-        .ok_or_else(|| ExtractError::Unsupported("missing Workbook stream".to_owned()))?;
+        .stream(name)
+        .ok_or_else(|| ExtractError::Unsupported(format!("missing {name} stream")))?;
     let mut position = 0usize;
     while position + 4 <= stream.len() {
         let kind = LittleEndian::read_u16(&stream[position..position + 2]);
@@ -398,7 +420,7 @@ fn excel_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
             || data.starts_with(&[1, 0, 3, 0])
             || data.starts_with(&[1, 0, 4, 0])
         {
-            return cryptoapi_verifier(&data[4..], "Excel");
+            return cryptoapi_verifier(&data[6..], "Excel");
         }
     }
     Err(ExtractError::Unsupported(
@@ -499,6 +521,9 @@ fn extract_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
     }
     if cfb.has_stream("Workbook") {
         return excel_verifier(cfb);
+    }
+    if cfb.has_stream("Book") {
+        return excel_verifier_stream(cfb, "Book");
     }
     if cfb.has_stream("WordDocument") {
         return word_verifier(cfb);

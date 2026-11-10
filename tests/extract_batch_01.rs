@@ -64,7 +64,8 @@ fn pkzip_extracts_the_entry() {
         .extract(&artifact("pkzip", "archive.zip"))
         .expect("extract");
     assert_eq!(rendered(&hashes), [expected("pkzip")]);
-    assert!(hashes[0].modes().contains(&Mode::Hashcat(17200)));
+    assert!(hashes[0].modes().contains(&Mode::Hashcat(17210)));
+    assert!(!hashes[0].modes().contains(&Mode::Hashcat(17200)));
     assert!(hashes[0].modes().contains(&Mode::Hashcat(17225)));
     assert!(hashes[0].modes().contains(&Mode::John("PKZIP")));
 }

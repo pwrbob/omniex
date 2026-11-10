@@ -23,6 +23,18 @@ fn required<'a>(node: Node<'a, 'a>, name: &str) -> Result<&'a str, ExtractError>
         .ok_or_else(|| ExtractError::Invalid(format!("missing ODF manifest attribute `{name}`")))
 }
 
+fn child<'a>(node: Node<'a, 'a>, tag: &str) -> Option<Node<'a, 'a>> {
+    node.children()
+        .find(|child| child.is_element() && child.tag_name().name() == tag)
+}
+
+fn nested_required<'a>(node: Node<'a, 'a>, tag: &str, name: &str) -> Result<&'a str, ExtractError> {
+    child(node, tag)
+        .and_then(|child| attribute(child, name))
+        .or_else(|| attribute(node, name))
+        .ok_or_else(|| ExtractError::Invalid(format!("missing ODF manifest attribute `{name}`")))
+}
+
 fn parse(artifact: &Artifact) -> Result<Odf, ExtractError> {
     let data = artifact.primary().read_all().map_err(|error| {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
@@ -54,7 +66,7 @@ fn parse(artifact: &Artifact) -> Result<Odf, ExtractError> {
         .find(|node| node.is_element() && attribute(*node, "checksum").is_some())
         .ok_or_else(|| ExtractError::Unsupported("ODF package is not encrypted".to_owned()))?;
 
-    let algorithm = required(encryption, "algorithm-name")?;
+    let algorithm = nested_required(encryption, "algorithm", "algorithm-name")?;
     let cipher_type = if algorithm.contains("aes256-cbc") {
         1
     } else if algorithm.contains("Blowfish CFB") {
@@ -74,7 +86,11 @@ fn parse(artifact: &Artifact) -> Result<Odf, ExtractError> {
             "unsupported ODF checksum `{checksum_type_name}`"
         )));
     };
-    let start_key = required(encryption, "start-key-generation-name")?;
+    let start_key = nested_required(
+        encryption,
+        "start-key-generation",
+        "start-key-generation-name",
+    )?;
     let start_key_type = if start_key.to_ascii_uppercase().contains("SHA256") {
         1
     } else if start_key.to_ascii_uppercase().contains("SHA1") {
@@ -90,7 +106,7 @@ fn parse(artifact: &Artifact) -> Result<Odf, ExtractError> {
         ));
     }
     let number = |name: &str| -> Result<u32, ExtractError> {
-        required(encryption, name)?
+        nested_required(encryption, "key-derivation", name)?
             .parse::<u32>()
             .map_err(|_| ExtractError::Invalid(format!("invalid ODF `{name}`")))
     };
@@ -98,11 +114,17 @@ fn parse(artifact: &Artifact) -> Result<Odf, ExtractError> {
     let key_size = number("key-size")?;
     let decode = |name: &str| -> Result<Vec<u8>, ExtractError> {
         STANDARD
-            .decode(required(encryption, name)?)
-            .map_err(|_| ExtractError::Invalid(format!("invalid ODF `{name}` base64")))
+            .decode(nested_required(encryption, "key-derivation", name)?)
+            .map_err(|_| ExtractError::Invalid(format!("invalid ODF `{name}`")))
     };
     let checksum = decode("checksum")?;
-    let iv = decode("initialisation-vector")?;
+    let iv = STANDARD
+        .decode(nested_required(
+            encryption,
+            "algorithm",
+            "initialisation-vector",
+        )?)
+        .map_err(|_| ExtractError::Invalid("invalid ODF `initialisation-vector`".to_owned()))?;
     let salt = decode("salt")?;
 
     let content = {
