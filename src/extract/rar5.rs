@@ -119,6 +119,11 @@ fn crypt_record(
             "RAR5 encryption without a password check is not supported".to_owned(),
         ));
     }
+    let iv = if has_iv {
+        cursor.bytes(SIZE_IV)?.try_into().expect("sixteen-byte IV")
+    } else {
+        [0; SIZE_IV]
+    };
     let password_check: [u8; SIZE_PSWCHECK] = cursor
         .bytes(SIZE_PSWCHECK)?
         .try_into()
@@ -126,11 +131,6 @@ fn crypt_record(
     if has_checksum {
         cursor.uint32()?;
     }
-    let iv = if has_iv {
-        cursor.bytes(SIZE_IV)?.try_into().expect("sixteen-byte IV")
-    } else {
-        [0; SIZE_IV]
-    };
     Ok(Some(Rar5 {
         salt,
         iterations,
