@@ -174,6 +174,11 @@ fn standard_hash(data: &[u8]) -> Result<Office, ExtractError> {
 }
 
 fn hashes(data: Vec<u8>) -> Result<Vec<Office>, ExtractError> {
+    if data.starts_with(b"PK\x03\x04") {
+        return Err(ExtractError::Unsupported(
+            "Office Open XML document is not encrypted; no password hash to extract".to_owned(),
+        ));
+    }
     let cfb = Cfb::parse(data)?;
     let stream = cfb
         .stream("EncryptionInfo")

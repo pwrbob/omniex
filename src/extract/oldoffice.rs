@@ -337,7 +337,7 @@ fn word_table(cfb: &Cfb) -> Result<&'static str, ExtractError> {
     let encrypted = flags & 1 != 0;
     if !encrypted {
         return Err(ExtractError::Unsupported(
-            "Word document is not encrypted".to_owned(),
+            "Word document is not encrypted; no password hash to extract".to_owned(),
         ));
     }
     Ok(if flags & 2 != 0 { "1Table" } else { "0Table" })
@@ -367,9 +367,10 @@ fn word_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
         });
     }
     if major < 2 || minor != 2 {
-        return Err(ExtractError::Unsupported(format!(
-            "unsupported Word encryption version {major}.{minor}"
-        )));
+        return Err(ExtractError::Unsupported(
+            "unsupported Word encryption, likely XOR obfuscation; no password hash to extract"
+                .to_owned(),
+        ));
     }
     cryptoapi_verifier(&stream[4..], "Word")
 }
@@ -397,9 +398,14 @@ fn excel_verifier_stream(cfb: &Cfb, name: &str) -> Result<Verifier, ExtractError
         if kind != FILEPASS {
             continue;
         }
+        if data.len() == 4 {
+            return Err(ExtractError::Unsupported(
+                "Excel 95 XOR obfuscation is reversible; no password hash to extract".to_owned(),
+            ));
+        }
         if data.starts_with(&[0, 0]) {
             return Err(ExtractError::Unsupported(
-                "Excel XOR obfuscation is not supported".to_owned(),
+                "Excel XOR obfuscation is reversible; no password hash to extract".to_owned(),
             ));
         }
         if data.starts_with(&[1, 0, 1, 0, 1, 0]) {
@@ -424,7 +430,7 @@ fn excel_verifier_stream(cfb: &Cfb, name: &str) -> Result<Verifier, ExtractError
         }
     }
     Err(ExtractError::Unsupported(
-        "no Excel FILEPASS record found".to_owned(),
+        "Excel workbook is not encrypted; no password hash to extract".to_owned(),
     ))
 }
 
@@ -449,7 +455,7 @@ fn power_point_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
     let rec_len = LittleEndian::read_u32(&document[offset_to_current_edit + 4..]) as usize;
     if rec_len != 32 || LittleEndian::read_u16(&document[offset_to_current_edit + 2..]) != 0x0ff5 {
         return Err(ExtractError::Unsupported(
-            "PowerPoint document is not encrypted".to_owned(),
+            "PowerPoint document is not encrypted; no password hash to extract".to_owned(),
         ));
     }
     let mut cursor = &document[offset_to_current_edit + 8..];
