@@ -19,10 +19,10 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
-  checks:
-    name: Format, lint, docs, and tests
+  lint:
+    name: Format and lint
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
@@ -35,7 +35,7 @@ jobs:
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
         with:
-          shared-key: stable-checks
+          shared-key: stable-lint
 
       - name: Check formatting
         run: cargo fmt --all --check
@@ -43,10 +43,42 @@ jobs:
       - name: Run Clippy
         run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: stable-docs
+
       - name: Build documentation
         run: cargo doc --workspace --no-deps --locked
         env:
           RUSTDOCFLAGS: -D warnings
+
+  tests:
+    name: Workspace tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: stable-tests
 
       - name: Run tests
         run: cargo test --workspace --all-targets --locked
@@ -72,7 +104,7 @@ jobs:
         run: cargo check --workspace --all-targets --locked
 
   hashcat-build:
-    needs: [checks, msrv]
+    needs: [lint, docs, tests, msrv]
     name: Build hashcat
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -180,7 +212,7 @@ jobs:
           retention-days: 7
 
   john:
-    needs: [checks, msrv]
+    needs: [lint, docs, tests, msrv]
     name: John conformance
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -242,7 +274,7 @@ jobs:
             --repo oletools --repo keepassxc --repo geth
 
   paired-samples:
-    needs: [checks, msrv]
+    needs: [lint, docs, tests, msrv]
     name: Paired sample extraction
     runs-on: ubuntu-latest
     timeout-minutes: 15
