@@ -104,11 +104,12 @@ For each extractor:
 - test multi-member artifacts and bounded reads when the extractor uses them,
 - test that unknown cipher or mode parameters are rejected rather than guessed.
 
-When the pinned John build is available, `tests/extract_conformance.rs` runs the
-corresponding `*2john` scripts against the fixtures and compares their output to
-the expected hash strings. Extractors whose reference script is broken under
-Python 3, emits a different serialization, or has no reference script remain
-covered by fixture tests; the conformance test documents those exceptions.
+When the pinned John build is available, `scripts/external-samples/run.py` runs
+the corresponding `*2john` scripts against the external fixtures and compares
+their output to the expected hash strings. Extractors whose reference script is
+broken under Python 3, emits a different serialization, or has no reference
+script remain covered by fixture tests; the conformance runner documents those
+exceptions.
 
 When the cracker builds are available, `tests/extract_cracker_e2e.rs` runs the
 full artifact-to-cracker path for fixtures that declare `hashcat` or `john` in
@@ -256,10 +257,11 @@ These are intentionally not part of v0:
 
 ## Paired sample corpus
 
-The `paired-samples` CI job clones the hashcat repository's
-`tools/2hashcat_tests` directory at run time and runs
-`scripts/check-paired-samples.py`. That directory pairs KeePass KDBX v4 files
-with hashcat and John serializations, and GPG OCB-AES private keys with
-hashcat serializations. The artifacts are not stored in this repository.
+The `external-samples` CI job runs the paired corpus and the external sample
+repositories. It clones the hashcat repository's `tools/2hashcat_tests`
+directory at run time and runs `scripts/external-samples/run.py`. That directory
+pairs KeePass KDBX v4 files with hashcat and John serializations, and GPG
+OCB-AES private keys with hashcat serializations. The artifacts are not stored
+in this repository.
 
 See `doc/SAMPLE_CORPORA.md` for artifact-only corpora and their limitations.

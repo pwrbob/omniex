@@ -23,4 +23,4 @@ repository.
   artifacts.
 
 The paired corpus is checked in CI. Artifact-only corpora can be used locally
-with the pinned John scripts and `tests/extract_conformance.rs`.
+with the pinned John scripts and `scripts/external-samples/run.py`.

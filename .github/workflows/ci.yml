@@ -139,6 +139,42 @@ jobs:
             tmp/reference/hashcat-8.0.0/OpenCL
           if-no-files-found: error
 
+  john-build:
+    name: Build John
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install John build dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libssl-dev
+
+      - name: Fingerprint CPU features
+        id: cpu
+        run: |
+          flags="$(grep -m1 '^flags' /proc/cpuinfo)"
+          echo "CPU flags: $flags"
+          echo "flags=$(printf '%s\n' "$flags" | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache reference John
+        uses: actions/cache@v5
+        with:
+          path: tmp/reference
+          key: ${{ runner.os }}-reference-john-5184bc0b8c105f8c5978b112e723d65b2de3e63e-${{ hashFiles('scripts/build-john.sh') }}-${{ steps.cpu.outputs.flags }}
+
+      - name: Build John jumbo
+        run: scripts/build-john.sh
+
+      - name: Upload John
+        uses: actions/upload-artifact@v5
+        with:
+          name: john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
+          path: tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
+          if-no-files-found: error
+
   hashcat:
     name: Hashcat conformance (${{ matrix.shard }}/4)
     needs: [hashcat-build, lint, docs, tests, msrv]
@@ -211,10 +247,54 @@ jobs:
           retention-days: 7
 
   john:
-    needs: [hashcat-build, lint, docs, tests, msrv]
+    needs: [john-build, lint, docs, tests, msrv]
     name: John conformance
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install sample extraction dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            build-essential libssl-dev python3-olefile \
+            python3-lxml python3-pyasn1 python3-pycryptodome python3-protobuf \
+            libcompress-raw-lzma-perl p7zip-full tshark
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+
+      - name: Download John
+        uses: actions/download-artifact@v5
+        with:
+          name: john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
+          path: tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
+
+      - name: Run John conformance
+        env:
+          OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
+          OMNIEX_CONFORMANCE_SUBSET: ${{ github.event_name == 'pull_request' && '1' || '0' }}
+        run: |
+          cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
+          cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
+            john_loads_extracted_artifacts
+
+      - name: Run real-file extractor tests
+        env:
+          OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
+        run: |
+          cargo test -p omniex --test extract_real_files --locked -- --ignored --nocapture
+
+  external-samples:
+    needs: [john-build, hashcat-build, lint, docs, tests, msrv]
+    name: External sample extraction
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
@@ -233,21 +313,11 @@ jobs:
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
 
-      - name: Fingerprint CPU features
-        id: cpu
-        run: |
-          flags="$(grep -m1 '^flags' /proc/cpuinfo)"
-          echo "CPU flags: $flags"
-          echo "flags=$(printf '%s\n' "$flags" | sha256sum | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache reference John
-        uses: actions/cache@v5
+      - name: Download John
+        uses: actions/download-artifact@v5
         with:
-          path: tmp/reference
-          key: ${{ runner.os }}-reference-john-5184bc0b8c105f8c5978b112e723d65b2de3e63e-${{ hashFiles('scripts/build-john.sh') }}-${{ steps.cpu.outputs.flags }}
-
-      - name: Build John jumbo
-        run: scripts/build-john.sh
+          name: john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
+          path: tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
 
       - name: Download hashcat
         uses: actions/download-artifact@v5
@@ -261,14 +331,8 @@ jobs:
           path: tmp/external-samples
           key: ${{ runner.os }}-external-samples-${{ hashFiles('scripts/external-samples/repos/**/manifest.toml', 'scripts/external-samples/locks/*.toml') }}
 
-      - name: Run John conformance
-        env:
-          OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
-          OMNIEX_CONFORMANCE_SUBSET: ${{ github.event_name == 'pull_request' && '1' || '0' }}
-        run: |
-          cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
-          cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
-            john_loads_extracted_artifacts
+      - name: Build omniex
+        run: cargo build --workspace --locked
 
       - name: Run external sample extraction
         env:
@@ -279,26 +343,5 @@ jobs:
           python3 scripts/external-samples/run.py run \
             --repo omniex-fixtures --source "omniex-fixtures=$GITHUB_WORKSPACE"
           python3 scripts/external-samples/run.py run \
-            --repo john-samples --repo unarcrypto --repo msoffcrypto \
+            --repo hashcat-2hashcat --repo john-samples --repo unarcrypto --repo msoffcrypto \
             --repo oletools --repo keepassxc --repo geth
-
-  paired-samples:
-    needs: [lint, docs, tests, msrv]
-    name: Paired sample extraction
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
-
-      - name: Build omniex
-        run: cargo build --workspace --locked
-
-      - name: Check paired sample corpus
-        run: python3 scripts/external-samples/run.py run --repo hashcat-2hashcat

@@ -705,3 +705,25 @@ format = "hashcat"
 reference_format = "john"
 companions = ["{dir}/enckey.dat"]
 omniex_args = ["--companion", "enckey={artifact_dir}/enckey.dat"]
+
+# Neither John nor hashcat ships an SNMPv3 extractor, so these only guard
+# against extraction regressions.
+[[case]]
+name = "snmpv3-{base}"
+glob = "SNMPv3/*.pcap"
+slug = "snmpv3"
+reference = "structural"
+
+# John emits $WPAPSK$ or its own PMKID serialization, not the hashcat WPA*
+# lines this extractor renders, so there is no comparable reference.
+[[case]]
+name = "wpa-{base}"
+glob = "WPA-PSK/[Dg]*.cap"
+slug = "wpa-pmkid"
+reference = "structural"
+
+[[case]]
+name = "wpa-{base}"
+glob = "WPA-PSK/wpa-Induction.pcap*"
+slug = "wpa-pmkid"
+reference = "structural"
