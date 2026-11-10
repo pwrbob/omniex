@@ -27,7 +27,9 @@ Before calling an iteration finished:
    varying parameter (output size, round count, variant, or similar) selected
    by the mode and filtered through `modes_fn`. This keeps the type count
    driven by logical hash types rather than hashcat mode numbers.
-6. Commit the result. Do not push.
+6. Run all Cargo tests with `cargo test --workspace --locked`, including any
+   ignored conformance suites, and fix every failure before committing.
+7. Commit the result. Do not push.
 
 ## Dependency MSRV
 
