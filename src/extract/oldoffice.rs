@@ -249,6 +249,7 @@ struct Verifier {
     salt: [u8; 16],
     verifier: [u8; 16],
     hash: Vec<u8>,
+    second_block: Vec<u8>,
 }
 
 fn read_verifier(cursor: &mut &[u8], version: u8) -> Result<Verifier, ExtractError> {
@@ -267,6 +268,7 @@ fn read_verifier(cursor: &mut &[u8], version: u8) -> Result<Verifier, ExtractErr
         salt,
         verifier,
         hash,
+        second_block: Vec::new(),
     })
 }
 
@@ -364,6 +366,7 @@ fn word_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
             salt,
             verifier,
             hash,
+            second_block: Vec::new(),
         });
     }
     if major < 2 || minor != 2 {
@@ -372,7 +375,11 @@ fn word_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
                 .to_owned(),
         ));
     }
-    cryptoapi_verifier(&stream[4..], "Word")
+    let mut verifier = cryptoapi_verifier(&stream[4..], "Word")?;
+    if verifier.version == 3 {
+        verifier.second_block = stream.get(512..544).map_or_else(Vec::new, <[u8]>::to_vec);
+    }
+    Ok(verifier)
 }
 
 fn excel_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
@@ -420,13 +427,19 @@ fn excel_verifier_stream(cfb: &Cfb, name: &str) -> Result<Verifier, ExtractError
                 salt: payload[..16].try_into().expect("sixteen-byte salt"),
                 verifier: payload[16..32].try_into().expect("sixteen-byte verifier"),
                 hash: payload[32..48].to_vec(),
+                second_block: Vec::new(),
             });
         }
         if data.starts_with(&[1, 0, 2, 0])
             || data.starts_with(&[1, 0, 3, 0])
             || data.starts_with(&[1, 0, 4, 0])
         {
-            return cryptoapi_verifier(&data[6..], "Excel");
+            let mut verifier = cryptoapi_verifier(&data[6..], "Excel")?;
+            if verifier.version == 3 {
+                verifier.second_block =
+                    stream.get(1024..1056).map_or_else(Vec::new, <[u8]>::to_vec);
+            }
+            return Ok(verifier);
         }
     }
     Err(ExtractError::Unsupported(
@@ -563,6 +576,7 @@ fn hash_from_verifier(verifier: Verifier) -> Result<OldOffice, ExtractError> {
         verifier: verifier.verifier,
         key: verifier.hash,
         rc4_key: Vec::new(),
+        second_block: verifier.second_block,
     })
 }
 

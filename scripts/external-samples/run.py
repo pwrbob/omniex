@@ -56,6 +56,7 @@ ALLOWED_CASE = {
     "companions",
     "decode",
     "filter",
+    "exclude",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -79,6 +80,7 @@ class Case:
     requires: list[str] = field(default_factory=list)
     companions: list[str] = field(default_factory=list)
     decode: str = ""
+    exclude: list[str] = field(default_factory=list)
     filter: list[str] = field(default_factory=list)
 
 
@@ -462,6 +464,7 @@ def expand_cases(
             companions=list(raw.get("companions", [])),
             decode=str(raw.get("decode", "")),
             filter=list(raw.get("filter", [])),
+            exclude=list(raw.get("exclude", [])),
         )
         pattern = raw.get("glob")
         if pattern is not None:
@@ -475,7 +478,13 @@ def expand_cases(
                 checkout = checkout_for(manifest, [prefix] if prefix else [""])
                 root = checkout
             matches = sorted(
-                path for path in root.glob(pattern) if path.is_file()
+                path
+                for path in root.glob(pattern)
+                if path.is_file()
+                and not any(
+                    fnmatch.fnmatch(path.relative_to(root).as_posix(), excluded)
+                    for excluded in base.exclude
+                )
             )
             if not matches:
                 fail(f"{manifest.ident}: glob matched nothing: {pattern}")

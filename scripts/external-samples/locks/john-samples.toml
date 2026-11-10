@@ -647,3 +647,115 @@ sha256 = "e9a424e4b97247c2f78b4cb82a95a44d582430f81c8c08a7e801e0a4706c41e8"
 [[file]]
 path = "iTunes_Backup/Manifest-9-test123.plist"
 sha256 = "b517b27cf5c491d6cc9c78963333294d26a01413717333a93b10d886e6479da2"
+
+[[file]]
+path = "Office/Office_Secrets/LibreOffice_3.5.1/Libre-97-2000_myhovercraftisfullofeels_.doc"
+sha256 = "1a8b24137d4702a3a9b42aede69b2df8702f05cb1375d068fd11e1f7fbfc6d1b"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-Office97-2000_1234567890123456_.doc"
+sha256 = "716ac71d3a15fe8109111305de9ae17c6975f1b1951a6862942ca1205c3537a6"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-Office97-2000_123456789012345_.doc"
+sha256 = "e5b47b25ced1d12e1ef820c2d4cdf0a4518250e6b48ccac3cf2347dbb0fbbca9"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-Office97-2000_myhovercraftisfullofeels_.doc"
+sha256 = "1fe79ead22d46501ff6377aa3bfd5c54b7171a925c7e9a22067220c268d0ccf4"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-RC4-40bit-MS-Base-Crypto-1.0_myhovercraftisfullofeels_.doc"
+sha256 = "993a51ce1ca59a52db25627d59ae92ae55b8b52e11ce54e9aac6fa5e92c8e745"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-RC4-40bit-MS-Base-DH-SChan_myhovercraftisfullofeels_.doc"
+sha256 = "280850e208949628caf731e101f9a0ad5559560d5a12e291006c6b3b9076ff56"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/Test-RC4-128bit-MS-Strong-Crypto_myhovercraftisfullofeels_.doc"
+sha256 = "aebc584b1c55a3fb86828dcb3d3056a4f73d6a816ec02ee2f1cde2312326fe77"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/Test-RC4-40bit-MS-Base-DSS_myhovercraftisfullofeels_.doc"
+sha256 = "2bfcbf11d46075819693caef3fe04c326b4c9415fcc79d0412047a0dc131a739"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Office97-2000_myhovercraftisfullofeels_.doc"
+sha256 = "81423d5d1ec97f9b68cbcbb3bc5c863cc2a4559b61bf3737c07c6ea9db456fd0"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Office97-2000_myhovercraftisfullofeels_.doc"
+sha256 = "a89e3def9a6e0f69f12739f22312933ea7691a4223c78810d7c75930c40bb305"
+
+[[file]]
+path = "Office/Office_Secrets/Office_XP/XP-Office97-2000_myhovercraftisfullofeels_.doc"
+sha256 = "a69e4aa4763fcba4d1ecd933b1bef7197ecba4abeb8ea051e581d938ec7b02f7"
+
+[[file]]
+path = "Office/Office_Secrets/Office_XP/XP-RC4-128bit-Strong-Crypto_myhovercraftisfullofeels_.doc"
+sha256 = "6de5ae528128f752b0349b297f85a1fccd22c4ba8a683f7d536010a9f58359ca"
+
+[[file]]
+path = "Office/Office_Secrets/Office_XP/XP-RC4-40bit-base-1.0_myhovercraftisfullofeels_.doc"
+sha256 = "fbf05ee7fd9b2e542b3e2a7fdf3a8dda28fd6b18fdb8ddae8329263c36c4c354"
+
+[[file]]
+path = "Office/Office_Secrets/LibreOffice_3.5.1/Libre-97-2000_myhovercraftisfullofeels_.xls"
+sha256 = "dbbb198599b7d2e150f367fdcce2f795ec7155c9fd466da789e8c1a8482846ff"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-Office97-2000_123456789012345_.xls"
+sha256 = "08dc62839299c11d30638a226fd2b653f37fda9c02a449a17c1e0ecfdd29bbbf"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-Office97-2000_VelvetSweatshop_.xls"
+sha256 = "a9624a63743f193a9213a5824b832362878ae5b3d862cacdafa2c0a6c0618e96"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/2003-RC4-40bit-MS-Base-1.0_myhovercraftisfullofeels_.xls"
+sha256 = "d81b74c9eb50a60ecdc9b491b125769d9224620b64193aba53df3b312f3b2e2b"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/Test-RC4-40bit-MS-Base-DSS_myhovercraftisfullofeels_.xls"
+sha256 = "79e94790f0f781d7792e71ecad222f3310ad74594e31f523c52a0f3392f264c4"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2003/Test-RC4-40bit-MS-Dh-SChannel_myhovercraftisfullofeels_.xls"
+sha256 = "74789aead60ab994b9e6beca40da3a90e1bdde20f22f787b73050a3400b98c63"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Office97-2000_myhovercraftisfullofeels_.xls"
+sha256 = "8c295fd42c0a1853039a0ca37062a3f31e1bfe503c3c93b0960fcdd975448b70"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Default_myhovercraftisfullofeels_.xls"
+sha256 = "811c1d58e6198b1c01c086a24c1222bf434794aea560ad773fe4130360f101da"
+
+[[file]]
+path = "Office/Office_Secrets/Office_XP/XP-Office97-2000_myhovercraftisfullofeels_.xls"
+sha256 = "3234165c8d349fb566d93d0ee696c2d62e7f42f1db2136179eceeda21d5c40b5"
+
+[[file]]
+path = "Office/Office_Secrets/Office_XP/XP-RC4-128bit-strong-crypto_myhovercraftisfullofeels_.xls"
+sha256 = "5cfc4ff62e2f06ac975f9f02edf250ec62d35b3409fdc2a5fdc07eb4839ced50"
+
+[[file]]
+path = "Office/Office_Secrets/Office_XP/XP-RC4-40bit-base-1.0_myhovercraftisfullofeels_.xls"
+sha256 = "b3bea0e607c364ab98c9c8ba5ba3ab3f5b863f8efc8204a55babd6b1451b23d9"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Office97-2000_myhovercraftisfullofeels_.dot"
+sha256 = "eacffe08de0a3abe410664d54fef2fca13bf4cc2454df2bf03ef0de80e2f98fd"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Office97-2000_myhovercraftisfullofeels_.dot"
+sha256 = "32ec79ef9e671c304c9f0b8119efdc116c3993855f02462250c41f2acb103eaa"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Office97-2000_myhovercraftisfullofeels_.xla"
+sha256 = "002292db57a71d77262c0b03d3f82990afee3070b84bc2813232e92d94b45a98"
+
+[[file]]
+path = "Office/вα¢к тσ єηgℓαη∂.doc"
+sha256 = "ba099d72603b3239ea6e5828e110e03e3f7220109b8c08a898b27cac505e24fd"

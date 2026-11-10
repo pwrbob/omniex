@@ -414,3 +414,53 @@ glob = "iTunes_Backup/*.plist"
 slug = "itunes-backup"
 reference = "john:itunes_backup2john.pl"
 format = "john"
+
+[[case]]
+name = "oldoffice-{path}"
+glob = "Office/Office_Secrets/**/*.doc"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "hashcat"
+exclude = [
+  "Office/Office_Secrets/**/*cracking.*",
+  "Office/Office_Secrets/**/*Cracking.*",
+  "Office/Office_Secrets/**/Test-weak-XOR_*",
+  "Office/Office_Secrets/**/*win95*.xls",
+]
+
+[[case]]
+name = "oldoffice-{path}"
+glob = "Office/Office_Secrets/**/*.xls"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "hashcat"
+exclude = [
+  "Office/Office_Secrets/**/*cracking.*",
+  "Office/Office_Secrets/**/*Cracking.*",
+  "Office/Office_Secrets/**/Test-weak-XOR_*",
+  "Office/Office_Secrets/**/*win95*.xls",
+]
+
+[[case]]
+name = "oldoffice-{path}"
+glob = "Office/Office_Secrets/**/*.dot"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "hashcat"
+
+[[case]]
+name = "oldoffice-{path}"
+glob = "Office/Office_Secrets/**/*.xla"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "hashcat"
+
+[[case]]
+name = "oldoffice-unicode"
+path = "Office/вα¢к тσ єηgℓαη∂.doc"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "hashcat"
+
+# The LibreOffice ODF samples are encrypted, but office2john reports them as
+# unencrypted, so no reference serialization is available.

@@ -60,6 +60,7 @@ reference_path = "{dir}/"                    # artifact passed to the reference
 reference_format = "john"                    # when it differs from format
 requires = ["python:lxml", "tool:tshark"]    # environment prerequisites
 filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
+exclude = ["Office/**/unencrypted.*"]         # glob matches to skip
 ```
 
 Use `decode = "uu"` for reference data stored as uuencoded files, such as
