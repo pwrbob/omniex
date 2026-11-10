@@ -1,0 +1,26 @@
+type = "encdv"
+generator = "ENCDataVault filesystem.dat, index.dat, enckey.dat, and keychain.dat"
+notes = "Real ENCDataVault vault samples from the John test corpus."
+
+[[case]]
+artifact = "filesystem-v1.dat"
+hashcat = "$encdv$1$1$04738b48de9d25d1$63cb5cd9ab06f1e1"
+john = "-"
+
+[[case]]
+artifact = "filesystem-v1-pbkdf2.dat"
+companions = { "enckey" = "enckey-v1-pbkdf2.dat" }
+hashcat = "$encdv-pbkdf2$1$1$eb012112b3561e6e$01c7dca58660d6ae$32$9b1c17f7a467cf4d13b73dfd3ce12b3dd51cb980cc1f0ccfad4e47e9c9f3d774$100000"
+john = "-"
+
+[[case]]
+artifact = "index-v3.dat"
+companions = { "keychain" = "keychain-v3.dat" }
+hashcat = "$encdv$3$4$077258d7ebc440a9$45fafa3cbc04d125$739f9d85964cef2f63b927ff77f3328cc5192014ae21c29954c322f4e808fe5c8abe64cc150dbcb08cb334f3b5c28357f10d8d5c6a103e2c899402136c14633aaf8a5347959b33b80ade2e3f5698864605940dc1423704999e5da859d6584491bbe940f00f162c75d2766b868ef2b4c6bf599a2e8ccea3f7cdfab193744a8d10"
+john = "-"
+
+[[case]]
+artifact = "index-v3-pbkdf2.dat"
+companions = { "enckey" = "enckey-v3-pbkdf2.dat", "keychain" = "keychain-v3-pbkdf2.dat" }
+hashcat = "$encdv-pbkdf2$3$4$4f1d3889c629968c$e8b68bb804b94a23$32$fa79c83e85a41973799522f525e1316ca07ab663def47b816da76205dc1e3e80$100000$0443baa02c7e00870a24f0c16ff0454c56ad079e334bb6fb52bf39de56485dc07f4827d8d83b6f3bf135062e2869d58b8ade04db0716c75d2519797cdbb1d9d75ffe3fc156edfd3bb95747fc0286c149c3c90da8a4b4cdf11838b680b6e9b26da3a0c93f29f8bff6e70f07e6077cda620f7b808793dc127395a11bfc068f1895"
+john = "-"
