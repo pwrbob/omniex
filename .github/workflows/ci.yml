@@ -311,7 +311,7 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
             build-essential libssl-dev python3-olefile \
             python3-lxml python3-pyasn1 python3-pycryptodome python3-protobuf \
-            libcompress-raw-lzma-perl tshark
+            python3-asn1crypto libcompress-raw-lzma-perl tshark
 
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
