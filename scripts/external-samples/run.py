@@ -766,7 +766,17 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             reference_case.fetch = "tree"
         reference_artifact = artifact_path(manifest, reference_case, sources, offline)
     if case.filter:
-        command = [render_template(arg, str(reference_artifact)) for arg in case.filter]
+        command = [
+            render_template(
+                arg,
+                str(reference_artifact),
+                {
+                    "artifact": str(reference_artifact),
+                    "artifact_dir": str(reference_artifact.parent),
+                },
+            )
+            for arg in case.filter
+        ]
         output = run_command(command)
         WORK.mkdir(parents=True, exist_ok=True)
         digest = hashlib.sha256(case.name.encode("utf-8")).hexdigest()[:16]
