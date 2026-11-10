@@ -55,6 +55,7 @@ ALLOWED_CASE = {
     "requires",
     "companions",
     "decode",
+    "filter",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -78,6 +79,7 @@ class Case:
     requires: list[str] = field(default_factory=list)
     companions: list[str] = field(default_factory=list)
     decode: str = ""
+    filter: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -459,6 +461,7 @@ def expand_cases(
             requires=list(raw.get("requires", [])),
             companions=list(raw.get("companions", [])),
             decode=str(raw.get("decode", "")),
+            filter=list(raw.get("filter", [])),
         )
         pattern = raw.get("glob")
         if pattern is not None:
@@ -467,6 +470,8 @@ def expand_cases(
             root = local_root
             if root is None:
                 prefix = glob_prefix(pattern)
+                if prefix == pattern:
+                    prefix = str(Path(prefix).parent)
                 checkout = checkout_for(manifest, [prefix] if prefix else [""])
                 root = checkout
             matches = sorted(
@@ -711,6 +716,18 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             if result.returncode != 0:
                 print(f"skip {manifest.ident}/{case.name}: Perl module `{name}` is missing")
                 return
+        elif kind == "python":
+            result = subprocess.run(
+                [sys.executable, "-c", f"import {name}"],
+                capture_output=True,
+            )
+            if result.returncode != 0:
+                print(f"skip {manifest.ident}/{case.name}: Python module `{name}` is missing")
+                return
+        elif kind == "tool":
+            if shutil.which(name) is None:
+                print(f"skip {manifest.ident}/{case.name}: tool `{name}` is missing")
+                return
         else:
             fail(f"{manifest.ident}/{case.name}: unknown requirement `{requirement}`")
     artifact = artifact_path(manifest, case, sources, offline)
@@ -724,8 +741,18 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
 
     reference_artifact = artifact
     if case.reference_path:
-        reference_case = Case(**{**vars(case), "path": case.reference_path})
+        reference_case = Case(**{**vars(case), "path": render_template(case.reference_path, case.path)})
+        if reference_case.path.endswith("/"):
+            reference_case.fetch = "tree"
         reference_artifact = artifact_path(manifest, reference_case, sources, offline)
+    if case.filter:
+        command = [render_template(arg, str(reference_artifact)) for arg in case.filter]
+        output = run_command(command)
+        WORK.mkdir(parents=True, exist_ok=True)
+        digest = hashlib.sha256(case.name.encode("utf-8")).hexdigest()[:16]
+        prepared = WORK / f"{manifest.ident}-{digest}.filtered"
+        prepared.write_text(output, encoding="utf-8")
+        reference_artifact = prepared
     kind, value, reference_path = resolve_reference(manifest, case, reference_artifact)
     if kind == "structural":
         print(f"ok   {manifest.ident}/{case.name} (structural, {len(wanted)} hash(es))")

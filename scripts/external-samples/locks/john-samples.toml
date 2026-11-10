@@ -435,3 +435,215 @@ sha256 = "d278e0c2d3718f405818f5d22db09f2f4b4b9334298a47137a49d55979f7b6ff"
 [[file]]
 path = "Office/office_2016_samples/hello-2016-lolcats.xlsx"
 sha256 = "5707b2b1e5aaaa68fb93cb96d820a8aa4af97dc5d675f47652c4086ff2af3760"
+
+[[file]]
+path = "Bitcoin/wallet-isyourpasswordstronger.dat"
+sha256 = "e70bb411bb0b63bc0e54bfd78436814260110f235fe83f79dc3a3126097b279f"
+
+[[file]]
+path = "Bitcoin/wallet-password@12345.dat"
+sha256 = "f9b35cf1d1c6e6afde364f5ce9ff86efddacffd32969004af76e3f6e14815ce6"
+
+[[file]]
+path = "Bitcoin/xdn_wallet.dat"
+sha256 = "8ca768954f4bf83e61951cfcb243633f421d5f26a959105756fa252f45f30332"
+
+[[file]]
+path = "ENCDataVault/00-SanDiskSecureAccess-password/filesystem.dat"
+sha256 = "d3ca5faca850f6c8c5274274b13d74d6342bc2947869d1ce8182fdd0afe53c39"
+
+[[file]]
+path = "ENCDataVault/01-SonyENCDataVault-password/filesystem.dat"
+sha256 = "9f4e038414bc57d739fef322fa4bbcf0e7af8c04213eeb6ee5db99a91bb143e4"
+
+[[file]]
+path = "ENCDataVault/02-ENCDataVault70-openwallopenwall/filesystem.dat"
+sha256 = "c282599607f2514a38c7453704908b9a5ff88ddc36c35575aab2704dd99638db"
+
+[[file]]
+path = "GELI/FreeBSD_11.0/geli-openwall-1.raw"
+sha256 = "8c87a71c4fd0d1a445a08849d58a5d9b8a413fcfd6a495bfc3829a22b0078677"
+
+[[file]]
+path = "GELI/FreeBSD_11.0/geli-openwall123-1.raw"
+sha256 = "b1eada426dba855c75e67041fa2dbe456e5323eec04770d7bb242be96dc45575"
+
+[[file]]
+path = "GELI/FreeBSD_11.0/geli-openwall12345-fast.raw"
+sha256 = "35d22919139fb8f88419ade0258e65833f694f504af3f687595e1c3c7cd562ab"
+
+[[file]]
+path = "GELI/FreeBSD_11.0/geli-♠-fast.raw"
+sha256 = "08dc89796b98bd3e573ea2ee69955c993948062237fa288d4b307370769d3041"
+
+[[file]]
+path = "GELI/FreeBSD_6.0to9.3/geli-6.2-fast-openwall123.raw"
+sha256 = "5d020e0b80704687226492994ac2384b2395434efdc75ccdd45007609f924b8e"
+
+[[file]]
+path = "GELI/FreeBSD_6.0to9.3/geli-7.0-fast-openwall123.raw"
+sha256 = "a597f6edbbbb039242a7fc81c09550247a26adee47c56ee04a9a6239e83e9e09"
+
+[[file]]
+path = "GELI/FreeBSD_6.0to9.3/geli-9.3-fast-openwall.raw"
+sha256 = "d470a60809c0758263b46ddec7c70922ce3b154d9024d4db0205683281c11120"
+
+[[file]]
+path = "KWallet/blank_pass.kwl"
+sha256 = "d8a7f2720d26d21bae529a414ba52fdd22788217cfb0d88efc230f0651880163"
+
+[[file]]
+path = "KWallet/kwalletmanager-15.04.2-2_fedora23.kwl"
+sha256 = "dcce2232651575a6df899c0b2441e34f77ec29d599eba89e75abcf24ddedfc4e"
+
+[[file]]
+path = "KWallet/kwalletmanager-15.04.3-5_fedora25.kwl"
+sha256 = "a47b955279ca26a6a54a43786cf692746db1a68d617ed8d17483b100cfc0a5f0"
+
+[[file]]
+path = "KWallet/kwalletmanager5-16.08.2-1_fedora25.kwl"
+sha256 = "cfc0be11f5491cb51b11c916d21da17c459202d7307f2cbb5e58dd552b925a84"
+
+[[file]]
+path = "KWallet/kwalletmanager5-25.08.2-1_fedora43.kwl"
+sha256 = "357d26a75a32fd56b3b2b6761a4fb870b5d034aaaf82a321fc25859fd6c0bcc7"
+
+[[file]]
+path = "KWallet/large-old-wallet.kwl"
+sha256 = "d27ce27d953d95d51e09394db80d97a7b4f753598d1724191af737808b7d47a9"
+
+[[file]]
+path = "KWallet/openwall.kwl"
+sha256 = "85451f156dc834ffc987c99802dcb3676d17bcf4040bb5abd14f23f68fc54d6f"
+
+[[file]]
+path = "KWallet/pwlength125.kwl"
+sha256 = "586cb04961395fbf45bce178e6d3883e8407626551fa3b13b84b6b8a72424e72"
+
+[[file]]
+path = "KWallet/pwlength15.kwl"
+sha256 = "710cb6de316ce48738d4c91f1b0cc1d3af1174489ca3bdcca0561e5dbecc5f62"
+
+[[file]]
+path = "KWallet/pwlength16.kwl"
+sha256 = "7362c39f4b62697529331c25b77002326b16ec7cf02de1b3c32ddc55496cbffc"
+
+[[file]]
+path = "KWallet/pwlength17.kwl"
+sha256 = "1f0d70616fa255d666e7edcd865b8a24210d9685ad0d88d12e8c15c7c673357c"
+
+[[file]]
+path = "KWallet/pwlength31.kwl"
+sha256 = "c40b8b80c7594b43a4e3f80c2f7a035f14b4464f7782766cb50f67d581f374ac"
+
+[[file]]
+path = "KWallet/pwlength32.kwl"
+sha256 = "58faebc0078c8953c09c3036428cdd705be608ea8efdf0925e33019259bfc7d8"
+
+[[file]]
+path = "KWallet/pwlength33.kwl"
+sha256 = "239c6811c3afe0ed1ba6ae7532f60475fabe551eff42ac03e351d43887769e7a"
+
+[[file]]
+path = "KWallet/pwlength47.kwl"
+sha256 = "7858887f4d44a69f95b0c90820fbf97389a1536fcd7e7fd195c410d2ca1073d5"
+
+[[file]]
+path = "KWallet/pwlength48.kwl"
+sha256 = "8f53c5dce60f1510d2f769d4b114d9e30e7ca9a759290873c7fb35877778a99e"
+
+[[file]]
+path = "KWallet/pwlength49.kwl"
+sha256 = "ddf20405b0a7cffe734da0b0ea81187fac72361b61d51cbb11e12b7a2835ee54"
+
+[[file]]
+path = "KWallet/pwlength63.kwl"
+sha256 = "68a71430647c1bf768d6778deac83bc7c1278cc8ceace13e815284ec1cbf6238"
+
+[[file]]
+path = "KWallet/pwlength64.kwl"
+sha256 = "3de4d2fb148b54d6ef99f16ede409d7d0e2177d958e1ccae221e06132b69f22c"
+
+[[file]]
+path = "KWallet/pwlength65.kwl"
+sha256 = "1c6660b8abe2e2673e5b84ef83495e462794dd4621e9c4fc0a054f47a63b89a8"
+
+[[file]]
+path = "KWallet/python5.kwl"
+sha256 = "02372d2564bacb564540471183e2bb6f3fdb84e03661efa65cee5e6ee03c0327"
+
+[[file]]
+path = "Kerberos_v5/krb-user1-openwall-1.pcap"
+sha256 = "fa40fa37ab04c3f4c9ce2b1c848959c6a18f525634e94497d8685fac16563b8f"
+
+[[file]]
+path = "Kerberos_v5/krb-user1-openwall-2.pcap"
+sha256 = "9f73cdd2a48fab8d7c0e176d0bab60b1c800010e4fd27651997f15138b88a619"
+
+[[file]]
+path = "Kerberos_v5/krb-user1-openwall-3.pcap"
+sha256 = "3a99054f121486232ecf20b4ae1b68f4f38504926ce935afe54342b2896448e3"
+
+[[file]]
+path = "Kerberos_v5/MiTM-etype-17-user1-openwall.pcap"
+sha256 = "356402c2b5db4411fd2f9f34ee3a3adc0cbffa0ebcf8774d28c7a085cd618096"
+
+[[file]]
+path = "Kerberos_v5/MiTM-user1-openwall-etype-23.pcap"
+sha256 = "39f86f1a52d9ba223755a0520f1a0929dd52611a2f2a509356ae8433b4caafff"
+
+[[file]]
+path = "Keynote/password.key.zip"
+sha256 = "379e99abf6a4857ac3646097e1ce5739781f887670de45487940e4ac6d1cbac7"
+
+[[file]]
+path = "Mozilla/03-Thunderbird-12345678/key3.db"
+sha256 = "c2b3b83b7753e012bdf032e2fe5dde5d253b2f03463c600b588557544897ce6f"
+
+[[file]]
+path = "Mozilla/v3.5-123456pass/key3.db"
+sha256 = "65058f583a243d841c93c907ed3718e933d77e46cef219808f835e8282d191d4"
+
+[[file]]
+path = "Mozilla/v4-123456pass/key3.db"
+sha256 = "ded6c8ba6cbdeb3d174f1a1d349c20d4543160b24b45f24c31b3abc9228f81ac"
+
+[[file]]
+path = "Multibit/MultibitClassic/jointBit-20140302075329.key"
+sha256 = "fdda0ebff8ff91fd058335ab84b42966a2329cb55bb9c6626a88e811b6322a60"
+
+[[file]]
+path = "OpenBSD_disk_encryption/bcrypt-pbkdf-openwall12345.raw"
+sha256 = "f58ac2db7a732f418511095b1025337df6aae5b30b3a22551ac0281111429f39"
+
+[[file]]
+path = "SSH/sample_ssh_private_keys/dsa_test.key"
+sha256 = "8c429a0bcb4ae882a4a2e8e341789e9a5d291f3bbd3c961bb959dcaa4cc10bd0"
+
+[[file]]
+path = "SSH/sample_ssh_private_keys/rsa_test.key"
+sha256 = "cfa7c8e937a1dca1ac2e39a32a8f52e4cd1971e7f69db70b7efff09d4500f8b8"
+
+[[file]]
+path = "SSH/openssh-new-format-keys/ssh-default.key"
+sha256 = "86b7272ca33eec207b9fe1f0629557cabef050d6dcbe553220438d5250b8ab44"
+
+[[file]]
+path = "SSH/aes-256-ctr/id_rsa-aes256-ctr"
+sha256 = "42396d47cab513a3417ce41d023a184c24cb9a46a532a271b6297875b282888c"
+
+[[file]]
+path = "eCryptfs/wrapped-passphrase"
+sha256 = "75886ca23ed18709265de5c2dfdc0bccefa64e471bf8914d2b3942de7eff9382"
+
+[[file]]
+path = "iTunes_Backup/Manifest-10-test123.plist"
+sha256 = "111d8760b1e6f1c83ad3d4e8716096029bfd89ea4b72c28628808b3966e8f32a"
+
+[[file]]
+path = "iTunes_Backup/Manifest-9-123456.plist"
+sha256 = "e9a424e4b97247c2f78b4cb82a95a44d582430f81c8c08a7e801e0a4706c41e8"
+
+[[file]]
+path = "iTunes_Backup/Manifest-9-test123.plist"
+sha256 = "b517b27cf5c491d6cc9c78963333294d26a01413717333a93b10d886e6479da2"

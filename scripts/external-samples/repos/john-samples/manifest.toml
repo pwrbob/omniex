@@ -235,3 +235,182 @@ glob = "Office/office_2016_samples/*.xlsx"
 slug = "office"
 reference = "john:office2john.py"
 format = "john"
+
+# wallet-sqlite-12345.dat uses the SQLite wallet format, which the extractor
+# does not support yet.
+[[case]]
+name = "bitcoin-{base}"
+glob = "Bitcoin/wallet-isyourpasswordstronger.dat"
+slug = "bitcoin-wallet"
+reference = "john:bitcoin2john.py"
+format = "hashcat"
+reference_format = "john"
+# bitcoin2john keeps only the last two AES blocks of the master key.
+ignore_fields = ["master"]
+requires = ["python:bsddb3"]
+
+[[case]]
+name = "bitcoin-wallet-password@12345"
+path = "Bitcoin/wallet-password@12345.dat"
+slug = "bitcoin-wallet"
+reference = "john:bitcoin2john.py"
+format = "hashcat"
+reference_format = "john"
+# bitcoin2john keeps only the last two AES blocks of the master key.
+ignore_fields = ["master"]
+requires = ["python:bsddb3"]
+
+[[case]]
+name = "bitcoin-xdn_wallet"
+path = "Bitcoin/xdn_wallet.dat"
+slug = "bitcoin-wallet"
+reference = "john:bitcoin2john.py"
+format = "hashcat"
+reference_format = "john"
+# bitcoin2john keeps only the last two AES blocks of the master key.
+ignore_fields = ["master"]
+requires = ["python:bsddb3"]
+
+# ENCDataVault/05-SanDiskPrivateAccess-123456Aa! is a PBKDF2 vault whose
+# enckey.dat companion cannot be attached through the CLI yet.
+[[case]]
+name = "encdv-{dir}"
+glob = "ENCDataVault/0[012]-*/filesystem.dat"
+slug = "encdv"
+reference = "john:encdatavault2john.py"
+reference_path = "{dir}/"
+format = "hashcat"
+reference_format = "john"
+
+[[case]]
+name = "geli-{base}"
+glob = "GELI/FreeBSD_11.0/*.raw"
+slug = "geli"
+reference = "john:geli2john.py"
+format = "john"
+
+# GELI version 0 metadata is not supported.
+[[case]]
+name = "geli-6.2-fast-openwall123"
+path = "GELI/FreeBSD_6.0to9.3/geli-6.2-fast-openwall123.raw"
+slug = "geli"
+reference = "john:geli2john.py"
+format = "john"
+
+[[case]]
+name = "geli-7.0-fast-openwall123"
+path = "GELI/FreeBSD_6.0to9.3/geli-7.0-fast-openwall123.raw"
+slug = "geli"
+reference = "john:geli2john.py"
+format = "john"
+
+[[case]]
+name = "geli-9.3-fast-openwall"
+path = "GELI/FreeBSD_6.0to9.3/geli-9.3-fast-openwall.raw"
+slug = "geli"
+reference = "john:geli2john.py"
+format = "john"
+
+[[case]]
+name = "kwallet-{base}"
+glob = "KWallet/*.kwl"
+slug = "kwallet"
+reference = "john:kwallet2john.py"
+format = "john"
+companions = ["{stem}.salt"]
+
+[[case]]
+name = "krb5asrep-{base}"
+glob = "Kerberos_v5/krb-user1-*.pcap"
+slug = "krb5asrep-aes"
+reference = "john:krb2john.py"
+format = "john"
+requires = ["python:lxml", "tool:tshark"]
+filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
+
+[[case]]
+name = "krb5pa17-mitm"
+path = "Kerberos_v5/MiTM-etype-17-user1-openwall.pcap"
+slug = "krb5pa17"
+reference = "john:krb2john.py"
+format = "john"
+requires = ["python:lxml", "tool:tshark"]
+filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
+
+[[case]]
+name = "krb5pa23-mitm"
+path = "Kerberos_v5/MiTM-user1-openwall-etype-23.pcap"
+slug = "krb5pa23"
+reference = "john:krb2john.py"
+format = "john"
+requires = ["python:lxml", "tool:tshark"]
+filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
+
+# Keynote/plain.key.zip is not encrypted.
+[[case]]
+name = "iwork-password"
+path = "Keynote/password.key.zip"
+slug = "iwork"
+reference = "john:iwork2john.py"
+format = "john"
+
+# The *-null wallets have no primary password set.
+[[case]]
+name = "mozilla-{dir}"
+glob = "Mozilla/[0v]*-[0-9]*/key3.db"
+slug = "mozilla-key3"
+reference = "hashcat:mozilla2hashcat.py"
+format = "hashcat"
+requires = ["python:Crypto", "python:pyasn1"]
+
+[[case]]
+name = "multibit-{base}"
+glob = "Multibit/MultibitClassic/*.key"
+slug = "multibit"
+reference = "john:multibit2john.py"
+format = "john"
+requires = ["python:protobuf"]
+
+[[case]]
+name = "openbsd-{base}"
+glob = "OpenBSD_disk_encryption/*.raw"
+slug = "openbsd-softraid"
+reference = "john:openbsd_softraid2john.py"
+format = "john"
+
+# SSH/openssh-new-format-keys/ssh-new-format-{1,2,3}.key use bcrypt-pbkdf with
+# aes256-cbc, which hashcat does not support.
+[[case]]
+name = "ssh-{base}"
+glob = "SSH/sample_ssh_private_keys/*.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "ssh-default"
+path = "SSH/openssh-new-format-keys/ssh-default.key"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "ssh-aes256ctr"
+path = "SSH/aes-256-ctr/id_rsa-aes256-ctr"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "ecryptfs"
+path = "eCryptfs/wrapped-passphrase"
+slug = "ecryptfs"
+reference = "john:ecryptfs2john.py"
+format = "john"
+
+[[case]]
+name = "itunes-{base}"
+glob = "iTunes_Backup/*.plist"
+slug = "itunes-backup"
+reference = "john:itunes_backup2john.pl"
+format = "john"

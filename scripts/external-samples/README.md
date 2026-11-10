@@ -56,12 +56,22 @@ subset = false                               # reference hashes may be a subset
 fetch = "file"                               # overrides the manifest mode
 companions = ["{stem}.key"]                  # optional sibling files
 decode = "uu"                                # optional post-fetch decoding
-reference_path = "directory/"                # artifact passed to the reference
+reference_path = "{dir}/"                    # artifact passed to the reference
 reference_format = "john"                    # when it differs from format
+requires = ["python:lxml", "tool:tshark"]    # environment prerequisites
+filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
 ```
 
 Use `decode = "uu"` for reference data stored as uuencoded files, such as
 libarchive test fixtures. The lock still covers the encoded source file.
+
+`requires` accepts `python:<module>` (checked with the runner interpreter),
+`perl:<module>`, and `tool:<command>`. A missing prerequisite skips the case;
+any other reference failure is an error.
+
+`filter` runs a command over the artifact and hands its standard output to the
+reference extractor as a temporary file. Use it for tools that need a decoded
+intermediate form, such as a packet capture converted to PDML.
 
 Reference forms:
 

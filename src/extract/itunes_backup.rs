@@ -73,11 +73,8 @@ fn parse_record(source: &dyn ReadAt, offset: u64) -> Result<ItunesBackup, Extrac
     let wrapped_key = tag_value(&data, wpky, 40)
         .ok_or_else(|| ExtractError::Invalid("iTunes backup WPKY is not 40 bytes".to_owned()))?;
 
-    let wpky_end = wpky + 8 + 40;
-    let record_end = find_tag(&data, TAG_SALT, wpky_end, data.len())
-        .unwrap_or(data.len())
-        .min(wpky_end + MAX_SEARCH);
-    let dpic = find_tag(&data, TAG_DPIC, wpky_end, record_end);
+    let record_end = find_tag(&data, TAG_SALT, TAG_SALT.len(), data.len()).unwrap_or(data.len());
+    let dpic = find_tag(&data, TAG_DPIC, 0, record_end);
     let dpsl = dpic.and_then(|dpic| {
         find_tag(&data, TAG_DPSL, dpic + 8, dpic + 8 + MAX_SEARCH).map(|dpsl| (dpic, dpsl))
     });

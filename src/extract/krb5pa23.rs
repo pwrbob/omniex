@@ -99,7 +99,12 @@ pub(crate) mod asreq {
     }
 
     fn encrypted(value: &[u8]) -> Option<(i32, Vec<u8>)> {
-        let content = single(value, 0x30)?;
+        let (tag, content, _) = tlv(value, 0)?;
+        let content = match tag {
+            0x30 => content,
+            0x04 => single(content, 0x30)?,
+            _ => return None,
+        };
         let mut etype = None;
         let mut cipher = None;
         for (tag, field) in fields(content)? {
