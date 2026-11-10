@@ -97,7 +97,7 @@ jobs:
         run: scripts/build-hashcat.sh
 
       - name: Upload hashcat
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: hashcat-8.0.0
           path: |
@@ -128,7 +128,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Download hashcat
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: hashcat-8.0.0
           path: tmp/reference/hashcat-8.0.0
@@ -169,7 +169,7 @@ jobs:
 
       - name: Upload hashcat conformance diagnostics
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: hashcat-conformance-${{ matrix.shard }}-diagnostics
           path: |
