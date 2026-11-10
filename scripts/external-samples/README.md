@@ -52,7 +52,11 @@ args = []                                   # passed to the reference tool
 omniex_args = []                            # passed to omniex extract
 ignore_fields = []
 ordered = false
-fetch = "file"                              # overrides the manifest mode
+subset = false                               # reference hashes may be a subset
+fetch = "file"                               # overrides the manifest mode
+companions = ["{stem}.key"]                  # optional sibling files
+reference_path = "directory/"                # artifact passed to the reference
+reference_format = "john"                    # when it differs from format
 ```
 
 Reference forms:
@@ -65,7 +69,9 @@ Reference forms:
 
 Directory paths and globs use a sparse checkout. Single files use direct
 downloads from `raw.githubusercontent.com` at the pinned commit, with an LFS
-fallback through `media.githubusercontent.com`.
+fallback through `media.githubusercontent.com`. A manifest with
+`repo = "local"` only works with `--source`, which is how the repository's own
+fixtures are checked.
 
 ## Cache
 

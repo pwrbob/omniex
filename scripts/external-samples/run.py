@@ -823,10 +823,19 @@ def main() -> int:
                 case.reference = "structural"
             try:
                 run_case(manifest, case, SOURCES, args.offline)
-            except SystemExit:
-                raise
+            except SystemExit as error:
+                failures.append((manifest.ident, case.name, str(error)))
         print(f"{manifest.ident}: {len(selected)} case(s) checked")
-    return 1 if failures else 0
+    if failures:
+        print(f"\n{len(failures)} failure(s):")
+        for repo, name, message in failures:
+            print(f"  {repo}/{case_name(name)}: {message}")
+        return 1
+    return 0
+
+
+def case_name(name: str) -> str:
+    return name or "<unnamed>"
 
 
 if __name__ == "__main__":
