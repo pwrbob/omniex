@@ -805,7 +805,7 @@ def main() -> int:
                 SOURCES[manifest.ident] = local_root
         if local_root is not None:
             head = local_head(local_root)
-            if head and head != manifest.commit:
+            if head and manifest.commit != "local" and head != manifest.commit:
                 print(
                     f"warning: {manifest.ident} source HEAD {head[:12]} "
                     f"differs from pinned {manifest.commit[:12]}",
