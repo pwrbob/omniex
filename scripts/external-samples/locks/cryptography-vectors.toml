@@ -1,0 +1,13 @@
+commit = "a0de15f4a19759128507559d1d28009b2395c2af"
+
+[[file]]
+path = "vectors/cryptography_vectors/pkcs12/name-all-pwd.p12"
+sha256 = "4208b92777e31b8efaafa23362491b1990af947693a6dbe000a0670febe56f4c"
+
+[[file]]
+path = "vectors/cryptography_vectors/pkcs12/cert-key-aes256cbc.p12"
+sha256 = "a7b8f2cf403ff9054dd7337e0d9bccfb72742b859bd73b1e7833ae800cceb213"
+
+[[file]]
+path = "vectors/cryptography_vectors/pkcs12/name-unicode-pwd.p12"
+sha256 = "566614621a1c47672437d03f3c3426949bd51720344a36a415f01b3341f0ae75"

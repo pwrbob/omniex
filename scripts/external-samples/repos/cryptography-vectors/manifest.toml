@@ -1,0 +1,28 @@
+id = "cryptography-vectors"
+repo = "https://github.com/pyca/cryptography"
+commit = "a0de15f4a19759128507559d1d28009b2395c2af"
+notes = "Password-protected PKCS#12 vectors from the cryptography project"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "name-all-pwd"
+path = "vectors/cryptography_vectors/pkcs12/name-all-pwd.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "cert-key-aes256cbc"
+path = "vectors/cryptography_vectors/pkcs12/cert-key-aes256cbc.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "name-unicode-pwd"
+path = "vectors/cryptography_vectors/pkcs12/name-unicode-pwd.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
