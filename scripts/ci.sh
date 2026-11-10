@@ -63,7 +63,10 @@ if [[ -n "${OMNIEX_JOHN:-}" ]]; then
         --repo omniex-fixtures --source "omniex-fixtures=$root"
     python3 scripts/external-samples/run.py run \
         --repo hashcat-2hashcat --repo john-samples --repo unarcrypto --repo msoffcrypto \
-        --repo oletools --repo keepassxc --repo geth
+        --repo oletools --repo keepassxc --repo geth --repo aircrack-ng \
+        --repo cryptography-vectors --repo openssl-tests --repo forensics-samples \
+        --repo py-pdf-samples --repo test-pdf-files --repo libarchive \
+        --repo picky-rs --repo gnome-keyring
 
     if command -v 7z >/dev/null 2>&1; then
         echo "==> real-file extractor tests"

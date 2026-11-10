@@ -1,7 +1,7 @@
 id = "cryptography-vectors"
 repo = "https://github.com/pyca/cryptography"
 commit = "a0de15f4a19759128507559d1d28009b2395c2af"
-notes = "Password-protected PKCS#12 vectors from the cryptography project"
+notes = "Password-protected PKCS#12, PKCS#8, and legacy PEM vectors from the cryptography project"
 
 [fetch]
 mode = "file"
@@ -25,4 +25,46 @@ name = "name-unicode-pwd"
 path = "vectors/cryptography_vectors/pkcs12/name-unicode-pwd.p12"
 slug = "pfx"
 reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "pkcs8-pbes2-sha1-3des"
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/enc2-rsa-pkcs8.pem"
+slug = "pkcs8-pbes2"
+reference = "john:pem2john.py"
+format = "john"
+
+[[case]]
+name = "pkcs8-pbes2-sha256-3des"
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/enc-rsa-3des.pem"
+slug = "pkcs8-pbes2"
+reference = "john:pem2john.py"
+format = "john"
+
+[[case]]
+name = "pkcs8-pbes2-sha512-3des"
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha512.pem"
+slug = "pkcs8-pbes2"
+reference = "john:pem2john.py"
+format = "john"
+
+[[case]]
+name = "legacy-pem-des-ede3"
+path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key2.pem"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "legacy-pem-des-cbc"
+path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/key1.pem"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "legacy-pem-encrypted-rsa"
+path = "vectors/cryptography_vectors/asymmetric/Traditional_OpenSSL_Serialization/testrsa-encrypted.pem"
+slug = "sshng"
+reference = "john:ssh2john.py"
 format = "john"

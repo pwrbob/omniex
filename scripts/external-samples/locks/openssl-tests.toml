@@ -3,3 +3,15 @@ commit = "be36a92f25fd393dfc737642b88054fd93202962"
 [[file]]
 path = "test/certs/key-pass-12345.pem"
 sha256 = "fc8ccd0034c92c6fe970582549cec2ab84fa8fac95c85ead2a5981578d5da86e"
+
+[[file]]
+path = "test/certs/v3-certs-RC2.p12"
+sha256 = "256b253deda40a5b7fdc25516675879ecba95e0a60baebda65c3cf0e820d846e"
+
+[[file]]
+path = "test/certs/v3-certs-TDES.p12"
+sha256 = "0e8abdb7bb893639631bdde642b93036a51df8f754664664948223be9600cdcb"
+
+[[file]]
+path = "test/shibboleth.pfx"
+sha256 = "f0e2ba3dbff295a1d8490d34a3bf153b3a51a28bfe5c59fb02eb175a69a23fb7"

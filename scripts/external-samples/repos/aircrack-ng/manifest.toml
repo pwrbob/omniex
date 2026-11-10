@@ -1,0 +1,33 @@
+id = "aircrack-ng"
+repo = "https://github.com/aircrack-ng/aircrack-ng"
+commit = "7e2256f38f3590af4c19a6ae14ed79bab02242e6"
+notes = "WPA PMKID captures from the aircrack-ng test suite"
+
+[fetch]
+mode = "file"
+
+# John renders these captures as $WPAPSK$ or its own PMKID serialization, which
+# is a different type from the hashcat WPA* lines this extractor emits.
+[[case]]
+name = "pmkid-basic"
+path = "test/test-pmkid.pcap"
+slug = "wpa-pmkid"
+reference = "structural"
+
+[[case]]
+name = "pmkid-m1m2m3"
+path = "test/testm1m2m3.pcap"
+slug = "wpa-pmkid"
+reference = "structural"
+
+[[case]]
+name = "pmkid-wpa3"
+path = "test/wpa3-psk.pcap"
+slug = "wpa-pmkid"
+reference = "structural"
+
+[[case]]
+name = "pmkid-wpa2-eapol"
+path = "test/wpa2.eapol.cap"
+slug = "wpa-pmkid"
+reference = "structural"

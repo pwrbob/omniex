@@ -1,0 +1,14 @@
+id = "picky-rs"
+repo = "https://github.com/Devolutions/picky-rs"
+commit = "2cc5cc7d49a158254742e3f73ba7ad89afff2367"
+notes = "Passphrase-protected PuTTY key files from the picky test data"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "putty-ed25519-v2"
+path = "picky-test-data/test_assets/putty/ed25519_v2_encrypted.ppk"
+slug = "putty"
+reference = "john:putty2john"
+format = "john"

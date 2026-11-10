@@ -1,7 +1,7 @@
 id = "openssl-tests"
 repo = "https://github.com/openssl/openssl"
 commit = "be36a92f25fd393dfc737642b88054fd93202962"
-notes = "Encrypted PKCS#8 private keys from OpenSSL's test certificates"
+notes = "Encrypted PKCS#8 keys and PKCS#12 bundles from OpenSSL's test certificates"
 
 [fetch]
 mode = "file"
@@ -11,4 +11,25 @@ name = "key-pass-12345"
 path = "test/certs/key-pass-12345.pem"
 slug = "pkcs8-pbes2"
 reference = "john:pem2john.py"
+format = "john"
+
+[[case]]
+name = "v3-certs-rc2"
+path = "test/certs/v3-certs-RC2.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "v3-certs-tdes"
+path = "test/certs/v3-certs-TDES.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "shibboleth"
+path = "test/shibboleth.pfx"
+slug = "pfx"
+reference = "john:pfx2john.py"
 format = "john"

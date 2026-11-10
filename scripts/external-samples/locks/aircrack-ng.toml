@@ -1,0 +1,17 @@
+commit = "7e2256f38f3590af4c19a6ae14ed79bab02242e6"
+
+[[file]]
+path = "test/test-pmkid.pcap"
+sha256 = "d186a1e4f2edd5382bfe6cdba5d8ae0d44a095c617c613dca7304342a051894d"
+
+[[file]]
+path = "test/testm1m2m3.pcap"
+sha256 = "d7962e7574dd1c84b69c05ce2bbf1240d260701f41963929e30e9f62b6a0ddb3"
+
+[[file]]
+path = "test/wpa3-psk.pcap"
+sha256 = "1b421dbcbd2760350eecb0ef7fd12fef5c6b2565bdaa02e2d51bfe6f36b71b44"
+
+[[file]]
+path = "test/wpa2.eapol.cap"
+sha256 = "d3f0331b528e4ddb0a4192af8cb949b4bb8233b9a1e05a4b567a90bdd4335f24"

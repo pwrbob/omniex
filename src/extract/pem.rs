@@ -143,7 +143,7 @@ impl Prf {
 
 fn cipher_name(cipher: u8) -> &'static str {
     match cipher {
-        1 => "des3_cbc",
+        1 => "tripledes_3key",
         2 => "aes128_cbc",
         3 => "aes192_cbc",
         4 => "aes256_cbc",
