@@ -1,0 +1,9 @@
+commit = "b938bbea0d8bec5c1795433cf6227bedd9623532"
+
+[[file]]
+path = "original-files/text1/a-text-pass-A5d.pdf"
+sha256 = "0debbcd5fe5dba76137d227fb304ed9da994d5796ba3fb16b4ae078c39c604be"
+
+[[file]]
+path = "original-files/text1/a-text-pass-peanuts.pdf"
+sha256 = "58b9b196ada172962630834cb8f0458eafb9163545c9abf58a79207291900d0d"
