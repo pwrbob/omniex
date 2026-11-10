@@ -1,0 +1,16 @@
+type = "pop3-apop"
+generator = "Trimmed POP3 capture from John jumbo's APOP sample"
+notes = "Only the APOP challenge-response packets are kept."
+
+[[case]]
+artifact = "sample.pcap"
+hashcat = "$apop$<1733.1.9f403625.BbWGgpKzZKKL8opgWn0wuA==@vps-ae9abc72>$5aadb7d8a2639088a7036fe6d5cd5727"
+john = "-"
+
+[[case]]
+artifact = "multi.pcap"
+hashcat = """
+$apop$<1234.1111111111@server.example>$11111111111111111111111111111111
+$apop$<5678.2222222222@server.example>$22222222222222222222222222222222
+"""
+john = "-"
