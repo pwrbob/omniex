@@ -124,7 +124,11 @@ fn parse(artifact: &Artifact) -> Result<Keepass, ExtractError> {
         let id = cursor.u8()?;
         let size = usize::from(cursor.u16()?);
         if id == 0 {
-            if size != 0 {
+            if size == 0 {
+                break;
+            }
+            let data = cursor.bytes(size)?;
+            if data != b"\r\n\r\n" {
                 return Err(ExtractError::Invalid(
                     "invalid KeePass end-of-header field".to_owned(),
                 ));
