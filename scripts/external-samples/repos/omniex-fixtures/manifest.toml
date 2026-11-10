@@ -1,0 +1,229 @@
+id = "omniex-fixtures"
+repo = "local"
+commit = "local"
+notes = "Committed fixtures, checked against the pinned John reference scripts"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "adxcrypt"
+path = "tests/fixtures/artifacts/adxcrypt/ADXCSOUF.DAT"
+slug = "adxcrypt"
+reference = "john:adxcsouf2john.py"
+format = "john"
+
+[[case]]
+name = "kwallet-modern"
+path = "tests/fixtures/artifacts/kwallet/modern.kwl"
+slug = "kwallet"
+reference = "john:kwallet2john.py"
+format = "john"
+
+[[case]]
+name = "ansible-vault"
+path = "tests/fixtures/artifacts/ansible/sample.yml"
+slug = "ansible-vault"
+reference = "john:ansible2john.py"
+format = "john"
+
+[[case]]
+name = "bks-v1"
+path = "tests/fixtures/artifacts/bks/empty-v1.bks"
+slug = "bks"
+reference = "john:bks2john.py"
+format = "john"
+
+[[case]]
+name = "bks-v2"
+path = "tests/fixtures/artifacts/bks/empty-v2.bks"
+slug = "bks"
+reference = "john:bks2john.py"
+format = "john"
+
+[[case]]
+name = "cloudkeychain"
+path = "tests/fixtures/artifacts/cloudkeychain/default/profile.js"
+reference_path = "tests/fixtures/artifacts/cloudkeychain"
+slug = "cloudkeychain"
+reference = "john:1password2john.py"
+format = "john"
+
+[[case]]
+name = "dashlane-aes"
+path = "tests/fixtures/artifacts/dashlane/sample.aes"
+slug = "dashlane"
+reference = "john:dashlane2john.py"
+format = "john"
+
+[[case]]
+name = "dashlane-archive"
+path = "tests/fixtures/artifacts/dashlane/sample.dash"
+slug = "dashlane"
+reference = "john:dashlane2john.py"
+format = "john"
+
+[[case]]
+name = "dmg-v2"
+path = "tests/fixtures/artifacts/dmg/sample.dmg"
+slug = "dmg-john"
+reference = "john:dmg2john.py"
+format = "john"
+
+[[case]]
+name = "ecryptfs-v2"
+path = "tests/fixtures/artifacts/ecryptfs/wrapped-passphrase"
+slug = "ecryptfs"
+reference = "john:ecryptfs2john.py"
+format = "john"
+
+[[case]]
+name = "encfs"
+path = "tests/fixtures/artifacts/encfs/.encfs6.xml"
+reference_path = "tests/fixtures/artifacts/encfs"
+slug = "encfs"
+reference = "john:encfs2john.py"
+format = "john"
+
+[[case]]
+name = "enpass"
+path = "tests/fixtures/artifacts/enpass/test.enpassdb"
+slug = "enpass"
+reference = "john:enpass2john.py"
+format = "john"
+
+[[case]]
+name = "blockchain"
+path = "tests/fixtures/artifacts/blockchain/wallet.json"
+slug = "blockchain"
+reference = "john:blockchain2john.py"
+args = ["--json"]
+format = "john"
+
+[[case]]
+name = "electrum"
+path = "tests/fixtures/artifacts/electrum/wallet.json"
+slug = "electrum"
+reference = "john:electrum2john.py"
+format = "john"
+
+[[case]]
+name = "ethereum-pbkdf2"
+path = "tests/fixtures/artifacts/ethereum-pbkdf2/wallet.json"
+slug = "ethereum-pbkdf2"
+reference = "john:ethereum2john.py"
+format = "john"
+
+[[case]]
+name = "ethereum-presale"
+path = "tests/fixtures/artifacts/ethereum-presale/wallet.json"
+slug = "ethereum-presale"
+reference = "john:ethereum2john.py"
+format = "john"
+
+[[case]]
+name = "ethereum-scrypt"
+path = "tests/fixtures/artifacts/ethereum-scrypt/wallet.json"
+slug = "ethereum-scrypt"
+reference = "john:ethereum2john.py"
+format = "hashcat"
+reference_format = "john"
+
+[[case]]
+name = "geli"
+path = "tests/fixtures/artifacts/geli/sample.img"
+slug = "geli"
+reference = "john:geli2john.py"
+format = "john"
+
+[[case]]
+name = "gpg"
+path = "tests/fixtures/artifacts/gpg/testkey1.key"
+slug = "gpg"
+reference = "john:gpg2john"
+format = "john"
+subset = true
+
+[[case]]
+name = "iwork"
+path = "tests/fixtures/artifacts/iwork/sample.key"
+slug = "iwork"
+reference = "john:iwork2john.py"
+format = "john"
+
+[[case]]
+name = "kwallet-legacy"
+path = "tests/fixtures/artifacts/kwallet/legacy.kwl"
+slug = "kwallet"
+reference = "john:kwallet2john.py"
+format = "john"
+
+[[case]]
+name = "vmx"
+path = "tests/fixtures/artifacts/vmx/sample.vmx"
+slug = "vmx-john"
+reference = "john:vmx2john.py"
+format = "john"
+
+[[case]]
+name = "winzip"
+path = "tests/fixtures/artifacts/winzip/aes.zip"
+slug = "winzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "monero"
+path = "tests/fixtures/artifacts/monero/wallet.keys"
+slug = "monero"
+reference = "john:monero2john.py"
+format = "john"
+
+[[case]]
+name = "odf"
+path = "tests/fixtures/artifacts/odf/sample.odt"
+slug = "odf"
+reference = "john:libreoffice2john.py"
+format = "john"
+
+[[case]]
+name = "pgpdisk"
+path = "tests/fixtures/artifacts/pgpdisk/sample.pgd"
+slug = "pgpdisk"
+reference = "john:pgpdisk2john.py"
+format = "john"
+
+[[case]]
+name = "pgpwde"
+path = "tests/fixtures/artifacts/pgpwde/sample.img"
+slug = "pgpwde"
+reference = "john:pgpwde2john.py"
+format = "john"
+
+[[case]]
+name = "pgpsda"
+path = "tests/fixtures/artifacts/pgpsda/sample.sda"
+slug = "pgpsda"
+reference = "john:pgpsda2john.py"
+format = "john"
+
+[[case]]
+name = "pwsafe"
+path = "tests/fixtures/artifacts/pwsafe-v3/sample.psafe3"
+slug = "pwsafe"
+reference = "john:pwsafe2john.py"
+format = "john"
+
+[[case]]
+name = "softraid-pbkdf2"
+path = "tests/fixtures/artifacts/openbsd-softraid/pbkdf2.img"
+slug = "openbsd-softraid"
+reference = "john:openbsd_softraid2john.py"
+format = "john"
+
+[[case]]
+name = "softraid-bcrypt"
+path = "tests/fixtures/artifacts/openbsd-softraid/bcrypt.img"
+slug = "openbsd-softraid"
+reference = "john:openbsd_softraid2john.py"
+format = "john"

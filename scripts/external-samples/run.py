@@ -47,6 +47,9 @@ ALLOWED_CASE = {
     "ignore_fields",
     "ordered",
     "fetch",
+    "reference_path",
+    "reference_format",
+    "subset",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -64,6 +67,9 @@ class Case:
     ignore_fields: list[str] = field(default_factory=list)
     ordered: bool = False
     fetch: str = "file"
+    reference_path: str = ""
+    reference_format: str = ""
+    subset: bool = False
 
 
 @dataclass
@@ -312,6 +318,8 @@ def artifact_path(
 ) -> Path:
     if manifest.ident in sources:
         return sources[manifest.ident] / case.path
+    if manifest.repo == "local":
+        fail(f"{manifest.ident}: a local source is required (--source {manifest.ident}=PATH)")
     if case.fetch == "tree":
         checkout = checkout_for(manifest, [case.path.rstrip("/")])
         return checkout / case.path
@@ -354,6 +362,9 @@ def expand_cases(
             ignore_fields=list(raw.get("ignore_fields", [])),
             ordered=bool(raw.get("ordered", False)),
             fetch=str(raw.get("fetch", manifest.mode)),
+            reference_path=str(raw.get("reference_path", "")),
+            reference_format=str(raw.get("reference_format", "")),
+            subset=bool(raw.get("subset", False)),
         )
         pattern = raw.get("glob")
         if pattern is not None:
@@ -407,6 +418,8 @@ def resolve_reference(manifest: Manifest, case: Case, artifact: Path) -> tuple[s
     if kind in {"paired", "expected"}:
         if manifest.ident in SOURCES:
             root = SOURCES[manifest.ident]
+        elif manifest.repo == "local":
+            fail(f"{manifest.ident}: a local source is required (--source {manifest.ident}=PATH)")
         else:
             root = CACHE / "checkouts" / manifest.ident / manifest.commit
             if not root.is_dir():
@@ -425,7 +438,7 @@ def reference_command(kind: str, script: str, artifact: Path, args: list[str]) -
         path = run_dir / script
         if not path.exists():
             fail(f"John reference script is missing: {path}")
-        return interpreter_command(path) + [str(artifact), *args]
+        return interpreter_command(path) + [*args, str(artifact)]
     if kind == "hashcat":
         tools = hashcat_tools()
         if tools is None:
@@ -433,7 +446,7 @@ def reference_command(kind: str, script: str, artifact: Path, args: list[str]) -
         path = tools / script
         if not path.exists():
             fail(f"hashcat reference script is missing: {path}")
-        return interpreter_command(path) + [str(artifact), *args]
+        return interpreter_command(path) + [*args, str(artifact)]
     fail(f"unsupported reference kind: {kind}")
 
 
@@ -488,17 +501,19 @@ def run_command(command: list[str], cwd: Path | None = None) -> str:
 def normalize_reference(text: str, mode: str) -> list[str]:
     lines = [line.strip() for line in text.splitlines()]
     lines = [line for line in lines if line and line != "-"]
-    if mode == "hash":
+    if mode in {"hash", "bks"}:
         normalized = []
         for line in lines:
             index = line.find("$")
             if index < 0:
-                normalized.append(line)
                 continue
-            value = line[index:]
-            last = value.rfind("$")
-            if last >= 0 and ":" in value[last + 1 :]:
-                value = value[: last + 1 + value[last + 1 :].find(":")]
+            else:
+                value = line[index:]
+                last = value.rfind("$")
+                if last >= 0 and ":" in value[last + 1 :]:
+                    value = value[: last + 1 + value[last + 1 :].find(":")]
+            if mode == "bks":
+                value = value.replace("b'", "").replace("'", "")
             normalized.append(value)
         return normalized
     return lines
@@ -564,9 +579,21 @@ def comparable(hashes: list[list[dict]], ignore: list[str]) -> list[tuple[tuple[
     ]
 
 
-def compare(name: str, got: list[list[dict]], want: list[list[dict]], ignore: list[str], ordered: bool) -> None:
+def compare(
+    name: str,
+    got: list[list[dict]],
+    want: list[list[dict]],
+    ignore: list[str],
+    ordered: bool,
+    subset: bool = False,
+) -> None:
     got_fields = comparable(got, ignore)
     want_fields = comparable(want, ignore)
+    if subset:
+        missing = [entry for entry in want_fields if entry not in got_fields]
+        if not missing:
+            print(f"ok   {name}")
+            return
     if not ordered:
         got_fields = sorted(got_fields)
         want_fields = sorted(want_fields)
@@ -589,7 +616,11 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
     if not wanted:
         fail(f"{manifest.ident}/{case.name}: omniex extracted no `{case.slug}` hash")
 
-    kind, value, reference_path = resolve_reference(manifest, case, artifact)
+    reference_artifact = artifact
+    if case.reference_path:
+        reference_case = Case(**{**vars(case), "path": case.reference_path})
+        reference_artifact = artifact_path(manifest, reference_case, sources, offline)
+    kind, value, reference_path = resolve_reference(manifest, case, reference_artifact)
     if kind == "structural":
         print(f"ok   {manifest.ident}/{case.name} (structural, {len(wanted)} hash(es))")
         return
@@ -600,15 +631,17 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         reference_text = reference_path.read_text(encoding="utf-8")
         normalize = "hash"
     else:
-        command = reference_command(kind, value, artifact, case.args)
+        command = reference_command(kind, value, reference_artifact, case.args)
         reference_text = run_command(command, cwd=john_run() if kind == "john" else None)
-        normalize = "hash"
+        normalize = "bks" if case.slug in {"bks", "vmx-john"} else "hash"
 
     reference_lines = normalize_reference(reference_text, normalize)
     if not reference_lines:
         fail(f"{manifest.ident}/{case.name}: reference produced no hashes")
+    reference_format = case.reference_format or format_name
     reference_fields = [
-        fields_for_hash(binary, case.slug, format_name, line) for line in reference_lines
+        fields_for_hash(binary, case.slug, reference_format, line)
+        for line in reference_lines
     ]
     reference_fields = [fields for fields in reference_fields if fields]
     if not reference_fields:
@@ -621,6 +654,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         reference_fields,
         case.ignore_fields,
         case.ordered,
+        case.subset,
     )
 
 

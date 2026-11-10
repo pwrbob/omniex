@@ -58,8 +58,9 @@ if [[ -n "${OMNIEX_JOHN:-}" ]]; then
         john_loads_extracted_artifacts
 
     export OMNIEX_JOHN_RUN="$(dirname "$OMNIEX_JOHN")"
-    echo "==> extractor conformance"
-    cargo test -p omniex --test extract_conformance --locked -- --ignored --nocapture
+    echo "==> external sample extraction"
+    python3 scripts/external-samples/run.py run \
+        --repo omniex-fixtures --source "omniex-fixtures=$root"
 
     if command -v 7z >/dev/null 2>&1; then
         echo "==> real-file extractor tests"
