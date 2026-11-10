@@ -211,7 +211,7 @@ jobs:
           retention-days: 7
 
   john:
-    needs: [lint, docs, tests, msrv]
+    needs: [hashcat-build, lint, docs, tests, msrv]
     name: John conformance
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -222,10 +222,13 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install John build dependencies
+      - name: Install sample extraction dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev python3-olefile libcompress-raw-lzma-perl
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            build-essential libssl-dev python3-olefile \
+            python3-lxml python3-pyasn1 python3-pycryptodome python3-protobuf \
+            libcompress-raw-lzma-perl tshark
 
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
@@ -246,14 +249,11 @@ jobs:
       - name: Build John jumbo
         run: scripts/build-john.sh
 
-      - name: Cache reference hashcat
-        uses: actions/cache@v5
+      - name: Download hashcat
+        uses: actions/download-artifact@v5
         with:
+          name: hashcat-8.0.0
           path: tmp/reference/hashcat-8.0.0
-          key: ${{ runner.os }}-reference-hashcat-8.0.0-${{ hashFiles('scripts/build-hashcat.sh') }}
-
-      - name: Build hashcat
-        run: scripts/build-hashcat.sh
 
       - name: Cache external samples
         uses: actions/cache@v5
