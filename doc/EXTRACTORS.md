@@ -184,3 +184,10 @@ This file documents the extractors currently registered in
 - Plain hash lists also cover `gost`, `keccak`, `md2`, `sha0`, `sha3`, `sm3`, `streebog`, `tiger`, `whirlpool`, and `skein-512`.
 - Plain hash lists also cover `blake2b-512`, `blake2b-256`, `blake2s-256`, `snefru`, `md6`, `has-160`, `panama`, `mdc2`, `radiogatun`, and `edon-r-256`.
 - Plain hash lists also cover `edon-r-512`, `fugue`, `groestl`, `hamsi`, `jh`, `luffa`, `shabal`, `shavite3`, and `simd`.
+- `bestcrypt` - BestCrypt containers in the hashcat serialization.
+- `bestcrypt-john` - BestCrypt containers in the John serialization.
+- `encdv` - ENCDataVault key and vault containers.
+- `keystore` - Java KeyStore container passwords.
+- `strip` - STRIP database password verifiers.
+- `o5logon` - Oracle O5LOGON authentication exchanges from TNS captures.
+- `pop3-apop` - POP3 APOP challenge-response exchanges from captures.

@@ -74,6 +74,8 @@ README badge counts checked lines in this file.
 - [x] VMware VMX encryption keySafe (`vmx-john`)
 - [x] VMware VMX hashcat metadata (`vmware-vmx`)
 - [x] Veeam backup metadata (`veeam`)
+- [x] BestCrypt containers (`bestcrypt`, `bestcrypt-john`)
+- [x] ENCDataVault containers (`encdv`)
 
 ## Archives and documents
 

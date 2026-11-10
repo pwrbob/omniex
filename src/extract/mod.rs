@@ -493,6 +493,13 @@ mod krb5db18;
 mod krb5db_old;
 mod pem;
 
+mod bestcrypt;
+mod encdv;
+mod keystore;
+mod o5logon;
+mod pop3_apop;
+mod strip;
+
 pub static EXTRACTORS: &[&dyn Extractor] = &[
     &adxcrypt::AdxcryptExtractor,
     &aix::AixSmd5Extractor,
@@ -723,6 +730,12 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &ike_psk_md5::IkePskMd5Extractor,
     &ike_psk_sha1::IkePskSha1Extractor,
     &ike_john::IkeJohnExtractor,
+    &bestcrypt::BestcryptJohnExtractor,
+    &encdv::EncdvExtractor,
+    &keystore::KeystoreExtractor,
+    &o5logon::O5logonExtractor,
+    &pop3_apop::Pop3ApopExtractor,
+    &strip::StripExtractor,
 ];
 
 /// Returns the extractor registered for a slug.
