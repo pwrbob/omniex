@@ -1,0 +1,33 @@
+id = "gost-engine"
+repo = "https://github.com/gost-engine/engine"
+commit = "af2b7e69e855572202420ffc36bae06ccd70796b"
+notes = "OpenSSL enc test payloads from the GOST engine Tcl tests"
+
+[fetch]
+mode = "file"
+
+# The salted envelope does not record its cipher or digest. The reference is
+# told to use the AES-256-CBC and SHA-256 defaults the extractor assumes.
+[[case]]
+name = "enc-cbc"
+path = "tcl_tests/cbc0.enc"
+slug = "openssl-enc"
+reference = "john:openssl2john.py"
+args = ["-m", "2"]
+format = "john"
+
+[[case]]
+name = "enc-cfb"
+path = "tcl_tests/cfb0.enc"
+slug = "openssl-enc"
+reference = "john:openssl2john.py"
+args = ["-m", "2"]
+format = "john"
+
+[[case]]
+name = "enc-cnt"
+path = "tcl_tests/cnt0.enc"
+slug = "openssl-enc"
+reference = "john:openssl2john.py"
+args = ["-m", "2"]
+format = "john"

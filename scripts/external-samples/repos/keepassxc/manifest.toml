@@ -43,3 +43,49 @@ path = "tests/data/NewDatabase.kdbx"
 slug = "keepass"
 reference = "john:keepass2john"
 format = "john"
+
+[[case]]
+name = "keyfile-protected-kdbx4"
+path = "tests/data/KeyFileProtected.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+args = ["-k", "{artifact_dir}/KeyFileProtected.key"]
+companions = ["tests/data/KeyFileProtected.key"]
+omniex_args = ["--companion", "keyfile={artifact_dir}/KeyFileProtected.key"]
+format = "john"
+
+[[case]]
+name = "yubikey-protected-kdbx4"
+path = "tests/data/YubiKeyProtectedPasswords.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "filekey-hex-kdbx2"
+path = "tests/data/FileKeyHex.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "filekey-xml-kdbx2"
+path = "tests/data/FileKeyXml.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "non-ascii-kdbx2"
+path = "tests/data/NonAscii.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "opvault-profile"
+path = "tests/data/keepassxc.opvault/default/profile.js"
+slug = "cloudkeychain"
+reference = "john:1password2john.py"
+reference_path = "tests/data/keepassxc.opvault/"
+format = "john"

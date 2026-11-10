@@ -23,3 +23,27 @@ sha256 = "15efb80917ffff30173e75d5bb53c270a10076b26a90f4a80d2071b71f318d8c"
 [[file]]
 path = "tests/data/NewDatabase.kdbx"
 sha256 = "5fdee9fff96df5ce58c331a56f4b253ad32e864dba1a86b98df14659283daa29"
+
+[[file]]
+path = "tests/data/KeyFileProtected.kdbx"
+sha256 = "bad028e8025b482745b3d710cee6a156e122df51628fc8cbd956777cfc4ef846"
+
+[[file]]
+path = "tests/data/YubiKeyProtectedPasswords.kdbx"
+sha256 = "566be617fe9972610a714593d080fd89c10977205be010fdaf4e9c6c128fad3b"
+
+[[file]]
+path = "tests/data/FileKeyHex.kdbx"
+sha256 = "5fc88af6beae92251a6ec4112e64d0d60c2c18d464215cd9b221e9af960d1cf6"
+
+[[file]]
+path = "tests/data/FileKeyXml.kdbx"
+sha256 = "ab833b97f60fd93d64caf8e62709a2a4838b1694ee66e59315c19c25d2ecfb4a"
+
+[[file]]
+path = "tests/data/NonAscii.kdbx"
+sha256 = "e8a69ba7e0cbd86a98b9a9d8fb6df8deecb052a4a3da842b200776434cb760e4"
+
+[[file]]
+path = "tests/data/keepassxc.opvault/default/profile.js"
+sha256 = "7f286d7cb82850d9124b5b0c04f66823d8ec461968e43ffbe7e03f6e430a109a"
