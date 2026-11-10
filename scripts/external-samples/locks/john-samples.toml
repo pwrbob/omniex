@@ -1,0 +1,57 @@
+commit = "a2f3a3ed7819ce94f8280b0bbfc23ba576817cce"
+
+[[file]]
+path = "ZIP/winzip-AES-128-testpassword#.zip"
+sha256 = "ea542a849c5deb8889d859008a5f32250dfe941246cbba2192cd24a72802e869"
+
+[[file]]
+path = "ZIP/winzip-AES-192-magnum.zip"
+sha256 = "26d59752873dcd51301e893a465888feb32d52d8c6c3d2c9bc1237c6ab2861b1"
+
+[[file]]
+path = "ZIP/winzip-AES-256-testpassword#.zip"
+sha256 = "afaa35e9cf4363392c39c8dd35110ef60a88dbe3ec1c7cf957eb7139c8871f71"
+
+[[file]]
+path = "ZIP/zip0_password.zip"
+sha256 = "c8d4a278d9ca6f2e67eee57011fbae1a14ce22312e7171bb8e60100cffd8744c"
+
+[[file]]
+path = "PDF/pdf_samples/test-3-RC4-40-open-test.pdf"
+sha256 = "90c1b9126054e4c32cd02dde2b453e360c29a1643e29fe90b77f545dbe4f4d39"
+
+[[file]]
+path = "PDF/pdf_samples/test-3-RC4-40-open-testpassword.pdf"
+sha256 = "e9e80b5eb2d767004b8a235efe8941da8361234b847b27570945ed871b134d78"
+
+[[file]]
+path = "PDF/pdf_samples/test-5-RC4-128-open-testpassword.pdf"
+sha256 = "dc8f8d6c4e7fe9f995da9c4e3c868e62ed452a52af55b91a0069949a1ac1c1d4"
+
+[[file]]
+path = "PDF/pdf_samples/test-7-AES-128-open-testpassword.pdf"
+sha256 = "e80841477f695f8a9b5a2c61b5318812f51a811d9ab834df6462e87a2c8946f1"
+
+[[file]]
+path = "PDF/pdf_samples/test-X-AES-256-open-testpassword.pdf"
+sha256 = "3e11aa07ee8238b8ff42a5dd2ee3a0a01fe79fe176102e0472d085f45e8365fa"
+
+[[file]]
+path = "Office/Office-2013-samples/365-2013-openwall.docx"
+sha256 = "3424039125b9df0eb5b5f1b5ec552ed2aa7b68d23b0997f85fb793cf0e164bcd"
+
+[[file]]
+path = "Office/Office-2013-samples/365-2013-password.docx"
+sha256 = "95ac527b63ebe658b1d89878a9b7329d7709df76e7ea11a71989d8bc68df3d19"
+
+[[file]]
+path = "Office/Office-2013-samples/365-2013-strict-password.docx"
+sha256 = "57300d3f32242fa12848c22f164c44808b6b56b81a805bdde8f29a00cb199cb0"
+
+[[file]]
+path = "KeePass/kdbx4/test_chacha.kdbx"
+sha256 = "e9274250d51b3bef89f887adb8b527501bf331e6ae54867065b847c080328b04"
+
+[[file]]
+path = "KeePass/kdbx4/a2id.kdbx"
+sha256 = "699c5b5840dbb80b454c373b5e836e043c2a11d66ad7c27e004248f1f7249f7a"

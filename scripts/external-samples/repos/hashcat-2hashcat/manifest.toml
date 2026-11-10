@@ -12,6 +12,7 @@ glob = "tools/2hashcat_tests/keepass/*.kdbx"
 slug = "keepass4"
 reference = "paired:{stem}.hash"
 format = "hashcat"
+companions = ["{stem}.key", "{stem}.keyfile"]
 
 [[case]]
 name = "{base}-john"

@@ -194,7 +194,7 @@ jobs:
       - name: Install John build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev
+          sudo apt-get install -y build-essential libssl-dev python3-olefile
 
       - name: Cache Rust artifacts
         uses: Swatinem/rust-cache@v2
@@ -215,6 +215,12 @@ jobs:
       - name: Build John jumbo
         run: scripts/build-john.sh
 
+      - name: Cache external samples
+        uses: actions/cache@v5
+        with:
+          path: tmp/external-samples
+          key: ${{ runner.os }}-external-samples-${{ hashFiles('scripts/external-samples/repos/**/manifest.toml', 'scripts/external-samples/locks/*.toml') }}
+
       - name: Run John conformance
         env:
           OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
@@ -223,6 +229,15 @@ jobs:
           cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
           cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
             john_loads_extracted_artifacts
+
+      - name: Run external sample extraction
+        env:
+          OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
+          OMNIEX_JOHN_RUN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run
+        run: |
+          python3 scripts/external-samples/run.py run \
+            --repo omniex-fixtures --source "omniex-fixtures=$GITHUB_WORKSPACE"
+          python3 scripts/external-samples/run.py run --repo john-samples
 
   paired-samples:
     needs: [checks, msrv]
@@ -243,4 +258,4 @@ jobs:
         run: cargo build --workspace --locked
 
       - name: Check paired sample corpus
-        run: python3 scripts/check-paired-samples.py
+        run: python3 scripts/external-samples/run.py run --repo hashcat-2hashcat

@@ -1,0 +1,73 @@
+commit = "356a01bf97e7a210666dd0b9ab3697ac0ea9a7a5"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepass.info_2.43_argon2d_highparams.kdbx"
+sha256 = "eac97dd1b83a0ec0fdd34fa214b02ea24c80bbf1de879770a8d797533e09a103"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepass.info_2.59_argon2d_defaultsettings.kdbx"
+sha256 = "3ec2bc47bc108e2833231c1d80e61676474981247a6333e63b88d71827e86442"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepass.info_2.59_argon2id.kdbx"
+sha256 = "f24f836ac9fc2756908c31d0e942cf2222555df9d0a3a4bc3609515459e72105"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.10_argon2d_defaultsettings.kdbx"
+sha256 = "1b4779b025d2e58d50e6aaa8794e03593bfcd12081c2d1ff36b09fbb45cedde8"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.6_argon2d_defaultsettings_withkeyfile.kdbx"
+sha256 = "cb8f39bd7762538165382406fca43447d7dfe710c851a03a08d35234e02db062"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.9_aeskdf_defaultsettings.kdbx"
+sha256 = "f1d81e574af2aa6315d4c3783bb4ff5b4a6a36b3fbb62cf1a69751c82fda06a3"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.9_aeskdf_defaultsettings_withkeyfile.kdbx"
+sha256 = "06f3e9ccb64e6700b09e780ae5606ac276567f5ab9627dc136f07f5b60452f50"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.9_argon2d_defaultsettings_highparams_withkeyfile.kdbx"
+sha256 = "b54b1235dea5639634274e73aa3144950b3ea0bc4ea2c586fe49a7a049e4b778"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepass.info_2.43_argon2d_highparams.kdbx"
+sha256 = "eac97dd1b83a0ec0fdd34fa214b02ea24c80bbf1de879770a8d797533e09a103"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepass.info_2.59_argon2d_defaultsettings.kdbx"
+sha256 = "3ec2bc47bc108e2833231c1d80e61676474981247a6333e63b88d71827e86442"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepass.info_2.59_argon2id.kdbx"
+sha256 = "f24f836ac9fc2756908c31d0e942cf2222555df9d0a3a4bc3609515459e72105"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.10_argon2d_defaultsettings.kdbx"
+sha256 = "1b4779b025d2e58d50e6aaa8794e03593bfcd12081c2d1ff36b09fbb45cedde8"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.6_argon2d_defaultsettings_withkeyfile.kdbx"
+sha256 = "cb8f39bd7762538165382406fca43447d7dfe710c851a03a08d35234e02db062"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.9_aeskdf_defaultsettings.kdbx"
+sha256 = "f1d81e574af2aa6315d4c3783bb4ff5b4a6a36b3fbb62cf1a69751c82fda06a3"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.9_aeskdf_defaultsettings_withkeyfile.kdbx"
+sha256 = "06f3e9ccb64e6700b09e780ae5606ac276567f5ab9627dc136f07f5b60452f50"
+
+[[file]]
+path = "tools/2hashcat_tests/keepass/keepass4_keepassxc_2.7.9_argon2d_defaultsettings_highparams_withkeyfile.kdbx"
+sha256 = "b54b1235dea5639634274e73aa3144950b3ea0bc4ea2c586fe49a7a049e4b778"
+
+[[file]]
+path = "tools/2hashcat_tests/gpg-ocb-aes/private-keys-v1.d/4785FFCD8B182C9A5C1242E0561B5F614B419B39.key"
+sha256 = "63ee9f30daaf1dc011517cb5a48497c315dd38adca084cc92a5e512abb39b275"
+
+[[file]]
+path = "tools/2hashcat_tests/gpg-ocb-aes/private-keys-v1.d/EB7E1C806F35E683BD6CAD16E312ADC8C010BE37.key"
+sha256 = "e96f9cacc02a49298a3586595d87d471dfae436d54a1b48e38660bf6dcaa70c9"

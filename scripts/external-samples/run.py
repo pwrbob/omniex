@@ -23,6 +23,7 @@ import sys
 import tempfile
 import tomllib
 import urllib.error
+import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -50,6 +51,7 @@ ALLOWED_CASE = {
     "reference_path",
     "reference_format",
     "subset",
+    "companions",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -70,6 +72,7 @@ class Case:
     reference_path: str = ""
     reference_format: str = ""
     subset: bool = False
+    companions: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -180,8 +183,15 @@ def local_head(root: Path) -> str | None:
 def checkout_for(manifest: Manifest, paths: list[str]) -> Path:
     dest = CACHE / "checkouts" / manifest.ident / manifest.commit
     if (dest / ".git").is_dir():
-        head = git_subprocess(checkout=dest, args=["rev-parse", "HEAD"])
+        head = git_subprocess(dest, ["rev-parse", "HEAD"])
         if head == manifest.commit:
+            sparse = sorted({path.strip("/") for path in paths if path.strip("/")})
+            if sparse:
+                subprocess.run(
+                    ["git", "-C", str(dest), "sparse-checkout", "add", *sparse],
+                    check=True,
+                    capture_output=True,
+                )
             return dest
         # A stale checkout at a different commit is rebuilt below.
         shutil.rmtree(dest, ignore_errors=True)
@@ -238,7 +248,7 @@ def github_raw_url(manifest: Manifest, path: str) -> str:
         owner_repo = repo[len("https://github.com/") :]
         return (
             f"https://raw.githubusercontent.com/{owner_repo}/"
-            f"{manifest.commit}/{path}"
+            f"{manifest.commit}/{urllib.parse.quote(path)}"
         )
     fail(f"unsupported repository URL for direct fetch: {manifest.repo}")
 
@@ -255,7 +265,7 @@ def github_media_url(manifest: Manifest, path: str) -> str:
 
 
 def commit_path(manifest: Manifest, path: str) -> str:
-    return f"{manifest.commit}/{path}"
+    return f"{manifest.commit}/{urllib.parse.quote(path)}"
 
 
 def download(url: str) -> bytes:
@@ -294,9 +304,31 @@ def is_lfs_pointer(data: bytes) -> bool:
     return data.startswith(b"version https://git-lfs.github.com/spec/v1")
 
 
+def load_lock(manifest: Manifest) -> dict[str, str]:
+    path = LOCKS / f"{manifest.ident}.toml"
+    if not path.is_file():
+        return {}
+    with path.open("rb") as handle:
+        data = tomllib.load(handle)
+    return {entry["path"]: entry["sha256"] for entry in data.get("file", [])}
+
+
+def verify_lock(manifest: Manifest, path: str, artifact: Path) -> None:
+    expected = LOCKS_BY_REPO.get(manifest.ident, {}).get(path)
+    if expected is None:
+        return
+    actual = hashlib.sha256(artifact.read_bytes()).hexdigest()
+    if actual != expected:
+        fail(
+            f"{manifest.ident}: artifact hash mismatch for {path}\n"
+            f"  expected {expected}\n  actual   {actual}"
+        )
+
+
 def fetch_file(manifest: Manifest, path: str, offline: bool) -> Path:
     dest = CACHE / "files" / manifest.ident / manifest.commit / path
     if dest.is_file():
+        verify_lock(manifest, path, dest)
         return dest
     if offline:
         fail(f"offline mode: missing cached artifact {dest}")
@@ -307,6 +339,7 @@ def fetch_file(manifest: Manifest, path: str, offline: bool) -> Path:
     temporary = dest.with_suffix(dest.suffix + ".part")
     temporary.write_bytes(data)
     temporary.replace(dest)
+    verify_lock(manifest, path, dest)
     return dest
 
 
@@ -323,7 +356,15 @@ def artifact_path(
     if case.fetch == "tree":
         checkout = checkout_for(manifest, [case.path.rstrip("/")])
         return checkout / case.path
-    return fetch_file(manifest, case.path, offline)
+    primary = fetch_file(manifest, case.path, offline)
+    for companion in case.companions:
+        companion = render_template(companion, case.path)
+        try:
+            fetch_file(manifest, companion, offline)
+        except SystemExit:
+            if not case.companions:
+                raise
+    return primary
 
 
 def glob_prefix(pattern: str) -> str:
@@ -365,6 +406,7 @@ def expand_cases(
             reference_path=str(raw.get("reference_path", "")),
             reference_format=str(raw.get("reference_format", "")),
             subset=bool(raw.get("subset", False)),
+            companions=list(raw.get("companions", [])),
         )
         pattern = raw.get("glob")
         if pattern is not None:
@@ -708,6 +750,7 @@ def command_lock(args: argparse.Namespace) -> None:
 
 
 SOURCES: dict[str, Path] = {}
+LOCKS_BY_REPO: dict[str, dict[str, str]] = {}
 
 
 def main() -> int:
@@ -736,8 +779,11 @@ def main() -> int:
             )
 
     args = parser.parse_args()
-    global SOURCES
+    global SOURCES, LOCKS_BY_REPO
     SOURCES = parse_sources(args.source)
+    LOCKS_BY_REPO = {
+        manifest.ident: load_lock(manifest) for manifest in load_manifests(args.repo)
+    }
 
     if args.command == "list":
         command_list(args)
