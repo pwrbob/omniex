@@ -5,7 +5,7 @@ forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
-![John modes](https://img.shields.io/badge/John_modes-261%2F261-1f6feb)
+![John modes](https://img.shields.io/badge/John_modes-262%2F262-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-206%2F206-8957e5)
 ![exact extractors](https://img.shields.io/badge/exact_extractors-178%2F229-8957e5)
 
@@ -399,7 +399,7 @@ checked against that command in CI.
 | `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | `gpg` |
 | `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | `DPAPImk` |
 | `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | `KeePass` |
-| `keepass4` | KeePass KDBX v4 | 34300, 34301 | - |
+| `keepass4` | KeePass KDBX v4 | 34300, 34301 | KeePass |
 | `odf` | Open Document Format | 18400, 18600 | `ODF` |
 | `apfs` | Apple File System (APFS) | 18300 | - |
 | `android-backup` | Android Backup | 18900 | `AndroidBackup` |

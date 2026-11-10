@@ -172,12 +172,14 @@ impl Artifact {
     /// Opens a file as an artifact.
     pub fn from_file(path: &Path) -> io::Result<Self> {
         let mut artifact = Self::new(path.display().to_string(), FileSource::open(path)?);
-        let salt = path.with_extension("salt");
-        if salt.is_file() {
-            artifact.members.push(ArtifactMember {
-                role: MemberRole::Named("salt".to_owned()),
-                source: Box::new(FileSource::open(&salt)?),
-            });
+        for (extension, role) in [("salt", "salt"), ("keyfile", "keyfile"), ("key", "keyfile")] {
+            let companion = path.with_extension(extension);
+            if companion.is_file() {
+                artifact.members.push(ArtifactMember {
+                    role: MemberRole::Named(role.to_owned()),
+                    source: Box::new(FileSource::open(&companion)?),
+                });
+            }
         }
         Ok(artifact)
     }

@@ -1053,6 +1053,7 @@ dependencies = [
  "predicates",
  "roxmltree",
  "serde_json",
+ "sha2",
  "terminal_size",
  "textwrap",
  "thiserror",

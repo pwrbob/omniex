@@ -253,3 +253,13 @@ These are intentionally not part of v0:
 - John OpenCL acceptance tests,
 - hashcat master drift job,
 - full extraction coverage.
+
+## Paired sample corpus
+
+The `paired-samples` CI job clones the hashcat repository's
+`tools/2hashcat_tests` directory at run time and runs
+`scripts/check-paired-samples.py`. That directory pairs KeePass KDBX v4 files
+with hashcat and John serializations, and GPG OCB-AES private keys with
+hashcat serializations. The artifacts are not stored in this repository.
+
+See `doc/SAMPLE_CORPORA.md` for artifact-only corpora and their limitations.

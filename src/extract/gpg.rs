@@ -146,6 +146,98 @@ struct SymmetricSession {
     salt: Vec<u8>,
 }
 
+fn skip_space(data: &[u8], mut pos: usize) -> usize {
+    while pos < data.len() && data[pos].is_ascii_whitespace() {
+        pos += 1;
+    }
+    pos
+}
+
+fn quoted(data: &[u8], pos: usize) -> Option<(Vec<u8>, usize)> {
+    if data.get(pos) != Some(&b'"') {
+        return None;
+    }
+    let end = pos + 1 + data.get(pos + 1..)?.iter().position(|byte| *byte == b'"')?;
+    Some((data[pos + 1..end].to_vec(), end + 1))
+}
+
+fn hash_hex(data: &[u8], pos: usize) -> Option<(Vec<u8>, usize)> {
+    if data.get(pos) != Some(&b'#') {
+        return None;
+    }
+    let end = pos + 1 + data.get(pos + 1..)?.iter().position(|byte| *byte == b'#')?;
+    let compact = data[pos + 1..end]
+        .iter()
+        .filter(|byte| !byte.is_ascii_whitespace())
+        .copied()
+        .collect::<Vec<_>>();
+    let text = std::str::from_utf8(&compact).ok()?;
+    Some((crate::parse::decode_hex(text, 0).ok()?, end + 1))
+}
+
+fn token(data: &[u8], pos: usize) -> Option<(Vec<u8>, usize)> {
+    quoted(data, pos).or_else(|| hash_hex(data, pos))
+}
+
+fn gpg_ocb(data: &[u8]) -> Option<Gpg> {
+    let marker = data
+        .windows(b"openpgp-s2k3-ocb-aes".len())
+        .position(|window| window == b"openpgp-s2k3-ocb-aes")?;
+    let sha = data[marker..]
+        .windows(5)
+        .position(|window| window == b"(sha1")?
+        + marker
+        + 5;
+    let mut pos = skip_space(data, sha);
+    let (salt, next) = token(data, pos)?;
+    if !matches!(salt.len(), 8 | 16) {
+        return None;
+    }
+    pos = skip_space(data, next);
+    let (iterations, next) = if data.get(pos) == Some(&b'"') {
+        let (value, next) = quoted(data, pos)?;
+        (String::from_utf8(value).ok()?.parse::<u32>().ok()?, next)
+    } else {
+        let end = data[pos..]
+            .iter()
+            .position(|byte| *byte == b')' || byte.is_ascii_whitespace())
+            .map(|offset| pos + offset)?;
+        let value = std::str::from_utf8(&data[pos..end])
+            .ok()?
+            .parse::<u32>()
+            .ok()?;
+        (value, end)
+    };
+    let close = data[next..].iter().position(|byte| *byte == b')')? + next + 1;
+    pos = skip_space(data, close);
+    let (nonce, next) = token(data, pos)?;
+    if nonce.len() != 12 {
+        return None;
+    }
+    pos = skip_space(data, next);
+    if data.get(pos) == Some(&b')') {
+        pos = skip_space(data, pos + 1);
+    }
+    let (ciphertext, _) = token(data, pos)?;
+    if ciphertext.len() < 16 {
+        return None;
+    }
+    Some(Gpg {
+        algorithm: 1,
+        encrypted_size: u32::try_from(ciphertext.len()).ok()?,
+        modulus_size: 4096,
+        encrypted_data: ciphertext,
+        s2k_type: 1,
+        s2k_mode: 254,
+        s2k_hash: 2,
+        cipher: 7,
+        iv_size: 12,
+        iv: nonce,
+        iterations,
+        salt,
+    })
+}
+
 impl Extractor for GpgExtractor {
     fn slug(&self) -> &'static str {
         Gpg::SLUG
@@ -156,6 +248,9 @@ impl Extractor for GpgExtractor {
             Ok(data) => data,
             Err(error) => return Probe::maybe(format!("cannot read artifact: {error}")),
         };
+        if gpg_ocb(&data).is_some() {
+            return Probe::yes("GnuPG agent OCB private key");
+        }
         let armored = data.starts_with(b"-----BEGIN PGP ");
         if !armored && data.first().is_none_or(|first| first & 0x80 == 0) {
             return Probe::No;
@@ -195,6 +290,9 @@ impl Extractor for GpgExtractor {
         let data = artifact.primary().read_all().map_err(|error| {
             ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
         })?;
+        if let Some(hash) = gpg_ocb(&data) {
+            return Ok(vec![Box::new(hash) as Box<dyn HashValue>]);
+        }
         let data = dearmor(&data)?;
         let mut hashes = Vec::new();
         let mut pending_symmetric = None;

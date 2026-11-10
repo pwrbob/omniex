@@ -9,7 +9,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "KeePass KDBX v4",
     slug = "keepass4",
-    hashcat = [34300, 34301],
+    hashcat = [34300, 34301], john = ["KeePass"],
     modes_fn = keepass4_modes,
 )]
 pub struct Keepass4 {
@@ -59,11 +59,13 @@ pub struct Keepass4 {
 }
 
 pub fn keepass4_modes(value: &Keepass4) -> Vec<crate::Mode> {
-    if value.kdf_uuid.starts_with("c9d9f39a") {
+    let mut modes = if value.kdf_uuid.starts_with("c9d9f39a") {
         vec![crate::Mode::Hashcat(34301)]
     } else {
         vec![crate::Mode::Hashcat(34300)]
-    }
+    };
+    modes.push(crate::Mode::John("KeePass"));
+    modes
 }
 
 impl Parse for Keepass4 {

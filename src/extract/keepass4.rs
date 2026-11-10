@@ -3,6 +3,7 @@
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Keepass4;
 use crate::{HashType, HashValue};
+use sha2::{Digest, Sha256};
 
 const SIGNATURE_PRIMARY: u32 = 0x9AA2_D903;
 const SIGNATURE_SECONDARY: u32 = 0xB54B_FB67;
@@ -184,9 +185,15 @@ fn parse(artifact: &Artifact) -> Result<Keepass4, ExtractError> {
         let id = cursor.u8()?;
         let size = cursor.u32()? as usize;
         if id == 0 {
-            if size != 0 {
+            if size != 4 {
                 return Err(ExtractError::Invalid(
                     "invalid KeePass end-of-header field".to_owned(),
+                ));
+            }
+            let data = cursor.bytes(size)?;
+            if data != [0x0d, 0x0a, 0x0d, 0x0a] {
+                return Err(ExtractError::Invalid(
+                    "invalid KeePass end-of-header marker".to_owned(),
                 ));
             }
             break;
@@ -248,8 +255,20 @@ fn parse(artifact: &Artifact) -> Result<Keepass4, ExtractError> {
             .as_slice()
             .try_into()
             .map_err(|_| ExtractError::Invalid("invalid KeePass header HMAC".to_owned()))?,
-        keyfile: String::new(),
+        keyfile: keyfile(artifact)?,
     })
+}
+
+fn keyfile(artifact: &Artifact) -> Result<String, ExtractError> {
+    let Some(source) = artifact.member("keyfile") else {
+        return Ok(String::new());
+    };
+    let mut data = vec![0; source.len() as usize];
+    source
+        .read_exact_at(0, &mut data)
+        .map_err(|error| ExtractError::Invalid(format!("cannot read KeePass keyfile: {error}")))?;
+    let digest = Sha256::digest(&data);
+    Ok(format!("1*64*{}", crate::format::hex(digest)))
 }
 
 impl Extractor for Keepass4Extractor {

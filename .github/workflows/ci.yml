@@ -221,3 +221,23 @@ jobs:
           cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
           cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
             john_loads_extracted_artifacts
+
+  paired-samples:
+    name: Paired sample extraction
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build omniex
+        run: cargo build --workspace --locked
+
+      - name: Check paired sample corpus
+        run: python3 scripts/check-paired-samples.py
