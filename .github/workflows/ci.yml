@@ -275,6 +275,9 @@ jobs:
           name: john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
           path: tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
 
+      - name: Mark John executable
+        run: chmod -R +x tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run
+
       - name: Run John conformance
         env:
           OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
@@ -324,6 +327,11 @@ jobs:
         with:
           name: hashcat-8.0.0
           path: tmp/reference/hashcat-8.0.0
+
+      - name: Mark downloaded tools executable
+        run: |
+          chmod -R +x tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run
+          chmod +x tmp/reference/hashcat-8.0.0/hashcat
 
       - name: Cache external samples
         uses: actions/cache@v5
