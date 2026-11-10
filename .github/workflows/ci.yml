@@ -104,7 +104,6 @@ jobs:
         run: cargo check --workspace --all-targets --locked
 
   hashcat-build:
-    needs: [lint, docs, tests, msrv]
     name: Build hashcat
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -142,7 +141,7 @@ jobs:
 
   hashcat:
     name: Hashcat conformance (${{ matrix.shard }}/4)
-    needs: hashcat-build
+    needs: [hashcat-build, lint, docs, tests, msrv]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
