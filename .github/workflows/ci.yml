@@ -72,6 +72,7 @@ jobs:
         run: cargo check --workspace --all-targets --locked
 
   hashcat-build:
+    needs: [checks, msrv]
     name: Build hashcat
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -179,6 +180,7 @@ jobs:
           retention-days: 7
 
   john:
+    needs: [checks, msrv]
     name: John conformance
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -223,6 +225,7 @@ jobs:
             john_loads_extracted_artifacts
 
   paired-samples:
+    needs: [checks, msrv]
     name: Paired sample extraction
     runs-on: ubuntu-latest
     timeout-minutes: 15
