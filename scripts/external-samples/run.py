@@ -13,6 +13,7 @@ are parsed into fields with ``omniex parse`` and compared field by field.
 from __future__ import annotations
 
 import argparse
+import binascii
 import fnmatch
 import hashlib
 import json
@@ -53,6 +54,7 @@ ALLOWED_CASE = {
     "subset",
     "requires",
     "companions",
+    "decode",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -75,6 +77,7 @@ class Case:
     subset: bool = False
     requires: list[str] = field(default_factory=list)
     companions: list[str] = field(default_factory=list)
+    decode: str = ""
 
 
 @dataclass
@@ -352,13 +355,16 @@ def artifact_path(
     offline: bool,
 ) -> Path:
     if manifest.ident in sources:
-        return sources[manifest.ident] / case.path
-    if manifest.repo == "local":
-        fail(f"{manifest.ident}: a local source is required (--source {manifest.ident}=PATH)")
-    if case.fetch == "tree":
-        checkout = checkout_for(manifest, [case.path.rstrip("/")])
-        return checkout / case.path
-    primary = fetch_file(manifest, case.path, offline)
+        primary = sources[manifest.ident] / case.path
+    else:
+        if manifest.repo == "local":
+            fail(f"{manifest.ident}: a local source is required (--source {manifest.ident}=PATH)")
+        if case.fetch == "tree":
+            checkout = checkout_for(manifest, [case.path.rstrip("/")])
+            primary = checkout / case.path
+        else:
+            primary = fetch_file(manifest, case.path, offline)
+
     for companion in case.companions:
         companion = render_template(companion, case.path)
         try:
@@ -366,7 +372,49 @@ def artifact_path(
         except SystemExit:
             if not case.companions:
                 raise
-    return primary
+
+    return decoded_path(manifest, case, primary)
+
+
+def decoded_path(manifest: Manifest, case: Case, primary: Path) -> Path:
+    if not case.decode:
+        return primary
+
+    dest = WORK / "decoded" / manifest.ident / f"{case.name}{primary.suffix}.decoded"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+
+    if case.decode == "uu":
+        decode_uu(primary, dest)
+    else:
+        fail(f"{manifest.ident}/{case.name}: unknown decode value `{case.decode}`")
+
+    return dest
+
+
+def decode_uu(source: Path, dest: Path) -> None:
+    output = bytearray()
+    started = False
+    ended = False
+
+    for line in source.read_bytes().splitlines():
+        if not started:
+            if line.startswith(b"begin "):
+                started = True
+            continue
+        if line.strip() == b"end":
+            ended = True
+            break
+        try:
+            output.extend(binascii.a2b_uu(line))
+        except binascii.Error as error:
+            fail(f"{source}: invalid uuencode data: {error}")
+
+    if not started:
+        fail(f"{source}: missing uuencode `begin` line")
+    if not ended:
+        fail(f"{source}: missing uuencode `end` line")
+
+    dest.write_bytes(output)
 
 
 def glob_prefix(pattern: str) -> str:
@@ -410,6 +458,7 @@ def expand_cases(
             subset=bool(raw.get("subset", False)),
             requires=list(raw.get("requires", [])),
             companions=list(raw.get("companions", [])),
+            decode=str(raw.get("decode", "")),
         )
         pattern = raw.get("glob")
         if pattern is not None:

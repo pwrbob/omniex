@@ -1,0 +1,13 @@
+commit = "d0bf2da07ebaa3964090ee936edea538d1602449"
+
+[[file]]
+path = "libarchive/test/test_read_format_zip_winzip_aes128.zip.uu"
+sha256 = "e83ce7cf406e049592e0efeea59be74bf2dacba61ff58d1db8d2b42b04a2ca8e"
+
+[[file]]
+path = "libarchive/test/test_read_format_zip_winzip_aes256.zip.uu"
+sha256 = "3cf66443e8a3585d3f740342fc59a8c9c9d99ee4663c7b3cee0b915350ab3d4a"
+
+[[file]]
+path = "libarchive/test/test_read_format_zip_winzip_aes256_stored.zip.uu"
+sha256 = "0c710f925aeda0a4e51bfee6007b83af47a2235001397bd18c83d9dfd384685e"

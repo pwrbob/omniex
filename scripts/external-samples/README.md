@@ -55,9 +55,13 @@ ordered = false
 subset = false                               # reference hashes may be a subset
 fetch = "file"                               # overrides the manifest mode
 companions = ["{stem}.key"]                  # optional sibling files
+decode = "uu"                                # optional post-fetch decoding
 reference_path = "directory/"                # artifact passed to the reference
 reference_format = "john"                    # when it differs from format
 ```
+
+Use `decode = "uu"` for reference data stored as uuencoded files, such as
+libarchive test fixtures. The lock still covers the encoded source file.
 
 Reference forms:
 
