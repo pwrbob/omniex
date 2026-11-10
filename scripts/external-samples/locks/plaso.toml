@@ -1,0 +1,9 @@
+commit = "f75784eea92ce1f946e822a675836da45d91309c"
+
+[[file]]
+path = "test_data/ios/NoteStore.sqlite"
+sha256 = "2915789e7e19b66a2fa6247c26345c47b97d68921a0a6509686f0882e0c1f739"
+
+[[file]]
+path = "test_data/login.keychain"
+sha256 = "c18c01687fcbc4cc9a4bf0e4c5bffa0f55ba80dc3746a9caf34e01d2f6bdb690"

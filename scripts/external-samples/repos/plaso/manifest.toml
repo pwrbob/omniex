@@ -1,0 +1,21 @@
+id = "plaso"
+repo = "https://github.com/log2timeline/plaso"
+commit = "f75784eea92ce1f946e822a675836da45d91309c"
+notes = "iOS artifact fixtures from the plaso test data"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "ios-secure-notes"
+path = "test_data/ios/NoteStore.sqlite"
+slug = "apple-secure-notes"
+reference = "john:applenotes2john.py"
+format = "john"
+
+[[case]]
+name = "macos-login-keychain"
+path = "test_data/login.keychain"
+slug = "apple-keychain"
+reference = "john:keychain2john.py"
+format = "john"

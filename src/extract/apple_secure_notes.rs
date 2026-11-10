@@ -110,21 +110,24 @@ impl<'a> Sqlite<'a> {
 
     fn read_payload(&self, start: usize, length: usize) -> Result<Vec<u8>, ExtractError> {
         let max_local = self.usable.saturating_sub(35);
-        if length <= max_local {
-            return self
-                .data
-                .get(start..start + length)
-                .map(<[u8]>::to_vec)
-                .ok_or_else(|| ExtractError::Invalid("truncated SQLite payload".to_owned()));
-        }
+        let local = if length <= max_local {
+            length
+        } else {
+            let min_local = (self.usable.saturating_sub(12) * 32 / 255).saturating_sub(23);
+            let local = min_local + (length - min_local) % self.usable.saturating_sub(4);
+            if local <= max_local { local } else { min_local }
+        };
         let mut payload = self
             .data
-            .get(start..start + max_local)
+            .get(start..start + local)
             .ok_or_else(|| ExtractError::Invalid("truncated SQLite payload".to_owned()))?
             .to_vec();
-        let mut next = be_u32(self.data, start + max_local)
+        if length <= max_local {
+            return Ok(payload);
+        }
+        let mut next = be_u32(self.data, start + local)
             .ok_or_else(|| ExtractError::Invalid("missing SQLite overflow page".to_owned()))?;
-        let mut remaining = length - max_local;
+        let mut remaining = length - local;
         while remaining > 0 {
             let page_start = self.page_start(next)?;
             next = be_u32(self.data, page_start).ok_or_else(|| {

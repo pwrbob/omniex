@@ -71,16 +71,17 @@ fn parse(artifact: &Artifact) -> Result<AppleKeychain, ExtractError> {
         return Err(ExtractError::Invalid("keychain file is empty".to_owned()));
     }
     let mut error = ExtractError::Unsupported("no keychain database blob".to_owned());
+    let mut found = None;
     for (start, window) in data.windows(MAGIC.len()).enumerate() {
         if window != MAGIC {
             continue;
         }
         match parse_blob(&data, start) {
-            Ok(value) => return Ok(value),
-            Err(found) => error = found,
+            Ok(value) => found = Some(value),
+            Err(problem) => error = problem,
         }
     }
-    Err(error)
+    found.ok_or(error)
 }
 
 impl Extractor for AppleKeychainExtractor {
