@@ -1,0 +1,14 @@
+id = "openssl-tests"
+repo = "https://github.com/openssl/openssl"
+commit = "be36a92f25fd393dfc737642b88054fd93202962"
+notes = "Encrypted PKCS#8 private keys from OpenSSL's test certificates"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "key-pass-12345"
+path = "test/certs/key-pass-12345.pem"
+slug = "pem-john"
+reference = "john:pem2john.py"
+format = "john"

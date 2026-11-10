@@ -103,14 +103,18 @@ fn pem_renders_the_john_serialization_for_3des_sha1_keys() {
 }
 
 #[test]
-fn pem_leaves_hashcat_shaped_keys_to_the_structured_extractor() {
-    for name in ["key-aes-sha1.pem", "key-aes-sha256.pem"] {
+fn pem_renders_pbkdf2_aes_keys() {
+    for (name, hash) in [
+        ("key-aes-sha1.pem", "key-aes-sha1.john.hash"),
+        ("key-aes-sha256.pem", "key-aes-sha256.john.hash"),
+    ] {
         let key = artifact("pem", name);
-        assert_eq!(PEM.probe(&key), Probe::No, "{name}");
-        assert!(matches!(
-            extract_error(&PEM, &key),
-            ExtractError::Unsupported(_)
-        ));
+        assert!(matches!(PEM.probe(&key), Probe::Yes(_)), "{name}");
+        assert_eq!(
+            render_with(&PEM, &key, Tool::John),
+            expected("pem", hash),
+            "{name}"
+        );
     }
 }
 
