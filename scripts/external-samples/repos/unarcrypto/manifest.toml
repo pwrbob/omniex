@@ -59,3 +59,11 @@ slug = "rar3p"
 reference = "john:rar2john"
 format = "hashcat"
 reference_format = "john"
+
+[[case]]
+name = "7z-password"
+path = "tests/hello_pw_store.7z"
+slug = "sevenzip"
+reference = "john:7z2john.pl"
+format = "john"
+requires = ["perl:Compress::Raw::Lzma"]

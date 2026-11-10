@@ -31,3 +31,7 @@ sha256 = "ad1b152cc03d053317e660c2e07c1124cf71ff299fefd93a0277d35f3b14f66d"
 [[file]]
 path = "tests/hello_pw_normal.rar"
 sha256 = "64e3831d897f28f1c627b7272a815cbaed6f17a263cddeee96c459c6303dc9fe"
+
+[[file]]
+path = "tests/hello_pw_store.7z"
+sha256 = "f75670e19d894c01463ef3a1708aa8196f5d4f81bf6910416e8c122ae2ea3595"
