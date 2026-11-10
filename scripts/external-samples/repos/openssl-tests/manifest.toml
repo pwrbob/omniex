@@ -9,6 +9,6 @@ mode = "file"
 [[case]]
 name = "key-pass-12345"
 path = "test/certs/key-pass-12345.pem"
-slug = "pem-john"
+slug = "pkcs8-pbes2"
 reference = "john:pem2john.py"
 format = "john"

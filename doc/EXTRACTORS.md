@@ -176,7 +176,7 @@ This file documents the extractors currently registered in
 - `hsrp` - HSRP authentication.
 - `eigrp` - EIGRP authentication.
 - `sntp-ms` - MS SNTP authenticated packets.
-- `pem` - PEM private keys in the John serialization.
+- `pkcs8-pbes2` - PKCS#8 PBES2 private keys in the John serialization.
 - `krb5db17`, `krb5db18`, `krb5db-old` - Kerberos database extracts.
 - `ike-psk-md5`, `ike-psk-sha1`, `ike-john` - IKE pre-shared-key exchanges.
 - `ntlm` - SAM registry hives and plain NTLM hash lists.

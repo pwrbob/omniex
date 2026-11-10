@@ -66,6 +66,24 @@ When adding a mode:
   `Oracle 11g SHA1`, or `MSSQL (2000)`.
 - A slug is stable once published. It identifies the struct, not a hashcat mode.
 
+### Slug naming
+
+Slugs are lowercase kebab-case and describe the hash type, not the tool that
+consumes it. Encode the algorithm plus the distinguishing parameter or
+representation, for example `salted-md5`, `pkcs8-pbes2`, `dmg-encrcdsa-v2`, or
+`office-agile`.
+
+Do not put `hashcat`, `john`, `opencl`, mode numbers, product names, or a file
+extension in a slug unless that extension is the format's established name. A
+tool-specific serialization is not a separate hash type: prefer one logical
+type with both modes, or name the type after the KDF, cipher, or encoding that
+actually distinguishes it.
+
+Slugs ending in `-john` or `-opencl` are legacy. Rename them as their types are
+next touched, and do not add new ones. Before the first release, renames may be
+made freely, but fixtures, documentation, manifests, and references must change
+in the same commit.
+
 Fields hold one value in v0. `Vec<u8>` is allowed as a byte string; optional and
 repeated fields are added only when a format needs them.
 

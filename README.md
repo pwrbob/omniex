@@ -588,7 +588,7 @@ checked against that command in CI.
 | `pbkdf2-hmac-sha1-john` | PBKDF2-HMAC-SHA1 | - | `PBKDF2-HMAC-SHA1` |
 | `pbkdf2-hmac-sha256-john` | PBKDF2-HMAC-SHA256 | - | `PBKDF2-HMAC-SHA256` |
 | `pbkdf2-hmac-sha512-john` | PBKDF2-HMAC-SHA512 | - | `PBKDF2-HMAC-SHA512` |
-| `pem-john` | PEM | - | `PEM` |
+| `pkcs8-pbes2` | PKCS#8 PBES2 | - | `PEM` |
 | `pfx` | pfx | - | `pfx` |
 | `racf-kdfaes-john` | RACF-KDFAES | - | `RACF-KDFAES` |
 | `restic` | restic | - | `restic` |
