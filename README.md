@@ -8,7 +8,7 @@ that understands both hashcat and John the Ripper serializations.
 ![John modes](https://img.shields.io/badge/John_modes-262%2F262-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
 ![exact extractors](https://img.shields.io/badge/exact_extractors-183%2F235-8957e5)
-![external samples](https://img.shields.io/badge/external_samples-34_formats_%2F_254_cases-8957e5)
+![external samples](https://img.shields.io/badge/external_samples-34_formats_%2F_337_cases-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in
@@ -219,7 +219,13 @@ omniex extract secret-key.asc --type gpg
 omniex extract secret-key.asc --format john
 omniex extract artifact --all
 omniex extract artifact --all --json
+omniex extract filesystem.dat --type encdv \
+  --companion enckey=/path/to/enckey.dat
 ```
+
+`--companion NAME=PATH` attaches a named sidecar input, such as the `enckey`
+file used by ENCDataVault or a KeePass `keyfile`. Repeat it for extractors that
+need more than one.
 
 Without `--type`, every extractor first probes the artifact. Auto-detection
 succeeds only when exactly one extractor reports confident recognition. Formats

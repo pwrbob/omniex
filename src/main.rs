@@ -119,6 +119,10 @@ struct ExtractArgs {
     #[arg(long)]
     json: bool,
 
+    /// Named companion file, as NAME=PATH. May be repeated.
+    #[arg(long = "companion", value_name = "NAME=PATH")]
+    companion: Vec<String>,
+
     /// Output serialization.
     #[arg(long, value_enum, default_value = "hashcat")]
     format: FormatArg,
@@ -394,9 +398,17 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                 .map(|extractor| (descriptor, extractor))
         })
         .transpose()?;
-    let artifact = extract::Artifact::from_file(&args.artifact).map_err(|error| {
+    let mut artifact = extract::Artifact::from_file(&args.artifact).map_err(|error| {
         CliError::Input(format!("cannot read {}: {error}", args.artifact.display()))
     })?;
+    for companion in &args.companion {
+        let (name, path) = companion.split_once('=').ok_or_else(|| {
+            CliError::Input(format!("companion must be NAME=PATH, got `{companion}`"))
+        })?;
+        let source = extract::FileSource::open(std::path::Path::new(path))
+            .map_err(|error| CliError::Input(format!("cannot read companion {path}: {error}")))?;
+        artifact = artifact.with_member(name.to_owned(), source);
+    }
 
     let extractors = match extractor {
         Some((descriptor, extractor)) => vec![(descriptor.slug, extractor)],

@@ -348,3 +348,27 @@ fn parse_bestcrypt(hash: &str) -> Box<dyn omniex::HashValue> {
     )
     .unwrap()
 }
+
+#[test]
+fn encdv_cli_attaches_a_named_companion() {
+    let companion = format!(
+        "enckey={}",
+        fixture("encdv", "enckey-v1-pbkdf2.dat").display()
+    );
+    let output = omniex()
+        .arg("extract")
+        .arg("--type")
+        .arg("encdv")
+        .arg("--format")
+        .arg("hashcat")
+        .arg("--companion")
+        .arg(companion)
+        .arg(fixture("encdv", "filesystem-v1-pbkdf2.dat"))
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    assert_eq!(
+        String::from_utf8_lossy(&output.stdout).trim_end(),
+        expected("encdv", "filesystem-v1-pbkdf2.hash")
+    );
+}

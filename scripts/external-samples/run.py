@@ -504,7 +504,7 @@ def expand_cases(
     return expanded
 
 
-def render_template(template: str, path: str) -> str:
+def render_template(template: str, path: str, extra: dict[str, str] | None = None) -> str:
     path_object = Path(path)
     values = {
         "path": path,
@@ -514,6 +514,8 @@ def render_template(template: str, path: str) -> str:
         "basename": path_object.stem,
         "base": path_object.stem,
     }
+    if extra:
+        values.update(extra)
     return template.format_map(values)
 
 
@@ -744,7 +746,16 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         fail(f"{manifest.ident}/{case.name}: artifact is missing: {artifact}")
     format_name = case.format or ("john" if case.reference.startswith("john:") else "hashcat")
     binary = omniex_binary()
-    wanted = extract(binary, case.slug, format_name, artifact, case.omniex_args)
+    wanted = extract(
+        binary,
+        case.slug,
+        format_name,
+        artifact,
+        [
+            render_template(arg, case.path, {"artifact_dir": str(artifact.parent)})
+            for arg in case.omniex_args
+        ],
+    )
     if not wanted:
         fail(f"{manifest.ident}/{case.name}: omniex extracted no `{case.slug}` hash")
 
@@ -773,7 +784,11 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         reference_text = reference_path.read_text(encoding="utf-8")
         normalize = "hash"
     else:
-        command = reference_command(kind, value, reference_artifact, case.args)
+        reference_args = [
+            render_template(arg, case.path, {"artifact_dir": str(reference_artifact.parent)})
+            for arg in case.args
+        ]
+        command = reference_command(kind, value, reference_artifact, reference_args)
         reference_text = run_command(command, cwd=john_run() if kind == "john" else None)
         normalize = "bks" if case.slug in {"bks", "vmx-john"} else "hash"
 

@@ -259,6 +259,39 @@ fn parse(artifact: &Artifact) -> Result<Keepass4, ExtractError> {
     })
 }
 
+fn keyfile_key(data: &[u8]) -> Vec<u8> {
+    if let Some(key) = xml_keyfile_key(data) {
+        return key;
+    }
+    let text = String::from_utf8_lossy(data);
+    let trimmed = text.trim();
+    if trimmed.len() == 64 && trimmed.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        if let Ok(key) = crate::parse::decode_hex(trimmed, 0) {
+            return key;
+        }
+    }
+    Sha256::digest(data).to_vec()
+}
+
+fn xml_keyfile_key(data: &[u8]) -> Option<Vec<u8>> {
+    let text = std::str::from_utf8(data).ok()?;
+    let start = text.find("<Data")?;
+    let open = text[start..].find('>')? + start;
+    let end = text[open + 1..].find("</Data>")? + open + 1;
+    let cleaned: String = text[open + 1..end]
+        .chars()
+        .filter(|character| !character.is_whitespace())
+        .collect();
+    if cleaned.len() == 64 && cleaned.bytes().all(|byte| byte.is_ascii_hexdigit()) {
+        return crate::parse::decode_hex(&cleaned, 0).ok();
+    }
+    use base64::Engine;
+    let decoded = base64::engine::general_purpose::STANDARD
+        .decode(cleaned)
+        .ok()?;
+    (decoded.len() == 32).then_some(decoded)
+}
+
 fn keyfile(artifact: &Artifact) -> Result<String, ExtractError> {
     let Some(source) = artifact.member("keyfile") else {
         return Ok(String::new());
@@ -267,8 +300,7 @@ fn keyfile(artifact: &Artifact) -> Result<String, ExtractError> {
     source
         .read_exact_at(0, &mut data)
         .map_err(|error| ExtractError::Invalid(format!("cannot read KeePass keyfile: {error}")))?;
-    let digest = Sha256::digest(&data);
-    Ok(format!("1*64*{}", crate::format::hex(digest)))
+    Ok(format!("1*64*{}", crate::format::hex(keyfile_key(&data))))
 }
 
 impl Extractor for Keepass4Extractor {
@@ -300,5 +332,30 @@ impl Extractor for Keepass4Extractor {
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
         Ok(vec![Box::new(parse(artifact)?) as Box<dyn HashValue>])
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::keyfile_key;
+    use crate::format::hex;
+
+    #[test]
+    fn keyfile_key_reads_xml_and_hex_keyfiles() {
+        let xml = br#"<KeyFile><Key><Data Hash="50BD7B21">
+            4C772D15 A5D58BEC 0C707345 ECEBDFE2
+            18F0529A 4882FE3C D48F00E5 4B733073
+        </Data></Key></KeyFile>"#;
+        assert_eq!(
+            hex(keyfile_key(xml)),
+            "4c772d15a5d58bec0c707345ecebdfe218f0529a4882fe3cd48f00e54b733073"
+        );
+        let hex_file = b"4C772D15A5D58BEC0C707345ECEBDFE218F0529A4882FE3CD48F00E54B733073\n";
+        assert_eq!(hex(keyfile_key(hex_file)), hex(keyfile_key(xml)));
+        let raw = b"not a keyfile";
+        assert_eq!(
+            hex(keyfile_key(raw)),
+            "6e21fb68975420e0e4c0cfcb75f2f5d17fbc7751ce056de07a66a09c288a1c89"
+        );
     }
 }

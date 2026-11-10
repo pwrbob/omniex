@@ -74,6 +74,11 @@ any other reference failure is an error.
 reference extractor as a temporary file. Use it for tools that need a decoded
 intermediate form, such as a packet capture converted to PDML.
 
+`args` and `omniex_args` are rendered with the same placeholders as `name`,
+plus `{artifact_dir}` for the directory holding the fetched artifact. Use it to
+attach sidecars, for example `--companion keyfile={artifact_dir}/v4sample.keyx`
+with `companions = ["{dir}/v4sample.keyx"]`.
+
 Reference forms:
 
 - `john:<script>` runs `$OMNIEX_JOHN_RUN/<script>`.

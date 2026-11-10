@@ -84,20 +84,19 @@ reference = "hashcat:luks2hashcat.py"
 format = "hashcat"
 
 [[case]]
-name = "7z-encrypted-single"
-path = "7-Zip/encrypted-single.7z"
+name = "7z-{base}"
+glob = "7-Zip/*.7z"
 slug = "sevenzip"
 reference = "john:7z2john.pl"
 format = "john"
 requires = ["perl:Compress::Raw::Lzma"]
 
 [[case]]
-name = "7z-header-encrypted"
-path = "7-Zip/header-encrypted.7z"
-slug = "sevenzip"
-reference = "john:7z2john.pl"
+name = "7z-pkzip-{base}"
+glob = "7-Zip/*.zip"
+slug = "pkzip"
+reference = "john:zip2john"
 format = "john"
-requires = ["perl:Compress::Raw::Lzma"]
 
 [[case]]
 name = "zip-pkzip-zip1"
@@ -281,8 +280,6 @@ reference_format = "john"
 ignore_fields = ["master", "ckey", "public_key"]
 requires = ["python:bsddb3"]
 
-# ENCDataVault/05-SanDiskPrivateAccess-123456Aa! is a PBKDF2 vault whose
-# enckey.dat companion cannot be attached through the CLI yet.
 [[case]]
 name = "encdv-{dir}"
 glob = "ENCDataVault/0[012]-*/filesystem.dat"
@@ -358,6 +355,13 @@ filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
 
 # Keynote/plain.key.zip is not encrypted.
 [[case]]
+name = "iwork-presentation"
+path = "Keynote/Presentation.key"
+slug = "iwork"
+reference = "john:iwork2john.py"
+format = "john"
+
+[[case]]
 name = "iwork-password"
 path = "Keynote/password.key.zip"
 slug = "iwork"
@@ -367,10 +371,11 @@ format = "john"
 # The *-null wallets have no primary password set.
 [[case]]
 name = "mozilla-{dir}"
-glob = "Mozilla/[0v]*-[0-9]*/key3.db"
+glob = "Mozilla/*/key3.db"
 slug = "mozilla-key3"
 reference = "hashcat:mozilla2hashcat.py"
 format = "hashcat"
+exclude = ["Mozilla/*null*/key3.db"]
 requires = ["python:Crypto", "python:pyasn1"]
 
 [[case]]
@@ -460,6 +465,13 @@ format = "hashcat"
 
 [[case]]
 name = "oldoffice-{path}"
+glob = "Office/Office_Secrets/**/*.xlt"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "hashcat"
+
+[[case]]
+name = "oldoffice-{path}"
 glob = "Office/Office_Secrets/**/*.xla"
 slug = "oldoffice"
 reference = "john:office2john.py"
@@ -510,3 +522,201 @@ path = "Office/Libre-v7_123456.odt"
 slug = "odf"
 reference = "john:libreoffice2john.py"
 format = "hashcat"
+
+[[case]]
+name = "rar5-{base}"
+glob = "RAR5/*.rar"
+slug = "rar5"
+reference = "john:rar2john"
+format = "john"
+
+[[case]]
+name = "rar3-first-file-plain"
+path = "RAR/first-file-plain.rar"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+
+[[case]]
+name = "rar3-unicode"
+path = "RAR/unicode.rar"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+
+[[case]]
+name = "rar3-sfx-{base}"
+glob = "RAR/SFX-files/secret.exe"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+
+[[case]]
+name = "rar3hp-sfx"
+path = "RAR/SFX-files/secret-hp.exe"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "john"
+
+[[case]]
+name = "zip-bsdtar-{base}"
+glob = "ZIP/bsdtar_test#.zip"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "zip-christmas"
+path = "ZIP/ChristmasGIFts_123456.zip"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "zip-winzip2-{base}"
+glob = "ZIP/winzip-zip2-testpassword#.zip"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "zip-test-{base}"
+glob = "ZIP/zip_test#.zip"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "pdf-{path}"
+glob = "PDF/**/*.pdf"
+slug = "pdf"
+reference = "john:pdf2john.pl"
+format = "john"
+
+[[case]]
+name = "keepass-test-3chars"
+path = "KeePass/kdbx4/test_3charspassword.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass-test-4chars"
+path = "KeePass/kdbx4/test_4charspassword.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass-test-8chars"
+path = "KeePass/kdbx4/test_8charspassword.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass4-chacha-argon2id"
+path = "KeePass/kdbx4/test_chacha_argon2id.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass4-a2d"
+path = "KeePass/kdbx4/a2d.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass-keepass2"
+path = "KeePass/keepass2.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass-openwall"
+path = "KeePass/openwall.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass-password"
+path = "KeePass/password.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass4-with-keyfile"
+path = "KeePass/keyfile_samples/v4sample-with-keyfile.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+companions = ["{dir}/v4sample.keyx"]
+args = ["-k", "{artifact_dir}/v4sample.keyx"]
+omniex_args = ["--companion", "keyfile={artifact_dir}/v4sample.keyx"]
+
+[[case]]
+name = "office-secrets-{path}"
+glob = "Office/Office_Secrets/Office_20*/*.docx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+exclude = ["Office/Office_Secrets/**/*-Test.docx"]
+
+[[case]]
+name = "office-secrets-{path}"
+glob = "Office/Office_Secrets/Office_20*/*.dotx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-secrets-{path}"
+glob = "Office/Office_Secrets/Office_20*/*.xlsx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-secrets-{path}"
+glob = "Office/Office_Secrets/Office_20*/*.xlsm"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-secrets-{path}"
+glob = "Office/Office_Secrets/Office_20*/*.xlsb"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "office-secrets-{path}"
+glob = "Office/Office_Secrets/Office_20*/*.xltx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "gpg-test-utf8"
+path = "GPG/test.utf8.asc"
+slug = "gpg"
+reference = "john:gpg2john"
+format = "john"
+subset = true
+
+[[case]]
+name = "encdv-pbkdf2"
+path = "ENCDataVault/05-SanDiskPrivateAccess-123456Aa!/filesystem.dat"
+slug = "encdv"
+reference = "john:encdatavault2john.py"
+reference_path = "{dir}/"
+format = "hashcat"
+reference_format = "john"
+companions = ["{dir}/enckey.dat"]
+omniex_args = ["--companion", "enckey={artifact_dir}/enckey.dat"]

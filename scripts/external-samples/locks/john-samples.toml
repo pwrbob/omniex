@@ -77,12 +77,80 @@ path = "LUKS/LUKS-openwall"
 sha256 = "d8c66299d70930b2d28e7c2f3832afd94213c17b6f699ff654f208b14e1cb1a8"
 
 [[file]]
+path = "7-Zip/7z-easy.7z"
+sha256 = "e90de722160f87589ddd198c259ec6f0811e68cc177a4364a2bf86e4bee836fc"
+
+[[file]]
+path = "7-Zip/7z-hard.7z"
+sha256 = "d642f7982fd75f9c8810fc4d5932a64c20cea296d0342b55199ccca387db613a"
+
+[[file]]
+path = "7-Zip/7z-medium.7z"
+sha256 = "ce3f00e422f850598ba1e1d913f6e4763d980f7a0fb48089473d63a93d2289ad"
+
+[[file]]
+path = "7-Zip/7za433_7zip_bzip2.7z"
+sha256 = "48300422a83945d78f6bba220ff191b3e6d460ff9833868e1eb461e5a9b13bf1"
+
+[[file]]
+path = "7-Zip/7za433_7zip_lzma.7z"
+sha256 = "03a305f0683558a7afa639a4ad92eb7b6e06062e4434e504bf9f64a4742f9a57"
+
+[[file]]
+path = "7-Zip/7za433_7zip_lzma2.7z"
+sha256 = "5565f8b81c1a6f1ecee99e858c15d80b141599d06e7dca24262237c44e3c5d4a"
+
+[[file]]
+path = "7-Zip/7za433_7zip_lzma2_bcj2.7z"
+sha256 = "90a509501e82ce244d87884b1715c0d7649e5fa54f2015e0bb78b84d45a44918"
+
+[[file]]
+path = "7-Zip/7za433_7zip_lzma2_crypto.7z"
+sha256 = "a14873faa984eedb77938941755d15dbc58fd387b941e3c59c8aa29a9a28f7fe"
+
+[[file]]
+path = "7-Zip/7za433_7zip_lzma_bcj2.7z"
+sha256 = "44b9f6297b459e4a7dc151d42a067701b2377e7eec0a2ba5d87f3cfcdb6dc534"
+
+[[file]]
+path = "7-Zip/7za433_7zip_lzma_crypto.7z"
+sha256 = "d22d7b1f434eeffecb5d2764747178c0557c6b693a46c8fb243cf8a9639b90a6"
+
+[[file]]
+path = "7-Zip/7za433_7zip_ppmd.7z"
+sha256 = "2d46193f11a679d303041a022c20fb61b2e357083d9ed96f5e1906881f59d063"
+
+[[file]]
+path = "7-Zip/7za433_7zip_ppmd_bcj2.7z"
+sha256 = "3ef325a86df2e34cb0e42089d13da2a8c5a284bdffd1905aed1b3ea46aa1b291"
+
+[[file]]
+path = "7-Zip/encrypted-double-files.7z"
+sha256 = "139f103dc71937aad77905f40b29f333b55f122fe8d090e1affaf3fe6e828fae"
+
+[[file]]
 path = "7-Zip/encrypted-single.7z"
 sha256 = "bc29f2237211847c02cc9338c38789ebac587c6c9b1590673a74a00a51c1ca06"
 
 [[file]]
 path = "7-Zip/header-encrypted.7z"
 sha256 = "5c611b9d83fc043afd5961384efa623e69f8ef6a152ea0d0874d3b7964ec6a44"
+
+[[file]]
+path = "7-Zip/plain.7z"
+sha256 = "1d804317d85a606c5c548501f3e37504c7b2c23dfd1f621412a50fd52e3b6cf4"
+
+[[file]]
+path = "7-Zip/zip-easy.zip"
+sha256 = "5db6493b57285c1990cd58432a4a648dd214dc0f01f7e6cec66cbc7b5e8afc79"
+
+[[file]]
+path = "7-Zip/zip-hard.zip"
+sha256 = "f314980eebfb8bb35f9a437530c2bd9fb3428898093e85d8dcfc4f6e5a01633f"
+
+[[file]]
+path = "7-Zip/zip-medium.zip"
+sha256 = "baf42ac11f359490c7d98aa1f08e8253a986d5c7b9a691b8a4bbd16660fcc125"
 
 [[file]]
 path = "ZIP/zip1_testpassword#.zip"
@@ -597,8 +665,24 @@ path = "Kerberos_v5/MiTM-user1-openwall-etype-23.pcap"
 sha256 = "39f86f1a52d9ba223755a0520f1a0929dd52611a2f2a509356ae8433b4caafff"
 
 [[file]]
+path = "Keynote/Presentation.key"
+sha256 = "c8dd9632acad0f5606e20e288bec39b854ff778c3c3e1cb2bd46722dcf5b1518"
+
+[[file]]
 path = "Keynote/password.key.zip"
 sha256 = "379e99abf6a4857ac3646097e1ce5739781f887670de45487940e4ac6d1cbac7"
+
+[[file]]
+path = "Mozilla/00-SeaMonkey-openwall/key3.db"
+sha256 = "c04bebe464b09a80819911b5a2320169a48866bd5b2ba63dad3d9431cc686911"
+
+[[file]]
+path = "Mozilla/01-SeaMonkey-password/key3.db"
+sha256 = "5c3d3ac8d97cfa11e1499ed6b4bcceaddf03796583b1f4cc3c538570b72564b7"
+
+[[file]]
+path = "Mozilla/02-Firefox-password/key3.db"
+sha256 = "322d30fbf52c9597564937f7e0248e0017cbd51a4739838da983c886774d07be"
 
 [[file]]
 path = "Mozilla/03-Thunderbird-12345678/key3.db"
@@ -757,6 +841,18 @@ path = "Office/Office_Secrets/Office_2010/2010-Office97-2000_myhovercraftisfullo
 sha256 = "32ec79ef9e671c304c9f0b8119efdc116c3993855f02462250c41f2acb103eaa"
 
 [[file]]
+path = "Office/Office_Secrets/LibreOffice_3.5.1/Libre-97-2000_myhovercraftisfullofeels_.xlt"
+sha256 = "4b3bec43dc8295572ccef4dd56c09c04fa28ffb5c1e090f82561f70d92923220"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Office97-2000_myhovercraftisfullofeels_.xlt"
+sha256 = "8ce274f9c75692ab26c032b36a76334969c229f729ea80bd78db15a31636ea77"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Default_myhovercraftisfullofeels_.xlt"
+sha256 = "33aeff6dfcf2fc982930b4e50c5857e6e1454afbeedef6145e54ff6a95696713"
+
+[[file]]
 path = "Office/Office_Secrets/Office_2007/2007-Office97-2000_myhovercraftisfullofeels_.xla"
 sha256 = "002292db57a71d77262c0b03d3f82990afee3070b84bc2813232e92d94b45a98"
 
@@ -783,3 +879,239 @@ sha256 = "bfa299f6a28d67d0f1f7d54e35f7e370b82cbbd91bbebd275a732f92d9bc6af6"
 [[file]]
 path = "Office/Libre-v7_123456.odt"
 sha256 = "fa5c8e37c2173d23931fc4cd07cc70680d954f1382974bf88c587e9cc98d3227"
+
+[[file]]
+path = "RAR5/rar5-hp0-password.rar"
+sha256 = "1f60bfc2c2e0f5cba64d27a3bdc90ea55ee01dfc5cb0fe7004ba1a231e4e8a98"
+
+[[file]]
+path = "RAR5/rar5-p0-password.rar"
+sha256 = "5a71e17e3a456752c4b9f34ee808eff648e2ff233e027868e669c4e479c7701d"
+
+[[file]]
+path = "RAR/first-file-plain.rar"
+sha256 = "31a1dfecd3ac94bab1e7e05694cfece606dd04ac5e6aa7ffdfd81ac9b53e088f"
+
+[[file]]
+path = "RAR/unicode.rar"
+sha256 = "762fbefc0b45a29b9545d34b5c383715119545ea97fc54825c2fba093bcee8f7"
+
+[[file]]
+path = "RAR/SFX-files/secret.exe"
+sha256 = "aac5b8e4e76b68d5e64936f6c06db348c9fa86eb3873c927e83d4128a04f4dda"
+
+[[file]]
+path = "RAR/SFX-files/secret-hp.exe"
+sha256 = "2d074c8da3f569579f3705cb6848b9e3743cc8f14dbcb73ee41a959c69bf462c"
+
+[[file]]
+path = "ZIP/bsdtar_test#.zip"
+sha256 = "9349d508d47a768fe30a42309794a93577ea09b16749731193ad8bb74c2db99d"
+
+[[file]]
+path = "ZIP/ChristmasGIFts_123456.zip"
+sha256 = "864016552f4d86c6c9d72fa9f65deaee9e2d47cffbca3aa065dde7368c2ea8f7"
+
+[[file]]
+path = "ZIP/winzip-zip2-testpassword#.zip"
+sha256 = "1cb32dfca3d970f85c4e17c4a51e3abbf37703cfbea8e8dd570f37630100ab52"
+
+[[file]]
+path = "ZIP/zip_test#.zip"
+sha256 = "6c33ebaa44a3a8c60135984358047085753819e5b4189777769ffa79e103c441"
+
+[[file]]
+path = "PDF/MetadataNotEncrypted.pdf"
+sha256 = "e75844e02a59103c24fd0368b61d9270221728f0c040102575d82059e0860a54"
+
+[[file]]
+path = "PDF/challenge8_pro_pdfs/Challenge8_pro_easy.pdf"
+sha256 = "59f2b5613ba5a7d25c8d6f33ede1b5005c5c5a2505b8fe55d3929ac77e864ee1"
+
+[[file]]
+path = "PDF/challenge8_pro_pdfs/Challenge8_pro_hard.pdf"
+sha256 = "7a5edaa1f5b90781013714f81e5266331afa2309cdf82de63efe4f5f2ab2955f"
+
+[[file]]
+path = "PDF/challenge8_pro_pdfs/Challenge8_pro_medium.pdf"
+sha256 = "03948bdb80ff984e9ac65ad6ce98e35c9b3aaa4b1ede33752ae3745ef578267e"
+
+[[file]]
+path = "PDF/new-pdf-collection/PDF-Example-Encryption.pdf"
+sha256 = "ebcb278b53f8efb24171821a9e2e47211f96f7af686b37fb740cdfb4070ef432"
+
+[[file]]
+path = "PDF/new-pdf-collection/PDF-Example-Password.pdf"
+sha256 = "76593a57d9787a86050815e830a4c69425f5c95017fdb6f509074658932056e2"
+
+[[file]]
+path = "PDF/new-pdf-collection/openwall-7.pdf"
+sha256 = "f9a1fa6738f18615ff0f940b29d17f2c385fd1e9d378540df632dd9aed7f7009"
+
+[[file]]
+path = "PDF/new-pdf-collection/openwall-9.pdf"
+sha256 = "d76598ababa6e34e29d0958e19deae3942059b65a22520ee1f94e96ad56a6af4"
+
+[[file]]
+path = "PDF/new-pdf-collection/pdf-easy.pdf"
+sha256 = "62a60da5aad7c16c0f298f502a6ae59db3e439887628e2d2d8ca13a2530252ae"
+
+[[file]]
+path = "PDF/new-pdf-collection/pdf-hard.pdf"
+sha256 = "2604231e84821884ec9a5d8a9ebe50769d90443e508eff89eeaf564f2702de31"
+
+[[file]]
+path = "PDF/new-pdf-collection/pdf-medium.pdf"
+sha256 = "aa80dc000a5c15b40e7c983894eb7bce2d79d70c1e28f180853f322d302d8bd6"
+
+[[file]]
+path = "PDF/new-pdf-collection/test-3-RC4-40-open-test.pdf"
+sha256 = "90c1b9126054e4c32cd02dde2b453e360c29a1643e29fe90b77f545dbe4f4d39"
+
+[[file]]
+path = "PDF/new-pdf-collection/test-3-RC4-40-open-testpassword.pdf"
+sha256 = "e9e80b5eb2d767004b8a235efe8941da8361234b847b27570945ed871b134d78"
+
+[[file]]
+path = "PDF/new-pdf-collection/test-5-RC4-128-open-testpassword.pdf"
+sha256 = "dc8f8d6c4e7fe9f995da9c4e3c868e62ed452a52af55b91a0069949a1ac1c1d4"
+
+[[file]]
+path = "PDF/new-pdf-collection/test-7-AES-128-open-testpassword.pdf"
+sha256 = "e80841477f695f8a9b5a2c61b5318812f51a811d9ab834df6462e87a2c8946f1"
+
+[[file]]
+path = "PDF/new-pdf-collection/test-X-AES-256-open-testpassword.pdf"
+sha256 = "3e11aa07ee8238b8ff42a5dd2ee3a0a01fe79fe176102e0472d085f45e8365fa"
+
+[[file]]
+path = "PDF/pdf_m10400_11_to_13_Acrobat_2_to_4/pdf_m10400_11_to_13_Acrobat_2_to_4.pdf"
+sha256 = "e913cc916951584c78f6fa97b31a438cbb0c2578caabb379316a9fc92c91fbd2"
+
+[[file]]
+path = "PDF/pdf_m10500_14_to_16_Acrobat_5_to_8/hashcat.pdf"
+sha256 = "3aaec9fd3b3b77da5b6fc3de4582f467551e014a5284541b3a284f79d545c012"
+
+[[file]]
+path = "PDF/pdf_m10500_14_to_16_Acrobat_5_to_8/pdf-easy.pdf"
+sha256 = "62a60da5aad7c16c0f298f502a6ae59db3e439887628e2d2d8ca13a2530252ae"
+
+[[file]]
+path = "PDF/pdf_m10500_14_to_16_Acrobat_5_to_8/pdf-hard.pdf"
+sha256 = "2604231e84821884ec9a5d8a9ebe50769d90443e508eff89eeaf564f2702de31"
+
+[[file]]
+path = "PDF/pdf_m10500_14_to_16_Acrobat_5_to_8/pdf-medium.pdf"
+sha256 = "aa80dc000a5c15b40e7c983894eb7bce2d79d70c1e28f180853f322d302d8bd6"
+
+[[file]]
+path = "PDF/pdf_samples/PDF-Example-Encryption.pdf"
+sha256 = "ebcb278b53f8efb24171821a9e2e47211f96f7af686b37fb740cdfb4070ef432"
+
+[[file]]
+path = "PDF/pdf_samples/PDF-Example-Password.pdf"
+sha256 = "76593a57d9787a86050815e830a4c69425f5c95017fdb6f509074658932056e2"
+
+[[file]]
+path = "PDF/pdf_samples/test-3-RC4-40-open-test.pdf"
+sha256 = "90c1b9126054e4c32cd02dde2b453e360c29a1643e29fe90b77f545dbe4f4d39"
+
+[[file]]
+path = "PDF/pdf_samples/test-3-RC4-40-open-testpassword.pdf"
+sha256 = "e9e80b5eb2d767004b8a235efe8941da8361234b847b27570945ed871b134d78"
+
+[[file]]
+path = "PDF/pdf_samples/test-5-RC4-128-open-testpassword.pdf"
+sha256 = "dc8f8d6c4e7fe9f995da9c4e3c868e62ed452a52af55b91a0069949a1ac1c1d4"
+
+[[file]]
+path = "PDF/pdf_samples/test-7-AES-128-open-testpassword.pdf"
+sha256 = "e80841477f695f8a9b5a2c61b5318812f51a811d9ab834df6462e87a2c8946f1"
+
+[[file]]
+path = "PDF/pdf_samples/test-X-AES-256-open-testpassword.pdf"
+sha256 = "3e11aa07ee8238b8ff42a5dd2ee3a0a01fe79fe176102e0472d085f45e8365fa"
+
+[[file]]
+path = "KeePass/kdbx4/test_3charspassword.kdbx"
+sha256 = "7afa7b1da6f227c4f2260ce40f18f88bac0de29286c6dac3bf942a18b9e6d272"
+
+[[file]]
+path = "KeePass/kdbx4/test_4charspassword.kdbx"
+sha256 = "905786019e557b28b570fb4e217ffce82f4d90903f5922c1a0b9b20d5a4b43f0"
+
+[[file]]
+path = "KeePass/kdbx4/test_8charspassword.kdbx"
+sha256 = "ef45804e3dfe598d9560d0728619d80e7c448f4b03c1299baffc2c81fdc3a9aa"
+
+[[file]]
+path = "KeePass/kdbx4/test_chacha_argon2id.kdbx"
+sha256 = "76ec99791f05cb26b296779204f188aeb1141eaf392bbc3b3623d8adaa118fa2"
+
+[[file]]
+path = "KeePass/kdbx4/a2d.kdbx"
+sha256 = "1ddd949a9b63012054c59fb937aca6a6e49313b5b6aebc19968cbd5bbb9fee00"
+
+[[file]]
+path = "KeePass/keepass2.kdbx"
+sha256 = "f698bf1ecf544ca271511da46a87b4381397779176fd2552f729a2510ea722e5"
+
+[[file]]
+path = "KeePass/openwall.kdbx"
+sha256 = "3e8aa504f9b8b33a14c203ff8be8254e1d2e49d63bb2e5de0bf09c2347d272f0"
+
+[[file]]
+path = "KeePass/password.kdbx"
+sha256 = "7aad747eb52f83339690a6d8ca9253ddfd3c4a0286318912c6883f63c9a96066"
+
+[[file]]
+path = "KeePass/keyfile_samples/v4sample-with-keyfile.kdbx"
+sha256 = "8f16c29039383bac898f9cea6259597e4a360903c754f630ecbf5f10b2f9ac0e"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Default_myhovercraftisfullofeels_.docx"
+sha256 = "a3f3c86ef99ec9b9437998e07d3740b0453976b5986a34513b7709611411d341"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Default_myhovercraftisfullofeels_.docx"
+sha256 = "6fdfba8eca72c53c32d1731beaaae066b75de88a438cb5a53875ea2885ee3475"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Default_myhovercraftisfullofeels_.dotx"
+sha256 = "976ed83a04af85fa040253f35f17308e1925ce75e1e3008682f0aa67b7855d09"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Default_myhovercraftisfullofeels_.dotx"
+sha256 = "5e25e88cf064a2ffdd93f45fba59d7365f460202426d12794e9491bdb5e88bf4"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Default_myhovercraftisfullofeels_.xlsx"
+sha256 = "0d0bf0d5a7baa51caed378acda41ecc504e82a331a6289553bddcfadd8aed819"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Default_myhovercraftisfullofeels_.xlsx"
+sha256 = "e90c10d2181766ff4554f22ad92c8323ad8874c9fbf12bb3bb9feb6d9ee33f85"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Default_myhovercraftisfullofeels_.xlsm"
+sha256 = "042471407cb13932d4494d3b7cfa56565fb826d975df4ec2d7a8a4c6a36c027d"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Default_myhovercraftisfullofeels_.xlsb"
+sha256 = "5281039e314dcc26f23e59b3d3b615910b4a736e44cc94243becdc502ff2593b"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-Default_myhovercraftisfullofeels_.xlsb"
+sha256 = "180b15b4223929f92d65e470d0bc6420e93d77409e90b7a0a8150b909bf50cd2"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2007/2007-Default_myhovercraftisfullofeels_.xltx"
+sha256 = "378a0212171163ec413fd832fdfe0858aead68add2ee52ba833378a180559f12"
+
+[[file]]
+path = "GPG/test.utf8.asc"
+sha256 = "262c80c8bc56a6647988f5063140d18a0e79d78927229ceceba5c644036101ab"
+
+[[file]]
+path = "ENCDataVault/05-SanDiskPrivateAccess-123456Aa!/filesystem.dat"
+sha256 = "4d99b2a03aaf51efc863c4eeb83d06829768b8262502c3a2fa9841e50b169b84"
