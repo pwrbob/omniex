@@ -1,0 +1,49 @@
+id = "john-samples"
+repo = "https://github.com/openwall/john-samples"
+commit = "a2f3a3ed7819ce94f8280b0bbfc23ba576817cce"
+notes = "Openwall John sample artifacts, compared against the pinned John reference scripts"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "zip-aes-{base}"
+glob = "ZIP/winzip-AES-*.zip"
+slug = "winzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "zip-pkzip-{base}"
+glob = "ZIP/zip*_password.zip"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "john"
+
+[[case]]
+name = "pdf-{base}"
+glob = "PDF/pdf_samples/test-*.pdf"
+slug = "pdf"
+reference = "john:pdf2john.pl"
+format = "john"
+
+[[case]]
+name = "office-{base}"
+glob = "Office/Office-2013-samples/*.docx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "keepass-{base}"
+path = "KeePass/kdbx4/test_chacha.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass-argon2id"
+path = "KeePass/kdbx4/a2id.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"

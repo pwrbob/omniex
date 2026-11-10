@@ -446,7 +446,17 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                     CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
                 })?;
             if seen.insert((slug, rendered.clone())) {
-                outputs.push((slug, rendered));
+                let fields = value
+                    .describe()
+                    .into_iter()
+                    .map(|entry| {
+                        json!({
+                            "name": entry.field.name,
+                            "value": entry.value,
+                        })
+                    })
+                    .collect::<Vec<_>>();
+                outputs.push((slug, rendered, fields));
             }
         }
     }
@@ -454,7 +464,7 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
     if args.json {
         let entries = outputs
             .iter()
-            .map(|(slug, hash)| json!({"type": slug, "hash": hash}))
+            .map(|(slug, hash, fields)| json!({"type": slug, "hash": hash, "fields": fields}))
             .collect::<Vec<_>>();
         return print_json(&Value::Array(entries));
     }
@@ -463,7 +473,7 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
         "{}\n",
         outputs
             .iter()
-            .map(|(_, hash)| hash.as_str())
+            .map(|(_, hash, _)| hash.as_str())
             .collect::<Vec<_>>()
             .join("\n")
     ))

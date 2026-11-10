@@ -1,0 +1,28 @@
+id = "hashcat-2hashcat"
+repo = "https://github.com/hashcat/hashcat"
+commit = "356a01bf97e7a210666dd0b9ab3697ac0ea9a7a5"
+notes = "Paired artifacts and expected hash files from the hashcat 2hashcat tests"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "{base}-hashcat"
+glob = "tools/2hashcat_tests/keepass/*.kdbx"
+slug = "keepass4"
+reference = "paired:{stem}.hash"
+format = "hashcat"
+
+[[case]]
+name = "{base}-john"
+glob = "tools/2hashcat_tests/keepass/*.kdbx"
+slug = "keepass4"
+reference = "paired:{stem}.keepass2john"
+format = "john"
+
+[[case]]
+name = "{base}-gpg"
+glob = "tools/2hashcat_tests/gpg-ocb-aes/private-keys-v1.d/*.key"
+slug = "gpg"
+reference = "paired:{path}.hash"
+format = "hashcat"
