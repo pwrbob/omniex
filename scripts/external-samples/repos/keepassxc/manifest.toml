@@ -22,3 +22,24 @@ path = "tests/data/Format400.kdbx"
 slug = "keepass4"
 reference = "john:keepass2john"
 format = "john"
+
+[[case]]
+name = "compressed-kdbx2"
+path = "tests/data/Compressed.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "protected-strings-kdbx2"
+path = "tests/data/ProtectedStrings.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "new-database-kdbx2"
+path = "tests/data/NewDatabase.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
