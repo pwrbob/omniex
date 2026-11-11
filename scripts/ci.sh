@@ -66,7 +66,8 @@ if [[ -n "${OMNIEX_JOHN:-}" ]]; then
         --repo oletools --repo keepassxc --repo geth --repo aircrack-ng \
         --repo cryptography-vectors --repo openssl-tests --repo forensics-samples \
         --repo py-pdf-samples --repo test-pdf-files --repo libarchive \
-        --repo picky-rs --repo gnome-keyring --repo gost-engine --repo plaso
+        --repo picky-rs --repo gnome-keyring --repo gost-engine --repo plaso \
+        --repo pysap --repo ffpass --repo firefox-decrypt
 
     if command -v 7z >/dev/null 2>&1; then
         echo "==> real-file extractor tests"

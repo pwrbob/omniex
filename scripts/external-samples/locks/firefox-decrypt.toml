@@ -1,0 +1,9 @@
+commit = "17403633c1413e0937134ca2233a54fbe6ea6865"
+
+[[file]]
+path = "tests/test_data/test_profile_firefox_20/key3.db"
+sha256 = "2f81d97683271e13d4fd538473cff4681b857c4a179cb9b7e69db60736114e89"
+
+[[file]]
+path = "tests/test_data/test_profile_firefox_46/key3.db"
+sha256 = "57b43236402e2da1a0e0892b3b1ec91b33dbca154366003df21f5ee9d49c8fde"

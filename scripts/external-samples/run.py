@@ -800,7 +800,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         ]
         command = reference_command(kind, value, reference_artifact, reference_args)
         reference_text = run_command(command, cwd=john_run() if kind == "john" else None)
-        normalize = "bks" if case.slug in {"bks", "vmx-keysafe"} else "hash"
+        normalize = "bks" if case.slug in {"bks", "vmx-keysafe", "sappse"} else "hash"
 
     reference_lines = normalize_reference(reference_text, normalize)
     if not reference_lines:

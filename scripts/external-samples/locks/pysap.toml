@@ -1,0 +1,5 @@
+commit = "8f310c3657ab65c254692eee875d7f161d4ce8ff"
+
+[[file]]
+path = "tests/data/pse_v2_lps_off_pbes1_3des_sha1.pse"
+sha256 = "8afbed5af0c4d2a1b8e91f2bcc77e9e9c2ee76b267461520f3d54c29eac0b25a"

@@ -1,0 +1,5 @@
+commit = "b6efa114ca04ede0822eaf9800f0e19a805d388d"
+
+[[file]]
+path = "tests/firefox-mp-84/key4.db"
+sha256 = "4e671e26f8eb9b1fb3d96fa745f9d785603cfb60bc442f8ea0f62bbff7d03195"

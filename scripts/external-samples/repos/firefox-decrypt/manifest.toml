@@ -1,0 +1,21 @@
+id = "firefox-decrypt"
+repo = "https://github.com/unode/firefox_decrypt"
+commit = "17403633c1413e0937134ca2233a54fbe6ea6865"
+notes = "Firefox profile databases from the firefox_decrypt tests"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "key3-firefox-20"
+path = "tests/test_data/test_profile_firefox_20/key3.db"
+slug = "mozilla-key3"
+reference = "hashcat:mozilla2hashcat.py"
+format = "hashcat"
+
+[[case]]
+name = "key3-firefox-46"
+path = "tests/test_data/test_profile_firefox_46/key3.db"
+slug = "mozilla-key3"
+reference = "hashcat:mozilla2hashcat.py"
+format = "hashcat"

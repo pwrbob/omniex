@@ -281,7 +281,9 @@ fn metadata_row(data: &[u8]) -> Result<(Vec<u8>, Vec<u8>), ExtractError> {
         let values = parse_record(payload)?;
         if values.len() >= 4
             && values[0].text() == Some(b"table")
-            && values[1].text() == Some(b"metadata")
+            && values[1]
+                .text()
+                .is_some_and(|name| name.eq_ignore_ascii_case(b"metadata"))
         {
             root = values[3].int().and_then(|page| u32::try_from(page).ok());
         }

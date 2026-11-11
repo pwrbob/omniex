@@ -1,0 +1,14 @@
+id = "ffpass"
+repo = "https://github.com/louisabraham/ffpass"
+commit = "b6efa114ca04ede0822eaf9800f0e19a805d388d"
+notes = "Firefox profile databases from the ffpass tests"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "key4-aes"
+path = "tests/firefox-mp-84/key4.db"
+slug = "mozilla-key4"
+reference = "hashcat:mozilla2hashcat.py"
+format = "hashcat"
