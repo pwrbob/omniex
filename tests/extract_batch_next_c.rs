@@ -195,6 +195,21 @@ fn bitlocker_finds_volumes_at_partition_starts() {
 }
 
 #[test]
+fn bitlocker_accepts_the_recorded_volume_guid() {
+    let mut volume = std::fs::read(fixture("bitlocker", "recovery.img")).expect("fixture");
+    volume[13] = 8;
+    volume[0xa0..0xb0].copy_from_slice(&[
+        0x3b, 0xd6, 0x67, 0x49, 0x29, 0x2e, 0xd8, 0x4a, 0x83, 0x99, 0xf6, 0xa3, 0x39, 0xe3, 0xd0,
+        0x01,
+    ]);
+    volume[0xb0..0xb8].copy_from_slice(&0x400u64.to_le_bytes());
+    let extractor = extract::by_slug("bitlocker").expect("bitlocker extractor");
+    let artifact = Artifact::from_bytes("mbr.img", mbr_disk(&volume, 8));
+    assert!(matches!(extractor.probe(&artifact), Probe::Yes(_)));
+    assert_eq!(extractor.extract(&artifact).expect("extract").len(), 2);
+}
+
+#[test]
 fn bitlocker_requires_deep_for_embedded_volumes() {
     let mut volume = std::fs::read(fixture("bitlocker", "recovery.img")).expect("fixture");
     volume[13] = 1;

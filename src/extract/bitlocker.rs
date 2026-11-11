@@ -46,11 +46,31 @@ const MAX_GPT_ENTRIES: u32 = 128;
 const MAX_GPT_ENTRY_SIZE: u32 = 4096;
 const MAX_GPT_TABLE: usize = 1 << 20;
 
+const BITLOCKER_GUIDS: [[u8; 16]; 2] = [
+    [
+        0x3b, 0xd6, 0x67, 0x49, 0x29, 0x2e, 0xd8, 0x4a, 0x83, 0x99, 0xf6, 0xa3, 0x39, 0xe3, 0xd0,
+        0x01,
+    ],
+    [
+        0x3b, 0x4d, 0xa8, 0x92, 0x80, 0xdd, 0x0e, 0x4d, 0x9e, 0x4e, 0xb1, 0xe3, 0x28, 0x4e, 0xae,
+        0xd8,
+    ],
+];
+
+fn known_volume_guid(source: &dyn ReadAt, offset: u64, guid_offset: usize) -> bool {
+    let mut guid = [0u8; 16];
+    source
+        .read_exact_at(offset.saturating_add(guid_offset as u64), &mut guid)
+        .is_ok()
+        && BITLOCKER_GUIDS.contains(&guid)
+}
+
 fn volume_signature(source: &dyn ReadAt, offset: u64) -> Option<usize> {
     let mut header = [0u8; 16];
     source.read_exact_at(offset, &mut header).ok()?;
     if &header[3..11] == BITLOCKER {
-        (offset == 0 || matches!(header[13], 1 | 2)).then_some(0xa0)
+        (offset == 0 || matches!(header[13], 1 | 2) || known_volume_guid(source, offset, 0xa0))
+            .then_some(0xa0)
     } else if &header[3..11] == BITLOCKER_TO_GO {
         Some(0x1a8)
     } else {
@@ -158,47 +178,49 @@ fn volumes<'a>(source: &'a dyn ReadAt) -> Vec<(Window<'a>, usize)> {
     results
 }
 
-fn volumes_deep<'a>(source: &'a dyn ReadAt) -> Vec<(Window<'a>, usize)> {
+fn volumes_deep<'a>(source: &'a container::Container<'a>) -> Vec<(Window<'a>, usize)> {
     const WINDOW: usize = 1 << 20;
+    const OVERLAP: usize = 16;
     let mut results = Vec::new();
-    let mut position = 0u64;
-    let mut buffer = vec![0u8; WINDOW + 16];
-    while position < source.len() {
-        let read = source.read_at(position, &mut buffer).unwrap_or(0);
-        if read == 0 {
-            break;
-        }
-        for signature in [BITLOCKER, BITLOCKER_TO_GO] {
-            let guid_offset = if signature == BITLOCKER { 0xa0 } else { 0x1a8 };
-            let mut start = 0;
-            while let Some(found) = buffer[..read]
-                .windows(signature.len())
-                .skip(start)
-                .position(|window| window == signature)
-            {
-                let index = start + found;
-                start = index + 1;
-                let signature_offset = position + index as u64;
-                if signature == BITLOCKER {
-                    let version = buffer.get(index + 10).copied().unwrap_or(0);
-                    if !matches!(version, 1 | 2) && signature_offset != 3 {
-                        continue;
+    let mut buffer = vec![0u8; WINDOW + OVERLAP];
+    for (start, len) in source.data_ranges() {
+        let end = start.saturating_add(len);
+        let mut position = start;
+        while position < end {
+            let available = usize::try_from(end - position)
+                .unwrap_or(buffer.len())
+                .min(buffer.len());
+            let read = source
+                .read_at(position, &mut buffer[..available])
+                .unwrap_or(0);
+            if read == 0 {
+                break;
+            }
+            for signature in [BITLOCKER, BITLOCKER_TO_GO] {
+                let guid_offset = if signature == BITLOCKER { 0xa0 } else { 0x1a8 };
+                for index in memchr::memmem::find_iter(&buffer[..read], signature) {
+                    let signature_offset = position + index as u64;
+                    if signature == BITLOCKER {
+                        let version = buffer.get(index + 10).copied().unwrap_or(0);
+                        if !matches!(version, 1 | 2) && signature_offset != 3 {
+                            continue;
+                        }
+                    }
+                    let volume_offset = signature_offset.saturating_sub(3);
+                    results.push((
+                        Window::new(source, volume_offset, source.len() - volume_offset),
+                        guid_offset,
+                    ));
+                    if results.len() >= 16 {
+                        return results;
                     }
                 }
-                let volume_offset = signature_offset.saturating_sub(3);
-                results.push((
-                    Window::new(source, volume_offset, source.len() - volume_offset),
-                    guid_offset,
-                ));
-                if results.len() >= 16 {
-                    return results;
-                }
             }
+            if read <= OVERLAP {
+                break;
+            }
+            position += (read - OVERLAP) as u64;
         }
-        if read <= 16 {
-            break;
-        }
-        position += (read - 16) as u64;
     }
     results
 }
@@ -360,10 +382,13 @@ fn parse_block(block: &[u8]) -> Result<Vec<Recovery>, ExtractError> {
         let size = usize::from(u16_at(block, position).ok_or_else(|| {
             ExtractError::Invalid("truncated BitLocker metadata entry".to_owned())
         })?);
-        if size < 8 || position + size > metadata_size {
+        if size < 8 {
             return Err(ExtractError::Invalid(
                 "invalid BitLocker metadata entry size".to_owned(),
             ));
+        }
+        if position + size > metadata_size {
+            break;
         }
         let value_type = u16_at(block, position + 4).unwrap_or_default();
         let value = &block[position + 8..position + size];
@@ -418,10 +443,11 @@ fn candidate_volumes<'a>(
     container: &'a container::Container<'a>,
     deep: bool,
 ) -> Vec<(Window<'a>, usize)> {
-    if deep {
+    let structured = volumes(container);
+    if deep && structured.is_empty() {
         volumes_deep(container)
     } else {
-        volumes(container)
+        structured
     }
 }
 

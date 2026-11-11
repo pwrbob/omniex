@@ -9,18 +9,16 @@ use crate::{HashType, HashValue};
 pub struct PgpwdeExtractor;
 
 const RECORD_SIZE: usize = 330;
-const MAGIC: u32 = 1_464_101_120;
+const SIGNATURE: [u8; 8] = [0x00, 0x02, 0x00, 0x08, 0x00, 0x69, 0x44, 0x57];
 
 fn records(data: &[u8]) -> Vec<Pgpwde> {
     let mut hashes = Vec::new();
-    for offset in 0..data.len().saturating_sub(RECORD_SIZE) {
-        let record = &data[offset..offset + RECORD_SIZE];
-        let size = LittleEndian::read_u16(&record[0..2]);
-        let version = record[2];
-        let kind = record[3];
-        let magic = LittleEndian::read_u32(&record[4..8]);
+    for offset in memchr::memmem::find_iter(data, &SIGNATURE) {
+        let Some(record) = data.get(offset..offset + RECORD_SIZE) else {
+            continue;
+        };
         let current = record[9];
-        if size != 512 || version != 0 || kind != 8 || magic != MAGIC || current != 0 {
+        if current != 0 {
             continue;
         }
         let algorithm = record[28];

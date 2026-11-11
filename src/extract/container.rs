@@ -18,6 +18,19 @@ pub enum Container<'a> {
 }
 
 impl Container<'_> {
+    /// Logical ranges that contain stored bytes rather than sparse holes.
+    ///
+    /// Sparse regions always read back as zeros, so callers that search for a
+    /// signature can skip them without changing the result.
+    #[must_use]
+    pub fn data_ranges(&self) -> Vec<(u64, u64)> {
+        match self {
+            Self::Raw(source) => vec![(0, source.len())],
+            Self::Vdi(source) => source.data_ranges(),
+            Self::Qcow2(source) => source.data_ranges(),
+        }
+    }
+
     pub fn open(artifact: &Artifact) -> Result<Container<'_>, ExtractError> {
         let source = artifact.primary();
         let mut magic = [0u8; 4];
@@ -106,6 +119,14 @@ impl<'a> Vdi<'a> {
             virtual_size,
             blocks,
         })
+    }
+
+    fn data_ranges(&self) -> Vec<(u64, u64)> {
+        logical_ranges(
+            self.block_size,
+            self.virtual_size,
+            self.blocks.iter().map(Option::is_some),
+        )
     }
 }
 
@@ -225,6 +246,28 @@ impl<'a> Qcow2<'a> {
             l2_entries,
         })
     }
+
+    fn data_ranges(&self) -> Vec<(u64, u64)> {
+        let clusters = usize::try_from(self.virtual_size.div_ceil(self.cluster_size)).unwrap_or(0);
+        let mut mapped = vec![false; clusters];
+        for (level, table) in self.l2.iter().enumerate() {
+            let Some(table) = table else {
+                continue;
+            };
+            for (index, entry) in table.iter().enumerate() {
+                if *entry == 0 {
+                    continue;
+                }
+                let cluster = level
+                    .saturating_mul(self.l2_entries as usize)
+                    .saturating_add(index);
+                if let Some(slot) = mapped.get_mut(cluster) {
+                    *slot = true;
+                }
+            }
+        }
+        logical_ranges(self.cluster_size, self.virtual_size, mapped.into_iter())
+    }
 }
 
 impl ReadAt for Qcow2<'_> {
@@ -274,6 +317,33 @@ impl ReadAt for Qcow2<'_> {
         }
         Ok(done)
     }
+}
+
+fn logical_ranges(
+    block_size: u64,
+    virtual_size: u64,
+    mapped: impl Iterator<Item = bool>,
+) -> Vec<(u64, u64)> {
+    let mut ranges = Vec::new();
+    let mut start = None;
+    for (index, present) in mapped.enumerate() {
+        let offset = (index as u64).saturating_mul(block_size);
+        if offset >= virtual_size {
+            break;
+        }
+        match (present, start) {
+            (true, None) => start = Some(offset),
+            (false, Some(begin)) => {
+                ranges.push((begin, offset - begin));
+                start = None;
+            }
+            _ => {}
+        }
+    }
+    if let Some(begin) = start {
+        ranges.push((begin, virtual_size - begin));
+    }
+    ranges
 }
 
 pub struct Window<'a> {
@@ -339,6 +409,34 @@ mod tests {
         assert_eq!(container.read_at(0, &mut out).unwrap(), 8);
         assert_eq!(&out[..4], b"TEST");
         assert_eq!(out[4..], [0; 4]);
+        assert_eq!(container.data_ranges(), vec![(0, 0x1000)]);
+    }
+
+    #[test]
+    fn vdi_data_ranges_skip_unmapped_blocks() {
+        let mut data = vec![0u8; 0x3000];
+        data[0x40..0x44].copy_from_slice(&VDI_MAGIC.to_le_bytes());
+        data[0x44..0x48].copy_from_slice(&VDI_VERSION.to_le_bytes());
+        data[0x4c..0x50].copy_from_slice(&1u32.to_le_bytes());
+        data[0x154..0x158].copy_from_slice(&0x200u32.to_le_bytes());
+        data[0x158..0x15c].copy_from_slice(&0x1000u32.to_le_bytes());
+        data[0x170..0x178].copy_from_slice(&0x4000u64.to_le_bytes());
+        data[0x178..0x17c].copy_from_slice(&0x1000u32.to_le_bytes());
+        data[0x180..0x184].copy_from_slice(&4u32.to_le_bytes());
+        for block in 0..4 {
+            let value = match block {
+                0 => 0u32,
+                3 => 1u32,
+                _ => u32::MAX,
+            };
+            data[0x200 + block * 4..0x204 + block * 4].copy_from_slice(&value.to_le_bytes());
+        }
+        let artifact = Artifact::from_bytes("sparse.vdi", data);
+        let container = Container::open(&artifact).expect("open VDI");
+        assert_eq!(container.data_ranges(), vec![(0, 0x1000), (0x3000, 0x1000)]);
+        let mut out = [0xffu8; 4];
+        assert_eq!(container.read_at(0x1000, &mut out).unwrap(), 4);
+        assert_eq!(out, [0; 4]);
     }
 
     fn qcow2(payload: &[u8; 512]) -> Vec<u8> {
@@ -366,5 +464,25 @@ mod tests {
         assert_eq!(container.read_at(0, &mut out).unwrap(), 8);
         assert_eq!(&out[..4], b"TEST");
         assert_eq!(out[4..], [0; 4]);
+        assert_eq!(container.data_ranges(), vec![(0, 0x1000)]);
+    }
+
+    #[test]
+    fn qcow2_data_ranges_skip_unmapped_clusters() {
+        let mut data = vec![0u8; 0x5000];
+        data[..4].copy_from_slice(&QCOW2_MAGIC);
+        data[4..8].copy_from_slice(&3u32.to_be_bytes());
+        data[20..24].copy_from_slice(&12u32.to_be_bytes());
+        data[24..32].copy_from_slice(&0x4000u64.to_be_bytes());
+        data[36..40].copy_from_slice(&1u32.to_be_bytes());
+        data[40..48].copy_from_slice(&0x1000u64.to_be_bytes());
+        data[0x1000..0x1008].copy_from_slice(&0x2000u64.to_be_bytes());
+        for (cluster, entry) in [(0, 0x3000u64), (3, 0x4000u64)] {
+            let start = 0x2000 + cluster * 8;
+            data[start..start + 8].copy_from_slice(&entry.to_be_bytes());
+        }
+        let artifact = Artifact::from_bytes("sparse.qcow2", data);
+        let container = Container::open(&artifact).expect("open QCOW2");
+        assert_eq!(container.data_ranges(), vec![(0, 0x1000), (0x3000, 0x1000)]);
     }
 }
