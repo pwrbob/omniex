@@ -498,13 +498,15 @@ fn scan(artifact: &Artifact) -> Result<(BTreeSet<HashRecord>, bool), ExtractErro
                 direction.buffer[7],
             ]);
             let ahs = usize::from(direction.buffer[4]) * 4;
-            let total = 48 + ahs + usize::try_from(length & 0x00ff_ffff).unwrap_or(usize::MAX);
+            let data_length = usize::try_from(length & 0x00ff_ffff).unwrap_or(usize::MAX);
+            let total = (48 + ahs + data_length + 3) & !3;
             if total > MAX_STREAM || direction.buffer.len() < total {
                 break;
             }
             let pdu = direction.buffer[..total].to_vec();
             direction.buffer.drain(..total);
-            let fields = text_keys(pdu.get(48 + ahs..).unwrap_or_default());
+            let end = (48 + ahs + data_length).min(pdu.len());
+            let fields = text_keys(pdu.get(48 + ahs..end).unwrap_or_default());
             if let Some(algorithm) = fields.get("CHAP_A") {
                 if algorithm != CHAP_ALGORITHM_MD5 {
                     continue;

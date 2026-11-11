@@ -185,8 +185,16 @@ path = "Apple_DMG/openwall.dmg"
 sha256 = "f698a398c480f3751111de73265189b8d705d3504f46ba60e5a133b686399f24"
 
 [[file]]
+path = "Apple_DMG/testimage.AES-128.64k.header_v1.dmg"
+sha256 = "05f592457f5dc2aad14b55e57c0205307eea009a9b5df8daf5288de975c2db60"
+
+[[file]]
 path = "Apple_DMG/testimage.AES-128.64k.header_v2.dmg"
 sha256 = "63a1065cd1fb64d745ff53c523af27489386d06672bf726c1a913b3a92b78893"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-256.64k.header_v1.dmg"
+sha256 = "dc125015a92a15b5adcc46b6ad9fe042d111663fa2a2e575449fdd8969d102dc"
 
 [[file]]
 path = "Apple_DMG/testimage.AES-256.64k.header_v2.dmg"
@@ -201,12 +209,36 @@ path = "Apple_DMG/one.sparseimage.secret.sparseimage"
 sha256 = "770f7f75ba1b88b3ba9cc61f4fe3b420bf5ec3dbffd4887ad0c2a5154783f9c8"
 
 [[file]]
+path = "Apple_DMG/testimage.AES-128.64k.header_v1.sparseimage"
+sha256 = "536d504e19d76b1f1beae184e55090e4bb0af674be5ff5cc014d320f4b65fe97"
+
+[[file]]
 path = "Apple_DMG/testimage.AES-128.64k.header_v2.sparseimage"
 sha256 = "94d93a5ada2657b1f9b331a570456d9eb09ff57867ea1c08e48be61f854aba2a"
 
 [[file]]
+path = "Apple_DMG/testimage.AES-256.64k.header_v1.sparseimage"
+sha256 = "a8a43bc3ee7ea828af86cd58e779c371368bda1bb8a66e8bfcc4343f5de5cb4a"
+
+[[file]]
 path = "Apple_DMG/testimage.AES-256.64k.header_v2.sparseimage"
 sha256 = "32c6db0a652b79ff5882aaba86093fe4a1932d83db5408cbca3cf6fed03ca69b"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-128.64k.header_v1.sparsebundle/token"
+sha256 = "ee4edc7e8d56c93d6bb99598867eb90372458fe898701a600ed2c71140647468"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-128.64k.header_v2.sparsebundle/token"
+sha256 = "010cacfd69617bb49852ed738c61c8eef0dabe0bcd231cd78b4148af23cfd047"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-256.64k.header_v1.sparsebundle/token"
+sha256 = "cd40862db8f6eb079a6f58c504b71d1782d2ec824a98256cb8dd600dae52d4b4"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-256.64k.header_v2.sparsebundle/token"
+sha256 = "e39e43b8a97e9f0104f3cd29b43e34f09400b2085eb0bc011f8f2bafa8c547d1"
 
 [[file]]
 path = "TrueCrypt/tc-hackthis"
@@ -223,6 +255,54 @@ sha256 = "108e244d195571bba709f690dbaa209da53d46cac1e7eb9eaa18e3f94456f5da"
 [[file]]
 path = "VeraCrypt/VC-STD-Volume/Test1.vc"
 sha256 = "71490adb12ebc2233f483d26a1bdbef85b10a6fbb2b702e1919d2077c9336b18"
+
+[[file]]
+path = "BitLocker/minimal.vdi"
+sha256 = "970ca58b4a3f733c4a16e9fcf766e23c0566bf596a27ac1a734eb9e8332f3bdb"
+
+[[file]]
+path = "BitLocker/minimalistic.vdi"
+sha256 = "e90343c74dece5c6c0b9df283845c14bd713e7ee1810047f992acd35b96b3a94"
+
+[[file]]
+path = "BitLocker/small.vdi"
+sha256 = "9011b4b0e297e08baf0a045620c10e258cfa55b74621808c473d503772371e91"
+
+[[file]]
+path = "BitLocker/smallest.vdi"
+sha256 = "c91afb4ec2c741f4dca151fd36a73bb89ba4616d270b3a30090c3a37473acd35"
+
+[[file]]
+path = "BitLocker/encryption-jungle/disks-v1/minimal.vdi"
+sha256 = "970ca58b4a3f733c4a16e9fcf766e23c0566bf596a27ac1a734eb9e8332f3bdb"
+
+[[file]]
+path = "BitLocker/encryption-jungle/disks-v1/minimalistic.vdi"
+sha256 = "e90343c74dece5c6c0b9df283845c14bd713e7ee1810047f992acd35b96b3a94"
+
+[[file]]
+path = "BitLocker/encryption-jungle/disks-v1/small.vdi"
+sha256 = "9011b4b0e297e08baf0a045620c10e258cfa55b74621808c473d503772371e91"
+
+[[file]]
+path = "BitLocker/encryption-jungle/disks-v1/smallest.vdi"
+sha256 = "c91afb4ec2c741f4dca151fd36a73bb89ba4616d270b3a30090c3a37473acd35"
+
+[[file]]
+path = "Radius/radius-sample-5.pcap"
+sha256 = "ee1a686f88a4192f8e7e171d92a64d7535c2a2238e6de33094216ceff6df40f5"
+
+[[file]]
+path = "iSCSI_CHAP/LIO-Target-Open-iSCSI-initiator-1.pcap"
+sha256 = "35d403adf4faec4b7af01055f7e8c2cbec7557ff75c54fd36db0f5378c7a4f16"
+
+[[file]]
+path = "iSCSI_CHAP/iSCSI-CHAP-test-password.pcap"
+sha256 = "1b79fda11bde1e45b5bf4beadfae39ae54f8700e6c22d327c8381a4f42de77d8"
+
+[[file]]
+path = "iSCSI_CHAP/iSCSI-test-password-2.pcap"
+sha256 = "a74ef535f7d138c1b36586c01e945c6bc5770ddad83b0a00468609a27df089c1"
 
 [[file]]
 path = "LUKS/LUKS-openwall"
@@ -291,6 +371,10 @@ sha256 = "5c611b9d83fc043afd5961384efa623e69f8ef6a152ea0d0874d3b7964ec6a44"
 [[file]]
 path = "7-Zip/plain.7z"
 sha256 = "1d804317d85a606c5c548501f3e37504c7b2c23dfd1f621412a50fd52e3b6cf4"
+
+[[file]]
+path = "7-Zip/test-openwall-sfx.exe"
+sha256 = "537f626b1efe2640105ccd06f93d69dce11f351815d44278e8abbe44f8d1e0e1"
 
 [[file]]
 path = "7-Zip/zip-easy.zip"
@@ -627,6 +711,46 @@ sha256 = "3b4df063e798411f9508d009426671a773b2bb259ffc09b5ed2c37817e534443"
 [[file]]
 path = "KeePass/twofish-twofish.kdb"
 sha256 = "dedd1ffae9ae3bb24f6723793b92a466b521e59591c57f99cfbfd49803992bbe"
+
+[[file]]
+path = "KeePass/keyfile_samples/sample-with-keyfile-password.kdb"
+sha256 = "552d2905c601cdb203545013137ccd7114f2401437bda3df4ff2f2176556cdd0"
+
+[[file]]
+path = "KeePass/keyfile_samples/sample-keepass-with-32-bytes-keyfile.kdb"
+sha256 = "8f1afbb0e9470fd7aea00ae903bd46dde376405b76eba539810cdbec365f1478"
+
+[[file]]
+path = "Lotus_Notes/admin.id"
+sha256 = "fae282e96e66344f9c8e0f65a4fdb9c59b661e16c464042e2e8fdad8aa43fc89"
+
+[[file]]
+path = "Lotus_Notes/admin_128bit.id"
+sha256 = "fae282e96e66344f9c8e0f65a4fdb9c59b661e16c464042e2e8fdad8aa43fc89"
+
+[[file]]
+path = "Lotus_Notes/aes@123-128-AES.id"
+sha256 = "ad3b05bdd832423a60be9d9266252104d7ce55248b87c2398c0cad77e765fd1c"
+
+[[file]]
+path = "Lotus_Notes/aes@256-256-AES.id"
+sha256 = "56d55bbac3074c6b99576ff956f1186417557b88048c468f9098544504239baf"
+
+[[file]]
+path = "Lotus_Notes/notesisterrible.id"
+sha256 = "70f440c2f573a77d5fd7624fbc0323cda52ed24f9cb9690908b368a9ca58b7c7"
+
+[[file]]
+path = "Lotus_Notes/openwall.id"
+sha256 = "2a7bc683d9448b44940a85cc620619b6555f89a2892bdcd9fc3061b684f6e1c4"
+
+[[file]]
+path = "Lotus_Notes/openwall@123-128-RC2.id"
+sha256 = "1fcbf8fba200055be2631a64ed76ceb3d7efe84465a47052be4747aad43a02b2"
+
+[[file]]
+path = "Lotus_Notes/user.id"
+sha256 = "2a7bc683d9448b44940a85cc620619b6555f89a2892bdcd9fc3061b684f6e1c4"
 
 [[file]]
 path = "KeePass/kdbx4/Passwords-AES-K4.kdbx"
@@ -1241,6 +1365,10 @@ path = "Keplr_Wallet/000010.log"
 sha256 = "ca7a2c33ec09e4656c8b374737b4e6b3e15fb620815d047f3cddc32045109c0a"
 
 [[file]]
+path = "Keplr_Wallet/000003.ldb"
+sha256 = "3630a1f69656ae8ef667ae2c6b1c9f2920fb4c1c9ffb2c58ad1e4abe9d4b62ad"
+
+[[file]]
 path = "Office/Office_Secrets/Office_2010/2010-PDF_myhovercraftisfullofeels_.pdf"
 sha256 = "adbee3c44ed3cc71637a92f81762e19b6a8028821c618ca5ee16d881d02f444f"
 
@@ -1383,6 +1511,14 @@ sha256 = "2b57dca7fa2c3bd0e942060b546028d961bfb698fb12ed8b2947b13f88d170c8"
 [[file]]
 path = "WPA-PSK/wpa-Induction.pcapng"
 sha256 = "a6cce380df29af9bdb68c30257a12f20c635f03f480eaca094494c1250ff4c94"
+
+[[file]]
+path = "WPA-PSK/wpa.bad.passphrase.cap"
+sha256 = "5839df528a909c549fd5f88e5d1174a35d39ba46fd23e0d94878a7edca37c31d"
+
+[[file]]
+path = "WPA-PSK/wpa.full.cap"
+sha256 = "2483bd14e23eb299520beb52768d534fa2cc908d75f5b3010110e6a6fece7388"
 
 [[file]]
 path = "1Password_Agile_Keychain/data/default/encryptionKeys.js"

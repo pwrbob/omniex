@@ -347,6 +347,7 @@ mod bks;
 mod blockchain;
 mod cardano;
 mod cloudkeychain;
+mod container;
 mod dashlane;
 mod dmg;
 mod ecryptfs;
@@ -366,6 +367,7 @@ mod known_hosts;
 mod kwallet;
 mod ldap;
 mod lotus;
+mod lotus85;
 mod metamask;
 mod monero;
 mod multibit;
@@ -380,6 +382,7 @@ mod pwsafe;
 mod racf;
 mod shadow;
 mod sql;
+mod sqlite;
 mod vdi;
 mod vmx;
 mod winzip;
@@ -583,6 +586,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &known_hosts::KnownHostsExtractor,
     &kwallet::KwalletExtractor,
     &lotus::Lotus5Extractor,
+    &lotus85::Lotus85Extractor,
     &ldap::LdapSha1Extractor,
     &ldap::LdapSsha1Extractor,
     &ldap::LdapSsha256Extractor,

@@ -510,9 +510,18 @@ fn read_header(cursor: &mut Cursor<'_>) -> Result<StreamsInfo, ExtractError> {
 }
 
 fn archive_streams(data: &[u8]) -> Result<(StreamsInfo, usize), ExtractError> {
-    if data.len() < 32 || &data[..SIGNATURE.len()] != SIGNATURE {
+    let data = if data.starts_with(SIGNATURE) {
+        data
+    } else {
+        let offset = data
+            .windows(SIGNATURE.len())
+            .position(|window| window == SIGNATURE)
+            .ok_or_else(|| ExtractError::Unsupported("no 7-Zip signature found".to_owned()))?;
+        &data[offset..]
+    };
+    if data.len() < 32 {
         return Err(ExtractError::Unsupported(
-            "no 7-Zip signature found".to_owned(),
+            "truncated 7-Zip archive".to_owned(),
         ));
     }
     let mut cursor = Cursor::new(data);

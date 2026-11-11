@@ -590,7 +590,7 @@ fn eapol_key(access_point: [u8; 6], station: [u8; 6], eapol: &[u8], capture: &mu
         return;
     };
     let body = &frame[4..];
-    if body[0] != 2 {
+    if !matches!(body[0], 2 | 254) {
         return;
     }
     let key_info = u16::from_be_bytes([body[1], body[2]]);

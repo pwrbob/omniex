@@ -270,12 +270,183 @@ fn json_hashes(data: &[u8]) -> Result<Vec<Keplr>, ExtractError> {
     Ok(hashes)
 }
 
-fn leveldb_hashes(data: &[u8]) -> Result<Vec<Keplr>, ExtractError> {
-    let mut entries = Vec::new();
-    for record in log_records(data)? {
-        write_batch(&record, &mut entries)?;
+const TABLE_MAGIC: [u8; 8] = [0x57, 0xfb, 0x80, 0x8b, 0x24, 0x75, 0x47, 0xdb];
+
+fn decompress_snappy(data: &[u8]) -> Option<Vec<u8>> {
+    let mut position = 0;
+    let length = varint(data, &mut position)?;
+    let length = usize::try_from(length).ok()?;
+    let mut output = Vec::with_capacity(length);
+    while position < data.len() {
+        let tag = *data.get(position)?;
+        position += 1;
+        match tag & 0x03 {
+            0 => {
+                let mut run = usize::from(tag >> 2);
+                if run < 60 {
+                    run += 1;
+                } else {
+                    let extra = run - 59;
+                    run = 0;
+                    for index in 0..extra {
+                        run |= usize::from(*data.get(position + index)?) << (8 * index);
+                    }
+                    position += extra;
+                    run += 1;
+                }
+                output.extend_from_slice(data.get(position..position + run)?);
+                position += run;
+            }
+            kind => {
+                let (run, offset) = match kind {
+                    1 => {
+                        let next = usize::from(*data.get(position)?);
+                        position += 1;
+                        (
+                            usize::from((tag >> 2) & 0x07) + 4,
+                            (usize::from(tag & 0xe0) << 3) | next,
+                        )
+                    }
+                    2 => {
+                        let offset = usize::from(u16::from_le_bytes([
+                            *data.get(position)?,
+                            *data.get(position + 1)?,
+                        ]));
+                        position += 2;
+                        (usize::from(tag >> 2) + 1, offset)
+                    }
+                    _ => {
+                        let offset = u32::from_le_bytes([
+                            *data.get(position)?,
+                            *data.get(position + 1)?,
+                            *data.get(position + 2)?,
+                            *data.get(position + 3)?,
+                        ]);
+                        position += 4;
+                        (usize::from(tag >> 2) + 1, offset as usize)
+                    }
+                };
+                if offset == 0 || offset > output.len() {
+                    return None;
+                }
+                let start = output.len() - offset;
+                for index in 0..run {
+                    output.push(output[start + index]);
+                }
+            }
+        }
     }
+    (output.len() == length).then_some(output)
+}
+
+fn block_contents(data: &[u8], offset: usize, size: usize) -> Option<Vec<u8>> {
+    let contents = data.get(offset..offset + size)?;
+    match *data.get(offset + size)? {
+        0 => Some(contents.to_vec()),
+        1 => decompress_snappy(contents),
+        _ => None,
+    }
+}
+
+fn block_entries(block: &[u8]) -> Option<Vec<(Vec<u8>, Vec<u8>)>> {
+    let restarts = usize::try_from(u32::from_le_bytes([
+        *block.get(block.len().checked_sub(4)?)?,
+        *block.get(block.len().checked_sub(3)?)?,
+        *block.get(block.len().checked_sub(2)?)?,
+        *block.get(block.len().checked_sub(1)?)?,
+    ]))
+    .ok()?;
+    let end = block.len().checked_sub(4 + 4 * restarts)?;
+    let mut entries = Vec::new();
+    let mut position = 0;
+    let mut previous: Vec<u8> = Vec::new();
+    while position < end {
+        let shared = varint(block, &mut position)?;
+        let unshared = varint(block, &mut position)?;
+        let value_length = varint(block, &mut position)?;
+        let shared = usize::try_from(shared).ok()?;
+        let unshared = usize::try_from(unshared).ok()?;
+        let value_length = usize::try_from(value_length).ok()?;
+        if shared > previous.len() {
+            return None;
+        }
+        let mut key = previous[..shared].to_vec();
+        key.extend_from_slice(block.get(position..position + unshared)?);
+        position += unshared;
+        let value = block.get(position..position + value_length)?.to_vec();
+        position += value_length;
+        previous = key.clone();
+        entries.push((key, value));
+    }
+    Some(entries)
+}
+
+fn table_hashes(data: &[u8]) -> Result<Vec<Keplr>, ExtractError> {
+    let footer = data
+        .get(data.len().saturating_sub(48)..)
+        .ok_or_else(|| ExtractError::Invalid("truncated LevelDB table".to_owned()))?;
+    if !footer.ends_with(&TABLE_MAGIC) {
+        return Err(ExtractError::Invalid(
+            "invalid LevelDB table magic".to_owned(),
+        ));
+    }
+    let mut position = 0;
+    let mut handle = || {
+        let offset = varint(footer, &mut position)?;
+        let size = varint(footer, &mut position)?;
+        Some((usize::try_from(offset).ok()?, usize::try_from(size).ok()?))
+    };
+    let (_, _) =
+        handle().ok_or_else(|| ExtractError::Invalid("invalid LevelDB footer".to_owned()))?;
+    let (index_offset, index_size) =
+        handle().ok_or_else(|| ExtractError::Invalid("invalid LevelDB footer".to_owned()))?;
+    let index = block_contents(data, index_offset, index_size)
+        .ok_or_else(|| ExtractError::Invalid("invalid LevelDB index block".to_owned()))?;
+    let entries = block_entries(&index)
+        .ok_or_else(|| ExtractError::Invalid("invalid LevelDB index entries".to_owned()))?;
     let mut hashes: Vec<Keplr> = Vec::new();
+    for (_, handle) in entries {
+        let mut position = 0;
+        let offset = varint(&handle, &mut position)
+            .ok_or_else(|| ExtractError::Invalid("invalid LevelDB block handle".to_owned()))?;
+        let size = varint(&handle, &mut position)
+            .ok_or_else(|| ExtractError::Invalid("invalid LevelDB block handle".to_owned()))?;
+        let offset = usize::try_from(offset)
+            .map_err(|_| ExtractError::Invalid("LevelDB block is too large".to_owned()))?;
+        let size = usize::try_from(size)
+            .map_err(|_| ExtractError::Invalid("LevelDB block is too large".to_owned()))?;
+        let block = block_contents(data, offset, size)
+            .ok_or_else(|| ExtractError::Invalid("invalid LevelDB data block".to_owned()))?;
+        for (key, value) in block_entries(&block)
+            .ok_or_else(|| ExtractError::Invalid("invalid LevelDB data entries".to_owned()))?
+        {
+            let key = key.get(..key.len().saturating_sub(8)).unwrap_or(&key);
+            if key != b"keyring/key-store" && key != b"keyring/key-multi-store" {
+                continue;
+            }
+            for hash in json_hashes(&value)? {
+                if !hashes.iter().any(|existing| existing.fields == hash.fields) {
+                    hashes.push(hash);
+                }
+            }
+        }
+    }
+    Ok(hashes)
+}
+
+fn leveldb_hashes(data: &[u8]) -> Result<Vec<Keplr>, ExtractError> {
+    let mut hashes: Vec<Keplr> = Vec::new();
+    let mut entries = Vec::new();
+    if data.ends_with(&TABLE_MAGIC) {
+        let hashes = table_hashes(data)?;
+        if !hashes.is_empty() {
+            return Ok(hashes);
+        }
+    } else {
+        for record in log_records(data)? {
+            write_batch(&record, &mut entries)?;
+        }
+    }
     for (key, value) in entries {
         if key != b"keyring/key-store" && key != b"keyring/key-multi-store" {
             continue;

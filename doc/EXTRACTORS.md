@@ -114,7 +114,7 @@ This file documents the extractors currently registered in
 - `onepassword-cloud` - 1Password cloudkeychain hashcat serialization.
 - `onepassword-mobile` - 1Password mobile account records.
 - `bitwarden` - Bitwarden encrypted exports.
-- `lastpass` - LastPass vaults with companion username and iteration records.
+- `lastpass` - LastPass LPB64 vaults, inline-prefixed browser exports, and SQLite `LastPassData` tables with a companion username.
 - `lpcli` - LastPass CLI state with companion username and iteration records.
 - `cryptosafe` - cryptoSafe vaults.
 - `keyring` - GNOME Keyring files.
@@ -124,7 +124,7 @@ This file documents the extractors currently registered in
 - `blockchain-second` - Blockchain.com second-password wallets.
 - `dogechain` - Dogechain wallets.
 - `tezos` - Tezos wallets.
-- `keplr` - Keplr wallet records and LevelDB logs.
+- `keplr` - Keplr wallet records from JSON, LevelDB write-ahead logs, and LevelDB tables.
 - `stellar` - Stellar wallets.
 - `terra` - Terra wallets.
 - `bitcoin-wif` - raw WIF private keys.
@@ -139,7 +139,7 @@ This file documents the extractors currently registered in
 - `dcc2` - DCC2 cached domain credential records.
 - `dpapi` - DPAPI master key records.
 - `windows-hello` - Windows Hello PIN and container records.
-- `bitlocker` - BitLocker FVE volume metadata and VMK material.
+- `bitlocker` - BitLocker FVE volume metadata and VMK material. Raw volumes, VDI images, and unencrypted QCOW2 images are read through the shared container layer.
 - `veeam` - Veeam VBK backup metadata.
 - `apple-keychain` - macOS login keychains.
 - `apple-secure-notes` - Apple Secure Notes.

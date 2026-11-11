@@ -1,7 +1,25 @@
 type = "lastpass"
+
+[[case]]
 artifact = "vault.lpb64"
 companions = { "username" = "username.txt", "iterations" = "iterations.txt" }
 generator = "synthetic LastPass LPB64 vault with an ENCU record"
 notes = "Synthetic LastPass vault; username and iterations are companion files."
 hashcat = "404142434445464748494a4b4c4d4e4f:100100:lulu@mailinator.com:101112131415161718191a1b1c1d1e1f"
+john = "-"
+
+[[case]]
+artifact = "vault.prefixed"
+companions = { "username" = "username.txt" }
+generator = "synthetic LastPass vault with an inline iteration prefix"
+notes = "The iteration count is embedded before the base64 vault, as in browser exports."
+hashcat = "404142434445464748494a4b4c4d4e4f:1000:lulu@mailinator.com:101112131415161718191a1b1c1d1e1f"
+john = "-"
+
+[[case]]
+artifact = "vault.sqlite3"
+companions = { "username" = "username.txt" }
+generator = "synthetic SQLite LastPassData table with an accts row"
+notes = "The accts row holds the inline iteration prefix and base64 vault across b-tree pages."
+hashcat = "404142434445464748494a4b4c4d4e4f:1000:lulu@mailinator.com:101112131415161718191a1b1c1d1e1f"
 john = "-"

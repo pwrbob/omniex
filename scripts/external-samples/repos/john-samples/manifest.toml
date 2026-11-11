@@ -1,7 +1,7 @@
 id = "john-samples"
 repo = "https://github.com/openwall/john-samples"
 commit = "a2f3a3ed7819ce94f8280b0bbfc23ba576817cce"
-notes = "Openwall John sample artifacts, compared against the pinned John reference scripts. Cases cover every artifact the registered extractors can parse; the remaining files are support data (password lists, keyfiles, logs, readmes), Apple DMG header_v1/plain/sparsebundle layouts, BitLocker VDI/QCOW2 and EFS metadata, KeePass KDB v1 keyfile variants, LastPass SQLite/XML exports, Lotus ID files, unencrypted or XOR-obfuscated Office documents, Mozilla cert8/null key3 databases, and network formats without an extractor (ACE, ALZip, EAPOL, EFS, EIGRP, Gadu-Gadu, IKE, iSCSI, Lotus, MongoDB, Mosquitto, Padlock, RADIUS, Restic, VRRP)."
+notes = "Openwall John sample artifacts, compared against the pinned John reference scripts. Cases cover every artifact the registered extractors can parse; the remaining files are support data (password lists, keyfiles, logs, readmes), Apple DMG sparsebundle metadata outside the token, encrypted QCOW2 and EFS metadata, LastPass XML exports and ECB-only browser records, unencrypted or XOR-obfuscated Office documents, Mozilla cert8/null key3 databases, and network formats without an extractor (ACE, ALZip, EAPOL, EFS, EIGRP, Gadu-Gadu, IKE, MongoDB, Mosquitto, Padlock, EAP-only RADIUS, Restic, VRRP)."
 
 [fetch]
 mode = "file"
@@ -63,11 +63,7 @@ glob = "Apple_DMG/*.dmg"
 slug = "dmg-payload"
 reference = "john:dmg2john.py"
 format = "john"
-exclude = [
-    "Apple_DMG/HFS+J-APM-plain.dmg",
-    "Apple_DMG/testimage.AES-128.64k.header_v1.dmg",
-    "Apple_DMG/testimage.AES-256.64k.header_v1.dmg",
-]
+exclude = ["Apple_DMG/HFS+J-APM-plain.dmg"]
 
 [[case]]
 name = "dmg-cdr-{base}"
@@ -82,10 +78,15 @@ glob = "Apple_DMG/*.sparseimage"
 slug = "dmg-payload"
 reference = "john:dmg2john.py"
 format = "john"
-exclude = [
-    "Apple_DMG/testimage.AES-128.64k.header_v1.sparseimage",
-    "Apple_DMG/testimage.AES-256.64k.header_v1.sparseimage",
-]
+[[case]]
+name = "dmg-sparsebundle-{dir}"
+glob = "Apple_DMG/*.sparsebundle/token"
+slug = "dmg-payload"
+reference = "john:dmg2john"
+reference_path = "{dir}/"
+format = "john"
+companions = ["{dir}/bands/0"]
+omniex_args = ["--companion", "data={artifact_dir}/bands/0"]
 
 [[case]]
 name = "truecrypt-{base}"
@@ -101,6 +102,51 @@ slug = "veracrypt"
 reference = "hashcat:veracrypt2hashcat.py"
 format = "hashcat"
 
+# Virtual disk containers: the reference also reports clear and recovery VMKs.
+[[case]]
+name = "bitlocker-vdi-{base}"
+glob = "BitLocker/*.vdi"
+slug = "bitlocker"
+reference = "john:bitlocker2john"
+args = ["-i"]
+format = "john"
+reference_subset = true
+
+# The efs-*.vdi images hold EFS volumes, not BitLocker, so they are excluded.
+[[case]]
+name = "bitlocker-vdi-{base}"
+glob = "BitLocker/encryption-jungle/disks-v1/*.vdi"
+slug = "bitlocker"
+reference = "john:bitlocker2john"
+args = ["-i"]
+format = "john"
+reference_subset = true
+exclude = [
+  "BitLocker/encryption-jungle/disks-v1/efs-1.vdi",
+  "BitLocker/encryption-jungle/disks-v1/efs-2.vdi",
+  "BitLocker/encryption-jungle/disks-v1/efs-3.vdi",
+]
+
+# Only the PAP capture exposes a User-Password attribute; the EAP and
+# accounting samples need a different attack.
+[[case]]
+name = "radius-pap"
+path = "Radius/radius-sample-5.pcap"
+slug = "radius"
+reference = "structural"
+format = "john"
+omniex_args = [
+  "--companion",
+  "radius-secret={root}/scripts/external-samples/sidecars/radius/secret-5.txt",
+]
+
+[[case]]
+name = "iscsi-chap-{base}"
+glob = "iSCSI_CHAP/*.pcap"
+slug = "iscsi-chap"
+reference = "structural"
+format = "hashcat"
+
 [[case]]
 name = "luks-v1"
 path = "LUKS/LUKS-openwall"
@@ -111,6 +157,14 @@ format = "hashcat"
 [[case]]
 name = "7z-{base}"
 glob = "7-Zip/*.7z"
+slug = "sevenzip"
+reference = "john:7z2john.pl"
+format = "john"
+requires = ["perl:Compress::Raw::Lzma"]
+
+[[case]]
+name = "7z-sfx"
+path = "7-Zip/test-openwall-sfx.exe"
 slug = "sevenzip"
 reference = "john:7z2john.pl"
 format = "john"
@@ -188,6 +242,34 @@ name = "keepass1-{base}"
 glob = "KeePass/*.kdb"
 slug = "keepass"
 reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "keepass1-keyfile"
+path = "KeePass/keyfile_samples/sample-with-keyfile-password.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+args = ["-k", "{artifact_dir}/keyfile.txt"]
+format = "john"
+companions = ["{dir}/keyfile.txt"]
+omniex_args = ["--companion", "keyfile={artifact_dir}/keyfile.txt"]
+
+[[case]]
+name = "keepass1-keyfile-32-bytes"
+path = "KeePass/keyfile_samples/sample-keepass-with-32-bytes-keyfile.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+args = ["-k", "{artifact_dir}/keyfile-32-bytes.txt"]
+format = "john"
+companions = ["{dir}/keyfile-32-bytes.txt"]
+omniex_args = ["--companion", "keyfile={artifact_dir}/keyfile-32-bytes.txt"]
+
+[[case]]
+name = "lotus-{base}"
+glob = "Lotus_Notes/*.id"
+slug = "lotus85"
+reference = "john:lotus2john.py"
+normalize = "raw"
 format = "john"
 
 [[case]]
@@ -665,6 +747,15 @@ slug = "keplr"
 reference = "structural"
 format = "john"
 
+# keplr2john needs ccl_chrome_indexeddb; the table hold the keyring the log
+# case already covers, so only guard extraction.
+[[case]]
+name = "keplr-wallet-table"
+path = "Keplr_Wallet/000003.ldb"
+slug = "keplr"
+reference = "structural"
+format = "john"
+
 [[case]]
 name = "pdf-office-2010"
 path = "Office/Office_Secrets/Office_2010/2010-PDF_myhovercraftisfullofeels_.pdf"
@@ -844,6 +935,12 @@ reference = "structural"
 [[case]]
 name = "wpa-{base}"
 glob = "WPA-PSK/wpa-Induction.pcap*"
+slug = "wpa-pmkid"
+reference = "structural"
+
+[[case]]
+name = "wpa-{base}"
+glob = "WPA-PSK/wpa.*.cap"
 slug = "wpa-pmkid"
 reference = "structural"
 

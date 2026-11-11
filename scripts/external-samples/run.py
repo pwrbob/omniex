@@ -57,6 +57,8 @@ ALLOWED_CASE = {
     "decode",
     "filter",
     "exclude",
+    "normalize",
+    "reference_subset",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -77,9 +79,11 @@ class Case:
     reference_path: str = ""
     reference_format: str = ""
     subset: bool = False
+    reference_subset: bool = False
     requires: list[str] = field(default_factory=list)
     companions: list[str] = field(default_factory=list)
     decode: str = ""
+    normalize: str = ""
     exclude: list[str] = field(default_factory=list)
     filter: list[str] = field(default_factory=list)
 
@@ -460,9 +464,11 @@ def expand_cases(
             reference_path=str(raw.get("reference_path", "")),
             reference_format=str(raw.get("reference_format", "")),
             subset=bool(raw.get("subset", False)),
+            reference_subset=bool(raw.get("reference_subset", False)),
             requires=list(raw.get("requires", [])),
             companions=list(raw.get("companions", [])),
             decode=str(raw.get("decode", "")),
+            normalize=str(raw.get("normalize", "")),
             filter=list(raw.get("filter", [])),
             exclude=list(raw.get("exclude", [])),
         )
@@ -513,6 +519,7 @@ def render_template(template: str, path: str, extra: dict[str, str] | None = Non
         "stem": str(path_object.with_suffix("")),
         "basename": path_object.stem,
         "base": path_object.stem,
+        "root": str(ROOT),
     }
     if extra:
         values.update(extra)
@@ -611,6 +618,8 @@ def run_command(command: list[str], cwd: Path | None = None) -> str:
 def normalize_reference(text: str, mode: str) -> list[str]:
     lines = [line.strip() for line in text.splitlines()]
     lines = [line for line in lines if line and line != "-"]
+    if mode == "raw":
+        return [line.rsplit(":", 1)[-1] for line in lines]
     if mode in {"hash", "bks"}:
         normalized = []
         for line in lines:
@@ -701,9 +710,15 @@ def compare(
     ignore: list[str],
     ordered: bool,
     subset: bool = False,
+    reference_subset: bool = False,
 ) -> None:
     got_fields = comparable(got, ignore)
     want_fields = comparable(want, ignore)
+    if reference_subset:
+        missing = [entry for entry in got_fields if entry not in want_fields]
+        if not missing:
+            print(f"ok   {name}")
+            return
     if subset:
         missing = [entry for entry in want_fields if entry not in got_fields]
         if not missing:
@@ -805,7 +820,9 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         ]
         command = reference_command(kind, value, reference_artifact, reference_args)
         reference_text = run_command(command, cwd=john_run() if kind == "john" else None)
-        normalize = "bks" if case.slug in {"bks", "vmx-keysafe", "sappse"} else "hash"
+        normalize = case.normalize or (
+            "bks" if case.slug in {"bks", "vmx-keysafe", "sappse"} else "hash"
+        )
 
     reference_lines = normalize_reference(reference_text, normalize)
     if not reference_lines:
@@ -827,6 +844,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         case.ignore_fields,
         case.ordered,
         case.subset,
+        case.reference_subset,
     )
 
 

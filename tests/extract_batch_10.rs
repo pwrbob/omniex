@@ -104,6 +104,22 @@ fn network_probes_require_structural_evidence() {
 }
 
 #[test]
+fn wpa_accepts_vendor_specific_key_descriptor() {
+    let mut bytes = std::fs::read(fixture("wpa-pmkid", "eapol.pcap")).unwrap();
+    let mut rewritten = 0;
+    for index in 0..bytes.len().saturating_sub(6) {
+        if bytes[index..index + 4] == [0x88, 0x8e, 0x02, 0x03] && bytes[index + 6] == 0x02 {
+            bytes[index + 6] = 0xfe;
+            rewritten += 1;
+        }
+    }
+    assert!(rewritten > 0);
+    let values = hashes("wpa-pmkid", &Artifact::from_bytes("wpa.cap", bytes));
+    assert!(values.iter().all(|value| value.starts_with("WPA*02*")));
+    assert!(!values.is_empty());
+}
+
+#[test]
 fn truncated_captures_probe_maybe_and_fail_to_extract() {
     let bytes = std::fs::read(fixture("wpa-pmkid", "eapol.pcap")).unwrap();
     let truncated = Artifact::from_bytes("truncated.pcap", bytes[..30].to_vec());

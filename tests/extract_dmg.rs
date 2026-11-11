@@ -23,11 +23,11 @@ fn omniex() -> Command {
 }
 
 #[test]
-fn dmg_probe_requires_encrcdsa_v2() {
+fn dmg_probe_recognizes_encrypted_images() {
     let extractor = extract::by_slug("dmg-payload").expect("DMG extractor");
     assert!(matches!(
         extractor.probe(&artifact()),
-        Probe::Yes(reason) if reason == "Apple DMG encrcdsa v2 header"
+        Probe::Yes(reason) if reason == "Apple DMG encrcdsa header"
     ));
     assert_eq!(
         extractor.probe(&Artifact::from_bytes("lazy", b"not a dmg".to_vec())),
