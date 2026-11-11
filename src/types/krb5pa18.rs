@@ -1,7 +1,11 @@
-//! Kerberos 5, etype 18, Pre-Auth, rendered as `$krb5pa$18$<user>$<realm>$<ciphertext>`.
+//! Kerberos 5, etype 18, Pre-Auth, rendered as
+//! `$krb5pa$18$<user>$<realm>$<ciphertext>` for hashcat and
+//! `$krb5pa$18$<user>$<realm>$<salt>$<ciphertext>` for John.
 
 use crate::parse;
-use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
+use crate::{
+    HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions, Tool,
+};
 
 /// Kerberos 5, etype 18, Pre-Auth hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
@@ -9,6 +13,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     name = "Kerberos 5, etype 18, Pre-Auth",
     slug = "krb5pa18",
     hashcat = [19900],
+    john = ["krb5pa-sha1"],
 )]
 pub struct Krb5Pa18 {
     /// Kerberos username.
@@ -18,6 +23,10 @@ pub struct Krb5Pa18 {
     /// Kerberos realm.
     #[field(role = other, encoding = ascii)]
     pub realm: String,
+
+    /// Pre-authentication salt. Empty means the realm and username are used.
+    #[field(role = salt, encoding = ascii)]
+    pub salt: String,
 
     /// Hexadecimal ciphertext.
     #[field(role = ciphertext, encoding = hex)]
@@ -30,22 +39,55 @@ impl Parse for Krb5Pa18 {
             return Err(parse::empty());
         }
         let rest = parse::strip_prefix(input, "$krb5pa$18$", 0)?;
-        let fields = parse::split_fields(rest, '$', 3)?;
+        let fields: Vec<&str> = rest.split('$').collect();
+        let (username, realm, salt, ciphertext, offset) = match fields.as_slice() {
+            [username, realm, ciphertext] => (
+                *username,
+                *realm,
+                "",
+                *ciphertext,
+                fields[0].len() + 1 + fields[1].len() + 1,
+            ),
+            [username, realm, salt, ciphertext] => (
+                *username,
+                *realm,
+                *salt,
+                *ciphertext,
+                fields[0].len() + 1 + fields[1].len() + 1 + fields[2].len() + 1,
+            ),
+            _ => {
+                return Err(parse::error(
+                    ParseErrorKind::InvalidLength,
+                    0,
+                    "expected user, realm, optional salt, and ciphertext",
+                ));
+            }
+        };
         Ok(Self {
-            username: fields[0].0.to_owned(),
-            realm: fields[1].0.to_owned(),
-            ciphertext: parse::decode_hex(fields[2].0, fields[2].1)?,
+            username: username.to_owned(),
+            realm: realm.to_owned(),
+            salt: salt.to_owned(),
+            ciphertext: parse::decode_hex(ciphertext, 11 + offset)?,
         })
     }
 }
 
 impl Render for Krb5Pa18 {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
-        format!(
-            "$krb5pa$18${}${}${}",
-            self.username,
-            self.realm,
-            crate::format::hex(&self.ciphertext)
-        )
+    fn render_value(&self, opts: &RenderOptions) -> String {
+        let ciphertext = crate::format::hex(&self.ciphertext);
+        if opts.tool == Tool::John {
+            return format!(
+                "$krb5pa$18${}${}${}${}",
+                self.username, self.realm, self.salt, ciphertext
+            );
+        }
+        if self.salt.is_empty() {
+            format!("$krb5pa$18${}${}${}", self.username, self.realm, ciphertext)
+        } else {
+            format!(
+                "$krb5pa$18${}${}${}${}",
+                self.username, self.realm, self.salt, ciphertext
+            )
+        }
     }
 }

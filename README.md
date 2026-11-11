@@ -5,10 +5,10 @@ forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
-![John modes](https://img.shields.io/badge/John_modes-264%2F264-1f6feb)
+![John modes](https://img.shields.io/badge/John_modes-265%2F265-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
 ![exact extractors](https://img.shields.io/badge/exact_extractors-187%2F239-8957e5)
-![external samples](https://img.shields.io/badge/external_samples-66_formats_%2F_617_cases-8957e5)
+![external samples](https://img.shields.io/badge/external_samples-65_formats_%2F_617_cases-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in
@@ -771,7 +771,7 @@ checked against that command in CI.
 | `aes192-ecb-nokdf` | AES-192-ECB NOKDF (PT = $salt, key = $pass) | 26402 | - |
 | `aes256-ecb-nokdf` | AES-256-ECB NOKDF (PT = $salt, key = $pass) | 26403 | - |
 | `krb5pa17` | Kerberos 5, etype 17, Pre-Auth | 19800 | `krb5pa-sha1` |
-| `krb5pa18` | Kerberos 5, etype 18, Pre-Auth | 19900 | - |
+| `krb5pa18` | Kerberos 5, etype 18, Pre-Auth | 19900 | `krb5pa-sha1` |
 | `krb5db17` | Kerberos 5, etype 17, DB | 28800 | - |
 | `krb5db18` | Kerberos 5, etype 18, DB | 28900 | - |
 | `krb5db-old` | Kerberos 5, etype 1/2/3, DB | 38400 | - |

@@ -22,6 +22,7 @@ fn values(artifact: &Artifact) -> Result<Vec<Krb5Pa18>, ExtractError> {
         .map(|(username, realm, ciphertext)| Krb5Pa18 {
             username,
             realm,
+            salt: String::new(),
             ciphertext,
         })
         .collect())

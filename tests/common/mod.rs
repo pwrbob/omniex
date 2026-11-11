@@ -1638,7 +1638,10 @@ pub const VECTORS: &[Vector] = &[
             19900,
             "$krb5pa$18$hashcat$HASHCATDOMAIN.COM$96c289009b05181bfd32062962740b1b1ce5f74eb12e0266cde74e81094661addab08c0c1a178882c91a0ed89ae4e0e68d2820b9cce69770"
         )],
-        john: &[],
+        john: &[john!(
+            "krb5pa-sha1",
+            "$krb5pa$18$hashcat$HASHCATDOMAIN.COM$$96c289009b05181bfd32062962740b1b1ce5f74eb12e0266cde74e81094661addab08c0c1a178882c91a0ed89ae4e0e68d2820b9cce69770"
+        )],
     },
     Vector {
         slug: "krb5db17",

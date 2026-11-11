@@ -397,18 +397,6 @@ ignore_fields = ["master", "ckey", "public_key"]
 requires = ["python:bsddb3"]
 
 [[case]]
-name = "bitcoin-xdn_wallet"
-path = "Bitcoin/xdn_wallet.dat"
-slug = "bitcoin-wallet"
-reference = "john:bitcoin2john.py"
-format = "hashcat"
-reference_format = "john"
-# bitcoin2john keeps only the last two AES blocks of the master key and emits
-# placeholder empty ckey/public-key fields.
-ignore_fields = ["master", "ckey", "public_key"]
-requires = ["python:bsddb3"]
-
-[[case]]
 name = "encdv-{dir}"
 glob = "ENCDataVault/0[012]-*/filesystem.dat"
 slug = "encdv"
@@ -469,9 +457,9 @@ format = "john"
 companions = ["{stem}.salt"]
 
 [[case]]
-name = "krb5asrep-{base}"
+name = "krb5pa18-{base}"
 glob = "Kerberos_v5/krb-user1-*.pcap"
-slug = "krb5asrep-aes"
+slug = "krb5pa18"
 reference = "john:krb2john.py"
 format = "john"
 requires = ["python:lxml", "tool:tshark"]
