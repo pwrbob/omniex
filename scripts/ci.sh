@@ -30,6 +30,9 @@ time cargo test --workspace --all-targets --locked
 echo "==> cargo test --doc"
 time cargo test --workspace --doc --locked
 
+echo "==> cargo test -p omniex --test ui"
+time cargo test -p omniex --test ui --locked -- --ignored
+
 missing=()
 
 if [[ -z "${OMNIEX_HASHCAT:-}" && -x "$root/tmp/reference/hashcat-8.0.0/hashcat" ]]; then

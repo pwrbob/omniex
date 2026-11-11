@@ -96,6 +96,27 @@ jobs:
           export TIMEFORMAT='  [time] %3R s'
           time cargo test --workspace --doc --locked
 
+  ui:
+    name: Derive UI tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust artifacts
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: stable-ui
+
+      - name: Run derive UI tests
+        run: |
+          export TIMEFORMAT='  [time] %3R s'
+          time cargo test -p omniex --test ui --locked -- --ignored --nocapture
+
   msrv:
     name: Minimum Rust version
     runs-on: ubuntu-latest
