@@ -43,3 +43,23 @@ sha256 = "607f6f160adfe499195942273d7f66a2feb442aa3e63a988ac2e5bb1dde1ca05"
 [[file]]
 path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xlsx"
 sha256 = "168fecb516836479a0e9b440403145c96c2a24a541cea48447c68758005b1549"
+
+[[file]]
+path = "tests/test-data/encrypted/autostart-encrypt-standardpassword.xlsb"
+sha256 = "9babf0f3421659634bd1615ca756b6823af8806bbc03b2f275939612f241bed6"
+
+[[file]]
+path = "tests/test-data/encrypted/autostart-encrypt-standardpassword.xlsm"
+sha256 = "70494fcc2d9ddbbe748cdccdcc8a4800f287a73db89f84c90e6599a86bdee0b9"
+
+[[file]]
+path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xls"
+sha256 = "346f1ee5d9837d2f599633b2b358db9c221a99a9c724735bb239092714585d48"
+
+[[file]]
+path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xlsb"
+sha256 = "59c79d4d2f43ba9364bb51728d90c31f1983f94fc293d84c6e18a4c6d5808d5c"
+
+[[file]]
+path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xlsm"
+sha256 = "e2398063de6736f92dd4c18274016261bdb8b23e30fcb911c66d00f5f47e9fd8"

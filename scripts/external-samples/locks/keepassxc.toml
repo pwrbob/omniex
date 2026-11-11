@@ -99,3 +99,23 @@ sha256 = "8d4ab8b8b2cec6d53d03dd933aa4b5301037978c37f36c04b112d0b0912e180d"
 [[file]]
 path = "share/demo.kdbx"
 sha256 = "8d3fb92bd71c0f639641916a6c3dcab244b238656cf3052d9142f8991b8d0f85"
+
+[[file]]
+path = "tests/data/MergeDatabase.kdbx"
+sha256 = "aea50be9372e5d8ccee3fd918b160fa1558101c756ac139f2a1d5382bb45fcb6"
+
+[[file]]
+path = "tests/data/NewDatabase2.kdbx"
+sha256 = "2e0b114554d613dbc466b83179177446067ae0a4fef230778daba1492b27d0bd"
+
+[[file]]
+path = "tests/data/RecycleBinDisabled.kdbx"
+sha256 = "125c24a9e1acf98393435fb14ba8d84950632ae22cb134d7606cb4d2d1856b4f"
+
+[[file]]
+path = "tests/data/RecycleBinEmpty.kdbx"
+sha256 = "2907953b4bdebdefe28c0d544e2ba72aed712eee368c726b82a3407d215840b1"
+
+[[file]]
+path = "tests/data/SyncDatabase.kdbx"
+sha256 = "1757f61ecc913fbfa29e4fa0bd596bab9ba41456f7bda78aeeae98fe76287def"

@@ -180,3 +180,38 @@ path = "share/demo.kdbx"
 slug = "keepass4"
 reference = "john:keepass2john"
 format = "john"
+
+[[case]]
+name = "merge-database-kdbx2"
+path = "tests/data/MergeDatabase.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "new-database2-kdbx2"
+path = "tests/data/NewDatabase2.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "recycle-bin-disabled-kdbx2"
+path = "tests/data/RecycleBinDisabled.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "recycle-bin-empty-kdbx2"
+path = "tests/data/RecycleBinEmpty.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "sync-database-kdbx2"
+path = "tests/data/SyncDatabase.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
