@@ -7,136 +7,10 @@ use pgp::packet::{Packet, PacketParser};
 use pgp::types::{PublicParams, SecretParams, StringToKeyType};
 
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
-use crate::types::Gpg;
-use crate::{
-    HashType, HashValue, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions,
-    parse,
-};
+use crate::types::Pgp;
+use crate::{HashType, HashValue};
 
-pub struct GpgExtractor;
-
-/// OpenPGP symmetrically encrypted file, rendered as
-/// `$gpg$*0*<size>*<data>*<s2k type>*<usage>*<s2k hash>*<cipher>*<iterations>*<salt>`.
-#[derive(Debug, Clone, PartialEq, Eq, HashType)]
-#[hash(name = "GPG symmetric", slug = "gpg", john = ["gpg"])]
-struct GpgSymmetric {
-    /// Public-key algorithm identifier, always `0` for symmetric files.
-    #[field(role = other, encoding = decimal)]
-    algorithm: u8,
-
-    /// Encrypted data size in bytes.
-    #[field(role = other, encoding = decimal)]
-    encrypted_size: u32,
-
-    /// Encrypted data packet.
-    #[field(role = ciphertext, encoding = hex)]
-    encrypted_data: Vec<u8>,
-
-    /// String-to-key type.
-    #[field(role = other, encoding = decimal)]
-    s2k_type: u8,
-
-    /// Packet usage identifier: `9` for tag 9, `18` for tag 18.
-    #[field(role = other, encoding = decimal)]
-    s2k_mode: u8,
-
-    /// String-to-key hash identifier.
-    #[field(role = other, encoding = decimal)]
-    s2k_hash: u32,
-
-    /// Cipher algorithm identifier.
-    #[field(role = other, encoding = decimal)]
-    cipher: u8,
-
-    /// String-to-key iteration count.
-    #[field(role = iterations, encoding = decimal)]
-    iterations: u32,
-
-    /// Eight-byte salt.
-    #[field(role = salt, encoding = hex)]
-    salt: Vec<u8>,
-}
-
-impl Parse for GpgSymmetric {
-    fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
-        if input.is_empty() {
-            return Err(parse::empty());
-        }
-        let rest = parse::strip_prefix(input, "$gpg$*", 0)?;
-        let fields = parse::split_fields(rest, '*', 9)?;
-        fn number(value: &str, offset: usize, name: &str) -> Result<u32, ParseError> {
-            value.parse::<u32>().map_err(|_| {
-                parse::error(
-                    ParseErrorKind::InvalidCharacter,
-                    offset,
-                    format!("invalid GPG {name}"),
-                )
-            })
-        }
-
-        let encrypted_data = parse::decode_hex(fields[2].0, fields[2].1)?;
-        if encrypted_data.len() != number(fields[1].0, fields[1].1, "encrypted size")? as usize {
-            return Err(parse::error(
-                ParseErrorKind::InvalidLength,
-                fields[2].1,
-                "GPG encrypted data length does not match its header",
-            ));
-        }
-
-        Ok(Self {
-            algorithm: u8::try_from(number(fields[0].0, fields[0].1, "algorithm")?).map_err(
-                |_| parse::error(ParseErrorKind::InvalidCharacter, 6, "invalid GPG algorithm"),
-            )?,
-            encrypted_size: number(fields[1].0, fields[1].1, "encrypted size")?,
-            encrypted_data,
-            s2k_type: u8::try_from(number(fields[3].0, fields[3].1, "s2k type")?).map_err(
-                |_| {
-                    parse::error(
-                        ParseErrorKind::InvalidCharacter,
-                        fields[3].1,
-                        "invalid s2k type",
-                    )
-                },
-            )?,
-            s2k_mode: u8::try_from(number(fields[4].0, fields[4].1, "s2k mode")?).map_err(
-                |_| {
-                    parse::error(
-                        ParseErrorKind::InvalidCharacter,
-                        fields[4].1,
-                        "invalid s2k mode",
-                    )
-                },
-            )?,
-            s2k_hash: number(fields[5].0, fields[5].1, "s2k hash")?,
-            cipher: u8::try_from(number(fields[6].0, fields[6].1, "cipher")?).map_err(|_| {
-                parse::error(
-                    ParseErrorKind::InvalidCharacter,
-                    fields[6].1,
-                    "invalid cipher",
-                )
-            })?,
-            iterations: number(fields[7].0, fields[7].1, "iterations")?,
-            salt: parse::decode_hex(fields[8].0, fields[8].1)?,
-        })
-    }
-}
-
-impl Render for GpgSymmetric {
-    fn render_value(&self, _opts: &RenderOptions) -> String {
-        format!(
-            "$gpg$*{}*{}*{}*{}*{}*{}*{}*{}*{}",
-            self.algorithm,
-            self.encrypted_size,
-            crate::format::hex(&self.encrypted_data),
-            self.s2k_type,
-            self.s2k_mode,
-            self.s2k_hash,
-            self.cipher,
-            self.iterations,
-            crate::format::hex(&self.salt)
-        )
-    }
-}
+pub struct PgpExtractor;
 
 struct SymmetricSession {
     s2k_type: u8,
@@ -179,7 +53,7 @@ fn token(data: &[u8], pos: usize) -> Option<(Vec<u8>, usize)> {
     quoted(data, pos).or_else(|| hash_hex(data, pos))
 }
 
-fn gpg_ocb(data: &[u8]) -> Option<Gpg> {
+fn pgp_ocb(data: &[u8]) -> Option<Pgp> {
     let marker = data
         .windows(b"openpgp-s2k3-ocb-aes".len())
         .position(|window| window == b"openpgp-s2k3-ocb-aes")?;
@@ -222,7 +96,7 @@ fn gpg_ocb(data: &[u8]) -> Option<Gpg> {
     if ciphertext.len() < 16 {
         return None;
     }
-    Some(Gpg {
+    Some(Pgp {
         algorithm: 1,
         encrypted_size: u32::try_from(ciphertext.len()).ok()?,
         modulus_size: 4096,
@@ -238,9 +112,9 @@ fn gpg_ocb(data: &[u8]) -> Option<Gpg> {
     })
 }
 
-impl Extractor for GpgExtractor {
+impl Extractor for PgpExtractor {
     fn slug(&self) -> &'static str {
-        Gpg::SLUG
+        Pgp::SLUG
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
@@ -248,7 +122,7 @@ impl Extractor for GpgExtractor {
             Ok(data) => data,
             Err(error) => return Probe::maybe(format!("cannot read artifact: {error}")),
         };
-        if gpg_ocb(&data).is_some() {
+        if pgp_ocb(&data).is_some() {
             return Probe::yes("GnuPG agent OCB private key");
         }
         let armored = data.starts_with(b"-----BEGIN PGP ");
@@ -290,7 +164,7 @@ impl Extractor for GpgExtractor {
         let data = artifact.primary().read_all().map_err(|error| {
             ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
         })?;
-        if let Some(hash) = gpg_ocb(&data) {
+        if let Some(hash) = pgp_ocb(&data) {
             return Ok(vec![Box::new(hash) as Box<dyn HashValue>]);
         }
         let data = dearmor(&data)?;
@@ -385,20 +259,19 @@ fn symmetric_session(
     })
 }
 
-fn symmetric_hash(
-    session: SymmetricSession,
-    usage: u8,
-    data: &[u8],
-) -> Result<GpgSymmetric, ExtractError> {
-    Ok(GpgSymmetric {
+fn symmetric_hash(session: SymmetricSession, usage: u8, data: &[u8]) -> Result<Pgp, ExtractError> {
+    Ok(Pgp {
         algorithm: 0,
         encrypted_size: u32::try_from(data.len())
             .map_err(|_| ExtractError::Invalid("OpenPGP encrypted data is too large".to_owned()))?,
+        modulus_size: 0,
         encrypted_data: data.to_vec(),
         s2k_type: session.s2k_type,
         s2k_mode: usage,
         s2k_hash: session.s2k_hash,
         cipher: session.cipher,
+        iv_size: 0,
+        iv: Vec::new(),
         iterations: session.iterations,
         salt: session.salt,
     })
@@ -419,7 +292,7 @@ fn dearmor(data: &[u8]) -> Result<Vec<u8>, ExtractError> {
 fn convert(
     public: &PublicParams,
     secret: &pgp::types::EncryptedSecretParams,
-) -> Result<Gpg, ExtractError> {
+) -> Result<Pgp, ExtractError> {
     let (algorithm, modulus_size) = match public {
         PublicParams::RSA { n, e: _ } => (1, bit_length(n)),
         PublicParams::DSA {
@@ -465,7 +338,7 @@ fn convert(
     let iv = secret.iv();
     let data = secret.data();
 
-    Ok(Gpg {
+    Ok(Pgp {
         algorithm,
         encrypted_size: u32::try_from(data.len())
             .map_err(|_| ExtractError::Invalid("OpenPGP secret data is too large".to_owned()))?,

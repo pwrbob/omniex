@@ -1370,28 +1370,28 @@ fn value_dependent_modes_track_salt_and_key_limits() {
 }
 
 #[test]
-fn gpg_modes_follow_the_string_to_key_and_cipher() {
+fn pgp_modes_follow_the_string_to_key_and_cipher() {
     use omniex::Mode;
-    use omniex::types::Gpg;
+    use omniex::types::Pgp;
 
     let opts = ParseOptions::default();
     let base =
         "$gpg$*1*1*8*00*3*254*HASH*CIPHER*16*00000000000000000000000000000000*1*0000000000000000";
 
-    let sha1 = Gpg::parse(&base.replace("HASH", "2").replace("CIPHER", "7"), &opts).unwrap();
+    let sha1 = Pgp::parse(&base.replace("HASH", "2").replace("CIPHER", "7"), &opts).unwrap();
     assert!(sha1.modes().contains(&Mode::Hashcat(17010)));
     assert!(!sha1.modes().contains(&Mode::Hashcat(17020)));
     assert!(sha1.modes().contains(&Mode::John("gpg")));
 
-    let sha512 = Gpg::parse(&base.replace("HASH", "10").replace("CIPHER", "7"), &opts).unwrap();
+    let sha512 = Pgp::parse(&base.replace("HASH", "10").replace("CIPHER", "7"), &opts).unwrap();
     assert!(sha512.modes().contains(&Mode::Hashcat(17020)));
     assert!(!sha512.modes().contains(&Mode::Hashcat(17010)));
 
-    let cast5 = Gpg::parse(&base.replace("HASH", "2").replace("CIPHER", "3"), &opts).unwrap();
+    let cast5 = Pgp::parse(&base.replace("HASH", "2").replace("CIPHER", "3"), &opts).unwrap();
     assert!(cast5.modes().contains(&Mode::Hashcat(17040)));
     assert!(!cast5.modes().contains(&Mode::Hashcat(17010)));
 
-    let ecc = Gpg::parse(
+    let ecc = Pgp::parse(
         &base
             .replace("*1*1*8*", "*18*1*8*")
             .replace("HASH", "2")
@@ -1401,6 +1401,30 @@ fn gpg_modes_follow_the_string_to_key_and_cipher() {
     .unwrap();
     assert!(ecc.modes().contains(&Mode::John("gpg")));
     assert!(!ecc.modes().contains(&Mode::Hashcat(17010)));
+}
+
+#[test]
+fn pgp_symmetric_hashes_round_trip_and_stay_john_only() {
+    let opts = ParseOptions::default();
+    let text = "$gpg$*0*1*00*3*18*10*9*65536*0000000000000000";
+    let descriptor = registry::by_slug("pgp").expect("registered");
+    let parsed = registry::parse(descriptor, text, &opts).unwrap();
+    assert_eq!(
+        parsed
+            .render(&RenderOptions {
+                tool: omniex::Tool::John,
+                ..RenderOptions::default()
+            })
+            .unwrap(),
+        text
+    );
+    assert!(parsed.modes().contains(&omniex::Mode::John("gpg")));
+    assert!(
+        !parsed
+            .modes()
+            .iter()
+            .any(|mode| matches!(mode, omniex::Mode::Hashcat(_)))
+    );
 }
 
 #[test]

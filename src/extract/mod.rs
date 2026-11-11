@@ -358,7 +358,6 @@ mod exodus;
 mod fernet;
 mod filezilla;
 mod geli;
-mod gpg;
 mod hashdump;
 mod hashlist;
 mod iwork;
@@ -373,6 +372,7 @@ mod multibit;
 mod odf;
 mod onepassword_agile;
 mod openbsd_softraid;
+mod pgp;
 mod pgpdisk;
 mod pgpsda;
 mod pgpwde;
@@ -528,7 +528,7 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &fernet::FernetExtractor,
     &filezilla::FileZillaServerExtractor,
     &geli::GeliExtractor,
-    &gpg::GpgExtractor,
+    &pgp::PgpExtractor,
     &iwork::IworkExtractor,
     &jwt::JwtExtractor,
     &hashdump::As400DesExtractor,

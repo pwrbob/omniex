@@ -1,18 +1,21 @@
-//! GnuPG secret-key passphrase hashes, rendered as
-//! `$gpg$*<version>*<encrypted size>*<key size>*<encrypted data>*<s2k fields>*<cipher>*<iv size>*<iv>*<iterations>*<salt>`.
+//! OpenPGP passphrase hashes, rendered as either
+//! `$gpg$*<version>*<encrypted size>*<key size>*<encrypted data>*<s2k fields>*<cipher>*<iv size>*<iv>*<iterations>*<salt>`
+//! for secret keys or
+//! `$gpg$*0*<encrypted size>*<encrypted data>*<s2k fields>*<cipher>*<iterations>*<salt>`
+//! for symmetrically encrypted files.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
-/// GnuPG secret-key passphrase hashes.
+/// OpenPGP passphrase hashes for secret keys and symmetrically encrypted files.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "GPG",
-    slug = "gpg",
+    name = "OpenPGP",
+    slug = "pgp",
     hashcat = [17010, 17020, 17030, 17040, 17050], john = ["gpg"],
-    modes_fn = gpg_modes,
+    modes_fn = pgp_modes,
 )]
-pub struct Gpg {
+pub struct Pgp {
     /// Public-key algorithm identifier.
     #[field(role = other, encoding = decimal)]
     pub algorithm: u8,
@@ -21,7 +24,7 @@ pub struct Gpg {
     #[field(role = other, encoding = decimal)]
     pub encrypted_size: u32,
 
-    /// Modulus size in bits.
+    /// Modulus size in bits, zero for symmetrically encrypted files.
     #[field(role = other, encoding = decimal)]
     pub modulus_size: u32,
 
@@ -45,11 +48,11 @@ pub struct Gpg {
     #[field(role = other, encoding = decimal)]
     pub cipher: u8,
 
-    /// Initialization vector size in bytes.
+    /// Initialization vector size in bytes, zero for symmetrically encrypted files.
     #[field(role = other, encoding = decimal)]
     pub iv_size: u8,
 
-    /// Initialization vector.
+    /// Initialization vector, empty for symmetrically encrypted files.
     #[field(role = other, encoding = hex)]
     pub iv: Vec<u8>,
 
@@ -57,15 +60,18 @@ pub struct Gpg {
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Eight or twelve-byte salt.
+    /// Eight-byte salt.
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 }
 
-pub fn gpg_modes(value: &Gpg) -> Vec<crate::Mode> {
+pub fn pgp_modes(value: &Pgp) -> Vec<crate::Mode> {
     use crate::Mode;
 
     let john = || vec![Mode::John("gpg")];
+    if value.algorithm == 0 {
+        return john();
+    }
     match (value.cipher, value.s2k_hash) {
         (3, 2) => {
             let mut modes = vec![Mode::Hashcat(17040)];
@@ -93,13 +99,23 @@ pub fn gpg_modes(value: &Gpg) -> Vec<crate::Mode> {
     }
 }
 
-impl Parse for Gpg {
+impl Parse for Pgp {
     fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
         }
         let rest = parse::strip_prefix(input, "$gpg$*", 0)?;
-        let fields = parse::split_fields(rest, '*', 12)?;
+        let fields = match rest.split('*').count() {
+            9 => parse::split_fields(rest, '*', 9)?,
+            12 => parse::split_fields(rest, '*', 12)?,
+            _ => {
+                return Err(parse::error(
+                    ParseErrorKind::InvalidLength,
+                    input.len(),
+                    "expected 9 or 12 GPG fields",
+                ));
+            }
+        };
         fn number(value: &str, offset: usize, name: &str) -> Result<u32, ParseError> {
             value.parse::<u32>().map_err(|_| {
                 parse::error(
@@ -110,64 +126,102 @@ impl Parse for Gpg {
             })
         }
 
-        let encrypted_data = parse::decode_hex(fields[3].0, fields[3].1)?;
+        let symmetric = fields.len() == 9;
+        let data = if symmetric { 2 } else { 3 };
+        let encrypted_data = parse::decode_hex(fields[data].0, fields[data].1)?;
         if encrypted_data.len() != number(fields[1].0, fields[1].1, "encrypted size")? as usize {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
-                fields[3].1,
+                fields[data].1,
                 "GPG encrypted data length does not match its header",
             ));
         }
 
+        let algorithm =
+            u8::try_from(number(fields[0].0, fields[0].1, "algorithm")?).map_err(|_| {
+                parse::error(ParseErrorKind::InvalidCharacter, 6, "invalid GPG algorithm")
+            })?;
+        if symmetric && algorithm != 0 {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                input.len(),
+                "GPG secret-key hash is missing fields",
+            ));
+        }
+        let (modulus_size, iv_size, iv) = if symmetric {
+            (0, 0, Vec::new())
+        } else {
+            (
+                number(fields[2].0, fields[2].1, "modulus size")?,
+                u8::try_from(number(fields[8].0, fields[8].1, "iv size")?).map_err(|_| {
+                    parse::error(
+                        ParseErrorKind::InvalidCharacter,
+                        fields[8].1,
+                        "invalid iv size",
+                    )
+                })?,
+                parse::decode_hex(fields[9].0, fields[9].1)?,
+            )
+        };
+        let s2k = if symmetric { 3 } else { 4 };
+        let cipher = s2k + 3;
+        let tail = if symmetric { s2k + 4 } else { s2k + 6 };
+
         Ok(Self {
-            algorithm: u8::try_from(number(fields[0].0, fields[0].1, "algorithm")?).map_err(
-                |_| parse::error(ParseErrorKind::InvalidCharacter, 6, "invalid GPG algorithm"),
-            )?,
+            algorithm,
             encrypted_size: number(fields[1].0, fields[1].1, "encrypted size")?,
-            modulus_size: number(fields[2].0, fields[2].1, "modulus size")?,
+            modulus_size,
             encrypted_data,
-            s2k_type: u8::try_from(number(fields[4].0, fields[4].1, "s2k type")?).map_err(
+            s2k_type: u8::try_from(number(fields[s2k].0, fields[s2k].1, "s2k type")?).map_err(
                 |_| {
                     parse::error(
                         ParseErrorKind::InvalidCharacter,
-                        fields[4].1,
+                        fields[s2k].1,
                         "invalid s2k type",
                     )
                 },
             )?,
-            s2k_mode: u8::try_from(number(fields[5].0, fields[5].1, "s2k mode")?).map_err(
+            s2k_mode: u8::try_from(number(fields[s2k + 1].0, fields[s2k + 1].1, "s2k mode")?)
+                .map_err(|_| {
+                    parse::error(
+                        ParseErrorKind::InvalidCharacter,
+                        fields[s2k + 1].1,
+                        "invalid s2k mode",
+                    )
+                })?,
+            s2k_hash: number(fields[s2k + 2].0, fields[s2k + 2].1, "s2k hash")?,
+            cipher: u8::try_from(number(fields[cipher].0, fields[cipher].1, "cipher")?).map_err(
                 |_| {
                     parse::error(
                         ParseErrorKind::InvalidCharacter,
-                        fields[5].1,
-                        "invalid s2k mode",
+                        fields[cipher].1,
+                        "invalid cipher",
                     )
                 },
             )?,
-            s2k_hash: number(fields[6].0, fields[6].1, "s2k hash")?,
-            cipher: u8::try_from(number(fields[7].0, fields[7].1, "cipher")?).map_err(|_| {
-                parse::error(
-                    ParseErrorKind::InvalidCharacter,
-                    fields[7].1,
-                    "invalid cipher",
-                )
-            })?,
-            iv_size: u8::try_from(number(fields[8].0, fields[8].1, "iv size")?).map_err(|_| {
-                parse::error(
-                    ParseErrorKind::InvalidCharacter,
-                    fields[8].1,
-                    "invalid iv size",
-                )
-            })?,
-            iv: parse::decode_hex(fields[9].0, fields[9].1)?,
-            iterations: number(fields[10].0, fields[10].1, "iterations")?,
-            salt: parse::decode_hex(fields[11].0, fields[11].1)?,
+            iv_size,
+            iv,
+            iterations: number(fields[tail].0, fields[tail].1, "iterations")?,
+            salt: parse::decode_hex(fields[tail + 1].0, fields[tail + 1].1)?,
         })
     }
 }
 
-impl Render for Gpg {
+impl Render for Pgp {
     fn render_value(&self, _opts: &RenderOptions) -> String {
+        if self.algorithm == 0 {
+            return format!(
+                "$gpg$*0*{}*{}*{}*{}*{}*{}*{}*{}",
+                self.encrypted_size,
+                crate::format::hex(&self.encrypted_data),
+                self.s2k_type,
+                self.s2k_mode,
+                self.s2k_hash,
+                self.cipher,
+                self.iterations,
+                crate::format::hex(&self.salt)
+            );
+        }
         format!(
             "$gpg$*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}*{}",
             self.algorithm,

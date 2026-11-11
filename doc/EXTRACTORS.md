@@ -6,7 +6,7 @@ This file documents the extractors currently registered in
 `Probe::Yes` for at least one valid artifact; extractors that are always
 `Probe::Maybe` override `Extractor::exact()` to return `false`.
 
-- `gpg` - OpenPGP secret keys, including armored and binary keys, subkeys, and
+- `pgp` - OpenPGP secret keys, including armored and binary keys, subkeys, and
   ECC. The extractor scans the whole keyring, so secret keys are found even
   when public-key packets come first. RSA keys render to the matching hashcat
   mode among `17010`, `17020`, `17030`, `17040`, and `17050`; ECC keys render
