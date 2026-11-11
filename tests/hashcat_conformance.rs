@@ -185,17 +185,15 @@ fn run_parallel(hashcat: &Path, potfile: &Path, items: &[WorkItem], workers: usi
 fn check_item(hashcat: &Path, potfile: &Path, item: &WorkItem) -> Result<(), String> {
     if item.identify {
         let args = ["--session", &item.session, "--identify"];
-        let identify = Command::new(hashcat)
-            .args(args)
-            .arg(&item.path)
-            .output()
-            .map_err(|error| {
-                format!(
-                    "run hashcat --identify failed to start\ncommand: {}\ninput: {}\nerror: {error}",
-                    command_line(hashcat, &args, &[&item.path]),
-                    describe_input(&item.path),
-                )
-            })?;
+        let mut command = Command::new(hashcat);
+        command.args(args).arg(&item.path);
+        let identify = common::timed_output(&mut command).map_err(|error| {
+            format!(
+                "run hashcat --identify failed to start\ncommand: {}\ninput: {}\nerror: {error}",
+                command_line(hashcat, &args, &[&item.path]),
+                describe_input(&item.path),
+            )
+        })?;
         if !identify.status.success() {
             return Err(format!(
                 "hashcat --identify failed for `{}` mode {}\ncommand: {}\ninput: {}\n{}",
@@ -230,18 +228,15 @@ fn check_item(hashcat: &Path, potfile: &Path, item: &WorkItem) -> Result<(), Str
         &mode,
         "--potfile-path",
     ];
-    let show = Command::new(hashcat)
-        .args(args)
-        .arg(potfile)
-        .arg(&item.path)
-        .output()
-        .map_err(|error| {
-            format!(
-                "run hashcat --show failed to start\ncommand: {}\ninput: {}\nerror: {error}",
-                command_line(hashcat, &args, &[potfile, &item.path]),
-                describe_input(&item.path),
-            )
-        })?;
+    let mut command = Command::new(hashcat);
+    command.args(args).arg(potfile).arg(&item.path);
+    let show = common::timed_output(&mut command).map_err(|error| {
+        format!(
+            "run hashcat --show failed to start\ncommand: {}\ninput: {}\nerror: {error}",
+            command_line(hashcat, &args, &[potfile, &item.path]),
+            describe_input(&item.path),
+        )
+    })?;
     if !show.status.success() {
         return Err(format!(
             "hashcat --show -m {} failed for `{}`\ncommand: {}\ninput: {}\n{}",
@@ -325,7 +320,9 @@ fn report_environment(hashcat: &Path, items: usize, workers: usize) {
         }
     }
 
-    match Command::new(hashcat).arg("--version").output() {
+    let mut version = Command::new(hashcat);
+    version.arg("--version");
+    match common::timed_output(&mut version) {
         Ok(output) => {
             eprintln!("hashcat --version: {}", output.status);
             for line in String::from_utf8_lossy(&output.stdout).lines() {

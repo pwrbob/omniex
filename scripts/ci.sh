@@ -5,27 +5,30 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
+TIMEFORMAT='  [time] %3R s'
+started=$SECONDS
+
 echo "==> cargo fmt --all --check"
-cargo fmt --all --check
+time cargo fmt --all --check
 
 echo "==> cargo clippy"
-cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+time cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 
 echo "==> cargo +1.85.0 check"
 if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.85\.0'; then
-    cargo +1.85.0 check --workspace --all-targets --locked
+    time cargo +1.85.0 check --workspace --all-targets --locked
 else
     echo "warning: Rust 1.85.0 toolchain not installed; MSRV check skipped" >&2
 fi
 
 echo "==> cargo doc"
-RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
+time RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 
 echo "==> cargo test"
-cargo test --workspace --all-targets --locked
+time cargo test --workspace --all-targets --locked
 
 echo "==> cargo test --doc"
-cargo test --workspace --doc --locked
+time cargo test --workspace --doc --locked
 
 missing=()
 
@@ -35,10 +38,10 @@ fi
 
 if [[ -n "${OMNIEX_HASHCAT:-}" ]]; then
     echo "==> hashcat conformance"
-    cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
+    time cargo test -p omniex --test hashcat_conformance --locked -- --ignored --nocapture
 
     echo "==> hashcat extract-to-cracker"
-    cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
+    time cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
         hashcat_loads_extracted_artifacts
 else
     missing+=("hashcat")
@@ -51,17 +54,17 @@ fi
 
 if [[ -n "${OMNIEX_JOHN:-}" ]]; then
     echo "==> John conformance"
-    cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
+    time cargo test -p omniex --test john_conformance --locked -- --ignored --nocapture
 
     echo "==> John extract-to-cracker"
-    cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
+    time cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
         john_loads_extracted_artifacts
 
     export OMNIEX_JOHN_RUN="$(dirname "$OMNIEX_JOHN")"
     echo "==> external sample extraction"
-    python3 scripts/external-samples/run.py run \
+    time python3 scripts/external-samples/run.py run \
         --repo omniex-fixtures --source "omniex-fixtures=$root"
-    python3 scripts/external-samples/run.py run \
+    time python3 scripts/external-samples/run.py run \
         --repo hashcat-2hashcat --repo john-samples --repo unarcrypto --repo msoffcrypto \
         --repo oletools --repo keepassxc --repo geth --repo aircrack-ng \
         --repo cryptography-vectors --repo openssl-tests --repo forensics-samples \
@@ -71,13 +74,14 @@ if [[ -n "${OMNIEX_JOHN:-}" ]]; then
 
     if command -v 7z >/dev/null 2>&1; then
         echo "==> real-file extractor tests"
-        cargo test -p omniex --test extract_real_files --locked -- --ignored --nocapture
+        time cargo test -p omniex --test extract_real_files --locked -- --ignored --nocapture
     fi
 else
     missing+=("John")
     echo "warning: pinned John jumbo build not found; John conformance skipped" >&2
 fi
 
+echo "==> total $((SECONDS - started)) s"
 if [[ ${#missing[@]} -eq 0 ]]; then
     echo "==> all checks passed, including conformance"
 else

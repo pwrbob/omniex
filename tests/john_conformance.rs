@@ -89,10 +89,11 @@ fn run_parallel(john: &Path, items: &[WorkItem], workers: usize) {
 }
 
 fn check_item(john: &Path, item: &WorkItem) -> Result<(), String> {
-    let show = Command::new(john)
+    let mut command = Command::new(john);
+    command
         .args(["--show=formats", &format!("--format={}", item.format)])
-        .arg(&item.path)
-        .output()
+        .arg(&item.path);
+    let show = common::timed_output(&mut command)
         .map_err(|error| format!("run john --show=formats: {error}"))?;
     let stdout = String::from_utf8_lossy(&show.stdout);
     let stderr = String::from_utf8_lossy(&show.stderr);

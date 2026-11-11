@@ -292,8 +292,8 @@ fn dedup(hashes: impl IntoIterator<Item = String>) -> Vec<String> {
 }
 
 fn cli_extract(case: &Case, tool: Tool) -> Result<Vec<String>, String> {
-    let output = assert_cmd::Command::cargo_bin("omniex")
-        .expect("binary is built")
+    let mut command = assert_cmd::Command::cargo_bin("omniex").expect("binary is built");
+    command
         .args([
             "extract",
             "--type",
@@ -302,8 +302,8 @@ fn cli_extract(case: &Case, tool: Tool) -> Result<Vec<String>, String> {
             tool_name(tool),
             "--json",
         ])
-        .arg(&case.artifact)
-        .output()
+        .arg(&case.artifact);
+    let output = common::timed_assert_output(&mut command)
         .map_err(|error| format!("run omniex extract --json: {error}"))?;
     if !output.status.success() {
         return Err(format!(
@@ -509,10 +509,11 @@ fn check_hashcat(
             write_hashcat_input(&path, hash, binary)?;
             let session = format!("omniex-e2e-{}-{index}-{line}", std::process::id());
 
-            let identify = Command::new(hashcat)
+            let mut command = Command::new(hashcat);
+            command
                 .args(["--session", &session, "--identify"])
-                .arg(&path)
-                .output()
+                .arg(&path);
+            let identify = common::timed_output(&mut command)
                 .map_err(|error| format!("run hashcat --identify: {error}"))?;
             if !identify.status.success() {
                 last_output = Some(identify);
@@ -543,7 +544,8 @@ fn check_hashcat(
         };
 
         for mode in modes {
-            let show = Command::new(hashcat)
+            let mut command = Command::new(hashcat);
+            command
                 .args([
                     "--session",
                     &session,
@@ -553,8 +555,8 @@ fn check_hashcat(
                     "--potfile-path",
                 ])
                 .arg(potfile)
-                .arg(&path)
-                .output()
+                .arg(&path);
+            let show = common::timed_output(&mut command)
                 .map_err(|error| format!("run hashcat --show: {error}"))?;
             let combined = format!(
                 "{}{}",
@@ -582,10 +584,9 @@ fn check_john(john: &Path, work: &Path, case: &Case, index: usize) -> Result<(),
     fs::write(&path, format!("{}\n", hashes.join("\n")))
         .map_err(|error| format!("write {}: {error}", path.display()))?;
 
-    let show = Command::new(john)
-        .args(["--show=formats"])
-        .arg(&path)
-        .output()
+    let mut command = Command::new(john);
+    command.args(["--show=formats"]).arg(&path);
+    let show = common::timed_output(&mut command)
         .map_err(|error| format!("run john --show=formats: {error}"))?;
     if !show.status.success() {
         return Err(format!(

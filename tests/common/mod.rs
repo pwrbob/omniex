@@ -5680,3 +5680,31 @@ fn find_on_path(name: &str) -> Option<PathBuf> {
 fn is_executable(path: &Path) -> bool {
     std::fs::metadata(path).is_ok_and(|metadata| metadata.is_file())
 }
+
+pub fn timed_output(command: &mut std::process::Command) -> std::io::Result<std::process::Output> {
+    let label = format!("{command:?}");
+    let start = std::time::Instant::now();
+    let result = command.output();
+    eprintln!("[time] {:8.3}s {label}", start.elapsed().as_secs_f64());
+    result
+}
+
+pub fn timed_status(
+    command: &mut std::process::Command,
+) -> std::io::Result<std::process::ExitStatus> {
+    let label = format!("{command:?}");
+    let start = std::time::Instant::now();
+    let result = command.status();
+    eprintln!("[time] {:8.3}s {label}", start.elapsed().as_secs_f64());
+    result
+}
+
+pub fn timed_assert_output(
+    command: &mut assert_cmd::Command,
+) -> std::io::Result<std::process::Output> {
+    let label = format!("{command:?}");
+    let start = std::time::Instant::now();
+    let result = command.output();
+    eprintln!("[time] {:8.3}s {label}", start.elapsed().as_secs_f64());
+    result
+}

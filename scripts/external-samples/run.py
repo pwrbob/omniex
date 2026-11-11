@@ -21,6 +21,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 import tempfile
 import tomllib
 import urllib.error
@@ -174,7 +175,7 @@ def parse_sources(values: list[str]) -> dict[str, Path]:
 
 
 def git_output(checkout: Path, *args: str) -> str:
-    result = subprocess.run(
+    result = timed_run(
         ["git", "-C", str(checkout), *args],
         text=True,
         capture_output=True,
@@ -200,7 +201,7 @@ def checkout_for(manifest: Manifest, paths: list[str]) -> Path:
         if head == manifest.commit:
             sparse = sorted({path.strip("/") for path in paths if path.strip("/")})
             if sparse:
-                subprocess.run(
+                timed_run(
                     ["git", "-C", str(dest), "sparse-checkout", "add", *sparse],
                     check=True,
                     capture_output=True,
@@ -211,12 +212,12 @@ def checkout_for(manifest: Manifest, paths: list[str]) -> Path:
 
     if not dest.parent.is_dir():
         dest.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(["git", "init", "-q", str(dest)], check=True)
-    subprocess.run(
+    timed_run(["git", "init", "-q", str(dest)], check=True)
+    timed_run(
         ["git", "-C", str(dest), "remote", "add", "origin", manifest.repo],
         check=True,
     )
-    fetch = subprocess.run(
+    fetch = timed_run(
         ["git", "-C", str(dest), "fetch", "--depth", "1", "origin", manifest.commit],
         text=True,
         capture_output=True,
@@ -226,19 +227,19 @@ def checkout_for(manifest: Manifest, paths: list[str]) -> Path:
             f"cannot fetch {manifest.repo} at {manifest.commit}: "
             f"{fetch.stderr.strip()}"
         )
-    subprocess.run(
+    timed_run(
         ["git", "-C", str(dest), "sparse-checkout", "init", "--cone"],
         check=True,
         capture_output=True,
     )
     sparse = sorted({path.strip("/") for path in paths if path.strip("/")})
     if sparse:
-        subprocess.run(
+        timed_run(
             ["git", "-C", str(dest), "sparse-checkout", "set", *sparse],
             check=True,
             capture_output=True,
         )
-    subprocess.run(
+    timed_run(
         ["git", "-C", str(dest), "checkout", "-q", "--detach", "FETCH_HEAD"],
         check=True,
         capture_output=True,
@@ -247,7 +248,7 @@ def checkout_for(manifest: Manifest, paths: list[str]) -> Path:
 
 
 def git_subprocess(checkout: Path, args: list[str]) -> str | None:
-    result = subprocess.run(
+    result = timed_run(
         ["git", "-C", str(checkout), *args],
         text=True,
         capture_output=True,
@@ -281,11 +282,32 @@ def commit_path(manifest: Manifest, path: str) -> str:
     return f"{manifest.commit}/{urllib.parse.quote(path)}"
 
 
+def timed_run(command: list[str], **kwargs):
+    start = time.monotonic()
+    result = subprocess.run(command, **kwargs)
+    elapsed = time.monotonic() - start
+    print(f"[time] {elapsed:8.3f}s {' '.join(str(part) for part in command)}", file=sys.stderr, flush=True)
+    return result
+
+
+def timed_fetch(label: str, fetch):
+    start = time.monotonic()
+    try:
+        return fetch()
+    finally:
+        elapsed = time.monotonic() - start
+        print(f"[time] {elapsed:8.3f}s {label}", file=sys.stderr, flush=True)
+
+
 def download(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": "omniex-samples"})
-    try:
+
+    def fetch() -> bytes:
         with urllib.request.urlopen(request, timeout=60) as response:
             return request_read(response)
+
+    try:
+        return timed_fetch(f"download {url}", fetch)
     except urllib.error.HTTPError as error:
         fail(f"download failed ({url}): HTTP {error.code}")
     except urllib.error.URLError as error:
@@ -606,7 +628,7 @@ def omniex_binary() -> Path:
 
 
 def run_command(command: list[str], cwd: Path | None = None) -> str:
-    result = subprocess.run(command, cwd=cwd, text=True, capture_output=True)
+    result = timed_run(command, cwd=cwd, text=True, capture_output=True)
     if result.returncode != 0:
         fail(
             f"command failed ({' '.join(command)}): "
@@ -740,7 +762,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
     for requirement in case.requires:
         kind, _, name = requirement.partition(":")
         if kind == "perl":
-            result = subprocess.run(
+            result = timed_run(
                 ["perl", f"-M{name}", "-e", "1"],
                 capture_output=True,
             )
@@ -748,7 +770,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
                 print(f"skip {manifest.ident}/{case.name}: Perl module `{name}` is missing")
                 return
         elif kind == "python":
-            result = subprocess.run(
+            result = timed_run(
                 [sys.executable, "-c", f"import {name}"],
                 capture_output=True,
             )
