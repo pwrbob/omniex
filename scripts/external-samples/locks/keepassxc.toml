@@ -47,3 +47,31 @@ sha256 = "e8a69ba7e0cbd86a98b9a9d8fb6df8deecb052a4a3da842b200776434cb760e4"
 [[file]]
 path = "tests/data/keepassxc.opvault/default/profile.js"
 sha256 = "7f286d7cb82850d9124b5b0c04f66823d8ec461968e43ffbe7e03f6e430a109a"
+
+[[file]]
+path = "tests/data/basic.kdb"
+sha256 = "b406807c0b2f6de59dbc89b70e93d40a383d3de5764cc0af7452f96756ef6930"
+
+[[file]]
+path = "tests/data/Twofish.kdb"
+sha256 = "fe9dc088eb25865df6979c993a2c198ebc4cedaa493c2afb446622d2e0cbcdea"
+
+[[file]]
+path = "tests/data/CP-1252.kdb"
+sha256 = "7f3ec742ce4dd0fcf1e022dfc0012e7cc58ec6f184df6359f41d66cb1dbeb581"
+
+[[file]]
+path = "tests/data/CompositeKey.kdb"
+sha256 = "182c181562386bf965bfd1fc94826ddd43e7407db34a1216f5cb2113055b591d"
+
+[[file]]
+path = "tests/data/FileKeyBinary.kdb"
+sha256 = "266fc26f9689fa641bb5948e642469a5edf23412f997ac15d77fb917b2b2206c"
+
+[[file]]
+path = "tests/data/FileKeyHashed.kdb"
+sha256 = "8459042bbc6da2eb6265ba5fa552bfa46892a710bc401306840272e5e8536117"
+
+[[file]]
+path = "tests/data/FileKeyHex.kdb"
+sha256 = "905f8894e1f59a5f0937f60b6a64ccf195f0b8ef6a92fdb9de844a86a81fb65a"

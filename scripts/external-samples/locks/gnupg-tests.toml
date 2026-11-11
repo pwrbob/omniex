@@ -7,3 +7,35 @@ sha256 = "0108a826e35f006d83547e8ee1fcaf38eaf37a6d3018d0c129899e1e240e1925"
 [[file]]
 path = "tests/openpgp/samplemsgs/enc-sym-cfb-2.asc"
 sha256 = "a2146b80b044ca153be797d10deaffe32171cc7b5c84ac4ddded052c678880c9"
+
+[[file]]
+path = "tests/cms/samplekeys/credential_private_encrypted_3DES.p12"
+sha256 = "cadeb12d7f00d5e00137391caa13495df04eb7641e96c6c2ed0c5be165e60ed7"
+
+[[file]]
+path = "tests/cms/samplekeys/credential_private_encrypted_AES256.p12"
+sha256 = "5f8714f22aac6bd66e9df61623553319ee8a950e5e87f441909b891e184df494"
+
+[[file]]
+path = "tests/cms/samplekeys/cryptlib-key.p12"
+sha256 = "c5cf910a6226ca9705651d8750167e292aa82fbc97a555541b90913df6c07a7b"
+
+[[file]]
+path = "tests/cms/samplekeys/nistp256-openssl-self-signed.p12"
+sha256 = "8f7803bfbcc44c4c4be9963362a58fd7be66e51a67970bcb8c1e519a1d74c671"
+
+[[file]]
+path = "tests/cms/samplekeys/opensc-test.p12"
+sha256 = "4bccf323125ee6f3b451c73333b7e0e81af8d80d10e075ceb1043f6cb9d9edee"
+
+[[file]]
+path = "tests/cms/samplekeys/ov-user.p12"
+sha256 = "8da98621adb3476ac54eac15ea2ec02d2c736befa2f8898ae1257a6ae1558cec"
+
+[[file]]
+path = "tests/cms/samplekeys/t5793-openssl.pfx"
+sha256 = "f49cdd89538c6dc55a0d4681e1d9ebeb429013f43572776ed93fea667aab73a1"
+
+[[file]]
+path = "tests/cms/samplekeys/t5793-test.pfx"
+sha256 = "2017248dc9d025687795a3209f359414fe7443347855a4036b35228e385dfa81"

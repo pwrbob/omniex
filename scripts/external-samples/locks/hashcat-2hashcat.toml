@@ -71,3 +71,11 @@ sha256 = "63ee9f30daaf1dc011517cb5a48497c315dd38adca084cc92a5e512abb39b275"
 [[file]]
 path = "tools/2hashcat_tests/gpg-ocb-aes/private-keys-v1.d/EB7E1C806F35E683BD6CAD16E312ADC8C010BE37.key"
 sha256 = "e96f9cacc02a49298a3586595d87d471dfae436d54a1b48e38660bf6dcaa70c9"
+
+[[file]]
+path = "tools/2hashcat_tests/metamask/metamask2hashcat.android.json"
+sha256 = "01ace7b8eb410c2ed3fa47bc88dac3fc5dae5ef5bd640df599621ee04796e9a1"
+
+[[file]]
+path = "tools/2hashcat_tests/metamask/metamask2hashcat.ios.json"
+sha256 = "4ba1be41fba9126c7ddd0b01da4c37ba19a200dca7a2e7946c1440ea9d57b543"

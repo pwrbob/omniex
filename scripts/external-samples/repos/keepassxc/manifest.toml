@@ -89,3 +89,52 @@ slug = "cloudkeychain"
 reference = "john:1password2john.py"
 reference_path = "tests/data/keepassxc.opvault/"
 format = "john"
+
+[[case]]
+name = "kdb-basic"
+path = "tests/data/basic.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "kdb-twofish"
+path = "tests/data/Twofish.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "kdb-cp1252"
+path = "tests/data/CP-1252.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "kdb-composite-key"
+path = "tests/data/CompositeKey.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "kdb-filekey-binary"
+path = "tests/data/FileKeyBinary.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "kdb-filekey-hashed"
+path = "tests/data/FileKeyHashed.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "kdb-filekey-hex"
+path = "tests/data/FileKeyHex.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"

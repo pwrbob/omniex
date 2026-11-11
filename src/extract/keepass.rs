@@ -85,6 +85,49 @@ fn required(field: Option<Vec<u8>>, name: &str) -> Result<Vec<u8>, ExtractError>
     field.ok_or_else(|| ExtractError::Invalid(format!("missing KeePass {name}")))
 }
 
+fn parse_kdb(cursor: &mut Cursor<'_>) -> Result<Keepass, ExtractError> {
+    let flags = cursor.u32()?;
+    let version = cursor.u32()?;
+    if version & 0xffff_0000 != 0x0003_0000 {
+        return Err(ExtractError::Unsupported(
+            "unsupported KeePass 1.x version".to_owned(),
+        ));
+    }
+    let seed = cursor.bytes(16)?;
+    let iv = cursor.bytes(16)?;
+    let _groups = cursor.u32()?;
+    let _entries = cursor.u32()?;
+    let contents = cursor.bytes(32)?;
+    let transform_seed = cursor.bytes(32)?;
+    let rounds = u64::from(cursor.u32()?);
+    let algorithm = if flags & 2 != 0 {
+        0
+    } else if flags & 8 != 0 {
+        1
+    } else {
+        return Err(ExtractError::Unsupported(
+            "unsupported KeePass 1.x cipher".to_owned(),
+        ));
+    };
+    let remaining = usize::try_from(cursor.remaining())
+        .map_err(|_| ExtractError::Invalid("KeePass 1.x database is too large".to_owned()))?;
+    let data = cursor.bytes(remaining)?;
+    Ok(Keepass {
+        version: 1,
+        rounds,
+        algorithm,
+        seed: crate::format::hex(&seed),
+        transform_seed: crate::format::hex(&transform_seed),
+        iv: crate::format::hex(&iv),
+        details: format!(
+            "{}*1*{}*{}",
+            crate::format::hex(&contents),
+            data.len(),
+            crate::format::hex(&data)
+        ),
+    })
+}
+
 fn parse(artifact: &Artifact) -> Result<Keepass, ExtractError> {
     let mut cursor = Cursor::new(artifact.primary());
     if cursor.remaining() < 12 {
@@ -99,7 +142,7 @@ fn parse(artifact: &Artifact) -> Result<Keepass, ExtractError> {
     }
     let signature = cursor.u32()?;
     if signature == SIGNATURE_LEGACY {
-        return Err(ExtractError::Unsupported("KeePass 1.x database".to_owned()));
+        return parse_kdb(&mut cursor);
     }
     if signature != SIGNATURE_SECONDARY && signature != SIGNATURE_SECONDARY_PRE {
         return Err(ExtractError::Unsupported(
@@ -203,7 +246,9 @@ impl Extractor for KeepassExtractor {
         let secondary =
             u32::from_le_bytes([signature[4], signature[5], signature[6], signature[7]]);
         if primary != SIGNATURE_PRIMARY
-            || (secondary != SIGNATURE_SECONDARY && secondary != SIGNATURE_SECONDARY_PRE)
+            || (secondary != SIGNATURE_SECONDARY
+                && secondary != SIGNATURE_SECONDARY_PRE
+                && secondary != SIGNATURE_LEGACY)
         {
             return Probe::No;
         }

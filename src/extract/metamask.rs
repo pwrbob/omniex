@@ -11,13 +11,40 @@ use crate::{HashType, HashValue};
 pub struct MetamaskExtractor;
 pub struct MetamaskMobileExtractor;
 
+fn parse_object(value: Value) -> Option<Value> {
+    match value {
+        Value::String(text) if text.trim_start().starts_with('{') => {
+            serde_json::from_str(text.trim()).ok()
+        }
+        other => Some(other),
+    }
+}
+
+fn find_vault(value: &Value) -> Option<Value> {
+    match value {
+        Value::Object(map) => {
+            if let Some(vault) = map.get("vault") {
+                return parse_object(vault.clone());
+            }
+            map.values().find_map(find_vault)
+        }
+        Value::Array(items) => items.iter().find_map(find_vault),
+        Value::String(text) if text.trim_start().starts_with('{') => {
+            serde_json::from_str::<Value>(text.trim())
+                .ok()
+                .and_then(|nested| find_vault(&nested))
+        }
+        _ => None,
+    }
+}
+
 fn document(artifact: &Artifact) -> Result<Value, ExtractError> {
     let data = artifact.primary().read_all().map_err(|error| {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
     })?;
     let document: Value = serde_json::from_slice(&data)
         .map_err(|error| ExtractError::Invalid(format!("invalid MetaMask JSON: {error}")))?;
-    Ok(document.get("vault").cloned().unwrap_or(document))
+    Ok(find_vault(&document).unwrap_or(document))
 }
 
 fn base64(value: &Value, field: &str) -> Result<Vec<u8>, ExtractError> {
@@ -40,10 +67,11 @@ fn iterations(document: &Value, default: u32) -> Result<u32, ExtractError> {
 }
 
 fn mobile_vault(document: &Value) -> bool {
-    document
-        .get("lib")
-        .and_then(|lib| lib.get("original"))
-        .is_some()
+    match document.get("lib") {
+        Some(Value::String(value)) => value == "original",
+        Some(Value::Object(lib)) => lib.contains_key("original"),
+        _ => false,
+    }
 }
 
 fn parse_desktop(artifact: &Artifact) -> Result<Metamask, ExtractError> {

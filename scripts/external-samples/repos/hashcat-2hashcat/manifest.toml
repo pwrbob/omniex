@@ -27,3 +27,19 @@ glob = "tools/2hashcat_tests/gpg-ocb-aes/private-keys-v1.d/*.key"
 slug = "pgp"
 reference = "paired:{path}.hash"
 format = "hashcat"
+
+[[case]]
+name = "metamask-mobile-android"
+path = "tools/2hashcat_tests/metamask/metamask2hashcat.android.json"
+slug = "metamask-mobile"
+reference = "hashcat:metamask2hashcat.py"
+args = ["--vault"]
+format = "hashcat"
+
+[[case]]
+name = "metamask-mobile-ios"
+path = "tools/2hashcat_tests/metamask/metamask2hashcat.ios.json"
+slug = "metamask-mobile"
+reference = "hashcat:metamask2hashcat.py"
+args = ["--vault"]
+format = "hashcat"

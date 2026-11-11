@@ -91,35 +91,8 @@ fn parse_integer(value: &[u8]) -> Result<u64, ExtractError> {
     Ok(result)
 }
 
-fn parse(artifact: &Artifact) -> Result<Sappse, ExtractError> {
-    let data = artifact.primary().read_all().map_err(|error| {
-        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
-    })?;
-    let mut root = Der::new(&data);
-    let root = expect_tag(&mut root, TAG_SEQUENCE, "file")?;
-    let mut file = Der::new(root);
-
-    let version = parse_integer(expect_tag(&mut file, TAG_INTEGER, "version")?)?;
-    let (content_tag, content) = file.value()?;
-    if content_tag == TAG_ENCRYPTED_CONTENT_V4 {
-        return Err(ExtractError::Unsupported(
-            "SAP PSE v4 encryption is not supported".to_owned(),
-        ));
-    }
-    if content_tag != TAG_ENCRYPTED_CONTENT_V2 {
-        return Err(ExtractError::Unsupported(format!(
-            "SAP PSE content tag 0x{content_tag:02x} is not an encrypted v2 container"
-        )));
-    }
-    if version != 2 {
-        return Err(ExtractError::Unsupported(format!(
-            "unsupported SAP PSE version {version}"
-        )));
-    }
-
-    let mut encrypted = Der::new(content);
-    let encrypted_pin = expect_tag(&mut encrypted, TAG_OCTET_STRING, "encrypted PIN")?;
-    let algorithm = expect_tag(&mut encrypted, TAG_SEQUENCE, "algorithm identifier")?;
+fn parse_algorithm(encrypted: &mut Der<'_>) -> Result<(Vec<u8>, u64), ExtractError> {
+    let algorithm = expect_tag(encrypted, TAG_SEQUENCE, "algorithm identifier")?;
     let mut algorithm = Der::new(algorithm);
     let oid = expect_tag(&mut algorithm, TAG_OID, "algorithm OID")?;
     if oid != PBE_SHA1_3DES_OID {
@@ -131,8 +104,51 @@ fn parse(artifact: &Artifact) -> Result<Sappse, ExtractError> {
     let mut parameters = Der::new(parameters);
     let salt = expect_tag(&mut parameters, TAG_OCTET_STRING, "salt")?;
     let iterations = parse_integer(expect_tag(&mut parameters, TAG_INTEGER, "iteration count")?)?;
+    Ok((salt.to_vec(), iterations))
+}
 
-    let _ciphertext = expect_tag(&mut encrypted, TAG_OCTET_STRING, "ciphertext")?;
+fn parse(artifact: &Artifact) -> Result<Sappse, ExtractError> {
+    let data = artifact.primary().read_all().map_err(|error| {
+        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
+    })?;
+    let mut root = Der::new(&data);
+    let root = expect_tag(&mut root, TAG_SEQUENCE, "file")?;
+    let mut file = Der::new(root);
+
+    let version = parse_integer(expect_tag(&mut file, TAG_INTEGER, "version")?)?;
+    let (content_tag, content) = file.value()?;
+    let mut encrypted = Der::new(content);
+    let encrypted_pin = match content_tag {
+        TAG_ENCRYPTED_CONTENT_V2 => {
+            if version != 2 {
+                return Err(ExtractError::Unsupported(format!(
+                    "unsupported SAP PSE version {version}"
+                )));
+            }
+            let pin = expect_tag(&mut encrypted, TAG_OCTET_STRING, "encrypted PIN")?;
+            let (salt, iterations) = parse_algorithm(&mut encrypted)?;
+            let _ciphertext = expect_tag(&mut encrypted, TAG_OCTET_STRING, "ciphertext")?;
+            (pin, salt, iterations)
+        }
+        TAG_ENCRYPTED_CONTENT_V4 => {
+            if version != 4 {
+                return Err(ExtractError::Unsupported(format!(
+                    "unsupported SAP PSE version {version}"
+                )));
+            }
+            let _flag = expect_tag(&mut encrypted, TAG_INTEGER, "v4 flag")?;
+            let (salt, iterations) = parse_algorithm(&mut encrypted)?;
+            let _ciphertext = expect_tag(&mut encrypted, TAG_OCTET_STRING, "ciphertext")?;
+            let pin = expect_tag(&mut encrypted, TAG_OCTET_STRING, "encrypted PIN")?;
+            (pin, salt, iterations)
+        }
+        other => {
+            return Err(ExtractError::Unsupported(format!(
+                "SAP PSE content tag 0x{other:02x} is not an encrypted container"
+            )));
+        }
+    };
+    let (encrypted_pin, salt, iterations) = encrypted_pin;
 
     if encrypted_pin.len() > 128 {
         return Err(ExtractError::Unsupported(

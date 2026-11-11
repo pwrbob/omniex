@@ -623,7 +623,12 @@ def normalize_reference(text: str, mode: str) -> list[str]:
                 if last >= 0 and ":" in value[last + 1 :]:
                     value = value[: last + 1 + value[last + 1 :].find(":")]
             if mode == "bks":
-                value = value.replace("b'", "").replace("'", "")
+                value = "$".join(
+                    field[2:-1]
+                    if field.startswith("b'") and field.endswith("'")
+                    else field
+                    for field in value.split("$")
+                )
             normalized.append(value)
         return normalized
     return lines

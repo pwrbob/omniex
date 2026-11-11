@@ -13,3 +13,11 @@ slug = "sappse"
 reference = "john:pse2john.py"
 format = "john"
 requires = ["python:pysap"]
+
+[[case]]
+name = "pse-v4-pbe1-3des"
+path = "tests/data/pse_v4_lps_off_pbes1_3des_sha1.pse"
+slug = "sappse"
+reference = "john:pse2john.py"
+format = "john"
+requires = ["python:pysap"]
