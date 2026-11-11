@@ -360,9 +360,18 @@ def verify_lock(manifest: Manifest, path: str, artifact: Path) -> None:
         )
 
 
+def make_readable(path: Path) -> None:
+    path.chmod(0o644)
+    for directory in path.parents:
+        directory.chmod(0o755)
+        if directory == CACHE:
+            break
+
+
 def fetch_file(manifest: Manifest, path: str, offline: bool) -> Path:
     dest = CACHE / "files" / manifest.ident / manifest.commit / path
     if dest.is_file():
+        make_readable(dest)
         verify_lock(manifest, path, dest)
         return dest
     if offline:
@@ -374,6 +383,7 @@ def fetch_file(manifest: Manifest, path: str, offline: bool) -> Path:
     temporary = dest.with_suffix(dest.suffix + ".part")
     temporary.write_bytes(data)
     temporary.replace(dest)
+    make_readable(dest)
     verify_lock(manifest, path, dest)
     return dest
 
@@ -445,6 +455,7 @@ def decode_uu(source: Path, dest: Path) -> None:
         fail(f"{source}: missing uuencode `end` line")
 
     dest.write_bytes(output)
+    make_readable(dest)
 
 
 def glob_prefix(pattern: str) -> str:
