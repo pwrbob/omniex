@@ -4,12 +4,12 @@ use std::path::{Path, PathBuf};
 
 use assert_cmd::Command;
 use omniex::extract::{self, Artifact, Probe};
-use omniex::types::Gpg;
+use omniex::types::Pgp;
 use omniex::{Mode, Parse, ParseOptions, Render, RenderOptions, Tool};
 
 fn fixture(name: &str) -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("tests/fixtures/artifacts/gpg")
+        .join("tests/fixtures/artifacts/pgp")
         .join(name)
 }
 
@@ -56,8 +56,8 @@ fn artifact_file_source_reads_ranges_without_loading_everything() {
 }
 
 #[test]
-fn gpg_probe_separates_signatures_from_guesses() {
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+fn pgp_probe_separates_signatures_from_guesses() {
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
 
     assert!(matches!(
         extractor.probe(&artifact("testkey1.key")),
@@ -87,8 +87,8 @@ fn gpg_probe_separates_signatures_from_guesses() {
 }
 
 #[test]
-fn gpg_finds_secret_keys_after_public_packets() {
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+fn pgp_finds_secret_keys_after_public_packets() {
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
     let hashes = extractor
         .extract(&artifact("public-then-secret.pgp"))
         .expect("extract mixed keyring");
@@ -108,8 +108,8 @@ fn gpg_finds_secret_keys_after_public_packets() {
 }
 
 #[test]
-fn gpg_does_not_claim_a_public_only_keyring() {
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+fn pgp_does_not_claim_a_public_only_keyring() {
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
     assert_eq!(extractor.probe(&artifact("public-only.pgp")), Probe::No);
     assert_eq!(
         extractor.probe(&Artifact::from_bytes("public", vec![0xc6])),
@@ -118,8 +118,8 @@ fn gpg_does_not_claim_a_public_only_keyring() {
 }
 
 #[test]
-fn gpg_extracts_every_secret_key_as_the_same_instance() {
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+fn pgp_extracts_every_secret_key_as_the_same_instance() {
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
     let hashes = extractor
         .extract(&artifact("testkey1.key"))
         .expect("extract testkey1");
@@ -148,11 +148,11 @@ fn gpg_extracts_every_secret_key_as_the_same_instance() {
 }
 
 #[test]
-fn gpg_extracts_elliptic_curve_keys() {
+fn pgp_extracts_elliptic_curve_keys() {
     let output = omniex()
         .args(["extract"])
         .arg(fixture("ec_testkey1.key"))
-        .args(["--type", "gpg", "--format", "john"])
+        .args(["--type", "pgp", "--format", "john"])
         .output()
         .expect("extract runs");
     assert!(output.status.success());
@@ -162,7 +162,7 @@ fn gpg_extracts_elliptic_curve_keys() {
         expected("ec_testkey1.hash")
     );
 
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
     let hashes = extractor.extract(&artifact("ec_testkey1.key")).unwrap();
     assert!(hashes.iter().all(|value| {
         value.modes().contains(&Mode::John("gpg"))
@@ -174,7 +174,7 @@ fn gpg_extracts_elliptic_curve_keys() {
 }
 
 #[test]
-fn gpg_auto_detects_an_armored_artifact() {
+fn pgp_auto_detects_an_armored_artifact() {
     let output = omniex()
         .arg("extract")
         .arg(fixture("ec_testkey1.key"))
@@ -213,7 +213,7 @@ fn extract_all_conflicts_with_type() {
     let output = omniex()
         .arg("extract")
         .arg(fixture("testkey1.key"))
-        .args(["--all", "--type", "gpg"])
+        .args(["--all", "--type", "pgp"])
         .output()
         .unwrap();
 
@@ -234,9 +234,9 @@ fn extract_json_reports_type_and_hash() {
     let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
     let entries = value.as_array().expect("array");
     assert_eq!(entries.len(), 2);
-    assert_eq!(entries[0]["type"], "gpg");
+    assert_eq!(entries[0]["type"], "pgp");
     assert_eq!(entries[0]["hash"], expected("testkey1.hash")[0].as_str());
-    assert_eq!(entries[1]["type"], "gpg");
+    assert_eq!(entries[1]["type"], "pgp");
 }
 
 #[test]
@@ -307,14 +307,14 @@ fn explicit_type_skips_probe_selection() {
     let output = omniex()
         .arg("extract")
         .arg(&text)
-        .args(["--type", "gpg"])
+        .args(["--type", "pgp"])
         .output()
         .unwrap();
     let _ = std::fs::remove_file(text);
 
     assert_eq!(output.status.code(), Some(1));
     let stderr = String::from_utf8_lossy(&output.stderr);
-    assert!(stderr.contains("cannot extract `gpg`"), "{stderr}");
+    assert!(stderr.contains("cannot extract `pgp`"), "{stderr}");
     assert!(!stderr.contains("no extractor recognized"), "{stderr}");
 }
 
@@ -330,12 +330,12 @@ fn extract_reports_truncated_and_empty_artifacts() {
         let output = omniex()
             .args(["extract"])
             .arg(path)
-            .args(["--type", "gpg"])
+            .args(["--type", "pgp"])
             .output()
             .unwrap();
         assert_eq!(output.status.code(), Some(1), "{}", path.display());
         assert!(
-            String::from_utf8_lossy(&output.stderr).contains("cannot extract `gpg`"),
+            String::from_utf8_lossy(&output.stderr).contains("cannot extract `pgp`"),
             "{}",
             String::from_utf8_lossy(&output.stderr)
         );
@@ -347,7 +347,7 @@ fn extract_reports_truncated_and_empty_artifacts() {
 
 #[test]
 fn pgp2hc_encrypted_private_key_fields() {
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
     let hashes = extractor
         .extract(&artifact("gnupg-v1.asc"))
         .expect("extract gnupg v1 key");
@@ -356,7 +356,7 @@ fn pgp2hc_encrypted_private_key_fields() {
         .as_ref()
         .render(&RenderOptions::default())
         .expect("hashcat render");
-    let parsed = Gpg::parse(&hash, &ParseOptions::default()).expect("parse rendered hash");
+    let parsed = Pgp::parse(&hash, &ParseOptions::default()).expect("parse rendered hash");
 
     assert_eq!(parsed.algorithm, 1);
     assert_eq!(
@@ -389,7 +389,7 @@ fn pgp2hc_secret_key_hash_vectors_round_trip() {
     };
 
     for line in data.lines().filter(|line| !line.is_empty()) {
-        let parsed = Gpg::parse(line, &opts).unwrap_or_else(|error| {
+        let parsed = Pgp::parse(line, &opts).unwrap_or_else(|error| {
             panic!("failed to parse pgp2hc vector {line}: {error}");
         });
         assert_eq!(

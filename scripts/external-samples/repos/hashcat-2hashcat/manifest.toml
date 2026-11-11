@@ -24,6 +24,6 @@ format = "john"
 [[case]]
 name = "{base}-gpg"
 glob = "tools/2hashcat_tests/gpg-ocb-aes/private-keys-v1.d/*.key"
-slug = "gpg"
+slug = "pgp"
 reference = "paired:{path}.hash"
 format = "hashcat"

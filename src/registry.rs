@@ -110,7 +110,7 @@ pub static REGISTRY: &[&HashTypeDescriptor] = &[
     &OldOffice::DESCRIPTOR,
     &Office::DESCRIPTOR,
     &Pdf::DESCRIPTOR,
-    &Gpg::DESCRIPTOR,
+    &Pgp::DESCRIPTOR,
     &Dpapi::DESCRIPTOR,
     &Keepass::DESCRIPTOR,
     &Keepass4::DESCRIPTOR,

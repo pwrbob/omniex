@@ -8,7 +8,7 @@ that understands both hashcat and John the Ripper serializations.
 ![John modes](https://img.shields.io/badge/John_modes-262%2F262-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
 ![exact extractors](https://img.shields.io/badge/exact_extractors-186%2F238-8957e5)
-![external samples](https://img.shields.io/badge/external_samples-58_formats_%2F_453_cases-8957e5)
+![external samples](https://img.shields.io/badge/external_samples-58_formats_%2F_458_cases-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in
@@ -215,7 +215,7 @@ usable in a pipeline.
 `omniex extract` reads an artifact and emits one rendered hash per line:
 
 ```bash
-omniex extract secret-key.asc --type gpg
+omniex extract secret-key.asc --type pgp
 omniex extract secret-key.asc --format john
 omniex extract artifact --all
 omniex extract artifact --all --json
@@ -403,7 +403,7 @@ checked against that command in CI.
 | `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | `oldoffice` |
 | `office` | MS Office 2007/2010/2013 | 9400, 9500, 9600 | `Office` |
 | `pdf` | PDF | 10400, 10410, 10420, 10500, 10510, 10600, 10700, 25400 | `PDF` |
-| `gpg` | GPG | 17010, 17020, 17030, 17040, 17050 | `gpg` |
+| `pgp` | OpenPGP | 17010, 17020, 17030, 17040, 17050 | `gpg` |
 | `dpapi` | DPAPI masterkey | 15300, 15310, 15900, 15910 | `DPAPImk` |
 | `keepass` | KeePass (KDBX v2/v3) | 13400, 29700 | `KeePass` |
 | `keepass4` | KeePass KDBX v4 | 34300, 34301 | KeePass |

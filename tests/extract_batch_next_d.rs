@@ -132,15 +132,15 @@ fn ecryptfs_version_one_rejects_malformed_input() {
 }
 
 #[test]
-fn gpg_symmetric_probe_and_extract() {
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
+fn pgp_symmetric_probe_and_extract() {
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
     assert!(matches!(
-        extractor.probe(&artifact("gpg", "symmetric.gpg")),
+        extractor.probe(&artifact("pgp", "symmetric.gpg")),
         Probe::Yes(reason) if reason == "OpenPGP symmetrically encrypted file"
     ));
 
     let hashes = extractor
-        .extract(&artifact("gpg", "symmetric.gpg"))
+        .extract(&artifact("pgp", "symmetric.gpg"))
         .expect("extract symmetric OpenPGP");
     assert_eq!(hashes.len(), 1);
     assert_eq!(
@@ -150,15 +150,15 @@ fn gpg_symmetric_probe_and_extract() {
                 ..RenderOptions::default()
             })
             .unwrap(),
-        expected("gpg", "symmetric.hash")
+        expected("pgp", "symmetric.hash")
     );
 }
 
 #[test]
-fn gpg_symmetric_auto_detects_and_reports_json() {
+fn pgp_symmetric_auto_detects_and_reports_json() {
     let auto = omniex()
         .arg("extract")
-        .arg(fixture("gpg", "symmetric.gpg"))
+        .arg(fixture("pgp", "symmetric.gpg"))
         .args(["--format", "john"])
         .output()
         .unwrap();
@@ -167,20 +167,20 @@ fn gpg_symmetric_auto_detects_and_reports_json() {
     let json = omniex()
         .arg("extract")
         .arg("--all")
-        .arg(fixture("gpg", "symmetric.gpg"))
+        .arg(fixture("pgp", "symmetric.gpg"))
         .args(["--format", "john", "--json"])
         .output()
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "gpg");
-    assert_eq!(value[0]["hash"], expected("gpg", "symmetric.hash"));
+    assert_eq!(value[0]["type"], "pgp");
+    assert_eq!(value[0]["hash"], expected("pgp", "symmetric.hash"));
 }
 
 #[test]
-fn gpg_symmetric_rejects_truncated_and_empty_input() {
-    let extractor = extract::by_slug("gpg").expect("gpg extractor");
-    let data = std::fs::read(fixture("gpg", "symmetric.gpg")).unwrap();
+fn pgp_symmetric_rejects_truncated_and_empty_input() {
+    let extractor = extract::by_slug("pgp").expect("pgp extractor");
+    let data = std::fs::read(fixture("pgp", "symmetric.gpg")).unwrap();
     assert!(
         extractor
             .extract(&Artifact::from_bytes("truncated", data[..10].to_vec()))

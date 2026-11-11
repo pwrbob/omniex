@@ -292,7 +292,7 @@ them.
 The first extractor handles OpenPGP secret keys via the `pgp` crate, including
 RSA, DSA, ElGamal, ECDSA, ECDH, and EdDSA keys. It scans every packet, so a
 keyring that starts with public keys and contains secret keys later is still
-recognized. It emits the `gpg` type. For RSA keys the value reports the matching hashcat mode from `17010`, `17020`, `17030`,
+recognized. It emits the `pgp` type. For RSA keys the value reports the matching hashcat mode from `17010`, `17020`, `17030`,
 `17040`, and `17050`, selected by string-to-key hash and cipher. ECC keys report
 John's `gpg` format only because hashcat 8.0.0 does not load their two-digit
 public-key algorithm. Simple string-to-key secrets are rejected because their

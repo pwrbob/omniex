@@ -65,8 +65,16 @@ path = "Apple_DMG/dmg-hard.dmg"
 sha256 = "6593a17aa839407e8aa9357316058525b88adbf4ec66fb8dd43e4ac04bbd5bbf"
 
 [[file]]
+path = "TrueCrypt/tc-hackthis"
+sha256 = "4e821162ebeee9635682bd584683763df3d3c251cef87e8de860d9b863d5f43f"
+
+[[file]]
 path = "TrueCrypt/tc-openwall"
 sha256 = "33b3a387a0d79e6e9be1bfde79207f34f249849b7953c37c2c87961c4c45007f"
+
+[[file]]
+path = "TrueCrypt/tc-password"
+sha256 = "108e244d195571bba709f690dbaa209da53d46cac1e7eb9eaa18e3f94456f5da"
 
 [[file]]
 path = "VeraCrypt/VC-STD-Volume/Test1.vc"
@@ -531,6 +539,14 @@ sha256 = "9f4e038414bc57d739fef322fa4bbcf0e7af8c04213eeb6ee5db99a91bb143e4"
 [[file]]
 path = "ENCDataVault/02-ENCDataVault70-openwallopenwall/filesystem.dat"
 sha256 = "c282599607f2514a38c7453704908b9a5ff88ddc36c35575aab2704dd99638db"
+
+[[file]]
+path = "ENCDataVault/03-ENCDataVault70_AES1024-123456789ABCDEf/index.dat"
+sha256 = "cf09b490ec26a94f942c179f2e5bc6f0cf05a4378f42012f426cafb25144a93a"
+
+[[file]]
+path = "ENCDataVault/04-ENCDataVault7.2.1-123456789ABCDEf/index.dat"
+sha256 = "509bbc073dbdcf7a73332dff653cb35e45e6bd5feb86ec80bec0e9f6f6ac6170"
 
 [[file]]
 path = "GELI/FreeBSD_11.0/geli-openwall-1.raw"
@@ -1115,6 +1131,10 @@ sha256 = "378a0212171163ec413fd832fdfe0858aead68add2ee52ba833378a180559f12"
 [[file]]
 path = "GPG/test.utf8.asc"
 sha256 = "262c80c8bc56a6647988f5063140d18a0e79d78927229ceceba5c644036101ab"
+
+[[file]]
+path = "GPG/test.symmetric.asc"
+sha256 = "f86900c416834ee4d25a06450ac35c332a48e47ab5e9b3c16ff7c85aefa16b75"
 
 [[file]]
 path = "ENCDataVault/05-SanDiskPrivateAccess-123456Aa!/filesystem.dat"

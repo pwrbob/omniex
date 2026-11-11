@@ -63,8 +63,8 @@ reference = "john:dmg2john.py"
 format = "john"
 
 [[case]]
-name = "truecrypt-standard"
-path = "TrueCrypt/tc-openwall"
+name = "truecrypt-{base}"
+glob = "TrueCrypt/tc-*"
 slug = "truecrypt"
 reference = "hashcat:truecrypt2hashcat.py"
 format = "hashcat"
@@ -153,7 +153,7 @@ reference_format = "john"
 [[case]]
 name = "gpg-{base}"
 glob = "GPG/gpg-70_flavors/*.sec"
-slug = "gpg"
+slug = "pgp"
 reference = "john:gpg2john"
 format = "john"
 subset = true
@@ -288,6 +288,35 @@ reference = "john:encdatavault2john.py"
 reference_path = "{dir}/"
 format = "hashcat"
 reference_format = "john"
+
+# The version 7 vaults ship only the keychain and version metadata, so the
+# index header and its companions have to be assembled explicitly.
+[[case]]
+name = "encdv-keychain-70"
+path = "ENCDataVault/03-ENCDataVault70_AES1024-123456789ABCDEf/index.dat"
+slug = "encdv"
+reference = "john:encdatavault2john.py"
+reference_path = "{dir}/"
+format = "hashcat"
+reference_format = "john"
+companions = ["{dir}/keychain.dat"]
+omniex_args = ["--companion", "keychain={artifact_dir}/keychain.dat"]
+
+[[case]]
+name = "encdv-keychain-72"
+path = "ENCDataVault/04-ENCDataVault7.2.1-123456789ABCDEf/index.dat"
+slug = "encdv"
+reference = "john:encdatavault2john.py"
+reference_path = "{dir}/"
+format = "hashcat"
+reference_format = "john"
+companions = ["{dir}/keychain.dat", "{dir}/enckey.dat"]
+omniex_args = [
+    "--companion",
+    "keychain={artifact_dir}/keychain.dat",
+    "--companion",
+    "enckey={artifact_dir}/enckey.dat",
+]
 
 [[case]]
 name = "geli-{base}"
@@ -690,7 +719,15 @@ format = "john"
 [[case]]
 name = "gpg-test-utf8"
 path = "GPG/test.utf8.asc"
-slug = "gpg"
+slug = "pgp"
+reference = "john:gpg2john"
+format = "john"
+subset = true
+
+[[case]]
+name = "gpg-test-symmetric"
+path = "GPG/test.symmetric.asc"
+slug = "pgp"
 reference = "john:gpg2john"
 format = "john"
 subset = true

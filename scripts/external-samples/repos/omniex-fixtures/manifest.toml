@@ -138,8 +138,8 @@ format = "john"
 
 [[case]]
 name = "gpg"
-path = "tests/fixtures/artifacts/gpg/testkey1.key"
-slug = "gpg"
+path = "tests/fixtures/artifacts/pgp/testkey1.key"
+slug = "pgp"
 reference = "john:gpg2john"
 format = "john"
 subset = true

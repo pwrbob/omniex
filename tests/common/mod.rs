@@ -3476,7 +3476,7 @@ pub const VECTORS: &[Vector] = &[
         )],
     },
     Vector {
-        slug: "gpg",
+        slug: "pgp",
         hashcat: &[
             hc_ambiguous!(
                 17010,

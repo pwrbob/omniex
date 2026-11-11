@@ -678,7 +678,7 @@ const PENDING_E2E: &[&str] = &[
     "ethereum-presale",
     "ethereum-scrypt",
     "fernet",
-    "gpg",
+    "pgp",
     "hsrp",
     "iphone-passcode",
     "itunes-backup",
