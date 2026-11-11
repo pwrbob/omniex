@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 474 128" width="474" height="128" role="img" aria-labelledby="t">
+  <title id="t">OmniEx</title>
+  <g transform="translate(64 64) scale(1.4500) translate(-64.000 -64.000)">
+    <rect x="38" y="38" width="52" height="52" rx="8" fill="#312E81" stroke="#F8FAFC" stroke-width="8"/><g stroke="#F8FAFC" stroke-width="7" stroke-linecap="round"><path d="M 52 30 V 38"/><path d="M 52 90 V 98"/><path d="M 30 52 H 38"/><path d="M 90 52 H 98"/><path d="M 64 30 V 38"/><path d="M 64 90 V 98"/><path d="M 30 64 H 38"/><path d="M 90 64 H 98"/><path d="M 76 30 V 38"/><path d="M 76 90 V 98"/><path d="M 30 76 H 38"/><path d="M 90 76 H 98"/></g><g fill="none" stroke="#818CF8" stroke-width="7" stroke-linecap="round"><path d="M 56.30 78.00 L 59.10 50.00"/><path d="M 71.70 78.00 L 74.50 50.00"/><path d="M 50.00 57.14 H 78.00"/><path d="M 50.00 70.86 H 78.00"/></g>
+  </g>
+
+  <g transform="translate(152 -12.8) scale(1.2)" fill="none" stroke-width="8"
+     stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="#F8FAFC">
+      <circle cx="23" cy="64" r="19"/>
+      <path d="M58 83 V69 A10 10 0 0 1 78 69 V83"/>
+      <path d="M78 69 A10 10 0 0 1 98 69 V83"/>
+      <path d="M114 83 V69 A10 10 0 0 1 134 69 V83"/>
+      <path d="M150 83 V59"/>
+    </g>
+    <circle cx="150" cy="47" r="4" fill="#F8FAFC" stroke="none"/>
+    <g stroke="#818CF8">
+      <path d="M170 83 V45"/><path d="M170 45 H202"/><path d="M170 64 H196"/>
+      <path d="M170 83 H202"/><path d="M222 83 L256 59"/><path d="M256 83 L222 59"/>
+    </g>
+  </g>
+</svg>

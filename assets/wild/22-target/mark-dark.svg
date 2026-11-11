@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-labelledby="t">
+  <title id="t">OmniEx</title>
+  <g transform="translate(64 64) scale(1.0000) translate(-64.000 -64.000)">
+    <g fill="none" stroke="#F8FAFC"><circle cx="64" cy="64" r="44" stroke-width="8"/><circle cx="64" cy="64" r="30" stroke-width="8"/></g><g fill="none" stroke="#818CF8" stroke-width="7" stroke-linecap="round"><path d="M 56.30 78.00 L 59.10 50.00"/><path d="M 71.70 78.00 L 74.50 50.00"/><path d="M 50.00 57.14 H 78.00"/><path d="M 50.00 70.86 H 78.00"/></g><g stroke="#F8FAFC" stroke-width="7" stroke-linecap="round"><path d="M 64 8 V 18"/><path d="M 64 110 V 120"/><path d="M 8 64 H 18"/><path d="M 110 64 H 120"/></g>
+  </g>
+</svg>

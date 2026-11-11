@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 474 128" width="474" height="128" role="img" aria-labelledby="t">
+  <title id="t">OmniEx</title>
+  <g transform="translate(64 64) scale(1.2174) translate(-66.600 -64.000)">
+    <polygon points="64.00,18.00 103.84,41.00 103.84,87.00 64.00,110.00 24.16,87.00 24.16,41.00" fill="none" stroke="#F8FAFC" stroke-width="9" stroke-linejoin="round"/><g fill="none" stroke="#818CF8" stroke-width="8" stroke-linecap="round"><path d="M 39.75 79.00 L 42.75 49.00"/><path d="M 56.25 79.00 L 59.25 49.00"/><path d="M 33.00 56.65 H 63.00"/><path d="M 33.00 71.35 H 63.00"/></g><path d="M 86 52 H 104 A 5 5 0 0 1 109 57 V 71 A 5 5 0 0 1 104 76 H 86" fill="none" stroke="#818CF8" stroke-width="9" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(152 -12.8) scale(1.2)" fill="none" stroke-width="8"
+     stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="#F8FAFC">
+      <circle cx="23" cy="64" r="19"/>
+      <path d="M58 83 V69 A10 10 0 0 1 78 69 V83"/>
+      <path d="M78 69 A10 10 0 0 1 98 69 V83"/>
+      <path d="M114 83 V69 A10 10 0 0 1 134 69 V83"/>
+      <path d="M150 83 V59"/>
+    </g>
+    <circle cx="150" cy="47" r="4" fill="#F8FAFC" stroke="none"/>
+    <g stroke="#818CF8">
+      <path d="M170 83 V45"/><path d="M170 45 H202"/><path d="M170 64 H196"/>
+      <path d="M170 83 H202"/><path d="M222 83 L256 59"/><path d="M256 83 L222 59"/>
+    </g>
+  </g>
+</svg>
