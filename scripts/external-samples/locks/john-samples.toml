@@ -613,6 +613,22 @@ path = "GPG/gpg-70_flavors/SHA512-TWOFISH.sec"
 sha256 = "fdc5b41a22dc05490eb10b1cc0df36d9e5b2fcac3bd186079b7a986419415247"
 
 [[file]]
+path = "KeePass/crackthis.kdb"
+sha256 = "9006e28885cd6230c96bcc47f805d45c0ee687e1baac3cf29edbd0b4f89376c7"
+
+[[file]]
+path = "KeePass/openwall.kdb"
+sha256 = "61cd2a4be85dc96d902f6fe153a0ef9f59d8b2ffd2d962e97e51701af87510c6"
+
+[[file]]
+path = "KeePass/password.kdb"
+sha256 = "3b4df063e798411f9508d009426671a773b2bb259ffc09b5ed2c37817e534443"
+
+[[file]]
+path = "KeePass/twofish-twofish.kdb"
+sha256 = "dedd1ffae9ae3bb24f6723793b92a466b521e59591c57f99cfbfd49803992bbe"
+
+[[file]]
 path = "KeePass/kdbx4/Passwords-AES-K4.kdbx"
 sha256 = "cbb332880ca0252cd61f8ff74286f03b63fee498bb8001950bf484468405d716"
 

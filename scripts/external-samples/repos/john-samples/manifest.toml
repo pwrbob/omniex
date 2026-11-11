@@ -1,7 +1,7 @@
 id = "john-samples"
 repo = "https://github.com/openwall/john-samples"
 commit = "a2f3a3ed7819ce94f8280b0bbfc23ba576817cce"
-notes = "Openwall John sample artifacts, compared against the pinned John reference scripts. Cases cover every artifact the registered extractors can parse; the remaining files are support data (password lists, keyfiles, logs, readmes), Apple DMG header_v1/plain/sparsebundle layouts, BitLocker VDI/QCOW2 and EFS metadata, KeePass KDB v1, LastPass SQLite/XML exports, Lotus ID files, unencrypted or XOR-obfuscated Office documents, Mozilla cert8/null key3 databases, and network formats without an extractor (ACE, ALZip, EAPOL, EFS, EIGRP, Gadu-Gadu, IKE, iSCSI, Lotus, MongoDB, Mosquitto, Padlock, RADIUS, Restic, VRRP)."
+notes = "Openwall John sample artifacts, compared against the pinned John reference scripts. Cases cover every artifact the registered extractors can parse; the remaining files are support data (password lists, keyfiles, logs, readmes), Apple DMG header_v1/plain/sparsebundle layouts, BitLocker VDI/QCOW2 and EFS metadata, KeePass KDB v1 keyfile variants, LastPass SQLite/XML exports, Lotus ID files, unencrypted or XOR-obfuscated Office documents, Mozilla cert8/null key3 databases, and network formats without an extractor (ACE, ALZip, EAPOL, EFS, EIGRP, Gadu-Gadu, IKE, iSCSI, Lotus, MongoDB, Mosquitto, Padlock, RADIUS, Restic, VRRP)."
 
 [fetch]
 mode = "file"
@@ -182,6 +182,13 @@ slug = "pgp"
 reference = "john:gpg2john"
 format = "john"
 subset = true
+
+[[case]]
+name = "keepass1-{base}"
+glob = "KeePass/*.kdb"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
 
 [[case]]
 name = "keepass4-passwords-aes"
