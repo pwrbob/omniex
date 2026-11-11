@@ -1,7 +1,7 @@
 id = "john-samples"
 repo = "https://github.com/openwall/john-samples"
 commit = "a2f3a3ed7819ce94f8280b0bbfc23ba576817cce"
-notes = "Openwall John sample artifacts, compared against the pinned John reference scripts"
+notes = "Openwall John sample artifacts, compared against the pinned John reference scripts. Cases cover every artifact the registered extractors can parse; the remaining files are support data (password lists, keyfiles, logs, readmes), Apple DMG header_v1/plain/sparsebundle layouts, BitLocker VDI/QCOW2 and EFS metadata, KeePass KDB v1, LastPass SQLite/XML exports, Lotus ID files, unencrypted or XOR-obfuscated Office documents, Mozilla cert8/null key3 databases, and network formats without an extractor (ACE, ALZip, EAPOL, EFS, EIGRP, Gadu-Gadu, IKE, iSCSI, Lotus, MongoDB, Mosquitto, Padlock, RADIUS, Restic, VRRP)."
 
 [fetch]
 mode = "file"
@@ -55,12 +55,37 @@ slug = "rar3hp"
 reference = "john:rar2john"
 format = "john"
 
+# The plain image and the header_v1 layouts are not encrcdsa v2, so the
+# DMG payload reference cannot extract them.
 [[case]]
-name = "dmg-hard"
-path = "Apple_DMG/dmg-hard.dmg"
+name = "dmg-{base}"
+glob = "Apple_DMG/*.dmg"
 slug = "dmg-payload"
 reference = "john:dmg2john.py"
 format = "john"
+exclude = [
+    "Apple_DMG/HFS+J-APM-plain.dmg",
+    "Apple_DMG/testimage.AES-128.64k.header_v1.dmg",
+    "Apple_DMG/testimage.AES-256.64k.header_v1.dmg",
+]
+
+[[case]]
+name = "dmg-cdr-{base}"
+glob = "Apple_DMG/*.cdr"
+slug = "dmg-payload"
+reference = "john:dmg2john.py"
+format = "john"
+
+[[case]]
+name = "dmg-sparseimage-{base}"
+glob = "Apple_DMG/*.sparseimage"
+slug = "dmg-payload"
+reference = "john:dmg2john.py"
+format = "john"
+exclude = [
+    "Apple_DMG/testimage.AES-128.64k.header_v1.sparseimage",
+    "Apple_DMG/testimage.AES-256.64k.header_v1.sparseimage",
+]
 
 [[case]]
 name = "truecrypt-{base}"
@@ -359,6 +384,16 @@ requires = ["python:lxml", "tool:tshark"]
 filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
 
 [[case]]
+name = "krb5pa18-ad-{base}"
+glob = "Kerberos_v5/AD-capture-*.pcapng"
+slug = "krb5pa18"
+reference = "john:krb2john.py"
+format = "hashcat"
+reference_format = "john"
+requires = ["python:lxml", "tool:tshark"]
+filter = ["tshark", "-r", "{artifact}", "-T", "pdml"]
+
+[[case]]
 name = "krb5pa23-mitm"
 path = "Kerberos_v5/MiTM-user1-openwall-etype-23.pcap"
 slug = "krb5pa23"
@@ -407,8 +442,8 @@ slug = "openbsd-softraid"
 reference = "john:openbsd_softraid2john.py"
 format = "john"
 
-# SSH/openssh-new-format-keys/ssh-new-format-{1,2,3}.key use bcrypt-pbkdf with
-# aes256-cbc, which hashcat does not support.
+# The new-format keys and the aes256-cbc PEM key use bcrypt-pbkdf with
+# aes256-cbc, which hashcat does not support, so they render for John only.
 [[case]]
 name = "ssh-{base}"
 glob = "SSH/sample_ssh_private_keys/*.key"
@@ -417,8 +452,8 @@ reference = "john:ssh2john.py"
 format = "john"
 
 [[case]]
-name = "ssh-default"
-path = "SSH/openssh-new-format-keys/ssh-default.key"
+name = "ssh-new-format-{base}"
+glob = "SSH/openssh-new-format-keys/*.key"
 slug = "sshng"
 reference = "john:ssh2john.py"
 format = "john"
@@ -426,6 +461,13 @@ format = "john"
 [[case]]
 name = "ssh-aes256ctr"
 path = "SSH/aes-256-ctr/id_rsa-aes256-ctr"
+slug = "sshng"
+reference = "john:ssh2john.py"
+format = "john"
+
+[[case]]
+name = "ssh-aes256cbc"
+path = "SSH/aes-256-ctr/id_rsa-aes256-cbc"
 slug = "sshng"
 reference = "john:ssh2john.py"
 format = "john"
@@ -603,6 +645,22 @@ format = "john"
 [[case]]
 name = "pdf-{path}"
 glob = "PDF/**/*.pdf"
+slug = "pdf"
+reference = "john:pdf2john.pl"
+format = "john"
+
+# The reference scans every LevelDB file in the wallet directory and also
+# reports stale keys, so only guard the log record this sample exposes.
+[[case]]
+name = "keplr-wallet-log"
+path = "Keplr_Wallet/000010.log"
+slug = "keplr"
+reference = "structural"
+format = "john"
+
+[[case]]
+name = "pdf-office-2010"
+path = "Office/Office_Secrets/Office_2010/2010-PDF_myhovercraftisfullofeels_.pdf"
 slug = "pdf"
 reference = "john:pdf2john.pl"
 format = "john"
