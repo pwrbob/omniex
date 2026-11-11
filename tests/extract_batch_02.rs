@@ -87,6 +87,10 @@ fn sevenzip_extracts_the_aes_stream() {
         extracted("sevenzip", "sevenzip", "header.7z"),
         expected_hashes("sevenzip", "header.hash")
     );
+    assert_eq!(
+        extracted("sevenzip", "sevenzip", "compressed.7z"),
+        expected_hashes("sevenzip", "compressed.hash")
+    );
 }
 
 #[test]

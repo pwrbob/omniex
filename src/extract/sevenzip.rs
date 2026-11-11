@@ -376,6 +376,15 @@ fn folder_unpack_size(unpack: &UnpackInfo, index: usize) -> u64 {
     unpack.unpack_sizes[stream]
 }
 
+fn coder_output_size(unpack: &UnpackInfo, folder: usize, coder: usize) -> u64 {
+    let stream = unpack.coder_unpack_sizes[folder] + coder;
+    unpack
+        .unpack_sizes
+        .get(stream)
+        .copied()
+        .unwrap_or_else(|| folder_unpack_size(unpack, folder))
+}
+
 fn read_substreams_info(
     cursor: &mut Cursor<'_>,
     unpack: &UnpackInfo,
@@ -603,14 +612,14 @@ fn decode_encoded_header(
 }
 
 fn archive_streams(data: &[u8]) -> Result<(StreamsInfo, usize), ExtractError> {
-    let data = if data.starts_with(SIGNATURE) {
-        data
+    let (data, outer) = if data.starts_with(SIGNATURE) {
+        (data, 0)
     } else {
         let offset = data
             .windows(SIGNATURE.len())
             .position(|window| window == SIGNATURE)
             .ok_or_else(|| ExtractError::Unsupported("no 7-Zip signature found".to_owned()))?;
-        &data[offset..]
+        (&data[offset..], offset)
     };
     if data.len() < 32 {
         return Err(ExtractError::Unsupported(
@@ -661,7 +670,7 @@ fn archive_streams(data: &[u8]) -> Result<(StreamsInfo, usize), ExtractError> {
             "7-Zip header has an unknown type".to_owned(),
         ));
     };
-    Ok((streams, 32))
+    Ok((streams, outer + 32))
 }
 
 struct AesAttributes {
@@ -781,7 +790,8 @@ fn hashes(data: &[u8]) -> Result<Vec<SevenZip>, ExtractError> {
             .ok_or_else(|| {
                 ExtractError::Unsupported("7-Zip encrypted stream has no CRC checksum".to_owned())
             })?;
-        let unpacked_size = folder_unpack_size(&unpack, folder_index);
+        let folder_size = folder_unpack_size(&unpack, folder_index);
+        let unpacked_size = coder_output_size(&unpack, folder_index, aes_index);
         let attributes = aes_attributes(&folder.coders[aes_index].attributes)?;
 
         let mut data_type = 0u8;
@@ -793,7 +803,7 @@ fn hashes(data: &[u8]) -> Result<Vec<SevenZip>, ExtractError> {
                 crc_len = substreams
                     .as_ref()
                     .and_then(|substreams| substreams.unpack_sizes.first().copied())
-                    .unwrap_or(unpacked_size);
+                    .unwrap_or(folder_size);
                 compression_attributes = coder.attributes.clone();
             }
         }
