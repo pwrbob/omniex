@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/logo/omniex-logo-dark.svg">
+    <img src="assets/logo/omniex-logo.svg" alt="OmniEx" width="360">
+  </picture>
+</p>
+
 # omniex
 
 `omniex` is a strongly typed hash parser, renderer, and extractor for password
