@@ -32,7 +32,10 @@ tar -xzf "$archive" -C "$cache"
 jobs="$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 4)"
 (
     cd "$dest/src"
-    ./configure --disable-openmp
+    # Build for the x86-64 baseline. The default auto-detection compiles in
+    # whichever SIMD extensions the build host supports, and the resulting
+    # helper binaries then trap with SIGILL when a runner has an older CPU.
+    ./configure --disable-openmp --enable-simd=sse2
     make -s -j"$jobs"
 )
 
