@@ -61,6 +61,18 @@ be recorded, not silently treated as passing.
 
 Then remove covered entries from `MODES.md` and commit. Do not push.
 
+## CI environment
+
+The GitHub workflow pins `ubuntu-24.04`, the same base image as
+`docker/Dockerfile`, so a green local container run and a green CI run exercise
+the same toolchain. Do not use `ubuntu-latest`: it moved to a newer release and
+silently changed the compiler, package versions, and available tooling.
+
+Build dependencies come from `scripts/ci-deps.sh`, which retries the
+`apt-get update` and install pair. GitHub's hosted runners intermittently fail
+to resolve the Ubuntu mirrors; one aborted install for a few kilobytes of
+packages should not fail a job.
+
 ## Scope
 
 Hashcat and John coverage is tracked in `MODES.md`. Extraction, version-specific

@@ -21,7 +21,7 @@ env:
 jobs:
   lint:
     name: Format and lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Check out repository
@@ -49,7 +49,7 @@ jobs:
 
   docs:
     name: Documentation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Check out repository
@@ -72,7 +72,7 @@ jobs:
 
   tests:
     name: Workspace tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Check out repository
@@ -98,7 +98,7 @@ jobs:
 
   ui:
     name: Derive UI tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Check out repository
@@ -119,7 +119,7 @@ jobs:
 
   msrv:
     name: Minimum Rust version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - name: Check out repository
@@ -136,7 +136,7 @@ jobs:
 
   hashcat-build:
     name: Build hashcat
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - name: Check out repository
@@ -173,16 +173,14 @@ jobs:
 
   john-build:
     name: Build John
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
 
       - name: Install John build dependencies
-        run: |
-          sudo apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libssl-dev
+        run: scripts/ci-deps.sh build-essential libssl-dev
 
       - name: Fingerprint CPU features
         id: cpu
@@ -210,7 +208,7 @@ jobs:
   hashcat:
     name: Hashcat conformance (${{ matrix.shard }}/4)
     needs: [hashcat-build, lint, docs, tests, msrv]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
       fail-fast: false
@@ -282,7 +280,7 @@ jobs:
   john:
     needs: [john-build, lint, docs, tests, msrv]
     name: John conformance
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - name: Check out repository
@@ -293,8 +291,7 @@ jobs:
 
       - name: Install sample extraction dependencies
         run: |
-          sudo apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+          scripts/ci-deps.sh \
             build-essential libssl-dev python3-olefile \
             python3-lxml python3-pyasn1 python3-pycryptodome python3-protobuf \
             libcompress-raw-lzma-perl p7zip-full tshark
@@ -331,7 +328,7 @@ jobs:
   external-samples:
     needs: [john-build, hashcat-build, lint, docs, tests, msrv]
     name: External samples (${{ matrix.name }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -354,8 +351,7 @@ jobs:
 
       - name: Install sample extraction dependencies
         run: |
-          sudo apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+          scripts/ci-deps.sh \
             build-essential libssl-dev python3-olefile \
             python3-lxml python3-pyasn1 python3-pycryptodome python3-protobuf \
             python3-asn1crypto python3-pip python3-scapy \
