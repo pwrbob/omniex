@@ -1,0 +1,21 @@
+id = "gnupg-tests"
+repo = "https://github.com/gpg/gnupg"
+commit = "9797a67d3ae3ba11916e13d02225bfa042722f85"
+notes = "Symmetrically encrypted OpenPGP messages from the GnuPG test suite"
+
+[fetch]
+mode = "file"
+
+[[case]]
+name = "sym-cfb-1"
+path = "tests/openpgp/samplemsgs/enc-sym-cfb-1.asc"
+slug = "pgp"
+reference = "john:gpg2john"
+format = "john"
+
+[[case]]
+name = "sym-cfb-2"
+path = "tests/openpgp/samplemsgs/enc-sym-cfb-2.asc"
+slug = "pgp"
+reference = "john:gpg2john"
+format = "john"

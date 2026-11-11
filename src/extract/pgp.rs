@@ -125,7 +125,7 @@ impl Extractor for PgpExtractor {
         if pgp_ocb(&data).is_some() {
             return Probe::yes("GnuPG agent OCB private key");
         }
-        let armored = data.starts_with(b"-----BEGIN PGP ");
+        let armored = armor_start(&data).is_some();
         if !armored && data.first().is_none_or(|first| first & 0x80 == 0) {
             return Probe::No;
         }
@@ -277,13 +277,20 @@ fn symmetric_hash(session: SymmetricSession, usage: u8, data: &[u8]) -> Result<P
     })
 }
 
+const ARMOR_BEGIN: &[u8] = b"-----BEGIN PGP ";
+
+fn armor_start(data: &[u8]) -> Option<usize> {
+    data.windows(ARMOR_BEGIN.len())
+        .position(|window| window == ARMOR_BEGIN)
+}
+
 fn dearmor(data: &[u8]) -> Result<Vec<u8>, ExtractError> {
-    if !data.starts_with(b"-----BEGIN PGP ") {
+    let Some(start) = armor_start(data) else {
         return Ok(data.to_vec());
-    }
+    };
 
     let mut decoded = Vec::new();
-    Dearmor::new(Cursor::new(data))
+    Dearmor::new(Cursor::new(&data[start..]))
         .read_to_end(&mut decoded)
         .map_err(|error| ExtractError::Invalid(format!("invalid OpenPGP armor: {error}")))?;
     Ok(decoded)

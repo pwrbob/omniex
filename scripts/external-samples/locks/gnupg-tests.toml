@@ -1,0 +1,9 @@
+commit = "9797a67d3ae3ba11916e13d02225bfa042722f85"
+
+[[file]]
+path = "tests/openpgp/samplemsgs/enc-sym-cfb-1.asc"
+sha256 = "0108a826e35f006d83547e8ee1fcaf38eaf37a6d3018d0c129899e1e240e1925"
+
+[[file]]
+path = "tests/openpgp/samplemsgs/enc-sym-cfb-2.asc"
+sha256 = "a2146b80b044ca153be797d10deaffe32171cc7b5c84ac4ddded052c678880c9"
