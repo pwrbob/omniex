@@ -11,17 +11,59 @@
 forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
+[![CI](https://github.com/pwrbob/omniex/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pwrbob/omniex/actions/workflows/ci.yml)
+![Rust 1.85](https://img.shields.io/badge/rust-1.85%2B-dea584)
+![license](https://img.shields.io/badge/license-MIT-blue)
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-265%2F265-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
 ![exact extractors](https://img.shields.io/badge/exact_extractors-187%2F239-8957e5)
 ![external samples](https://img.shields.io/badge/external_samples-65_formats_%2F_617_cases-8957e5)
 
-Status: early development. Hashcat and John mode coverage is tracked in
-[`MODES.md`](MODES.md); artifact extraction coverage is tracked in
-[`EXTRACTION.md`](EXTRACTION.md).
+Status: pre-1.0. Every hashcat 8.0.0 mode entry and John jumbo format label
+that describes a hash is implemented, and every artifact format on the
+extraction checklist has an extractor. Coverage is tracked in
+[`MODES.md`](MODES.md) and [`EXTRACTION.md`](EXTRACTION.md).
 
-AI use: this project was entirely developed by AI with only minor human guidance.
+- Over 500 hash types covering 720 hashcat modes and 265 John labels.
+- 239 extractors for 208 artifact formats, 187 of which recognise their input
+  without being told the type.
+- 617 pinned external files across 65 formats extracted in CI from 23 upstream
+  projects, on top of synthetic fixtures for every extractor.
+- One struct per logical hash type, so parsing, rendering, describing, and
+  extracting agree by construction.
+
+AI use: this project was entirely developed with AI and only minor human
+guidance.
+
+## What it looks like
+
+Identify an ambiguous hash instead of guessing:
+
+```console
+$ omniex identify 8743b52063cd84097a65d1633f5c74f5
+Input: 8743b52063cd84097a65d1633f5c74f5
+───────────────────────────────────────
+Slug                Name                Hashcat             John
+md4                 MD4                 900                 Raw-MD4
+md5                 MD5                 0, 70, 2600, 3500,  Raw-MD5, Raw-MD5u
+                                        4300, 4400
+ntlm                NTLM                1000                NT, NT-long
+lotus5              Lotus Notes/Domino  8600                -
+...
+```
+
+Point it at an artifact and get cracker-ready hashes, including every matching
+record when the artifact holds more than one:
+
+```console
+$ omniex extract tests/fixtures/artifacts/pgp/gnupg-v1.asc
+$gpg$*1*348*1024*aec9d969...*3*254*8*7*16*2271f718af70d3bd9d60c2aed9469b67*65536*cb18e77884f2f055
+$gpg$*1*348*1024*724234ac...*3*254*8*7*16*7a128c1924dc3b71cf6ee96199db60b5*65536*cb18e77884f2f055
+```
+
+`--json` emits the same hashes as structured fields, and `--format john`
+re-renders them for John instead of hashcat.
 
 ## Core model
 
@@ -114,6 +156,8 @@ slug for parsing and extraction.
 - Render that value for hashcat or John.
 - Identify every registered type that accepts an input.
 - Inspect field values as a table or JSON.
+- Extract hashes from artifacts by type, by auto-detection, or from every
+  matching record with `--all`.
 - Process hash lists from an argument, a file, or standard input.
 - Run conformance tests against pinned hashcat and John builds.
 
@@ -149,7 +193,8 @@ cargo build --release
 ./target/release/omniex --help
 ```
 
-There are no release binaries yet.
+The workspace is not published, so install from a checkout with
+`cargo install --path .`. There are no release binaries yet.
 
 ## Usage
 
@@ -181,13 +226,12 @@ Identify candidates (ambiguous input is not an error):
 
 ```bash
 omniex identify 8743b52063cd84097a65d1633f5c74f5
-# Input: 8743b52063cd84097a65d1633f5c74f5
-# ───────────────────────────────────────
-# Slug  Name  Hashcat            John
-# md4   MD4   900                Raw-MD4
-# md5   MD5   0, 70, 2600, 3500, 4300, 4400  Raw-MD5
-# ntlm  NTLM  1000               NT
 ```
+
+The table names every type that accepts the input, so an ambiguous short hex
+string lists all of its interpretations rather than picking one. `--json` emits
+the same records as objects with `line`, `input`, `slug`, `name`, `hashcat`, and
+`john` keys.
 
 Process a hash list. Blank lines are skipped and the first bad line aborts with
 a line number; nothing is printed for a partially valid list. Input and output
@@ -255,6 +299,29 @@ Registered extractors and their supported serializations are documented in
 [`doc/EXTRACTORS.md`](doc/EXTRACTORS.md). Extraction coverage is tracked in
 [`EXTRACTION.md`](EXTRACTION.md).
 
+### Supported artifacts
+
+| Category | Formats |
+| --- | --- |
+| OpenPGP and PGP | 5 |
+| Windows | 7 |
+| Unix and directory credentials | 11 |
+| Apple and macOS | 10 |
+| Disk and filesystem encryption | 23 |
+| Archives and documents | 15 |
+| Keys and certificate containers | 8 |
+| Password managers | 23 |
+| Browsers | 3 |
+| Wallets and cryptocurrency stores | 24 |
+| Mobile and application stores | 10 |
+| Plain hash lists | 39 |
+| Textual credential exports | 6 |
+| Network captures | 24 |
+
+Some formats need an explicit hash type, because they have no reliable
+signature and announcing `Probe::Yes` would turn a byte match into a guess.
+Those are counted in the `exact extractors` badge.
+
 ## Testing
 
 Run the fast local CI mirror before sending or committing work:
@@ -290,6 +357,25 @@ string: if the extractor serialization drifts, the cracker call fails. Fixtures
 whose synthetic serialization a reference cracker rejects are marked
 `e2e = false` with a reason so the gap remains visible.
 
+### External samples
+
+`scripts/external-samples/run.py` extracts real artifacts from pinned commits of
+23 upstream projects and compares the result field by field with the reference
+`*2john` or `*2hashcat` output. Nothing is committed and nothing is downloaded
+implicitly; files are fetched on demand from the commit recorded in the
+manifest and verified against its lock file.
+
+```bash
+python3 scripts/external-samples/run.py list
+python3 scripts/external-samples/run.py run --repo john-samples
+python3 scripts/external-samples/run.py run --repo omniex-fixtures \
+  --source "omniex-fixtures=$PWD"
+```
+
+Cases whose prerequisites are missing, such as `tshark` for Kerberos captures or
+the Perl LZMA module for 7-Zip headers, skip with a recorded reason instead of
+passing silently. `doc/SAMPLE_CORPORA.md` lists the corpora.
+
 ## Documentation
 
 - [`doc/DESIGN.md`](doc/DESIGN.md) - data model and CLI behavior.
@@ -297,6 +383,9 @@ whose synthetic serialization a reference cracker rejects are marked
 - [`doc/TESTING.md`](doc/TESTING.md) - test strategy and fixtures.
 - [`doc/EXTRACTORS.md`](doc/EXTRACTORS.md) - registered extractors.
 - [`doc/DEVELOPMENT.md`](doc/DEVELOPMENT.md) - project goal, layout, and workflow.
+- [`doc/SAMPLE_CORPORA.md`](doc/SAMPLE_CORPORA.md) - external corpora used for extraction tests.
+- [`doc/UNSUPPORTED_FORMATS.md`](doc/UNSUPPORTED_FORMATS.md) - formats outside mainline hashcat and John.
+- [`doc/IDEAS.md`](doc/IDEAS.md) - features that are not implemented yet.
 - [`AGENTS.md`](AGENTS.md) - instructions for automated contributors.
 
 ## License

@@ -300,6 +300,60 @@ fn readme_extraction_badge_matches_the_checklist() {
 }
 
 #[test]
+fn readme_artifact_table_matches_the_checklist() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let readme = std::fs::read_to_string(root.join("README.md")).expect("read README.md");
+    let extraction =
+        std::fs::read_to_string(root.join("EXTRACTION.md")).expect("read EXTRACTION.md");
+
+    let mut expected: Vec<(String, usize)> = Vec::new();
+    for line in extraction.lines() {
+        if let Some(heading) = line.strip_prefix("## ") {
+            expected.push((heading.trim().to_owned(), 0));
+        } else if line.starts_with("- [x] ") {
+            if let Some((_, count)) = expected.last_mut() {
+                *count += 1;
+            }
+        }
+    }
+    expected.retain(|(_, count)| *count > 0);
+
+    let table = readme
+        .split("### Supported artifacts")
+        .nth(1)
+        .expect("README must document the supported artifact categories");
+    let mut rows = Vec::new();
+    let mut started = false;
+    for line in table.lines() {
+        if line.trim().is_empty() {
+            if started {
+                break;
+            }
+            continue;
+        }
+        let Some(rest) = line.strip_prefix("| ") else {
+            if started {
+                break;
+            }
+            continue;
+        };
+        started = true;
+        let Some((name, count)) = rest.split_once(" | ") else {
+            break;
+        };
+        let Ok(count) = count.trim().trim_end_matches('|').trim().parse::<usize>() else {
+            continue;
+        };
+        rows.push((name.trim().to_owned(), count));
+    }
+
+    assert_eq!(
+        rows, expected,
+        "the README artifact table must match the categories in EXTRACTION.md"
+    );
+}
+
+#[test]
 fn readme_external_sample_badge_matches_the_runner() {
     let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
     let base = root.join("scripts/external-samples");
