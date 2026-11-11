@@ -308,9 +308,21 @@ jobs:
 
   external-samples:
     needs: [john-build, hashcat-build, lint, docs, tests, msrv]
-    name: External sample extraction
+    name: External samples (${{ matrix.name }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: fixtures
+            repos: omniex-fixtures,keepassxc
+          - name: john-samples
+            repos: john-samples
+          - name: archives
+            repos: unarcrypto,libarchive,msoffcrypto,oletools,py-pdf-samples,test-pdf-files,forensics-samples
+          - name: formats
+            repos: hashcat-2hashcat,geth,aircrack-ng,gnupg-tests,ffpass,firefox-decrypt,pysap,cryptography-vectors,openssl-tests,picky-rs,gnome-keyring,gost-engine,plaso
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
@@ -366,14 +378,24 @@ jobs:
           OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
           OMNIEX_JOHN_RUN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run
           OMNIEX_HASHCAT: ${{ github.workspace }}/tmp/reference/hashcat-8.0.0/hashcat
+        shell: bash
         run: |
           export TIMEFORMAT='  [time] %3R s'
-          time python3 scripts/external-samples/run.py run \
-            --repo omniex-fixtures --source "omniex-fixtures=$GITHUB_WORKSPACE"
-          time python3 scripts/external-samples/run.py run \
-            --repo hashcat-2hashcat --repo john-samples --repo unarcrypto --repo msoffcrypto \
-            --repo oletools --repo keepassxc --repo geth --repo aircrack-ng \
-            --repo cryptography-vectors --repo openssl-tests --repo forensics-samples \
-            --repo py-pdf-samples --repo test-pdf-files --repo libarchive \
-            --repo picky-rs --repo gnome-keyring --repo gost-engine --repo plaso \
-            --repo pysap --repo ffpass --repo firefox-decrypt --repo gnupg-tests
+          args=()
+          for repo in ${{ matrix.repos }}; do
+            args+=(--repo "$repo")
+          done
+          if [[ "${{ matrix.name }}" == "fixtures" ]]; then
+            time python3 scripts/external-samples/run.py run "${args[@]}" \
+              --source "omniex-fixtures=$GITHUB_WORKSPACE"
+          else
+            time python3 scripts/external-samples/run.py run "${args[@]}"
+          fi
+
+      - name: Run real-file extractor tests
+        if: matrix.name == 'fixtures'
+        env:
+          OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
+        run: |
+          export TIMEFORMAT='  [time] %3R s'
+          time cargo test -p omniex --test extract_real_files --locked -- --ignored --nocapture
