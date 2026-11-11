@@ -381,8 +381,9 @@ jobs:
         shell: bash
         run: |
           export TIMEFORMAT='  [time] %3R s'
+          IFS=',' read -r -a repos <<< "${{ matrix.repos }}"
           args=()
-          for repo in ${{ matrix.repos }}; do
+          for repo in "${repos[@]}"; do
             args+=(--repo "$repo")
           done
           if [[ "${{ matrix.name }}" == "fixtures" ]]; then
