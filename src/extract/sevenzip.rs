@@ -1,5 +1,7 @@
 //! 7-Zip archive AES encryption extraction.
 
+use lzma_rs::decompress::raw::{Lzma2Decoder, LzmaDecoder, LzmaParams, LzmaProperties};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::SevenZip;
 use crate::{HashType, HashValue};
@@ -509,6 +511,97 @@ fn read_header(cursor: &mut Cursor<'_>) -> Result<StreamsInfo, ExtractError> {
     Ok(streams)
 }
 
+fn decode_lzma(
+    attributes: &[u8],
+    input: &[u8],
+    unpacked_size: u64,
+) -> Result<Vec<u8>, ExtractError> {
+    if attributes.len() < 5 {
+        return Err(ExtractError::Invalid(
+            "7-Zip LZMA coder has invalid properties".to_owned(),
+        ));
+    }
+    let packed = u32::from(attributes[0]);
+    if packed >= 225 {
+        return Err(ExtractError::Invalid(
+            "7-Zip LZMA properties are out of range".to_owned(),
+        ));
+    }
+    let lc = packed % 9;
+    let rest = packed / 9;
+    let lp = rest % 5;
+    let pb = rest / 5;
+    let dict_size = u32::from_le_bytes(
+        attributes[1..5]
+            .try_into()
+            .expect("four-byte dictionary size"),
+    );
+    let params = LzmaParams::new(
+        LzmaProperties { lc, lp, pb },
+        dict_size,
+        Some(unpacked_size),
+    );
+    let mut decoder = LzmaDecoder::new(params, None)
+        .map_err(|error| ExtractError::Invalid(format!("7-Zip LZMA header: {error}")))?;
+    let mut reader = std::io::Cursor::new(input);
+    let mut output = Vec::new();
+    decoder
+        .decompress(&mut reader, &mut output)
+        .map_err(|error| ExtractError::Invalid(format!("7-Zip LZMA data: {error}")))?;
+    Ok(output)
+}
+
+fn decode_encoded_header(
+    streams: &StreamsInfo,
+    data: &[u8],
+    base: usize,
+) -> Result<Vec<u8>, ExtractError> {
+    let pack = streams.pack.as_ref().ok_or_else(|| {
+        ExtractError::Unsupported("7-Zip encoded header has no pack info".to_owned())
+    })?;
+    let unpack = streams.unpack.as_ref().ok_or_else(|| {
+        ExtractError::Unsupported("7-Zip encoded header has no unpack info".to_owned())
+    })?;
+    let folder = unpack.folders.first().ok_or_else(|| {
+        ExtractError::Unsupported("7-Zip encoded header has no folder".to_owned())
+    })?;
+    let size = *pack.pack_sizes.first().ok_or_else(|| {
+        ExtractError::Unsupported("7-Zip encoded header has no pack size".to_owned())
+    })?;
+    let start = u64::try_from(base)
+        .ok()
+        .and_then(|base| base.checked_add(pack.pack_pos))
+        .ok_or_else(|| ExtractError::Invalid("7-Zip encoded header offset overflow".to_owned()))?;
+    let start = usize::try_from(start).map_err(|_| {
+        ExtractError::Unsupported("7-Zip encoded header offset is too large".to_owned())
+    })?;
+    let size = usize::try_from(size)
+        .map_err(|_| ExtractError::Unsupported("7-Zip encoded header is too large".to_owned()))?;
+    let input = data
+        .get(start..start + size)
+        .ok_or_else(|| ExtractError::Invalid("truncated 7-Zip encoded header".to_owned()))?;
+    let unpacked_size = folder_unpack_size(unpack, 0);
+
+    match folder.coders.as_slice() {
+        [coder] if coder.codec_id == [0x03, 0x01, 0x01] => {
+            decode_lzma(&coder.attributes, input, unpacked_size)
+        }
+        [coder] if coder.codec_id == [0x21] => {
+            let mut decoder = Lzma2Decoder::new();
+            let mut reader = std::io::Cursor::new(input);
+            let mut output = Vec::new();
+            decoder
+                .decompress(&mut reader, &mut output)
+                .map_err(|error| ExtractError::Invalid(format!("7-Zip LZMA2 header: {error}")))?;
+            Ok(output)
+        }
+        [coder] if coder.codec_id == [0x00] => Ok(input.to_vec()),
+        _ => Err(ExtractError::Unsupported(
+            "unsupported 7-Zip encoded header coder".to_owned(),
+        )),
+    }
+}
+
 fn archive_streams(data: &[u8]) -> Result<(StreamsInfo, usize), ExtractError> {
     let data = if data.starts_with(SIGNATURE) {
         data
@@ -543,7 +636,26 @@ fn archive_streams(data: &[u8]) -> Result<(StreamsInfo, usize), ExtractError> {
     let streams = if id == [HEADER] {
         read_header(&mut header_cursor)?
     } else if id == [ENCODED_HEADER] {
-        read_streams_info(&mut header_cursor)?
+        let encoded = read_streams_info(&mut header_cursor)?;
+        let encrypted = encoded.unpack.as_ref().is_some_and(|unpack| {
+            unpack
+                .folders
+                .iter()
+                .any(|folder| folder.coders.iter().any(|coder| coder.codec_id == AES))
+        });
+        if encrypted {
+            encoded
+        } else {
+            let decoded = decode_encoded_header(&encoded, data, 32)?;
+            let mut decoded_cursor = Cursor::new(&decoded);
+            let decoded_id = decoded_cursor.id()?;
+            if decoded_id != [HEADER] {
+                return Err(ExtractError::Unsupported(
+                    "7-Zip encoded header is not a header".to_owned(),
+                ));
+            }
+            read_header(&mut decoded_cursor)?
+        }
     } else {
         return Err(ExtractError::Invalid(
             "7-Zip header has an unknown type".to_owned(),

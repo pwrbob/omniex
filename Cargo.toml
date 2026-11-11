@@ -27,6 +27,8 @@ clap = { version = "4", features = ["derive"] }
 # 7.2.2 uses let chains, which Rust 1.85 rejects.
 comfy-table = "=7.2.1"
 hex = "0.4"
+lzma-rs = { version = "0.3", features = ["raw_decoder"] }
+memchr = "2"
 omniex-core.workspace = true
 omniex-macros.workspace = true
 pgp = "0.10"
