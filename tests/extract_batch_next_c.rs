@@ -141,6 +141,76 @@ fn bitlocker_volume_reports_password_and_recovery_vmks() {
     );
 }
 
+fn mbr_disk(volume: &[u8], start_lba: u32) -> Vec<u8> {
+    let offset = start_lba as usize * 512;
+    let mut disk = vec![0u8; offset + volume.len()];
+    disk[510..512].copy_from_slice(&[0x55, 0xaa]);
+    let entry = &mut disk[446..462];
+    entry[4] = 0x07;
+    entry[8..12].copy_from_slice(&start_lba.to_le_bytes());
+    disk[offset..].copy_from_slice(volume);
+    disk
+}
+
+fn gpt_disk(volume: &[u8], start_lba: u64) -> Vec<u8> {
+    let offset = start_lba as usize * 512;
+    let mut disk = vec![0u8; offset + volume.len()];
+    disk[510..512].copy_from_slice(&[0x55, 0xaa]);
+    let protective = &mut disk[446..462];
+    protective[4] = 0xee;
+    protective[8..12].copy_from_slice(&1u32.to_le_bytes());
+
+    let header = &mut disk[512..604];
+    header[..8].copy_from_slice(b"EFI PART");
+    header[72..80].copy_from_slice(&2u64.to_le_bytes());
+    header[80..84].copy_from_slice(&1u32.to_le_bytes());
+    header[84..88].copy_from_slice(&128u32.to_le_bytes());
+
+    let entry = &mut disk[1024..1152];
+    entry[..16].copy_from_slice(&[0x01; 16]);
+    entry[32..40].copy_from_slice(&start_lba.to_le_bytes());
+    entry[40..48].copy_from_slice(&(start_lba + 7).to_le_bytes());
+
+    disk[offset..].copy_from_slice(volume);
+    disk
+}
+
+#[test]
+fn bitlocker_finds_volumes_at_partition_starts() {
+    let mut volume = std::fs::read(fixture("bitlocker", "recovery.img")).expect("fixture");
+    volume[13] = 1;
+    let extractor = extract::by_slug("bitlocker").expect("bitlocker extractor");
+
+    for (label, disk) in [
+        ("mbr.img", mbr_disk(&volume, 8)),
+        ("gpt.img", gpt_disk(&volume, 16)),
+    ] {
+        let artifact = Artifact::from_bytes(label, disk);
+        assert!(
+            matches!(extractor.probe(&artifact), Probe::Yes(_)),
+            "{label}"
+        );
+        assert_eq!(extractor.extract(&artifact).expect("extract").len(), 2);
+    }
+}
+
+#[test]
+fn bitlocker_requires_deep_for_embedded_volumes() {
+    let mut volume = std::fs::read(fixture("bitlocker", "recovery.img")).expect("fixture");
+    volume[13] = 1;
+    let mut disk = vec![0u8; 0x2000];
+    disk.extend_from_slice(&volume);
+    let extractor = extract::by_slug("bitlocker").expect("bitlocker extractor");
+
+    let shallow = Artifact::from_bytes("embedded.img", disk.clone());
+    assert_eq!(extractor.probe(&shallow), Probe::No);
+    assert!(extractor.extract(&shallow).is_err());
+
+    let deep = Artifact::from_bytes("embedded.img", disk).with_deep(true);
+    assert!(matches!(extractor.probe(&deep), Probe::Yes(_)));
+    assert_eq!(extractor.extract(&deep).expect("deep extract").len(), 2);
+}
+
 #[test]
 fn bitlocker_volume_without_crackable_vmk_is_possible() {
     let mut data = std::fs::read(fixture("bitlocker", "recovery.img")).expect("fixture");

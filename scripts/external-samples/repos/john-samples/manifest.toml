@@ -109,6 +109,7 @@ glob = "BitLocker/*.vdi"
 slug = "bitlocker"
 reference = "john:bitlocker2john"
 args = ["-i"]
+omniex_args = ["--deep"]
 format = "john"
 reference_subset = true
 
@@ -119,6 +120,7 @@ glob = "BitLocker/encryption-jungle/disks-v1/*.vdi"
 slug = "bitlocker"
 reference = "john:bitlocker2john"
 args = ["-i"]
+omniex_args = ["--deep"]
 format = "john"
 reference_subset = true
 exclude = [

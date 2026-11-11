@@ -119,6 +119,10 @@ struct ExtractArgs {
     #[arg(long)]
     json: bool,
 
+    /// Allow extractors to use slower exhaustive scans.
+    #[arg(long)]
+    deep: bool,
+
     /// Named companion file, as NAME=PATH. May be repeated.
     #[arg(long = "companion", value_name = "NAME=PATH")]
     companion: Vec<String>,
@@ -398,9 +402,11 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                 .map(|extractor| (descriptor, extractor))
         })
         .transpose()?;
-    let mut artifact = extract::Artifact::from_file(&args.artifact).map_err(|error| {
-        CliError::Input(format!("cannot read {}: {error}", args.artifact.display()))
-    })?;
+    let mut artifact = extract::Artifact::from_file(&args.artifact)
+        .map_err(|error| {
+            CliError::Input(format!("cannot read {}: {error}", args.artifact.display()))
+        })?
+        .with_deep(args.deep);
     for companion in &args.companion {
         let (name, path) = companion.split_once('=').ok_or_else(|| {
             CliError::Input(format!("companion must be NAME=PATH, got `{companion}`"))

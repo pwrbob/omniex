@@ -221,11 +221,16 @@ omniex extract artifact --all
 omniex extract artifact --all --json
 omniex extract filesystem.dat --type encdv \
   --companion enckey=/path/to/enckey.dat
+omniex extract disk.vdi --type bitlocker --deep
 ```
 
 `--companion NAME=PATH` attaches a named sidecar input, such as the `enckey`
 file used by ENCDataVault or a KeePass `keyfile`. Repeat it for extractors that
 need more than one.
+
+`--deep` permits slower exhaustive scans. Extractors that only inspect
+partition tables or headers by default may scan the whole artifact when it is
+explicitly requested, as the BitLocker extractor does for embedded volumes.
 
 Without `--type`, every extractor first probes the artifact. Auto-detection
 succeeds only when exactly one extractor reports confident recognition. Formats

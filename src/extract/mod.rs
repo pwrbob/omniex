@@ -148,6 +148,7 @@ pub struct ArtifactMember {
 pub struct Artifact {
     label: String,
     members: Vec<ArtifactMember>,
+    deep: bool,
 }
 
 impl Artifact {
@@ -160,6 +161,7 @@ impl Artifact {
                 role: MemberRole::Primary,
                 source: Box::new(source),
             }],
+            deep: false,
         }
     }
 
@@ -182,6 +184,19 @@ impl Artifact {
             }
         }
         Ok(artifact)
+    }
+
+    /// Enables slower exhaustive extraction where an extractor supports it.
+    #[must_use]
+    pub fn with_deep(mut self, deep: bool) -> Self {
+        self.deep = deep;
+        self
+    }
+
+    /// Whether the caller explicitly requested a slower exhaustive scan.
+    #[must_use]
+    pub fn deep(&self) -> bool {
+        self.deep
     }
 
     /// Adds a named companion member.

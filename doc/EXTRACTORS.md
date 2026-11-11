@@ -139,7 +139,7 @@ This file documents the extractors currently registered in
 - `dcc2` - DCC2 cached domain credential records.
 - `dpapi` - DPAPI master key records.
 - `windows-hello` - Windows Hello PIN and container records.
-- `bitlocker` - BitLocker FVE volume metadata and VMK material. Raw volumes, VDI images, and unencrypted QCOW2 images are read through the shared container layer.
+- `bitlocker` - BitLocker FVE volume metadata and VMK material. Raw volumes, MBR/GPT partitions, VDI images, and unencrypted QCOW2 images are read through the shared container layer. Use `--deep` to scan for embedded volumes that are not at a partition start.
 - `veeam` - Veeam VBK backup metadata.
 - `apple-keychain` - macOS login keychains.
 - `apple-secure-notes` - Apple Secure Notes.
