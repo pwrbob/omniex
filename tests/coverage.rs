@@ -424,3 +424,58 @@ fn opencl_only_john_vectors_are_parse_render_only() {
         }
     }
 }
+
+#[test]
+fn external_sample_john_cases_are_renderable_as_john() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let base = root.join("scripts/external-samples").join("repos");
+
+    for entry in std::fs::read_dir(base).expect("read external sample repos") {
+        let path = entry.expect("repo entry").path().join("manifest.toml");
+        if !path.is_file() {
+            continue;
+        }
+        let text = std::fs::read_to_string(&path).expect("read manifest");
+        let manifest: toml::Value = toml::from_str(&text).expect("parse manifest");
+        for case in manifest
+            .get("case")
+            .and_then(toml::Value::as_array)
+            .into_iter()
+            .flatten()
+        {
+            let reference = case
+                .get("reference")
+                .and_then(toml::Value::as_str)
+                .unwrap_or("");
+            let format = case
+                .get("format")
+                .and_then(toml::Value::as_str)
+                .unwrap_or_else(|| {
+                    if reference.starts_with("john:") {
+                        "john"
+                    } else {
+                        "hashcat"
+                    }
+                });
+            if format != "john" {
+                continue;
+            }
+            let slug = case
+                .get("slug")
+                .and_then(toml::Value::as_str)
+                .expect("case slug");
+            let descriptor = registry::by_slug(slug)
+                .unwrap_or_else(|| panic!("`{slug}` is not a registered hash type"));
+            assert!(
+                descriptor
+                    .all_modes
+                    .iter()
+                    .any(|mode| matches!(mode, Mode::John(_))),
+                "external sample case `{}` extracts `{slug}` as John, but the type declares no John format",
+                case.get("name")
+                    .and_then(toml::Value::as_str)
+                    .unwrap_or(slug)
+            );
+        }
+    }
+}

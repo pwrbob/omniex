@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 
 use assert_cmd::Command;
 use omniex::extract::{self, Artifact, Probe};
-use omniex::{Mode, RenderOptions};
+use omniex::{Mode, RenderOptions, Tool};
 
 fn fixture(kind: &str, name: &str) -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -155,6 +155,52 @@ fn extractors_match_their_fixtures() {
             .extract(&artifact(kind, name))
             .unwrap();
         assert!(values[0].modes().contains(&Mode::Hashcat(mode)), "{slug}");
+    }
+}
+
+#[test]
+fn extracted_kerberos_preauth_renders_for_john() {
+    for (slug, kind, name, expected) in [
+        (
+            "krb5pa23",
+            "krb5pa23",
+            "asreq.der",
+            "$krb5pa$23$alice$EXAMPLE.COM$$101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f30313233000102030405060708090a0b0c0d0e0f",
+        ),
+        (
+            "krb5pa17",
+            "krb5pa17",
+            "asreq.der",
+            "$krb5pa$17$carol$EXAMPLE.COM$$808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7",
+        ),
+    ] {
+        let artifact = artifact(kind, name);
+        let values = extract::by_slug(slug).unwrap().extract(&artifact).unwrap();
+        assert!(values[0].modes().contains(&Mode::John(match slug {
+            "krb5pa23" => "krb5pa-md5",
+            _ => "krb5pa-sha1",
+        })));
+        let rendered = values[0]
+            .render(&RenderOptions {
+                tool: Tool::John,
+                ..RenderOptions::default()
+            })
+            .unwrap();
+        assert_eq!(rendered, expected, "{slug}");
+
+        let output = omniex()
+            .arg("extract")
+            .arg("--type")
+            .arg(slug)
+            .arg("--format")
+            .arg("john")
+            .arg("--json")
+            .arg(fixture(kind, name))
+            .output()
+            .unwrap();
+        assert!(output.status.success(), "{slug}");
+        let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+        assert_eq!(value[0]["hash"], expected, "{slug}");
     }
 }
 

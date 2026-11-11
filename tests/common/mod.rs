@@ -1627,7 +1627,10 @@ pub const VECTORS: &[Vector] = &[
             19800,
             "$krb5pa$17$hashcat$HASHCATDOMAIN.COM$a17776abe5383236c58582f515843e029ecbff43706d177651b7b6cdb2713b17597ddb35b1c9c470c281589fd1d51cca125414d19e40e333"
         )],
-        john: &[],
+        john: &[john!(
+            "krb5pa-sha1",
+            "$krb5pa$17$user1$EXAMPLE.COM$$c5461873dc13665771b98ba80be53939e906d90ae1ba79cf2e21f0395e50ee56379fbef4d0298cfccfd6cf8f907329120048fd05e8ae5df4"
+        )],
     },
     Vector {
         slug: "krb5pa18",
@@ -4221,7 +4224,10 @@ pub const VECTORS: &[Vector] = &[
             7500,
             "$krb5pa$23$user$realm$salt$5cbb0c882a2b26956e81644edbdb746326f4f5f0e947144fb3095dffe4b4b03e854fc1d631323632303636373330383333353630"
         )],
-        john: &[],
+        john: &[john!(
+            "krb5pa-md5",
+            "$krb5pa$23$user$realm$salt$afcbe07c32c3450b37d0f2516354570fe7d3e78f829e77cdc1718adf612156507181f7daeb03b6fbcfe91f8346f3c0ae7e8abfe5"
+        )],
     },
     Vector {
         slug: "sip-digest",

@@ -9,7 +9,8 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[hash(
     name = "Kerberos 5, etype 23, AS-REQ Pre-Auth",
     slug = "krb5pa23",
-    hashcat = [7500]
+    hashcat = [7500],
+    john = ["krb5pa-md5"]
 )]
 pub struct Krb5pa23 {
     /// Kerberos username.
