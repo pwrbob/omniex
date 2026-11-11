@@ -7,9 +7,9 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Lotus Notes 8.5", slug = "lotus85", hashcat = [], john = ["lotus85"])]
 pub struct Lotus85 {
-    /// The 56-byte user blob.
+    /// The user blob, 16 to 100 bytes.
     #[field(role = ciphertext, encoding = hex)]
-    pub data: [u8; 56],
+    pub data: Vec<u8>,
 }
 
 impl Parse for Lotus85 {
@@ -17,14 +17,20 @@ impl Parse for Lotus85 {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        Ok(Self {
-            data: parse::decode_hex_field::<56>(input, 0, "data")?,
-        })
+        let data = parse::decode_hex(input, 0)?;
+        if !(16..=100).contains(&data.len()) {
+            return Err(parse::error(
+                crate::ParseErrorKind::InvalidLength,
+                0,
+                "Lotus Notes 8.5 blob must be 16 to 100 bytes",
+            ));
+        }
+        Ok(Self { data })
     }
 }
 
 impl Render for Lotus85 {
     fn render_value(&self, _opts: &RenderOptions) -> String {
-        crate::format::hex(self.data).to_uppercase()
+        crate::format::hex(&self.data).to_uppercase()
     }
 }

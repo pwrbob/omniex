@@ -151,6 +151,11 @@ fn extractors_match_their_fixtures() {
         rendered(&json, Tool::John),
         [expected("keplr", "wallet.hash")]
     );
+    let table = keplr.extract(&artifact("keplr", "wallet.ldb")).unwrap();
+    assert_eq!(
+        rendered(&table, Tool::John),
+        [expected("keplr", "wallet.hash")]
+    );
 }
 
 #[test]

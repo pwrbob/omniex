@@ -1,5 +1,7 @@
 //! KeePass KDBX v2 and v3 database extraction.
 
+use sha2::{Digest, Sha256};
+
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Keepass;
 use crate::{HashType, HashValue};
@@ -85,7 +87,7 @@ fn required(field: Option<Vec<u8>>, name: &str) -> Result<Vec<u8>, ExtractError>
     field.ok_or_else(|| ExtractError::Invalid(format!("missing KeePass {name}")))
 }
 
-fn parse_kdb(cursor: &mut Cursor<'_>) -> Result<Keepass, ExtractError> {
+fn parse_kdb(cursor: &mut Cursor<'_>, artifact: &Artifact) -> Result<Keepass, ExtractError> {
     let flags = cursor.u32()?;
     let version = cursor.u32()?;
     if version & 0xffff_0000 != 0x0003_0000 {
@@ -112,6 +114,24 @@ fn parse_kdb(cursor: &mut Cursor<'_>) -> Result<Keepass, ExtractError> {
     let remaining = usize::try_from(cursor.remaining())
         .map_err(|_| ExtractError::Invalid("KeePass 1.x database is too large".to_owned()))?;
     let data = cursor.bytes(remaining)?;
+    let mut details = format!(
+        "{}*1*{}*{}",
+        crate::format::hex(&contents),
+        data.len(),
+        crate::format::hex(&data)
+    );
+    if let Some(keyfile) = artifact.member("keyfile") {
+        let keyfile = keyfile.read_all().map_err(|error| {
+            ExtractError::Invalid(format!("cannot read KeePass keyfile: {error}"))
+        })?;
+        let key = match keyfile.len() {
+            32 => crate::format::hex(&keyfile),
+            64 => String::from_utf8(keyfile)
+                .map_err(|_| ExtractError::Invalid("KeePass keyfile is not ASCII".to_owned()))?,
+            _ => crate::format::hex(Sha256::digest(keyfile)),
+        };
+        details.push_str(&format!("*1*64*{key}"));
+    }
     Ok(Keepass {
         version: 1,
         rounds,
@@ -119,12 +139,7 @@ fn parse_kdb(cursor: &mut Cursor<'_>) -> Result<Keepass, ExtractError> {
         seed: crate::format::hex(&seed),
         transform_seed: crate::format::hex(&transform_seed),
         iv: crate::format::hex(&iv),
-        details: format!(
-            "{}*1*{}*{}",
-            crate::format::hex(&contents),
-            data.len(),
-            crate::format::hex(&data)
-        ),
+        details,
     })
 }
 
@@ -142,7 +157,7 @@ fn parse(artifact: &Artifact) -> Result<Keepass, ExtractError> {
     }
     let signature = cursor.u32()?;
     if signature == SIGNATURE_LEGACY {
-        return parse_kdb(&mut cursor);
+        return parse_kdb(&mut cursor, artifact);
     }
     if signature != SIGNATURE_SECONDARY && signature != SIGNATURE_SECONDARY_PRE {
         return Err(ExtractError::Unsupported(

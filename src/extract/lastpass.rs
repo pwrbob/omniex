@@ -6,13 +6,14 @@ use base64::Engine;
 use base64::engine::general_purpose::{STANDARD, STANDARD_NO_PAD};
 use byteorder::{BigEndian, ByteOrder};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, ExtractError, Extracted, Extractor, Probe, sqlite};
 use crate::types::Lastpass;
 use crate::{HashType, HashValue};
 
 pub struct LastpassExtractor;
 
 struct Vault {
+    iterations: Option<u32>,
     encrypted: Vec<u8>,
     iv: Vec<u8>,
 }
@@ -22,30 +23,6 @@ fn decode_base64(value: &str) -> Option<Vec<u8>> {
         .decode(value.trim())
         .or_else(|_| STANDARD_NO_PAD.decode(value.trim()))
         .ok()
-}
-
-fn vault_blob(artifact: &Artifact) -> Result<Vec<u8>, ExtractError> {
-    let data = artifact.primary().read_all().map_err(|error| {
-        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
-    })?;
-    if data.starts_with(b"LPAV") {
-        return Ok(data);
-    }
-    if let Some(rest) = data.strip_prefix(b"LPB64") {
-        return decode_base64(&String::from_utf8_lossy(rest))
-            .filter(|blob| blob.starts_with(b"LPAV"))
-            .ok_or_else(|| ExtractError::Invalid("invalid LastPass LPB64 payload".to_owned()));
-    }
-    if let Ok(text) = str::from_utf8(&data) {
-        for line in text.lines() {
-            if let Some(blob) = decode_base64(line.trim()) {
-                if blob.starts_with(b"LPAV") {
-                    return Ok(blob);
-                }
-            }
-        }
-    }
-    Err(ExtractError::Unsupported("not a LastPass vault".to_owned()))
 }
 
 fn parse_encu(data: &[u8]) -> Result<(Vec<u8>, Vec<u8>), ExtractError> {
@@ -77,8 +54,7 @@ fn parse_encu(data: &[u8]) -> Result<(Vec<u8>, Vec<u8>), ExtractError> {
     Ok((encrypted, iv))
 }
 
-fn vault(artifact: &Artifact) -> Result<Vault, ExtractError> {
-    let blob = vault_blob(artifact)?;
+fn block_vault(blob: &[u8], iterations: Option<u32>) -> Result<Vault, ExtractError> {
     let mut offset = 0;
     while offset + 8 <= blob.len() {
         let identifier = &blob[offset..offset + 4];
@@ -90,13 +66,105 @@ fn vault(artifact: &Artifact) -> Result<Vault, ExtractError> {
             .ok_or_else(|| ExtractError::Invalid("truncated LastPass vault record".to_owned()))?;
         if identifier == b"ENCU" {
             let (encrypted, iv) = parse_encu(&blob[offset..end])?;
-            return Ok(Vault { encrypted, iv });
+            return Ok(Vault {
+                iterations,
+                encrypted,
+                iv,
+            });
         }
         offset = end;
     }
     Err(ExtractError::Unsupported(
         "LastPass vault has no ENCU record".to_owned(),
     ))
+}
+
+fn decode_vault(blob: &[u8], iterations: Option<u32>) -> Result<Vault, ExtractError> {
+    if blob.starts_with(b"LPAV") {
+        return block_vault(blob, iterations);
+    }
+    if blob.starts_with(b"!") {
+        let (encrypted, iv) = parse_encu(blob)?;
+        return Ok(Vault {
+            iterations,
+            encrypted,
+            iv,
+        });
+    }
+    Err(ExtractError::Unsupported("not a LastPass vault".to_owned()))
+}
+
+fn is_record_char(byte: char) -> bool {
+    byte.is_ascii_alphanumeric() || matches!(byte, '+' | '/' | '=' | '!' | '|')
+}
+
+fn is_base64_char(byte: char) -> bool {
+    byte.is_ascii_alphanumeric() || matches!(byte, '+' | '/' | '=')
+}
+
+fn text_vault(text: &str, iterations: Option<u32>) -> Option<Vault> {
+    if text.starts_with('!') {
+        let end = text
+            .find(|byte| !is_record_char(byte))
+            .unwrap_or(text.len());
+        return decode_vault(&text.as_bytes()[..end], iterations).ok();
+    }
+    let token: String = text
+        .trim_start()
+        .chars()
+        .take_while(|byte| is_base64_char(*byte))
+        .collect();
+    let token = token.strip_prefix("LPB64").unwrap_or(&token);
+    let blob = decode_base64(token)?;
+    decode_vault(&blob, iterations).ok()
+}
+
+fn prefixed_vault(text: &str) -> Option<Vault> {
+    for (index, _) in text.match_indices("iterations=") {
+        let rest = &text[index + "iterations=".len()..];
+        let digits = rest.bytes().take_while(u8::is_ascii_digit).count();
+        if digits == 0 {
+            continue;
+        }
+        let iterations = rest[..digits].parse().ok()?;
+        let rest = rest[digits..].strip_prefix(';')?;
+        if let Some(vault) = text_vault(rest, Some(iterations)) {
+            return Some(vault);
+        }
+    }
+    None
+}
+
+fn vault(artifact: &Artifact) -> Result<Vault, ExtractError> {
+    let data = artifact.primary().read_all().map_err(|error| {
+        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
+    })?;
+    if let Ok(text) = str::from_utf8(&data) {
+        if let Some(vault) = prefixed_vault(text) {
+            return Ok(vault);
+        }
+        for line in text.lines() {
+            if let Some(blob) = decode_base64(line.trim()) {
+                if blob.starts_with(b"LPAV") {
+                    return decode_vault(&blob, None);
+                }
+            }
+        }
+    }
+    if data.starts_with(b"LPAV") {
+        return decode_vault(&data, None);
+    }
+    if let Some(rest) = data.strip_prefix(b"LPB64") {
+        return decode_base64(&String::from_utf8_lossy(rest))
+            .ok_or_else(|| ExtractError::Invalid("invalid LastPass LPB64 payload".to_owned()))
+            .and_then(|blob| decode_vault(&blob, None));
+    }
+    for value in sqlite::text_values(&data) {
+        if let Some(vault) = prefixed_vault(&value).or_else(|| text_vault(&value, None)) {
+            return Ok(vault);
+        }
+    }
+    Err(ExtractError::Unsupported("not a LastPass vault".to_owned()))
 }
 
 fn text_member(artifact: &Artifact, names: &[&str]) -> Option<String> {
@@ -127,9 +195,12 @@ fn build(artifact: &Artifact) -> Result<Lastpass, ExtractError> {
             "missing LastPass username companion (`username` or `email`)".to_owned(),
         )
     })?;
-    let iterations = iterations(artifact).ok_or_else(|| {
-        ExtractError::Unsupported("missing LastPass iteration companion".to_owned())
-    })?;
+    let iterations = vault
+        .iterations
+        .or_else(|| iterations(artifact))
+        .ok_or_else(|| {
+            ExtractError::Unsupported("missing LastPass iteration companion".to_owned())
+        })?;
     Ok(Lastpass {
         digest: vault
             .encrypted
@@ -152,10 +223,12 @@ impl Extractor for LastpassExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        if vault(artifact).is_err() {
+        let Ok(vault) = vault(artifact) else {
             return Probe::No;
-        }
-        if username(artifact).is_none() || iterations(artifact).is_none() {
+        };
+        if username(artifact).is_none()
+            || (vault.iterations.is_none() && iterations(artifact).is_none())
+        {
             return Probe::Maybe(
                 "LastPass vault needs `username` and `iterations` companions".to_owned(),
             );

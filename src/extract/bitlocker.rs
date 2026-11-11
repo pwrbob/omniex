@@ -1,6 +1,7 @@
 //! BitLocker FVE volume metadata, VMK material, and recovery-key records.
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt};
+use super::container::Window;
+use super::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt, container};
 use crate::types::BitLocker;
 use crate::{HashType, HashValue};
 
@@ -38,16 +39,109 @@ fn u64_at(data: &[u8], offset: usize) -> Option<u64> {
     ]))
 }
 
-fn signature(source: &dyn ReadAt) -> Option<usize> {
-    let mut header = [0u8; 11];
-    source.read_exact_at(0, &mut header).ok()?;
-    if &header[3..] == BITLOCKER {
-        Some(0xa0)
-    } else if &header[3..] == BITLOCKER_TO_GO {
-        Some(0x1a8)
-    } else {
-        None
+fn volumes<'a>(source: &'a dyn ReadAt) -> Vec<(Window<'a>, usize)> {
+    const WINDOW: usize = 1 << 20;
+    let mut results = Vec::new();
+    let mut position = 0u64;
+    let mut buffer = vec![0u8; WINDOW + 16];
+    while position < source.len() {
+        let read = source.read_at(position, &mut buffer).unwrap_or(0);
+        if read == 0 {
+            break;
+        }
+        for signature in [BITLOCKER, BITLOCKER_TO_GO] {
+            let guid_offset = if signature == BITLOCKER { 0xa0 } else { 0x1a8 };
+            let mut start = 0;
+            while let Some(found) = buffer[..read]
+                .windows(signature.len())
+                .skip(start)
+                .position(|window| window == signature)
+            {
+                let index = start + found;
+                start = index + 1;
+                let signature_offset = position + index as u64;
+                if signature == BITLOCKER {
+                    let version = buffer.get(index + 10).copied().unwrap_or(0);
+                    if !matches!(version, 1 | 2) && signature_offset != 3 {
+                        continue;
+                    }
+                }
+                let volume_offset = signature_offset.saturating_sub(3);
+                results.push((
+                    Window::new(source, volume_offset, source.len() - volume_offset),
+                    guid_offset,
+                ));
+                if results.len() >= 16 {
+                    return results;
+                }
+            }
+        }
+        if read <= 16 {
+            break;
+        }
+        position += (read - 16) as u64;
     }
+    results
+}
+
+fn scan_vmk(source: &dyn ReadAt) -> Vec<Recovery> {
+    const VMK_ENTRY: [u8; 4] = [0x02, 0x00, 0x08, 0x00];
+    let mut window = vec![0u8; 0x1000];
+    let read = source.read_at(0, &mut window).unwrap_or(0);
+    let mut found = Vec::new();
+    let mut start = 0;
+    while let Some(offset) = window[..read]
+        .windows(4)
+        .skip(start)
+        .position(|candidate| candidate == VMK_ENTRY)
+    {
+        let entry = start + offset;
+        start = entry + 1;
+        let mut block = vec![0u8; 256];
+        if source.read_exact_at(entry as u64, &mut block).is_err() {
+            continue;
+        }
+        let protection = u16::from_le_bytes([block[32], block[33]]);
+        let mut candidates = Vec::new();
+        match protection {
+            PROTECTION_PASSWORD => {
+                if block[32 + 113..32 + 115] == [0x00, 0x05] {
+                    candidates.push((32 + 14, 32 + 118));
+                }
+            }
+            PROTECTION_RECOVERY => {
+                for salt in [32 + 14, 32 + 34] {
+                    let aes = salt + 16 + 147;
+                    if block.get(aes..aes + 2) == Some(&[0x00, 0x05]) {
+                        candidates.push((salt, aes + 3));
+                    }
+                }
+            }
+            _ => {}
+        }
+        for (salt, nonce) in candidates {
+            let mut recovery = Recovery {
+                kind: if protection == PROTECTION_PASSWORD {
+                    KIND_PASSWORD
+                } else {
+                    KIND_RECOVERY
+                },
+                salt: [0; 16],
+                nonce: [0; 12],
+                data: [0; 60],
+            };
+            if block.get(salt..salt + 16).is_none() || block.get(nonce..nonce + 72).is_none() {
+                continue;
+            }
+            recovery.salt.copy_from_slice(&block[salt..salt + 16]);
+            recovery.nonce.copy_from_slice(&block[nonce..nonce + 12]);
+            recovery
+                .data
+                .copy_from_slice(&block[nonce + 12..nonce + 72]);
+            found.push(recovery);
+        }
+    }
+    found
 }
 
 fn stretched_salt(entry: &[u8]) -> Option<[u8; 16]> {
@@ -202,34 +296,49 @@ fn read_metadata(source: &dyn ReadAt, offset: u64) -> Result<Vec<u8>, ExtractErr
 }
 
 fn extract(artifact: &Artifact) -> Result<Vec<BitLocker>, ExtractError> {
-    let source = artifact.primary();
-    let guid_offset = signature(source)
-        .ok_or_else(|| ExtractError::Unsupported("not a BitLocker volume".to_owned()))?;
-
-    let offsets = metadata_offsets(source, guid_offset)?;
-    if offsets.is_empty() {
-        return Err(ExtractError::Invalid(
-            "BitLocker volume has no metadata blocks".to_owned(),
+    let container = container::Container::open(artifact)?;
+    let candidates = volumes(&container);
+    if candidates.is_empty() {
+        return Err(ExtractError::Unsupported(
+            "not a BitLocker volume".to_owned(),
         ));
     }
 
     let mut recoveries = Vec::new();
     let mut parsed = 0;
     let mut last_error = None;
-    for offset in offsets {
-        match read_metadata(source, offset) {
-            Ok(block) => match parse_block(&block) {
-                Ok(mut found) => {
-                    parsed += 1;
-                    recoveries.append(&mut found);
-                }
+    for (source, guid_offset) in &candidates {
+        let offsets = match metadata_offsets(source, *guid_offset) {
+            Ok(offsets) if !offsets.is_empty() => offsets,
+            Ok(_) => continue,
+            Err(error) => {
+                last_error = Some(error);
+                continue;
+            }
+        };
+        for offset in offsets {
+            match read_metadata(source, offset) {
+                Ok(block) => match parse_block(&block) {
+                    Ok(mut found) => {
+                        parsed += 1;
+                        recoveries.append(&mut found);
+                    }
+                    Err(error) => last_error = Some(error),
+                },
                 Err(error) => last_error = Some(error),
-            },
-            Err(error) => last_error = Some(error),
+            }
+        }
+        if !recoveries.is_empty() {
+            break;
+        }
+    }
+    if recoveries.is_empty() {
+        for (source, _) in &candidates {
+            recoveries.extend(scan_vmk(source));
         }
     }
 
-    if parsed == 0 {
+    if parsed == 0 && recoveries.is_empty() {
         return Err(last_error.unwrap_or_else(|| {
             ExtractError::Invalid("malformed BitLocker metadata block".to_owned())
         }));
@@ -272,7 +381,10 @@ impl Extractor for BitlockerExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        if signature(artifact.primary()).is_none() {
+        let Ok(container) = container::Container::open(artifact) else {
+            return Probe::No;
+        };
+        if volumes(&container).is_empty() {
             return Probe::No;
         }
         match extract(artifact) {
