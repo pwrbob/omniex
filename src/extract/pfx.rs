@@ -72,6 +72,51 @@ impl DigestAlgorithm {
     }
 }
 
+fn ber_end(data: &[u8], mut pos: usize) -> Result<usize, ExtractError> {
+    loop {
+        if data.get(pos..pos + 2) == Some(&[0, 0]) {
+            return Ok(pos);
+        }
+        let tag = *data
+            .get(pos)
+            .ok_or_else(|| ExtractError::Invalid("truncated BER tag".to_owned()))?;
+        let first = *data
+            .get(pos + 1)
+            .ok_or_else(|| ExtractError::Invalid("truncated BER length".to_owned()))?;
+        pos += 2;
+        if first == 0x80 {
+            if tag & 0x20 == 0 {
+                return Err(ExtractError::Invalid(
+                    "indefinite BER length on a primitive value".to_owned(),
+                ));
+            }
+            pos = ber_end(data, pos)? + 2;
+            continue;
+        }
+        let length = if first < 0x80 {
+            usize::from(first)
+        } else {
+            let count = usize::from(first & 0x7f);
+            if count == 0 || count > 4 {
+                return Err(ExtractError::Invalid("invalid BER length".to_owned()));
+            }
+            let mut length = 0usize;
+            for index in 0..count {
+                let byte = *data
+                    .get(pos + index)
+                    .ok_or_else(|| ExtractError::Invalid("truncated BER length".to_owned()))?;
+                length = (length << 8) | usize::from(byte);
+            }
+            pos += count;
+            length
+        };
+        pos = pos
+            .checked_add(length)
+            .filter(|end| *end <= data.len())
+            .ok_or_else(|| ExtractError::Invalid("BER value runs past the input".to_owned()))?;
+    }
+}
+
 struct Der<'a> {
     data: &'a [u8],
     pos: usize,
@@ -98,6 +143,17 @@ impl<'a> Der<'a> {
             .get(self.pos)
             .ok_or_else(|| ExtractError::Invalid("truncated DER length".to_owned()))?;
         self.pos += 1;
+        if first == 0x80 {
+            if tag & 0x20 == 0 {
+                return Err(ExtractError::Invalid(
+                    "indefinite DER length on a primitive value".to_owned(),
+                ));
+            }
+            let end = ber_end(self.data, self.pos)?;
+            let value = &self.data[self.pos..end];
+            self.pos = end + 2;
+            return Ok((tag, value, &self.data[start..self.pos]));
+        }
         let length = if first < 0x80 {
             usize::from(first)
         } else {
@@ -134,6 +190,17 @@ impl<'a> Der<'a> {
         Ok(value)
     }
 
+    fn octet_string(&mut self, what: &str) -> Result<Vec<u8>, ExtractError> {
+        let (tag, value, _) = self.tlv()?;
+        match tag {
+            0x04 => Ok(value.to_vec()),
+            0x24 => Ok(value.to_vec()),
+            _ => Err(ExtractError::Invalid(format!(
+                "expected {what} OCTET STRING"
+            ))),
+        }
+    }
+
     fn sequence(&mut self) -> Result<Der<'a>, ExtractError> {
         Ok(Der::new(self.value(0x30, "SEQUENCE")?))
     }
@@ -168,7 +235,7 @@ fn parse_bundle(data: &[u8]) -> Result<Pkcs12Bundle, ExtractError> {
         ));
     }
     let explicit = auth_safe.value(0xa0, "authSafe content")?;
-    let auth_safe_data = Der::new(explicit).value(0x04, "authSafe content")?.to_vec();
+    let auth_safe_data = Der::new(explicit).octet_string("authSafe content")?;
 
     if pfx.is_empty() {
         return Err(ExtractError::Unsupported("PFX without a MAC".to_owned()));

@@ -47,3 +47,7 @@ sha256 = "977667e6da27f3f14d287946c56155af2a8a455e943af716ac4aeddfe5c3f64a"
 [[file]]
 path = "tests/cms/samplekeys/ov-server.p12"
 sha256 = "b814628056bbb3dabef641c98e249dae909a0136733b64049996656845dfdd7f"
+
+[[file]]
+path = "tests/cms/samplekeys/t6752-ov-user-ff.p12"
+sha256 = "79eea43ad1924e48dc7128f4c10c235314aab9f94c6a8a62c07970b8b487a146"

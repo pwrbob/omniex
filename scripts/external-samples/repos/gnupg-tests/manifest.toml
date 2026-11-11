@@ -89,3 +89,10 @@ path = "tests/cms/samplekeys/ov-server.p12"
 slug = "pfx"
 reference = "john:pfx2john.py"
 format = "john"
+
+[[case]]
+name = "cms-t6752-ov-user-ff"
+path = "tests/cms/samplekeys/t6752-ov-user-ff.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"

@@ -31,3 +31,11 @@ slug = "openssl-enc"
 reference = "john:openssl2john.py"
 args = ["-m", "2"]
 format = "john"
+
+[[case]]
+name = "enc-aes"
+path = "tcl_tests/aes0.enc"
+slug = "openssl-enc"
+reference = "john:openssl2john.py"
+args = ["-m", "2"]
+format = "john"

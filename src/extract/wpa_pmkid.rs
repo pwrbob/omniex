@@ -113,6 +113,7 @@ pub(crate) mod net {
         let link_type = u32_at(source, 20, big_endian)?;
         let mut offset = 24u64;
         let mut buffer = Vec::new();
+        let mut saw_packet = false;
         while offset < len {
             if offset + 16 > len {
                 if len - offset > 1 {
@@ -123,7 +124,7 @@ pub(crate) mod net {
             let captured = u64::from(u32_at(source, offset + 8, big_endian)?);
             offset += 16;
             if offset + captured > len {
-                if len - offset > 1 {
+                if !saw_packet && len - offset > 1 {
                     return Err(truncated());
                 }
                 break;
@@ -134,6 +135,7 @@ pub(crate) mod net {
                     .read_exact_at(offset, &mut buffer)
                     .map_err(|_| truncated())?;
                 visit(link_type, &buffer);
+                saw_packet = true;
             }
             offset += captured;
         }

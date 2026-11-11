@@ -113,3 +113,10 @@ path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xlsm"
 slug = "office"
 reference = "john:office2john.py"
 format = "john"
+
+[[case]]
+name = "encrypted-ppt"
+path = "tests/test-data/encrypted/encrypted.ppt"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "john"

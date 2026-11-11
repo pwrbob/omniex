@@ -166,3 +166,24 @@ reference = "john:zip2john"
 format = "hashcat"
 reference_format = "john"
 decode = "uu"
+
+[[case]]
+name = "zip-encryption-data"
+path = "libarchive/test/test_read_format_zip_encryption_data.zip.uu"
+slug = "securezip"
+reference = "structural"
+decode = "uu"
+
+[[case]]
+name = "zip-encryption-header"
+path = "libarchive/test/test_read_format_zip_encryption_header.zip.uu"
+slug = "securezip"
+reference = "structural"
+decode = "uu"
+
+[[case]]
+name = "zip-encryption-partially"
+path = "libarchive/test/test_read_format_zip_encryption_partially.zip.uu"
+slug = "securezip"
+reference = "structural"
+decode = "uu"

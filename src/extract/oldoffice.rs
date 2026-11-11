@@ -486,6 +486,7 @@ fn power_point_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
         .get(offset_persist..)
         .ok_or_else(|| ExtractError::Invalid("PowerPoint persist offset".to_owned()))?;
     take(&mut persist, 8)?;
+    take_u32(&mut persist)?;
     let mut persist_offset = 0u32;
     for _ in 0..encrypt_session {
         persist_offset = take_u32(&mut persist)?;
@@ -507,7 +508,7 @@ fn power_point_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
     let mut header_len = take_u32(&mut header)?;
     let _skip = take_u32(&mut header)?;
     header_len = header_len.saturating_sub(4);
-    for _ in 0..4 {
+    for _ in 0..3 {
         take_u32(&mut header)?;
         header_len = header_len.saturating_sub(4);
     }
@@ -529,7 +530,11 @@ fn power_point_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {
             )));
         }
     };
-    read_verifier(&mut header, version)
+    let mut verifier = read_verifier(&mut header, version)?;
+    if verifier.version == 3 {
+        verifier.second_block = document.get(..32).map_or_else(Vec::new, <[u8]>::to_vec);
+    }
+    Ok(verifier)
 }
 
 fn extract_verifier(cfb: &Cfb) -> Result<Verifier, ExtractError> {

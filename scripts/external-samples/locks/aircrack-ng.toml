@@ -15,3 +15,7 @@ sha256 = "1b421dbcbd2760350eecb0ef7fd12fef5c6b2565bdaa02e2d51bfe6f36b71b44"
 [[file]]
 path = "test/wpa2.eapol.cap"
 sha256 = "d3f0331b528e4ddb0a4192af8cb949b4bb8233b9a1e05a4b567a90bdd4335f24"
+
+[[file]]
+path = "test/pmkid-not-recognized.cap"
+sha256 = "166f1e615e2d56a19e11450dfebd374283b8c1ec79c99d6af4e387cf0868f961"

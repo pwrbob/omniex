@@ -11,3 +11,7 @@ sha256 = "8ccd02fd0edad661f5c0c704d01fefd63a9af345854a498edaa3b76319033536"
 [[file]]
 path = "tcl_tests/cnt0.enc"
 sha256 = "66d6fe4e1be271ed5e2d2d4e3ab73f54c9be7b616228dc9e3726ae1a8921ee39"
+
+[[file]]
+path = "tcl_tests/aes0.enc"
+sha256 = "c2b6c36f84ed7ff7e612ce790a9770700426ea5878e434cf49e2338aa359fdb6"

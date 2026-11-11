@@ -31,3 +31,9 @@ name = "pmkid-wpa2-eapol"
 path = "test/wpa2.eapol.cap"
 slug = "wpa-pmkid"
 reference = "structural"
+
+[[case]]
+name = "pmkid-not-recognized"
+path = "test/pmkid-not-recognized.cap"
+slug = "wpa-pmkid"
+reference = "structural"

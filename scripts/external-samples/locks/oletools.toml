@@ -63,3 +63,7 @@ sha256 = "59c79d4d2f43ba9364bb51728d90c31f1983f94fc293d84c6e18a4c6d5808d5c"
 [[file]]
 path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xlsm"
 sha256 = "e2398063de6736f92dd4c18274016261bdb8b23e30fcb911c66d00f5f47e9fd8"
+
+[[file]]
+path = "tests/test-data/encrypted/encrypted.ppt"
+sha256 = "1a8638aad9c2305c68bb9e95ddeeb2e50c6c24d62fa73c9d0d311997bc9d0f40"
