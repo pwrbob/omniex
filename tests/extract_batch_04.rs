@@ -24,7 +24,7 @@ mod veracrypt;
 use std::path::{Path, PathBuf};
 
 use omniex::extract::{Artifact, ExtractError, Extractor, Probe, Selection, select};
-use omniex::{Mode, RenderOptions};
+use omniex::{Mode, RenderOptions, Tool};
 
 fn fixture(kind: &str, name: &str) -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -256,6 +256,23 @@ fn sshng_extracts_new_and_legacy_keys() {
         [expected("sshng", "legacy-ec.hash")]
     );
     assert!(modes(&SSHNG, &legacy_ec).contains(&Mode::Hashcat(22931)));
+
+    let cbc = artifact("sshng", "aes256-cbc.key");
+    let cbc_hashes: Vec<String> = SSHNG
+        .extract(&cbc)
+        .expect("extract")
+        .iter()
+        .map(|value| {
+            value
+                .render(&RenderOptions {
+                    tool: Tool::John,
+                    ..RenderOptions::default()
+                })
+                .unwrap()
+        })
+        .collect();
+    assert_eq!(cbc_hashes, [expected("sshng", "aes256-cbc.hash")]);
+    assert!(modes(&SSHNG, &cbc).contains(&Mode::John("SSH")));
 }
 
 #[test]

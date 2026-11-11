@@ -61,8 +61,152 @@ path = "RAR/hp0.rar"
 sha256 = "ab2b58c43ecd7a2005a2fd78ac8cdeb84e488542f5f5f6807f9da59952e6ea1b"
 
 [[file]]
+path = "Apple_DMG/HFS+-UDBZ-openwall-data.dmg"
+sha256 = "c8fd7428f59e41ba2568aa2e96fd4873f7d14a4d88e01d506b7117ad1001b660"
+
+[[file]]
+path = "Apple_DMG/HFS+-UDBZ-password-data.dmg"
+sha256 = "fa547babb4d1131daa47bb8ce1f2c72a6e17fe360f213ec95694439ff10920fd"
+
+[[file]]
+path = "Apple_DMG/HFS+-UDBZ-password-openwall.dmg"
+sha256 = "2b098eeed9f2e6c8a8d09a3e12b50451b1717ed5e3e8386865ed926364213b70"
+
+[[file]]
+path = "Apple_DMG/HFS+-UDCO-openwall-data.dmg"
+sha256 = "ac356a3c89a296246cdc952576b974e3179bb385ba308ac2c4efde2df9c78e9d"
+
+[[file]]
+path = "Apple_DMG/HFS+-UDRO-openwall-data.dmg"
+sha256 = "053feb495961d5e093ae3c4c7a16b76f73b4f93573581446462e188de7a2a5c7"
+
+[[file]]
+path = "Apple_DMG/HFS+-UDRW-openwall-data.dmg"
+sha256 = "40065ec8b1fc637ae9ca25d60260f8fade55342c3164cfa7a7e29a4599b0424d"
+
+[[file]]
+path = "Apple_DMG/HFS+-UDZO-password-data.dmg"
+sha256 = "1488bac3dcaad7386fb376d89ccaea3a86e79e549544a666457d2eb4449e234c"
+
+[[file]]
+path = "Apple_DMG/HFS+-UDZO-password-openwall.dmg"
+sha256 = "fa9f95bce4ba021dd0c3c73349b0aa0c470a38a4b07260f8fabf733ffd8ce9a0"
+
+[[file]]
+path = "Apple_DMG/HFS+J-APM-openwall.dmg"
+sha256 = "8608add4deb1dce377ebd6f883ab8c174396029fa0afae075b4e7dcf4ecb1a21"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-GPM-openwall.dmg"
+sha256 = "4620b0a9cc1c8e3321cfed6b679b9dbd2d1063fd838b107b6cfdd8fc7e0f68ad"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-RW-no-partition-map-openwall.dmg"
+sha256 = "85bc17634c88a5efb31e85aab949dcaaff83cbdd39ecfaa4a8466f33cf95bb2d"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-UDBZ-openwall-data.dmg"
+sha256 = "a1b51be6ee8e59844ccbb22827eac664db4b2b52cb5a6fdd932b586e8ac4e6be"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-UDBZ-password-data.dmg"
+sha256 = "57e64c8734914a707582d039cd12715cb2589ea61d69518170dbffbc9a816558"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-UDCO-openwall-data.dmg"
+sha256 = "e20ac37ee8d99fe3444e6463711d43df3e62f3e98a90ca82365ede39807ca756"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-UDRO-openwall-data.dmg"
+sha256 = "a9885f669eb7085666a0d48317e755ec2378726d0d2c93d7ebca269f6c542365"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-UDRW-openwall-data.dmg"
+sha256 = "3e756a59481d04ddaa98bc8cf0cf12fd5ba64cfff7bc20c81d06a815f9ddc771"
+
+[[file]]
+path = "Apple_DMG/MS-DOS-UDZO-password-data.dmg"
+sha256 = "80467a64d16683cdc233511cd9cad49bab3a4982248e835ef498a84a03cd5fce"
+
+[[file]]
+path = "Apple_DMG/RO-openwall.dmg"
+sha256 = "8e2e4c002fb63ecb591b743f16f3bd36cad13fac0d1a0a7a058afc7b5301609e"
+
+[[file]]
+path = "Apple_DMG/RW-openwall.dmg"
+sha256 = "277800886a960324ca5d23c922b3b48607f57bc40536573041fcc739bf825a17"
+
+[[file]]
+path = "Apple_DMG/big_expectunexpected.dmg"
+sha256 = "8c5987892fe5eb3fbf997c1bb22e6a63b23ebd8e7a7ca549ced104a9fa96443d"
+
+[[file]]
+path = "Apple_DMG/challenge19.dmg"
+sha256 = "bc02c35c022d2fb59fc3e408448c806c435a7946062eafd3524a63b7ea7b1ee3"
+
+[[file]]
+path = "Apple_DMG/dmg-easy.dmg"
+sha256 = "b9034419e45fefbb9df47ba4eb9d0bdc17b8bd0370b4abb7ace11a2fd8780af0"
+
+[[file]]
 path = "Apple_DMG/dmg-hard.dmg"
 sha256 = "6593a17aa839407e8aa9357316058525b88adbf4ec66fb8dd43e4ac04bbd5bbf"
+
+[[file]]
+path = "Apple_DMG/dmg-medium.dmg"
+sha256 = "e6669c0a002700989ff044af1b13940ab01d8740c1e795439324777d3376f3c5"
+
+[[file]]
+path = "Apple_DMG/hybrid-openwall.dmg"
+sha256 = "7ddce565d52a37ddc6faad3f1ca42eaad18fceb0a3ea59b428afca51b5fe1d91"
+
+[[file]]
+path = "Apple_DMG/macOS-hello123-no-partition-map.dmg"
+sha256 = "3baa8961a67c8ea2a2d32f8d6f8786468b13f02431d36d239ee0d3175e48ebee"
+
+[[file]]
+path = "Apple_DMG/macOS-notastrongpassword-smaller.dmg"
+sha256 = "0bee6621decaf65342d53a849438d0f43d64356ab69162dcd1dce6b3d073a2de"
+
+[[file]]
+path = "Apple_DMG/macOS-notastrongpassword.dmg"
+sha256 = "e6ecc7034a9a1bf81fc6a7d54a9618e6d89969bf9b5006bbbe7dfd61108a4c2a"
+
+[[file]]
+path = "Apple_DMG/openwall-fixed-2.dmg"
+sha256 = "267c5a8129bcbf804ef2ee13997045d491d7667a0eae31683c7f75092d5bb83c"
+
+[[file]]
+path = "Apple_DMG/openwall-fixed.dmg"
+sha256 = "75181c064a130dcddb33210a3a09f997e535c2818449987a747df3890a567fad"
+
+[[file]]
+path = "Apple_DMG/openwall.dmg"
+sha256 = "f698a398c480f3751111de73265189b8d705d3504f46ba60e5a133b686399f24"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-128.64k.header_v2.dmg"
+sha256 = "63a1065cd1fb64d745ff53c523af27489386d06672bf726c1a913b3a92b78893"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-256.64k.header_v2.dmg"
+sha256 = "25f7afa2eca63ff72b09810e14680fe1e2c0962ac54fc564a437e1acb92aa69e"
+
+[[file]]
+path = "Apple_DMG/DVD-CD-openwall.cdr"
+sha256 = "095ab42889a880dbc14039e606e1f3d5171edd255450aa4ba26c7f2c7ee4f48e"
+
+[[file]]
+path = "Apple_DMG/one.sparseimage.secret.sparseimage"
+sha256 = "770f7f75ba1b88b3ba9cc61f4fe3b420bf5ec3dbffd4887ad0c2a5154783f9c8"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-128.64k.header_v2.sparseimage"
+sha256 = "94d93a5ada2657b1f9b331a570456d9eb09ff57867ea1c08e48be61f854aba2a"
+
+[[file]]
+path = "Apple_DMG/testimage.AES-256.64k.header_v2.sparseimage"
+sha256 = "32c6db0a652b79ff5882aaba86093fe4a1932d83db5408cbca3cf6fed03ca69b"
 
 [[file]]
 path = "TrueCrypt/tc-hackthis"
@@ -681,6 +825,14 @@ path = "Kerberos_v5/MiTM-etype-17-user1-openwall.pcap"
 sha256 = "356402c2b5db4411fd2f9f34ee3a3adc0cbffa0ebcf8774d28c7a085cd618096"
 
 [[file]]
+path = "Kerberos_v5/AD-capture-1.pcapng"
+sha256 = "a35543b4342c10da8456dbbf6f874ad48f0ca551c5b9dfc36a1bb651a85e83a3"
+
+[[file]]
+path = "Kerberos_v5/AD-capture-2.pcapng"
+sha256 = "3cb118ed32075582b42b5a34ce921d1b20b13dd7ce4bae8c1276d898e4b2be86"
+
+[[file]]
 path = "Kerberos_v5/MiTM-user1-openwall-etype-23.pcap"
 sha256 = "39f86f1a52d9ba223755a0520f1a0929dd52611a2f2a509356ae8433b4caafff"
 
@@ -737,8 +889,24 @@ path = "SSH/openssh-new-format-keys/ssh-default.key"
 sha256 = "86b7272ca33eec207b9fe1f0629557cabef050d6dcbe553220438d5250b8ab44"
 
 [[file]]
+path = "SSH/openssh-new-format-keys/ssh-new-format-1.key"
+sha256 = "310623eb8c90e875ee22164967b2c59059c37437997df4cdb0b1d8e319ab255c"
+
+[[file]]
+path = "SSH/openssh-new-format-keys/ssh-new-format-2.key"
+sha256 = "c3e179c33ff0df5888264c5edf85c8216b0e0029f290dec2b698a560d0c8eeec"
+
+[[file]]
+path = "SSH/openssh-new-format-keys/ssh-new-format-3.key"
+sha256 = "b1d60a0dee93ba27706d20d2d11eebbf2578b1e53fa342498ba744a1839f8a95"
+
+[[file]]
 path = "SSH/aes-256-ctr/id_rsa-aes256-ctr"
 sha256 = "42396d47cab513a3417ce41d023a184c24cb9a46a532a271b6297875b282888c"
+
+[[file]]
+path = "SSH/aes-256-ctr/id_rsa-aes256-cbc"
+sha256 = "691d4946a49c4f48bedf86c3f322af86fa03d8b9ae59b264a14dc24e640b956c"
 
 [[file]]
 path = "eCryptfs/wrapped-passphrase"
@@ -1051,6 +1219,14 @@ sha256 = "e80841477f695f8a9b5a2c61b5318812f51a811d9ab834df6462e87a2c8946f1"
 [[file]]
 path = "PDF/pdf_samples/test-X-AES-256-open-testpassword.pdf"
 sha256 = "3e11aa07ee8238b8ff42a5dd2ee3a0a01fe79fe176102e0472d085f45e8365fa"
+
+[[file]]
+path = "Keplr_Wallet/000010.log"
+sha256 = "ca7a2c33ec09e4656c8b374737b4e6b3e15fb620815d047f3cddc32045109c0a"
+
+[[file]]
+path = "Office/Office_Secrets/Office_2010/2010-PDF_myhovercraftisfullofeels_.pdf"
+sha256 = "adbee3c44ed3cc71637a92f81762e19b6a8028821c618ca5ee16d881d02f444f"
 
 [[file]]
 path = "KeePass/kdbx4/test_3charspassword.kdbx"

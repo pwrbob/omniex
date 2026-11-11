@@ -134,11 +134,7 @@ fn new_format(data: &[u8]) -> Result<Option<Sshng>, ExtractError> {
 
     let cipher = match cipher_name {
         b"aes256-ctr" => 6,
-        b"aes256-cbc" => {
-            return Err(ExtractError::Unsupported(
-                "hashcat does not support bcrypt-pbkdf with aes256-cbc".to_owned(),
-            ));
-        }
+        b"aes256-cbc" => 2,
         other => {
             return Err(ExtractError::Unsupported(format!(
                 "unsupported OpenSSH cipher {}",
