@@ -75,3 +75,27 @@ sha256 = "8459042bbc6da2eb6265ba5fa552bfa46892a710bc401306840272e5e8536117"
 [[file]]
 path = "tests/data/FileKeyHex.kdb"
 sha256 = "905f8894e1f59a5f0937f60b6a64ccf195f0b8ef6a92fdb9de844a86a81fb65a"
+
+[[file]]
+path = "tests/data/FileKeyXmlV2.kdbx"
+sha256 = "100d37b42d3327db4b01f757a91a205dc3a72f2b6766a9403200c5485138eaef"
+
+[[file]]
+path = "tests/data/NewDatabaseMulti.kdbx"
+sha256 = "6f1da6396925d65cef838e666173a8e6593243f3935cc6c3ae2a3f27706d1ede"
+
+[[file]]
+path = "tests/data/SyncDatabaseDifferentPassword.kdbx"
+sha256 = "7e0b674ebf5e4e35bb00f46ac8bd189bca7fbf66ffcdeda192b2f235ad107c6e"
+
+[[file]]
+path = "tests/data/RecycleBinWithData.kdbx"
+sha256 = "8cba4f2fa04a12550cd0c0fae72701c6281bb7cc76db2ca4502bb180a5b4d4c8"
+
+[[file]]
+path = "tests/data/NewDatabaseBrowser.kdbx"
+sha256 = "8d4ab8b8b2cec6d53d03dd933aa4b5301037978c37f36c04b112d0b0912e180d"
+
+[[file]]
+path = "share/demo.kdbx"
+sha256 = "8d3fb92bd71c0f639641916a6c3dcab244b238656cf3052d9142f8991b8d0f85"

@@ -50,3 +50,31 @@ path = "tests/test-data/encrypted/encrypted.pptm"
 slug = "office"
 reference = "john:office2john.py"
 format = "john"
+
+[[case]]
+name = "encrypted-xlsb"
+path = "tests/test-data/encrypted/encrypted.xlsb"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "encrypted-pptx"
+path = "tests/test-data/encrypted/encrypted.pptx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "autostart-standardpassword"
+path = "tests/test-data/encrypted/autostart-encrypt-standardpassword.xls"
+slug = "oldoffice"
+reference = "john:office2john.py"
+format = "john"
+
+[[case]]
+name = "dde-standardpassword"
+path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xlsx"
+slug = "office"
+reference = "john:office2john.py"
+format = "john"

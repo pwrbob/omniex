@@ -128,3 +128,41 @@ reference = "john:7z2john.pl"
 format = "john"
 decode = "uu"
 requires = ["perl:Compress::Raw::Lzma"]
+
+[[case]]
+name = "rar3-encryption-data"
+path = "libarchive/test/test_read_format_rar_encryption_data.rar.uu"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"
+subset = true
+
+[[case]]
+name = "rar3-encryption-header"
+path = "libarchive/test/test_read_format_rar_encryption_header.rar.uu"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"
+subset = true
+
+[[case]]
+name = "rar3-encryption-partially"
+path = "libarchive/test/test_read_format_rar_encryption_partially.rar.uu"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"
+
+[[case]]
+name = "zip-traditional-encryption-data"
+path = "libarchive/test/test_read_format_zip_traditional_encryption_data.zip.uu"
+slug = "pkzip"
+reference = "john:zip2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"

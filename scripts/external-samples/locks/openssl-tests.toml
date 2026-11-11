@@ -19,3 +19,15 @@ sha256 = "f0e2ba3dbff295a1d8490d34a3bf153b3a51a28bfe5c59fb02eb175a69a23fb7"
 [[file]]
 path = "test/recipes/80-test_cmp_http_data/Mock/new_pass_12345.key"
 sha256 = "476eb2372b191eb4c3cfe456258c4d752c2402388979ec99454ec2dd7f23ceca"
+
+[[file]]
+path = "test/recipes/80-test_pkcs12_data/java-skey.p12"
+sha256 = "17e14d9214bbf87e0041968025734a9764486da61942e8b991e6d239644b4f8f"
+
+[[file]]
+path = "test/recipes/80-test_pkcs12_data/multi-skey.p12"
+sha256 = "4712d48d923a4ea2e9982b50fcbfb69a8bcb6d50f2c3c4e9c9dc2a5ef7488cf6"
+
+[[file]]
+path = "test/recipes/80-test_pkcs12_data/mismatched_key_pass.p12"
+sha256 = "0c2c59e69d9ba5de582568422d27ed4ebfeb5ed09315ff5337607b1c41b4a7cd"

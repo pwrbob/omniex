@@ -27,3 +27,19 @@ sha256 = "05f3e35090741d53a4afcedc8e6614061ca7f1ec4dfb822eb4cd2cfe3fbd6fca"
 [[file]]
 path = "tests/test-data/encrypted/encrypted.pptm"
 sha256 = "fd12f906e409b95c0836cac55a2fc1b3fa3884508aa308a002a53a6496e4e26a"
+
+[[file]]
+path = "tests/test-data/encrypted/encrypted.xlsb"
+sha256 = "c60629e25bf0eb24d208d64e1893dba02009d9dd990e23f587dc28f4d03d4aa1"
+
+[[file]]
+path = "tests/test-data/encrypted/encrypted.pptx"
+sha256 = "8af95ba9df66fcb2bbc60df2813dbb187629e30f33da11edbc94ae6fb1024022"
+
+[[file]]
+path = "tests/test-data/encrypted/autostart-encrypt-standardpassword.xls"
+sha256 = "607f6f160adfe499195942273d7f66a2feb442aa3e63a988ac2e5bb1dde1ca05"
+
+[[file]]
+path = "tests/test-data/encrypted/dde-test-encrypt-standardpassword.xlsx"
+sha256 = "168fecb516836479a0e9b440403145c96c2a24a541cea48447c68758005b1549"

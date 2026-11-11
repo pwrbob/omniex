@@ -59,3 +59,15 @@ sha256 = "5509709d810ecafc5b97a932bb29334f46f5988b49bab0ea80fcdef4587a8fbd"
 [[file]]
 path = "vectors/cryptography_vectors/asymmetric/OpenSSH/sk-ed25519-psw.key"
 sha256 = "35353e777a173cf0f8b1386a9db723948986fb86f340badf4900d952db7d4d03"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha224.pem"
+sha256 = "a14337e04dc979d9a3bf67a7c14376568b158249cfd904b91f863f821d811415"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/rsa_pkcs8_pbes2_pbkdf2_2048_3des_sha384.pem"
+sha256 = "df6de7e2ed97fd20b4476d15e849ba8a03449b2baf8984c4660fbc45e2fc3154"
+
+[[file]]
+path = "vectors/cryptography_vectors/asymmetric/PKCS8/rsa-aes-192-cbc.pem"
+sha256 = "6add76097ff376780d5e9016607abc87d40485b59feba03b72d4764bb33cb831"

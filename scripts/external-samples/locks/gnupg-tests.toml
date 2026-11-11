@@ -39,3 +39,11 @@ sha256 = "f49cdd89538c6dc55a0d4681e1d9ebeb429013f43572776ed93fea667aab73a1"
 [[file]]
 path = "tests/cms/samplekeys/t5793-test.pfx"
 sha256 = "2017248dc9d025687795a3209f359414fe7443347855a4036b35228e385dfa81"
+
+[[file]]
+path = "tests/cms/samplekeys/edward.tester@demo.gnupg.com.p12"
+sha256 = "977667e6da27f3f14d287946c56155af2a8a455e943af716ac4aeddfe5c3f64a"
+
+[[file]]
+path = "tests/cms/samplekeys/ov-server.p12"
+sha256 = "b814628056bbb3dabef641c98e249dae909a0136733b64049996656845dfdd7f"

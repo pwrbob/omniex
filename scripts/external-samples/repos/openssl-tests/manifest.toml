@@ -40,3 +40,24 @@ path = "test/recipes/80-test_cmp_http_data/Mock/new_pass_12345.key"
 slug = "pkcs8-pbes2"
 reference = "john:pem2john.py"
 format = "john"
+
+[[case]]
+name = "pkcs12-java-skey"
+path = "test/recipes/80-test_pkcs12_data/java-skey.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "pkcs12-multi-skey"
+path = "test/recipes/80-test_pkcs12_data/multi-skey.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "pkcs12-mismatched-key-pass"
+path = "test/recipes/80-test_pkcs12_data/mismatched_key_pass.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"

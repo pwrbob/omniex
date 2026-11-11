@@ -12,7 +12,9 @@ const END: &str = "-----END ENCRYPTED PRIVATE KEY-----";
 const OID_PBES2: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x05, 0x0d];
 const OID_PBKDF2: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x05, 0x0c];
 const OID_HMAC_SHA1: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x07];
+const OID_HMAC_SHA224: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x08];
 const OID_HMAC_SHA256: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x09];
+const OID_HMAC_SHA384: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x0a];
 const OID_HMAC_SHA512: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x02, 0x0b];
 const OID_DES_EDE3_CBC: &[u8] = &[0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x03, 0x07];
 const OID_AES128_CBC: &[u8] = &[0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x01, 0x02];
@@ -127,7 +129,9 @@ fn decode_armor(text: &str) -> Result<Vec<u8>, ExtractError> {
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Prf {
     Sha1,
+    Sha224,
     Sha256,
+    Sha384,
     Sha512,
 }
 
@@ -135,7 +139,9 @@ impl Prf {
     const fn name(self) -> &'static str {
         match self {
             Self::Sha1 => "sha1",
+            Self::Sha224 => "sha224",
             Self::Sha256 => "sha256",
+            Self::Sha384 => "sha384",
             Self::Sha512 => "sha512",
         }
     }
@@ -212,7 +218,9 @@ fn parse_private_key(der: &[u8]) -> Result<KeyParts, ExtractError> {
             let oid = prf_sequence.oid("PBKDF2 PRF")?;
             prf = match oid {
                 OID_HMAC_SHA1 => Prf::Sha1,
+                OID_HMAC_SHA224 => Prf::Sha224,
                 OID_HMAC_SHA256 => Prf::Sha256,
+                OID_HMAC_SHA384 => Prf::Sha384,
                 OID_HMAC_SHA512 => Prf::Sha512,
                 _ => {
                     return Err(ExtractError::Unsupported(

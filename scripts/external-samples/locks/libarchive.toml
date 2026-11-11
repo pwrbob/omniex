@@ -55,3 +55,19 @@ sha256 = "afff7c927a529d4b0ce6d0ad42971510d7f37540d84f0fcf033499956b0826b6"
 [[file]]
 path = "libarchive/test/test_read_format_7zip_encryption_partially.7z.uu"
 sha256 = "cb581af7af0f3dfca26f947c46480dd050a47622d05f4e5c4f3ac8763a50d8c7"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar_encryption_data.rar.uu"
+sha256 = "be268313b305b8bb048621d657e76b4f32289cd3ab59a99805698ad03b39b587"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar_encryption_header.rar.uu"
+sha256 = "2e56bf61f98eb519e41ef19303d563d1331cc5fd126212e4aba0d0a0e8167057"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar_encryption_partially.rar.uu"
+sha256 = "efc09869294e03f6a363fd8e41cc5838e4a2d08e32a18773a95161a90965f3a3"
+
+[[file]]
+path = "libarchive/test/test_read_format_zip_traditional_encryption_data.zip.uu"
+sha256 = "4a8fe1121b5122459885ffebdf916725f8687209c8f8918598b72f82f40c9365"

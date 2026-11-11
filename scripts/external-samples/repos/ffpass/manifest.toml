@@ -12,3 +12,10 @@ path = "tests/firefox-mp-84/key4.db"
 slug = "mozilla-aes"
 reference = "hashcat:mozilla2hashcat.py"
 format = "hashcat"
+
+[[case]]
+name = "key4-3des"
+path = "tests/firefox-mp-70/key4.db"
+slug = "mozilla-3des"
+reference = "hashcat:mozilla2hashcat.py"
+format = "hashcat"

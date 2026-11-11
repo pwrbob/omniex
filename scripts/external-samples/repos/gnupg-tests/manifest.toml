@@ -75,3 +75,17 @@ path = "tests/cms/samplekeys/t5793-test.pfx"
 slug = "pfx"
 reference = "john:pfx2john.py"
 format = "john"
+
+[[case]]
+name = "cms-edward-tester"
+path = "tests/cms/samplekeys/edward.tester@demo.gnupg.com.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"
+
+[[case]]
+name = "cms-ov-server"
+path = "tests/cms/samplekeys/ov-server.p12"
+slug = "pfx"
+reference = "john:pfx2john.py"
+format = "john"

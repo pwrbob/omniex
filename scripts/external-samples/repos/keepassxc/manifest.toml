@@ -138,3 +138,45 @@ path = "tests/data/FileKeyHex.kdb"
 slug = "keepass"
 reference = "john:keepass2john"
 format = "john"
+
+[[case]]
+name = "filekey-xml-v2-kdbx2"
+path = "tests/data/FileKeyXmlV2.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "new-database-multi-kdbx2"
+path = "tests/data/NewDatabaseMulti.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "sync-database-different-password-kdbx2"
+path = "tests/data/SyncDatabaseDifferentPassword.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "recycle-bin-with-data-kdbx2"
+path = "tests/data/RecycleBinWithData.kdbx"
+slug = "keepass"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "new-database-browser-kdbx4-aeskdf"
+path = "tests/data/NewDatabaseBrowser.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
+
+[[case]]
+name = "demo-database-kdbx4"
+path = "share/demo.kdbx"
+slug = "keepass4"
+reference = "john:keepass2john"
+format = "john"
