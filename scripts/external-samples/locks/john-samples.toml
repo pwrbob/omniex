@@ -1333,6 +1333,22 @@ path = "ENCDataVault/05-SanDiskPrivateAccess-123456Aa!/filesystem.dat"
 sha256 = "4d99b2a03aaf51efc863c4eeb83d06829768b8262502c3a2fa9841e50b169b84"
 
 [[file]]
+path = "Oracle_O5LOGON/try-1-simple"
+sha256 = "de85803c3ce93e4bd74dad14de6c39160a40d864303b9d3c5417e3a983010b88"
+
+[[file]]
+path = "Oracle_O5LOGON/try-2"
+sha256 = "0c9edb75591253614f781cf4e11380536c47414817025a7082ff74135cddec23"
+
+[[file]]
+path = "Oracle_O5LOGON/11gR2-no-Nmap"
+sha256 = "b11cb23cfe62ff3118825c3e89c1db0a8164062bf581bb3c42f587c504efc68c"
+
+[[file]]
+path = "Oracle_O5LOGON/11gR2-root-no-Nmap"
+sha256 = "7a7d5e6b7c649c8c0fc8f8d5296cb96b5aa195024809299229b2723063ead31f"
+
+[[file]]
 path = "SNMPv3/encrypted_auth_md5_aes128.pcap"
 sha256 = "ea39e8f02da3f3c4777c984bd29f3488afefa4a67bfa62790d5a9e9cb6363b5d"
 

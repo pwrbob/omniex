@@ -810,6 +810,23 @@ omniex_args = ["--companion", "enckey={artifact_dir}/enckey.dat"]
 
 # Neither John nor hashcat ships an SNMPv3 extractor, so these only guard
 # against extraction regressions.
+# The text captures hold several sessions; the reference reports a subset.
+[[case]]
+name = "o5logon-text-{base}"
+glob = "Oracle_O5LOGON/try-*"
+slug = "o5logon"
+reference = "john:oracle2john.py"
+format = "john"
+subset = true
+
+[[case]]
+name = "o5logon-text-{base}"
+glob = "Oracle_O5LOGON/11gR2-*no-Nmap"
+slug = "o5logon"
+reference = "john:oracle2john.py"
+format = "john"
+subset = true
+
 [[case]]
 name = "snmpv3-{base}"
 glob = "SNMPv3/*.pcap"
