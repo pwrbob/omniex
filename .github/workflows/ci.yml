@@ -390,6 +390,9 @@ jobs:
           path: tmp/external-samples
           key: ${{ runner.os }}-external-samples-${{ hashFiles('scripts/external-samples/repos/**/manifest.toml', 'scripts/external-samples/locks/*.toml') }}
 
+      - name: Normalize sample cache permissions
+        run: chmod -R u+rwX,go+rX tmp/external-samples
+
       - name: Build omniex
         run: |
           export TIMEFORMAT='  [time] %3R s'
