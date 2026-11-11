@@ -9,13 +9,27 @@ mode = "file"
 [[case]]
 name = "key3-firefox-20"
 path = "tests/test_data/test_profile_firefox_20/key3.db"
-slug = "mozilla-key3"
+slug = "mozilla-3des"
 reference = "hashcat:mozilla2hashcat.py"
 format = "hashcat"
 
 [[case]]
 name = "key3-firefox-46"
 path = "tests/test_data/test_profile_firefox_46/key3.db"
-slug = "mozilla-key3"
+slug = "mozilla-3des"
+reference = "hashcat:mozilla2hashcat.py"
+format = "hashcat"
+
+[[case]]
+name = "key4-3des-firefox-59"
+path = "tests/test_data/test_profile_firefox_59/key4.db"
+slug = "mozilla-3des"
+reference = "hashcat:mozilla2hashcat.py"
+format = "hashcat"
+
+[[case]]
+name = "key4-3des-firefox-144"
+path = "tests/test_data/test_profile_firefox_144/key4.db"
+slug = "mozilla-3des"
 reference = "hashcat:mozilla2hashcat.py"
 format = "hashcat"

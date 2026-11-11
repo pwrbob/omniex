@@ -49,13 +49,37 @@ pub struct SevenZip {
     pub data: String,
 }
 
+fn split_tail(input: &str) -> Result<Vec<(&str, usize)>, ParseError> {
+    let mut fields = Vec::with_capacity(10);
+    let mut offset = 0;
+    for (index, field) in input.splitn(10, '$').enumerate() {
+        if index >= 10 {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                offset,
+                "expected 10 fields separated by `$`",
+            ));
+        }
+        fields.push((field, offset));
+        offset += field.len() + 1;
+    }
+    if fields.len() != 10 {
+        return Err(parse::error(
+            ParseErrorKind::InvalidLength,
+            input.len(),
+            "expected 10 fields separated by `$`",
+        ));
+    }
+    Ok(fields)
+}
+
 impl Parse for SevenZip {
     fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
         }
         let rest = parse::strip_prefix(input, "$7z$", 0)?;
-        let fields = parse::split_fields(rest, '$', 10)?;
+        let fields = split_tail(rest)?;
         fn number(value: &str, offset: usize, name: &str) -> Result<u32, ParseError> {
             value.parse::<u32>().map_err(|_| {
                 parse::error(

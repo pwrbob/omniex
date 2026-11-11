@@ -1,16 +1,17 @@
-//! Mozilla key3.db, rendered as `$mozilla$*<cipher>*<salt>*<entry salt>*<digest>`.
+//! Mozilla 3DES databases, rendered as
+//! `$mozilla$*<cipher>*<salt>*<entry salt>*<digest>`.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
-/// Mozilla key3.db hashes.
+/// Mozilla 3DES hashes from `key3.db` and `key4.db`.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "Mozilla key3.db",
-    slug = "mozilla-key3",
+    name = "Mozilla 3DES",
+    slug = "mozilla-3des",
     hashcat = [26000],
 )]
-pub struct MozillaKey3 {
+pub struct Mozilla3des {
     /// Cipher name.
     #[field(role = other, encoding = ascii)]
     pub cipher: String,
@@ -28,7 +29,7 @@ pub struct MozillaKey3 {
     pub digest: [u8; 16],
 }
 
-impl Parse for MozillaKey3 {
+impl Parse for Mozilla3des {
     fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
@@ -44,7 +45,7 @@ impl Parse for MozillaKey3 {
     }
 }
 
-impl Render for MozillaKey3 {
+impl Render for Mozilla3des {
     fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "$mozilla$*{}*{}*{}*{}",

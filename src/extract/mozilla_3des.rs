@@ -1,12 +1,12 @@
-//! Mozilla key3.db extraction.
+//! Mozilla 3DES extraction from `key3.db` and `key4.db`.
 
 use std::collections::HashMap;
 
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
-use crate::types::MozillaKey3;
+use crate::types::Mozilla3des;
 use crate::{HashType, HashValue};
 
-pub struct MozillaKey3Extractor;
+pub struct Mozilla3desExtractor;
 
 const MAGIC: u32 = 0x61561;
 const VERSION: u32 = 2;
@@ -103,7 +103,7 @@ fn read_db(data: &[u8]) -> Result<HashMap<Vec<u8>, Vec<u8>>, ExtractError> {
     Ok(db)
 }
 
-fn parse(artifact: &Artifact) -> Result<MozillaKey3, ExtractError> {
+fn parse_key3(artifact: &Artifact) -> Result<Mozilla3des, ExtractError> {
     let data = artifact.primary().read_all().map_err(|error| {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
     })?;
@@ -135,7 +135,7 @@ fn parse(artifact: &Artifact) -> Result<MozillaKey3, ExtractError> {
         .get(password_check.len().saturating_sub(16)..)
         .filter(|digest| digest.len() == 16)
         .ok_or_else(|| ExtractError::Invalid("truncated key3.db verifier".to_owned()))?;
-    Ok(MozillaKey3 {
+    Ok(Mozilla3des {
         cipher: "3DES".to_owned(),
         salt: crate::format::hex(global_salt),
         entry_salt: crate::format::hex(entry_salt),
@@ -143,14 +143,38 @@ fn parse(artifact: &Artifact) -> Result<MozillaKey3, ExtractError> {
     })
 }
 
-impl Extractor for MozillaKey3Extractor {
+fn parse(artifact: &Artifact) -> Result<Mozilla3des, ExtractError> {
+    let data = artifact.primary().read_all().map_err(|error| {
+        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
+    })?;
+    if data.starts_with(super::mozilla_aes::SQLITE_MAGIC) {
+        return match super::mozilla_aes::parse_key4(&data)? {
+            super::mozilla_aes::Key4::ThreeDes {
+                global_salt,
+                entry_salt,
+                digest,
+            } => Ok(Mozilla3des {
+                cipher: "3DES".to_owned(),
+                salt: crate::format::hex(&global_salt),
+                entry_salt: crate::format::hex(&entry_salt),
+                digest,
+            }),
+            super::mozilla_aes::Key4::Aes(_) => Err(ExtractError::Unsupported(
+                "key4.db uses AES; use the mozilla-aes extractor".to_owned(),
+            )),
+        };
+    }
+    parse_key3(artifact)
+}
+
+impl Extractor for Mozilla3desExtractor {
     fn slug(&self) -> &'static str {
-        MozillaKey3::SLUG
+        Mozilla3des::SLUG
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         match parse(artifact) {
-            Ok(_) => Probe::yes("key3.db BSD database"),
+            Ok(_) => Probe::yes("Mozilla 3DES database"),
             Err(_) => Probe::No,
         }
     }

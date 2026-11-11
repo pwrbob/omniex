@@ -118,8 +118,8 @@ This file documents the extractors currently registered in
 - `lpcli` - LastPass CLI state with companion username and iteration records.
 - `cryptosafe` - cryptoSafe vaults.
 - `keyring` - GNOME Keyring files.
-- `mozilla-key4` - Firefox `key4.db` master-password verifiers.
-- `mozilla-key3` - Firefox `key3.db` master-password verifiers.
+- `mozilla-aes` - Firefox `key4.db` master-password verifiers.
+- `mozilla-3des` - Firefox `key3.db` and `key4.db` 3DES master-password verifiers.
 - `armory` - Armory wallets.
 - `blockchain-second` - Blockchain.com second-password wallets.
 - `dogechain` - Dogechain wallets.

@@ -1,17 +1,17 @@
-//! Mozilla key4.db, rendered as `$mozilla$*<cipher>*<salt>*<iv>*<iterations>*<iv2>*<digest>`.
+//! Mozilla AES, rendered as `$mozilla$*<cipher>*<salt>*<iv>*<iterations>*<iv2>*<digest>`.
 
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
-/// Mozilla key4.db hashes.
+/// Mozilla AES hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
-    name = "Mozilla key4.db",
-    slug = "mozilla-key4",
+    name = "Mozilla AES",
+    slug = "mozilla-aes",
     hashcat = [26100, 26150],
-    modes_fn = mozilla_key4_modes,
+    modes_fn = mozilla_aes_modes,
 )]
-pub struct MozillaKey4 {
+pub struct MozillaAes {
     /// Cipher name.
     #[field(role = other, encoding = ascii)]
     pub cipher: String,
@@ -37,7 +37,7 @@ pub struct MozillaKey4 {
     pub digest: Vec<u8>,
 }
 
-pub fn mozilla_key4_modes(value: &MozillaKey4) -> Vec<crate::Mode> {
+pub fn mozilla_aes_modes(value: &MozillaAes) -> Vec<crate::Mode> {
     if value.salt.len() == 96 {
         vec![crate::Mode::Hashcat(26150)]
     } else {
@@ -45,7 +45,7 @@ pub fn mozilla_key4_modes(value: &MozillaKey4) -> Vec<crate::Mode> {
     }
 }
 
-impl Parse for MozillaKey4 {
+impl Parse for MozillaAes {
     fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
@@ -69,7 +69,7 @@ impl Parse for MozillaKey4 {
     }
 }
 
-impl Render for MozillaKey4 {
+impl Render for MozillaAes {
     fn render_value(&self, _opts: &RenderOptions) -> String {
         format!(
             "$mozilla$*{}*{}*{}*{}*{}*{}",

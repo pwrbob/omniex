@@ -403,8 +403,8 @@ mod krb5asrep_aes;
 mod krb5tgs23;
 mod lastpass;
 mod lpcli;
-mod mozilla_key3;
-mod mozilla_key4;
+mod mozilla_3des;
+mod mozilla_aes;
 mod multibit_wallet;
 mod office;
 mod office2016_sheetprotection;
@@ -660,8 +660,8 @@ pub static EXTRACTORS: &[&dyn Extractor] = &[
     &armory::ArmoryExtractor,
     &cryptosafe::CryptosafeExtractor,
     &keyring::KeyringExtractor,
-    &mozilla_key3::MozillaKey3Extractor,
-    &mozilla_key4::MozillaKey4Extractor,
+    &mozilla_3des::Mozilla3desExtractor,
+    &mozilla_aes::MozillaAesExtractor,
     &blockchain_second::BlockchainSecondExtractor,
     &dogechain::DogechainExtractor,
     &tezos::TezosExtractor,

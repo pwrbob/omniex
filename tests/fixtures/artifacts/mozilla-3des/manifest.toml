@@ -1,4 +1,4 @@
-type = "mozilla-key3"
+type = "mozilla-3des"
 generator = "synthetic key3.db BSD database"
 notes = "Synthetic master-password verifier; no real credentials."
 artifact = "key3.db"

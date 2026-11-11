@@ -7,3 +7,11 @@ sha256 = "2f81d97683271e13d4fd538473cff4681b857c4a179cb9b7e69db60736114e89"
 [[file]]
 path = "tests/test_data/test_profile_firefox_46/key3.db"
 sha256 = "57b43236402e2da1a0e0892b3b1ec91b33dbca154366003df21f5ee9d49c8fde"
+
+[[file]]
+path = "tests/test_data/test_profile_firefox_59/key4.db"
+sha256 = "f4c0bedc562a636f27d1666c258d1e98edc456482c1d4561b915d0158c58b3e0"
+
+[[file]]
+path = "tests/test_data/test_profile_firefox_144/key4.db"
+sha256 = "ab359841f96f4e37b996b35296591bd256476975d67911e20edcf2c6cfcb6e45"

@@ -428,7 +428,7 @@ format = "john"
 [[case]]
 name = "mozilla-{dir}"
 glob = "Mozilla/*/key3.db"
-slug = "mozilla-key3"
+slug = "mozilla-3des"
 reference = "hashcat:mozilla2hashcat.py"
 format = "hashcat"
 exclude = ["Mozilla/*null*/key3.db"]

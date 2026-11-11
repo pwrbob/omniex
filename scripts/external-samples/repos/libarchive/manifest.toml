@@ -29,3 +29,102 @@ slug = "winzip"
 reference = "john:zip2john"
 format = "john"
 decode = "uu"
+
+[[case]]
+name = "rar5-encrypted"
+path = "libarchive/test/test_read_format_rar5_encrypted.rar.uu"
+slug = "rar5"
+reference = "john:rar2john"
+format = "john"
+decode = "uu"
+
+[[case]]
+name = "rar5-encrypted-filenames"
+path = "libarchive/test/test_read_format_rar5_encrypted_filenames.rar.uu"
+slug = "rar5"
+reference = "john:rar2john"
+format = "john"
+decode = "uu"
+
+[[case]]
+name = "rar5-solid-encrypted"
+path = "libarchive/test/test_read_format_rar5_solid_encrypted.rar.uu"
+slug = "rar5"
+reference = "john:rar2john"
+format = "john"
+decode = "uu"
+
+[[case]]
+name = "rar5-solid-encrypted-filenames"
+path = "libarchive/test/test_read_format_rar5_solid_encrypted_filenames.rar.uu"
+slug = "rar5"
+reference = "john:rar2john"
+format = "john"
+decode = "uu"
+
+[[case]]
+name = "rar4-encrypted"
+path = "libarchive/test/test_read_format_rar4_encrypted.rar.uu"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"
+subset = true
+
+[[case]]
+name = "rar4-encrypted-filenames"
+path = "libarchive/test/test_read_format_rar4_encrypted_filenames.rar.uu"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"
+subset = true
+
+[[case]]
+name = "rar4-solid-encrypted"
+path = "libarchive/test/test_read_format_rar4_solid_encrypted.rar.uu"
+slug = "rar3p"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"
+subset = true
+
+[[case]]
+name = "rar4-solid-encrypted-filenames"
+path = "libarchive/test/test_read_format_rar4_solid_encrypted_filenames.rar.uu"
+slug = "rar3hp"
+reference = "john:rar2john"
+format = "hashcat"
+reference_format = "john"
+decode = "uu"
+subset = true
+
+[[case]]
+name = "7z-encryption"
+path = "libarchive/test/test_read_format_7zip_encryption.7z.uu"
+slug = "sevenzip"
+reference = "john:7z2john.pl"
+format = "john"
+decode = "uu"
+requires = ["perl:Compress::Raw::Lzma"]
+
+[[case]]
+name = "7z-encryption-header"
+path = "libarchive/test/test_read_format_7zip_encryption_header.7z.uu"
+slug = "sevenzip"
+reference = "john:7z2john.pl"
+format = "john"
+decode = "uu"
+requires = ["perl:Compress::Raw::Lzma"]
+
+[[case]]
+name = "7z-encryption-partially"
+path = "libarchive/test/test_read_format_7zip_encryption_partially.7z.uu"
+slug = "sevenzip"
+reference = "john:7z2john.pl"
+format = "john"
+decode = "uu"
+requires = ["perl:Compress::Raw::Lzma"]

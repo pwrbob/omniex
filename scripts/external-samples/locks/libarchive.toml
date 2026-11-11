@@ -11,3 +11,47 @@ sha256 = "3cf66443e8a3585d3f740342fc59a8c9c9d99ee4663c7b3cee0b915350ab3d4a"
 [[file]]
 path = "libarchive/test/test_read_format_zip_winzip_aes256_stored.zip.uu"
 sha256 = "0c710f925aeda0a4e51bfee6007b83af47a2235001397bd18c83d9dfd384685e"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar5_encrypted.rar.uu"
+sha256 = "5cc262d34226c3c9298df7bda065eee1523f8ff6ebaced486f48117095661a0b"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar5_encrypted_filenames.rar.uu"
+sha256 = "f113860fd2f06aa13b2f933150a1f80988038cdeef393fbb6a1a0d302c86148e"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar5_solid_encrypted.rar.uu"
+sha256 = "9abb75e0de966b3db2bd7f3e8f6ec2db11a953b8855e0fb97d259472119a6f3f"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar5_solid_encrypted_filenames.rar.uu"
+sha256 = "f05919eebdf3b41a82046dc5b9d6c0e2426e8ec7c25f47e7e0501f5900d33913"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar4_encrypted.rar.uu"
+sha256 = "42dbdbebe72842c255ef9d600a37ca38cde2133e07abfcf49512dcb81280c746"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar4_encrypted_filenames.rar.uu"
+sha256 = "aa4d2a0235c7627bc6011c081d16b3b36b1986f315de0be5891315622213c383"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar4_solid_encrypted.rar.uu"
+sha256 = "ed7ef1e86e07b08993121ae303ec7e6ee104cd2fff9f35b6a074d7bc54f63bf6"
+
+[[file]]
+path = "libarchive/test/test_read_format_rar4_solid_encrypted_filenames.rar.uu"
+sha256 = "888f1ca2e2f65a96913bfd164996de9d411d9f52a5589a8f55d20c0fdf3fb575"
+
+[[file]]
+path = "libarchive/test/test_read_format_7zip_encryption.7z.uu"
+sha256 = "6ffca867af12df7bb62ccbdc2bd37677cb4c690aefb266247abc54687e34efb9"
+
+[[file]]
+path = "libarchive/test/test_read_format_7zip_encryption_header.7z.uu"
+sha256 = "afff7c927a529d4b0ce6d0ad42971510d7f37540d84f0fcf033499956b0826b6"
+
+[[file]]
+path = "libarchive/test/test_read_format_7zip_encryption_partially.7z.uu"
+sha256 = "cb581af7af0f3dfca26f947c46480dd050a47622d05f4e5c4f3ac8763a50d8c7"

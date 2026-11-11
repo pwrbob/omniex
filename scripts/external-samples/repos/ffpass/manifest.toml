@@ -9,6 +9,6 @@ mode = "file"
 [[case]]
 name = "key4-aes"
 path = "tests/firefox-mp-84/key4.db"
-slug = "mozilla-key4"
+slug = "mozilla-aes"
 reference = "hashcat:mozilla2hashcat.py"
 format = "hashcat"

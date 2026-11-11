@@ -3237,7 +3237,7 @@ pub const VECTORS: &[Vector] = &[
         john: &[],
     },
     Vector {
-        slug: "mozilla-key3",
+        slug: "mozilla-3des",
         hashcat: &[hc!(
             26000,
             "$mozilla$*3DES*b735d19e6cadb5136376a98c2369f22819d08c79*2b36961682200a877f7d5550975b614acc9fefe3*f03f3575fd5bdbc9e32232316eab7623"
@@ -3245,7 +3245,7 @@ pub const VECTORS: &[Vector] = &[
         john: &[],
     },
     Vector {
-        slug: "mozilla-key4",
+        slug: "mozilla-aes",
         hashcat: &[
             hc!(
                 26100,

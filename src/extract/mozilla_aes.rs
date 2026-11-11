@@ -1,12 +1,12 @@
-//! Mozilla key4.db extraction.
+//! Mozilla AES extraction.
 
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
-use crate::types::MozillaKey4;
+use crate::types::MozillaAes;
 use crate::{HashType, HashValue};
 
-pub struct MozillaKey4Extractor;
+pub struct MozillaAesExtractor;
 
-const SQLITE_MAGIC: &[u8] = b"SQLite format 3\0";
+pub(super) const SQLITE_MAGIC: &[u8] = b"SQLite format 3\0";
 
 const OID_3DES: &[u8] = &[
     0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x0c, 0x05, 0x01, 0x03,
@@ -399,11 +399,17 @@ fn integer(der: &Der<'_>) -> Result<u64, ExtractError> {
     Ok(value)
 }
 
-fn parse(artifact: &Artifact) -> Result<MozillaKey4, ExtractError> {
-    let data = artifact.primary().read_all().map_err(|error| {
-        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
-    })?;
-    let (global_salt, item) = metadata_row(&data)?;
+pub(super) enum Key4 {
+    ThreeDes {
+        global_salt: Vec<u8>,
+        entry_salt: Vec<u8>,
+        digest: [u8; 16],
+    },
+    Aes(MozillaAes),
+}
+
+pub(super) fn parse_key4(data: &[u8]) -> Result<Key4, ExtractError> {
+    let (global_salt, item) = metadata_row(data)?;
     let root = parse_der(&item)?;
     if root.tag != 0x30 {
         return Err(ExtractError::Invalid("invalid key4.db ASN.1".to_owned()));
@@ -413,9 +419,16 @@ fn parse(artifact: &Artifact) -> Result<MozillaKey4, ExtractError> {
     let algorithm_oid = oid(child(algorithm, 0)?)?;
     let parameters = child(algorithm, 1)?;
     if algorithm_oid == OID_3DES {
-        return Err(ExtractError::Unsupported(
-            "key4.db uses 3DES; use the key3 extractor".to_owned(),
-        ));
+        let entry_salt = octets(child(parameters, 0)?)?;
+        let _iterations = integer(child(parameters, 1)?)?;
+        let digest = ciphertext.try_into().map_err(|_| {
+            ExtractError::Invalid("invalid key4.db 3DES ciphertext length".to_owned())
+        })?;
+        return Ok(Key4::ThreeDes {
+            global_salt,
+            entry_salt: entry_salt.to_vec(),
+            digest,
+        });
     }
     if algorithm_oid != OID_PBES2 {
         return Err(ExtractError::Unsupported(
@@ -474,19 +487,31 @@ fn parse(artifact: &Artifact) -> Result<MozillaKey4, ExtractError> {
         .map_err(|_| ExtractError::Invalid("key4.db iteration count is too large".to_owned()))?;
     let mut iv = vec![0x04, 0x0e];
     iv.extend_from_slice(iv_value);
-    Ok(MozillaKey4 {
+    Ok(Key4::Aes(MozillaAes {
         cipher: "AES".to_owned(),
         salt: crate::format::hex(global_salt),
         entry_salt: crate::format::hex(entry_salt),
         iterations,
         iv: crate::format::hex(iv),
         digest: ciphertext.to_vec(),
-    })
+    }))
 }
 
-impl Extractor for MozillaKey4Extractor {
+fn parse(artifact: &Artifact) -> Result<MozillaAes, ExtractError> {
+    let data = artifact.primary().read_all().map_err(|error| {
+        ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
+    })?;
+    match parse_key4(&data)? {
+        Key4::Aes(value) => Ok(value),
+        Key4::ThreeDes { .. } => Err(ExtractError::Unsupported(
+            "key4.db uses 3DES; use the mozilla-3des extractor".to_owned(),
+        )),
+    }
+}
+
+impl Extractor for MozillaAesExtractor {
     fn slug(&self) -> &'static str {
-        MozillaKey4::SLUG
+        MozillaAes::SLUG
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {

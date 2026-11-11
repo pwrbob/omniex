@@ -136,8 +136,8 @@ README badge counts checked lines in this file.
 
 ## Browsers
 
-- [x] Firefox `key4.db` master-password verifier (`mozilla-key4`)
-- [x] Firefox `key3.db` master-password verifier (`mozilla-key3`)
+- [x] Firefox `key4.db` master-password verifier (`mozilla-aes`)
+- [x] Firefox `key3.db` and `key4.db` 3DES master-password verifiers (`mozilla-3des`)
 - [x] Safari saved-password records in the login keychain
 
 ## Wallets and cryptocurrency stores
@@ -267,4 +267,4 @@ These artifacts do not currently map to a crackable hash serialization or cannot
 - SECURITY hive LSA secrets: not a single hash format. Recoverable records map to existing types such as `ntlm` or `dcc2`, while others are not password hashes.
 - PKZIP master-key archives: the hash carries no artifact-derived salt or ciphertext.
 - Chromium Login Data and Cookies: encrypted with OS-protected keys and no crackable verifier is present in the files.
-- Firefox `logins.json` and `signons.sqlite`: encrypted login records contain no master-password verifier; use `mozilla-key4` or `mozilla-key3` instead.
+- Firefox `logins.json` and `signons.sqlite`: encrypted login records contain no master-password verifier; use `mozilla-aes` or `mozilla-3des` instead.

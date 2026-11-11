@@ -8,7 +8,7 @@ that understands both hashcat and John the Ripper serializations.
 ![John modes](https://img.shields.io/badge/John_modes-262%2F262-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
 ![exact extractors](https://img.shields.io/badge/exact_extractors-186%2F238-8957e5)
-![external samples](https://img.shields.io/badge/external_samples-61_formats_%2F_530_cases-8957e5)
+![external samples](https://img.shields.io/badge/external_samples-61_formats_%2F_543_cases-8957e5)
 
 Status: early development. Hashcat and John mode coverage is tracked in
 [`MODES.md`](MODES.md); artifact extraction coverage is tracked in
@@ -396,8 +396,8 @@ checked against that command in CI.
 | `axcrypt-sha1` | AxCrypt 1 in-memory SHA1 | 13300 | - |
 | `bestcrypt` | BestCrypt | 23900, 24000 | `BestCryptVE4` |
 | `pkzip-master-key` | PKZIP Master Key | 20500, 20510 | - |
-| `mozilla-key3` | Mozilla key3.db | 26000 | - |
-| `mozilla-key4` | Mozilla key4.db | 26100, 26150 | - |
+| `mozilla-3des` | Mozilla 3DES | 26000 | - |
+| `mozilla-aes` | Mozilla AES | 26100, 26150 | - |
 | `blockchain` | Blockchain, My Wallet | 12700, 15200, 34700 | `Blockchain` |
 | `rar3p` | RAR3-p | 23700, 23800 | - |
 | `oldoffice` | MS Office <= 2003 | 9700, 9710, 9720, 9800, 9810, 9820 | `oldoffice` |

@@ -695,7 +695,7 @@ const PENDING_E2E: &[&str] = &[
     "kwallet",
     "luks-v1",
     "luks-v2",
-    "mozilla-key4",
+    "mozilla-aes",
     "mschapv2-naive",
     "multibit",
     "netntlmv1",
