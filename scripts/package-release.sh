@@ -45,12 +45,14 @@ mkdir -p "$stage"
 
 cp "$binary" "$stage/"
 cp LICENSE CHANGELOG.md "$stage/"
-# The logo is referenced by relative path, so the unpacked archive needs the
-# assets next to the README for the image to resolve.
-cp -R assets "$stage/"
+
+# The archive is flat: only the two logo variants the README shows travel with
+# it, and the README points at them directly instead of the repository layout.
+cp assets/logo/omniex-logo.svg assets/logo/omniex-logo-dark.svg "$stage/"
 # Badges are remote images. They resolve on GitHub but not for a reader of the
 # archive, so the packaged README keeps the local logo and drops the badges.
-grep -v -e '^!\[.*\](https://img.shields.io' -e '^\[!\[CI\]' README.md >"$stage/README.md"
+grep -v -e '^!\[.*\](https://img.shields.io' -e '^\[!\[CI\]' README.md |
+    sed -e 's|assets/logo/||g' >"$stage/README.md"
 
 tar --create --gzip --file "$dist/omniex-${tag}-${target}.tar.gz" \
     --directory "$dist" "omniex-${tag}-${target}"
