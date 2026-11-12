@@ -54,12 +54,8 @@ lotus5              Lotus Notes/Domino  8600                -
 ```
 
 Inspect a known hash as an analyst, with each field identified and described.
-The terminal colors match every hash part to its field row:
 
 ![omniex parse showing colored hash parts and field descriptions](assets/readme/parse-human.svg)
-
-Long parameters are truncated in the middle; add `--full` to show them
-completely.
 
 Point it at an artifact and get cracker-ready hashes, including every matching
 record when the artifact holds more than one:
