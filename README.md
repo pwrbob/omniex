@@ -79,7 +79,8 @@ $gpg$*1*348*1024*724234ac...*3*254*8*7*16*7a128c1924dc3b71cf6ee96199db60b5*65536
 ```
 
 `--format json` emits the same hashes as structured fields, and `--tool john`
-re-renders them for John instead of hashcat.
+re-renders them for John instead of hashcat. If the artifact cannot be
+auto-detected, provide `--type <slug>` explicitly.
 
 ## Core model
 
