@@ -8,7 +8,7 @@ use std::env;
 use std::io::{self, IsTerminal};
 
 use comfy_table::presets::NOTHING;
-use comfy_table::{Attribute, Cell, ContentArrangement, Table};
+use comfy_table::{Attribute, Cell, Color, ContentArrangement, Table};
 use textwrap::{Options, WordSeparator, WordSplitter};
 use unicode_width::UnicodeWidthStr;
 
@@ -80,6 +80,61 @@ impl Context {
             text.to_owned()
         }
     }
+
+    /// Styles text with an accent when the terminal supports styling.
+    #[must_use]
+    pub fn accent(&self, accent: Accent, text: &str) -> String {
+        if self.bold {
+            format!("{}{text}\x1b[0m", accent.ansi())
+        } else {
+            text.to_owned()
+        }
+    }
+}
+
+/// Terminal accent used to distinguish hash parts.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Accent {
+    /// Salt values.
+    Red,
+    /// Iteration counts.
+    Green,
+    /// Ciphertext and encrypted payloads.
+    Yellow,
+    /// Digests and checksums.
+    Blue,
+    /// Keys and secrets.
+    Magenta,
+    /// Initialization vectors.
+    Cyan,
+    /// User names.
+    White,
+}
+
+impl Accent {
+    fn ansi(self) -> &'static str {
+        match self {
+            Self::Red => "\x1b[31m",
+            Self::Green => "\x1b[32m",
+            Self::Yellow => "\x1b[33m",
+            Self::Blue => "\x1b[34m",
+            Self::Magenta => "\x1b[35m",
+            Self::Cyan => "\x1b[36m",
+            Self::White => "\x1b[37m",
+        }
+    }
+
+    fn color(self) -> Color {
+        match self {
+            Self::Red => Color::DarkRed,
+            Self::Green => Color::DarkGreen,
+            Self::Yellow => Color::DarkYellow,
+            Self::Blue => Color::DarkBlue,
+            Self::Magenta => Color::DarkMagenta,
+            Self::Cyan => Color::DarkCyan,
+            Self::White => Color::Grey,
+        }
+    }
 }
 
 /// Renders a title, its single rule, and a table.
@@ -131,6 +186,18 @@ pub fn title(context: &Context, title: &str) -> String {
 /// Renders a table with a bold header row. It never draws a rule.
 #[must_use]
 pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> String {
+    table_with_accents(context, headers, rows, &[], &[])
+}
+
+/// Renders a table whose accent columns are colored per row.
+#[must_use]
+pub fn table_with_accents(
+    context: &Context,
+    headers: &[&str],
+    rows: &[Vec<String>],
+    accents: &[Option<Accent>],
+    accent_columns: &[usize],
+) -> String {
     if headers.is_empty() {
         return String::new();
     }
@@ -159,11 +226,18 @@ pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> Strin
         }
     }
 
-    for row in rows {
+    for (row_index, row) in rows.iter().enumerate() {
+        let accent = accents.get(row_index).copied().flatten();
         let cells = headers
             .iter()
             .enumerate()
-            .map(|(index, _)| Cell::new(cell_or_dash(row.get(index).map_or("", String::as_str))))
+            .map(|(index, _)| {
+                let mut cell = Cell::new(cell_or_dash(row.get(index).map_or("", String::as_str)));
+                if let Some(accent) = accent.filter(|_| accent_columns.contains(&index)) {
+                    cell = cell.fg(accent.color());
+                }
+                cell
+            })
             .collect::<Vec<_>>();
         table.add_row(cells);
     }
@@ -174,6 +248,86 @@ pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> Strin
         .map(str::trim_end)
         .collect::<Vec<_>>()
         .join("\n")
+}
+
+/// Accent span inside a hash string.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct AccentSpan {
+    /// Byte offset where the span starts.
+    pub start: usize,
+    /// Byte offset where the span ends.
+    pub end: usize,
+    /// Accent used for the span.
+    pub accent: Accent,
+}
+
+/// Renders one aligned key/value pair, coloring and wrapping spans.
+#[must_use]
+pub fn key_value_accented(
+    context: &Context,
+    label: &str,
+    value: &str,
+    spans: &[AccentSpan],
+    label_width: usize,
+) -> String {
+    let value_width = context.width.saturating_sub(label_width + GAP).max(1);
+    let padding = " ".repeat(label_width.saturating_sub(label.width()));
+    styled_wrap(context, value, value_width, spans)
+        .into_iter()
+        .enumerate()
+        .map(|(index, line)| {
+            if index == 0 {
+                format!("{}{padding}{}{line}", context.bold(label), " ".repeat(GAP))
+            } else {
+                format!("{}{line}", " ".repeat(label_width + GAP))
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
+fn styled_wrap(context: &Context, text: &str, width: usize, spans: &[AccentSpan]) -> Vec<String> {
+    let mut cursor = 0;
+    wrap_text(text, width)
+        .into_iter()
+        .map(|line| {
+            let start = if text[cursor..].starts_with(&line) {
+                cursor
+            } else {
+                text[cursor..]
+                    .find(&line)
+                    .map(|position| cursor + position)
+                    .unwrap_or(cursor)
+            };
+            let end = start + line.len();
+            let colored = color_range(context, &line, start, spans);
+            cursor = end;
+            colored
+        })
+        .collect()
+}
+
+fn color_range(context: &Context, text: &str, start: usize, spans: &[AccentSpan]) -> String {
+    let end = start + text.len();
+    let mut output = String::with_capacity(text.len());
+    let mut last = 0;
+    for span in spans {
+        let span_start = span.start.max(start);
+        let span_end = span.end.min(end);
+        if span_start >= span_end {
+            continue;
+        }
+        let local_start = span_start - start;
+        let local_end = span_end - start;
+        if local_start < last {
+            continue;
+        }
+        output.push_str(&text[last..local_start]);
+        output.push_str(&context.accent(span.accent, &text[local_start..local_end]));
+        last = local_end;
+    }
+    output.push_str(&text[last..]);
+    output
 }
 
 /// Renders aligned key/value rows.
@@ -307,6 +461,39 @@ mod tests {
         let bold = Context::from_parts(80, 20, false, true).unwrap();
         assert_eq!(plain.bold("x"), "x");
         assert_eq!(bold.bold("x"), "\u{1b}[1mx\u{1b}[0m");
+    }
+
+    #[test]
+    fn accents_style_only_when_enabled() {
+        let plain = Context::from_parts(80, 20, false, false).unwrap();
+        let styled = Context::from_parts(80, 20, false, true).unwrap();
+        assert_eq!(plain.accent(Accent::Red, "x"), "x");
+        assert_eq!(styled.accent(Accent::Red, "x"), "\u{1b}[31mx\u{1b}[0m");
+    }
+
+    #[test]
+    fn table_colors_accent_columns() {
+        let plain = Context::from_parts(80, 20, false, false).unwrap();
+        let styled = Context::from_parts(80, 20, false, true).unwrap();
+        let rows = [vec!["salt".to_owned(), "ascii".to_owned()]];
+
+        let plain_output = table_with_accents(
+            &plain,
+            &["Name", "Encoding"],
+            &rows,
+            &[Some(Accent::Red)],
+            &[0],
+        );
+        let styled_output = table_with_accents(
+            &styled,
+            &["Name", "Encoding"],
+            &rows,
+            &[Some(Accent::Red)],
+            &[0],
+        );
+
+        assert!(!plain_output.contains('\u{1b}'));
+        assert!(styled_output.contains("\u{1b}[38;5;1msalt"));
     }
 
     #[test]

@@ -747,38 +747,95 @@ fn verbose_value(
     );
     block.push('\n');
 
+    let fields = value.describe();
     let mut pairs = Vec::new();
     if total > 1 {
         pairs.push(("Line", line.to_string()));
     }
-    pairs.push(("Input", input.to_owned()));
     pairs.push(("Hashcat", hashcat));
     pairs.push(("John", john));
+    let label_width = pairs
+        .iter()
+        .map(|(label, _)| label.len())
+        .max()
+        .unwrap_or(0)
+        .max("Input".len());
+    block.push_str(&ui::key_value_accented(
+        context,
+        "Input",
+        input,
+        &accent_spans(&fields, input),
+        label_width,
+    ));
+    block.push('\n');
     block.push_str(&ui::key_values(context, &pairs));
     block.push('\n');
     block.push_str(&context.bold("Fields"));
     block.push('\n');
 
-    let rows = value
-        .describe()
-        .into_iter()
+    let rows = fields
+        .iter()
         .map(|entry| {
             vec![
                 entry.field.name.to_owned(),
                 role_name(entry.field.role).to_owned(),
                 encoding_name(entry.field.encoding).to_owned(),
-                entry.value,
+                entry.value.clone(),
                 entry.field.description.to_owned(),
             ]
         })
         .collect::<Vec<_>>();
-    block.push_str(&ui::table(
+    let accents = fields
+        .iter()
+        .map(|entry| accent_for(entry.field.role))
+        .collect::<Vec<_>>();
+    block.push_str(&ui::table_with_accents(
         context,
         &["Name", "Role", "Encoding", "Value", "Description"],
         &rows,
+        &accents,
+        &[0, 3],
     ));
 
     block
+}
+
+fn accent_spans(fields: &[omniex::FieldValue], input: &str) -> Vec<ui::AccentSpan> {
+    let mut spans = Vec::new();
+    let mut cursor = 0;
+    for entry in fields {
+        let value = entry.value.as_str();
+        let Some(accent) = accent_for(entry.field.role) else {
+            continue;
+        };
+        if value.is_empty() {
+            continue;
+        }
+        let Some(relative) = input.get(cursor..).and_then(|rest| rest.find(value)) else {
+            continue;
+        };
+        let start = cursor + relative;
+        spans.push(ui::AccentSpan {
+            start,
+            end: start + value.len(),
+            accent,
+        });
+        cursor = start + value.len();
+    }
+    spans
+}
+
+fn accent_for(role: FieldRole) -> Option<ui::Accent> {
+    match role {
+        FieldRole::Salt => Some(ui::Accent::Red),
+        FieldRole::Key => Some(ui::Accent::Magenta),
+        FieldRole::Digest => Some(ui::Accent::Blue),
+        FieldRole::Iv => Some(ui::Accent::Cyan),
+        FieldRole::Ciphertext => Some(ui::Accent::Yellow),
+        FieldRole::Iterations => Some(ui::Accent::Green),
+        FieldRole::Username => Some(ui::Accent::White),
+        FieldRole::Other => None,
+    }
 }
 
 fn role_name(role: FieldRole) -> &'static str {
@@ -801,5 +858,50 @@ fn encoding_name(encoding: Encoding) -> &'static str {
         Encoding::Base64 => "base64",
         Encoding::Decimal => "decimal",
         Encoding::Ascii => "ascii",
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use omniex::FieldValue;
+
+    static FIELDS: [omniex::Field; 2] = [
+        omniex::Field {
+            name: "digest",
+            description: "Digest",
+            ty: "[u8; 16]",
+            role: FieldRole::Digest,
+            encoding: Encoding::Hex,
+        },
+        omniex::Field {
+            name: "salt",
+            description: "Salt",
+            ty: "String",
+            role: FieldRole::Salt,
+            encoding: Encoding::Ascii,
+        },
+    ];
+
+    #[test]
+    fn accent_spans_follow_field_order() {
+        let fields = [
+            FieldValue {
+                field: &FIELDS[0],
+                value: "abcd".to_owned(),
+            },
+            FieldValue {
+                field: &FIELDS[1],
+                value: "12".to_owned(),
+            },
+        ];
+        let spans = accent_spans(&fields, "abcd:12");
+        assert_eq!(spans.len(), 2);
+        assert_eq!(spans[0].start, 0);
+        assert_eq!(spans[0].end, 4);
+        assert_eq!(spans[0].accent, ui::Accent::Blue);
+        assert_eq!(spans[1].start, 5);
+        assert_eq!(spans[1].end, 7);
+        assert_eq!(spans[1].accent, ui::Accent::Red);
     }
 }
