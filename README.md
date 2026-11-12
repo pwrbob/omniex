@@ -393,6 +393,7 @@ passing silently. `doc/SAMPLE_CORPORA.md` lists the corpora.
 - [`doc/SAMPLE_CORPORA.md`](doc/SAMPLE_CORPORA.md) - external corpora used for extraction tests.
 - [`doc/UNSUPPORTED_FORMATS.md`](doc/UNSUPPORTED_FORMATS.md) - formats outside mainline hashcat and John.
 - [`doc/IDEAS.md`](doc/IDEAS.md) - features that are not implemented yet.
+- [`CHANGELOG.md`](CHANGELOG.md) - release history.
 - [`AGENTS.md`](AGENTS.md) - instructions for automated contributors.
 
 ## License
@@ -919,8 +920,3 @@ checked against that command in CI.
 | `knx-ip-secure` | KNX IP Secure - Device Authentication Code | 25900 | - |
 | `metamask` | MetaMask Wallet | 26600, 26610 | - |
 | `office2016-sheetprotection` | MS Office 2016 - SheetProtection | 25300 | - |
-
-A type is a logical hash type, not a mode. Identity is algorithm-based: modes
-are grouped only when the algorithm, field meanings, and serialization match.
-A salt stays a salt and an HMAC key stays a key. Value-dependent compatibility
-is reflected in the `modes` output.
