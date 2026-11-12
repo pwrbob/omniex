@@ -38,8 +38,7 @@ guidance.
 
 ## What it looks like
 
-Identify an ambiguous hash instead of guessing; unlike `hashcat --identify`,
-the result spans both hashcat and John:
+Identify an ambiguous hash across both hashcat and John:
 
 ```console
 $ omniex identify 8743b52063cd84097a65d1633f5c74f5
