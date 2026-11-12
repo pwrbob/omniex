@@ -1,7 +1,7 @@
 //! netlmv2 hashes, rendered as the serialized hash payload.
 
 use crate::parse;
-use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
+use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 
 /// netlmv2 hashes.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
@@ -18,13 +18,9 @@ impl Parse for Netlmv2John {
             return Err(parse::empty());
         }
         let fields = parse::split_fields(input, ':', 6)?;
-        if fields[3].0.is_empty() || fields[5].0.is_empty() {
-            return Err(parse::error(
-                ParseErrorKind::InvalidLength,
-                0,
-                "missing challenge-response field",
-            ));
-        }
+        parse::check_hex_length(fields[3].0, fields[3].1, 16, "challenge")?;
+        parse::check_hex_length(fields[4].0, fields[4].1, 32, "response")?;
+        parse::check_hex_length(fields[5].0, fields[5].1, 16, "client challenge")?;
         Ok(Self {
             data: input.to_owned(),
         })

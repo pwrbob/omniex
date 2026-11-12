@@ -40,13 +40,7 @@ impl Parse for MongodbScramSha256 {
         }
         let rest = parse::strip_prefix(input, "$mongodb-scram$*", 0)?;
         let fields = parse::split_fields(rest, '*', 5)?;
-        let version = fields[0].0.parse::<u8>().map_err(|_| {
-            parse::error(
-                ParseErrorKind::InvalidCharacter,
-                fields[0].1,
-                "invalid MongoDB version",
-            )
-        })?;
+        let version = parse_version(fields[0].0, fields[0].1)?;
         let iterations = fields[2].0.parse::<u32>().map_err(|_| {
             parse::error(
                 ParseErrorKind::InvalidCharacter,
@@ -75,4 +69,15 @@ impl Render for MongodbScramSha256 {
             crate::format::base64(&self.digest)
         )
     }
+}
+
+fn parse_version(value: &str, offset: usize) -> Result<u8, ParseError> {
+    if value != "1" {
+        return Err(parse::error(
+            ParseErrorKind::InvalidCharacter,
+            offset,
+            "unexpected MongoDB SCRAM version",
+        ));
+    }
+    Ok(1)
 }

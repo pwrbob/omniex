@@ -40,13 +40,7 @@ impl Parse for MongodbScram {
         let rest = parse::strip_prefix(input, "$mongodb-scram$*", 0)?;
         let fields = parse::split_fields(rest, '*', 5)?;
         Ok(Self {
-            version: fields[0].0.parse::<u8>().map_err(|_| {
-                parse::error(
-                    ParseErrorKind::InvalidCharacter,
-                    16,
-                    "invalid MongoDB SCRAM version",
-                )
-            })?,
+            version: parse_version(fields[0].0, fields[0].1)?,
             username: fields[1].0.to_owned(),
             iterations: fields[2].0.parse::<u32>().map_err(|_| {
                 parse::error(
@@ -72,4 +66,15 @@ impl Render for MongodbScram {
             crate::format::base64(&self.digest)
         )
     }
+}
+
+fn parse_version(value: &str, offset: usize) -> Result<u8, ParseError> {
+    if value != "0" {
+        return Err(parse::error(
+            ParseErrorKind::InvalidCharacter,
+            offset,
+            "unexpected MongoDB SCRAM version",
+        ));
+    }
+    Ok(0)
 }

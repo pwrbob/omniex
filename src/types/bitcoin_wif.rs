@@ -35,7 +35,19 @@ impl Parse for BitcoinWif {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        if !(input.starts_with('1') || input.starts_with('3') || input.starts_with("bc1")) {
+        let valid = if let Some(rest) = input.strip_prefix("bc1") {
+            let bech32 = rest
+                .bytes()
+                .all(|byte| b"qpzry9x8gf2tvdw0s3jn54khce6mua7l".contains(&byte));
+            bech32 && input.len() <= 90
+        } else {
+            let base58 = input
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() && !b"0OIl".contains(&byte));
+            base58 && (26..=35).contains(&input.len())
+        };
+        if !(input.starts_with('1') || input.starts_with('3') || input.starts_with("bc1")) || !valid
+        {
             return Err(parse::error(
                 ParseErrorKind::InvalidCharacter,
                 0,

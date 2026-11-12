@@ -56,6 +56,8 @@ impl Parse for NetNtlmV2 {
 
         parse::check_text_length(username, fields[0].1, 60, "username")?;
         parse::check_text_length(domain, fields[2].1, 45, "domain")?;
+        parse::check_hex_length(challenge.0, challenge.1, 16, "challenge")?;
+        parse::check_hex_length(proof.0, proof.1, 32, "proof")?;
         parse::check_hex(blob.0, blob.1, "blob")?;
         if blob.0.is_empty() || blob.0.len() > 1024 {
             return Err(parse::error(

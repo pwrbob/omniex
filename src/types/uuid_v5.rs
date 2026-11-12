@@ -33,6 +33,8 @@ impl Parse for UuidV5 {
                 "namespace must not contain `:`",
             ));
         }
+        parse::check_uuid(uuid, 0, "UUID", Some(5))?;
+        parse::check_uuid(namespace, namespace_offset, "namespace", None)?;
         Ok(Self {
             uuid: uuid.to_owned(),
             namespace: namespace.to_owned(),

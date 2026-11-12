@@ -18,13 +18,15 @@ impl Parse for NethalflmJohn {
             return Err(parse::empty());
         }
         let fields = parse::split_fields(input, ':', 6)?;
-        if fields[3].0.is_empty() || fields[5].0.is_empty() {
+        if !fields[4].0.is_empty() {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
-                0,
-                "missing challenge-response field",
+                fields[4].1,
+                "half LM challenges carry no NT response",
             ));
         }
+        parse::check_hex_length(fields[3].0, fields[3].1, 48, "LM response")?;
+        parse::check_hex_length(fields[5].0, fields[5].1, 16, "challenge")?;
         Ok(Self {
             data: input.to_owned(),
         })

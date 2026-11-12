@@ -24,3 +24,6 @@ First release.
 - Conformance tests against pinned hashcat and John builds.
 - Hash detection rejects malformed Kerberos, leet, and Netscreen values instead
   of claiming unrelated hashes such as Office documents.
+- Structured formats validate their version, layout, and alphabet: UUID
+  versions, MongoDB SCRAM versions, Kerberos pre-authentication etypes, the
+  NetLM field layout, and Bitcoin address alphabets.

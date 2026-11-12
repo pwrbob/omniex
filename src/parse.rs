@@ -210,6 +210,58 @@ pub fn check_hex(value: &str, base: usize, field: &str) -> Result<(), ParseError
     decode_hex(value, base).map(|_| ())
 }
 
+/// Validates that a field is hexadecimal and exactly `len` digits long.
+pub fn check_hex_length(
+    value: &str,
+    base: usize,
+    len: usize,
+    field: &str,
+) -> Result<(), ParseError> {
+    if value.len() != len {
+        return Err(error(
+            ParseErrorKind::InvalidLength,
+            base,
+            format!("{field} must be {len} hexadecimal digits"),
+        ));
+    }
+    check_hex(value, base, field)
+}
+
+/// Validates a canonical `8-4-4-4-12` UUID and, when given, its version.
+pub fn check_uuid(
+    value: &str,
+    base: usize,
+    field: &str,
+    version: Option<u8>,
+) -> Result<(), ParseError> {
+    let bytes = value.as_bytes();
+    let shaped = bytes.len() == 36
+        && bytes.iter().enumerate().all(|(index, byte)| {
+            if matches!(index, 8 | 13 | 18 | 23) {
+                *byte == b'-'
+            } else {
+                byte.is_ascii_hexdigit()
+            }
+        });
+    if !shaped {
+        return Err(error(
+            ParseErrorKind::InvalidLength,
+            base,
+            format!("{field} must be a canonical UUID"),
+        ));
+    }
+    if let Some(version) = version {
+        if bytes[14] != b'0' + version {
+            return Err(error(
+                ParseErrorKind::InvalidCharacter,
+                base + 14,
+                format!("{field} must be version {version}"),
+            ));
+        }
+    }
+    Ok(())
+}
+
 fn hex_digit(byte: u8) -> Option<u8> {
     match byte {
         b'0'..=b'9' => Some(byte - b'0'),

@@ -1595,8 +1595,8 @@ fn john_only_serialized_types_require_their_prefix() {
         ("dominosec", "("),
         ("dominosec8", "("),
         ("krb5asrep-payload", "$krb5asrep$"),
-        ("krb5pa-md5", "$krb5pa$"),
-        ("krb5pa-sha1", "$krb5pa$"),
+        ("krb5pa-md5", "$krb5pa$23$"),
+        ("krb5pa-sha1", "$krb5pa$17$"),
         ("krb5tgs-payload", "$krb5tgs$"),
         ("mozilla-payload", "$mozilla$"),
         ("nsec3-payload", "$NSEC3$"),
@@ -1703,6 +1703,66 @@ fn structured_john_formats_reject_other_serializations() {
                 office,
                 "admin$short",
                 "admin$BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+            ],
+        ),
+        (
+            "uuid-v3",
+            &[
+                "ab419066-13e0-5b0a-81e2-78d838da75dc:6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                "not-a-uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                "ab419066-13e0-3b0a-81e2-78d838da75dc:not-a-uuid",
+            ],
+        ),
+        (
+            "uuid-v5",
+            &[
+                "1cc9c588-793e-3b0a-a328-1dcf2519d238:6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+                "1cc9c588-793e-5098-a328-1dcf2519d238:6ba7b810-9dad",
+            ],
+        ),
+        (
+            "mongodb-scram",
+            &[
+                "$mongodb-scram$*1*dXNlcg==*10000*4p+f1tKpK18hQqrVr0UGOw==*Jv9lrpUQ2bVg2ZkXvRm2rppsqNw=",
+                "$mongodb-scram$*0*dXNlcg==*notanumber*salt*digest",
+            ],
+        ),
+        (
+            "mongodb-scram-sha256",
+            &["$mongodb-scram$*0*dXNlcg==*15000*c2FsdA==*ZGlnZXN0"],
+        ),
+        (
+            "krb5pa-md5",
+            &[office, "$krb5pa$17$user$realm$salt$payload", "$mskrb5$"],
+        ),
+        (
+            "krb5pa-sha1",
+            &[
+                office,
+                "$krb5pa$23$user$realm$salt$payload",
+                "$krb5pa$19$user",
+            ],
+        ),
+        (
+            "netlm",
+            &[
+                "User:::6E1EC36D3417CE9E09A4424309F116C4C991948DAEB4ADAD::1122334455667788",
+                "User:::short:ntlm-hash:1122334455667788",
+                "User:::6E1EC36D3417CE9E09A4424309F116C4C991948DAEB4ADAD:ntlm-hash:xyz",
+            ],
+        ),
+        ("netntlm-naive", &["User:::lm-hash:short:1122334455667788"]),
+        (
+            "nethalflm",
+            &[
+                "domain\\username:::6E1EC36D3417CE9E09A4424309F116C4C991948DAEB4ADAD:ntlm-hash:1122334455667788",
+            ],
+        ),
+        (
+            "bitcoin-wif",
+            &[
+                "1cc9c588-793e-5098-a328-1dcf2519d238",
+                "bc1q926ca6n7wz7gm2gfd8xc5p0vu687ngvnknpx74I",
             ],
         ),
     ];

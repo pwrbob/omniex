@@ -17,12 +17,21 @@ impl Parse for Krb5paMd5John {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        let rest = parse::strip_prefix(input, "$krb5pa$", 0)?;
-        if rest.is_empty() {
-            return Err(parse::error(
-                ParseErrorKind::InvalidLength,
+        let rest = input.strip_prefix('$').ok_or_else(|| {
+            parse::error(
+                ParseErrorKind::InvalidCharacter,
                 0,
-                "missing hash payload",
+                "expected a tagged Kerberos pre-authentication hash",
+            )
+        })?;
+        let payload = rest
+            .strip_prefix("krb5pa$23$")
+            .or_else(|| rest.strip_prefix("mskrb5$"));
+        if payload.is_none_or(str::is_empty) {
+            return Err(parse::error(
+                ParseErrorKind::InvalidCharacter,
+                0,
+                "expected `$krb5pa$23$` or `$mskrb5$`",
             ));
         }
         Ok(Self {
@@ -33,6 +42,6 @@ impl Parse for Krb5paMd5John {
 
 impl Render for Krb5paMd5John {
     fn render_value(&self, _opts: &RenderOptions) -> String {
-        format!("$krb5pa${}", self.data)
+        format!("${}", self.data)
     }
 }

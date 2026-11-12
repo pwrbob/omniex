@@ -51,6 +51,49 @@ fn every_declared_mode_has_a_vector() {
 }
 
 #[test]
+fn structured_hashes_are_recognized_by_one_type_only() {
+    let opts = ParseOptions::default();
+    let structured = [
+        "mongodb-scram",
+        "mongodb-scram-sha256",
+        "mschapv2-naive",
+        "nethalflm",
+        "netlm",
+        "netntlm-naive",
+        "uuid-v3",
+        "uuid-v5",
+    ];
+    let mut conflicts = Vec::new();
+    for slug in structured {
+        let vector = VECTORS
+            .iter()
+            .find(|vector| vector.slug == slug)
+            .unwrap_or_else(|| panic!("no vector for `{slug}`"));
+        for entry in vector
+            .hashcat
+            .iter()
+            .map(|entry| entry.text())
+            .chain(vector.john.iter().map(|entry| entry.text()))
+        {
+            let mut slugs: Vec<&str> = registry::all()
+                .iter()
+                .filter(|descriptor| registry::parse(descriptor, &entry, &opts).is_ok())
+                .map(|descriptor| descriptor.slug)
+                .collect();
+            slugs.sort_unstable();
+            if slugs != [slug] {
+                conflicts.push(format!("{slug}: {slugs:?} <- {entry}"));
+            }
+        }
+    }
+    assert!(
+        conflicts.is_empty(),
+        "structured hashes must identify as one type:\n{}",
+        conflicts.join("\n")
+    );
+}
+
+#[test]
 fn office_hashes_are_not_claimed_by_other_types() {
     let vector = VECTORS
         .iter()
