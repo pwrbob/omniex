@@ -125,7 +125,7 @@ fn wallet_files_auto_detect_without_type_hints() {
         let output = omniex()
             .arg("extract")
             .arg(fixture(kind, name))
-            .args(["--format", format])
+            .args(["--tool", format])
             .output()
             .unwrap();
         assert!(
@@ -138,7 +138,7 @@ fn wallet_files_auto_detect_without_type_hints() {
     let output = omniex()
         .arg("extract")
         .arg(fixture("cardano", "secret.key"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(output.status.success());

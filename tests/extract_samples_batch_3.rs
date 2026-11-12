@@ -193,7 +193,7 @@ fn cli_auto_detects_both_formats() {
     ] {
         let auto = omniex()
             .arg("extract")
-            .arg("--format")
+            .arg("--tool")
             .arg(if slug == O5logon::SLUG {
                 "john"
             } else {
@@ -212,14 +212,14 @@ fn cli_auto_detects_both_formats() {
             .arg("extract")
             .arg("--type")
             .arg(slug)
-            .arg("--format")
+            .arg("--tool")
             .arg(if slug == O5logon::SLUG {
                 "john"
             } else {
                 "hashcat"
             })
             .arg(fixture(kind, name))
-            .arg("--json")
+            .args(["--format", "json"])
             .output()
             .unwrap();
         assert!(

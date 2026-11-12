@@ -93,7 +93,7 @@ fn ansible_extract_json_reports_the_type() {
     let output = omniex()
         .arg("extract")
         .arg(fixture("sample.yml"))
-        .args(["--all", "--json"])
+        .args(["--all", "--format", "json"])
         .output()
         .unwrap();
     assert!(output.status.success());

@@ -129,7 +129,7 @@ fn adxcrypt_auto_detects_and_rejects_unrelated_text() {
     let auto = omniex()
         .arg("extract")
         .arg(fixture("adxcrypt", "ADXCSOUF.DAT"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(auto.status.success());

@@ -59,7 +59,7 @@ fn dmg_auto_detects_and_reports_json() {
     let auto = omniex()
         .arg("extract")
         .arg(fixture("sample.dmg"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(auto.status.success());
@@ -68,7 +68,7 @@ fn dmg_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("sample.dmg"))
-        .args(["--format", "john", "--json"])
+        .args(["--tool", "john", "--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());

@@ -393,7 +393,7 @@ fn cli_extracts_explicit_types() {
         ),
     ] {
         let output = omniex()
-            .args(["extract", "--type", slug, "--format", format])
+            .args(["extract", "--type", slug, "--tool", format])
             .arg(&path)
             .output()
             .expect("run omniex");

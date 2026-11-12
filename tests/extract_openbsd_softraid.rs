@@ -74,7 +74,7 @@ fn softraid_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("pbkdf2.img"))
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());

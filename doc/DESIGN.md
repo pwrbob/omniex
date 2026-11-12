@@ -195,11 +195,11 @@ pub enum Mode {
 The CLI is intentionally small:
 
 ```text
-omniex parse <hash> [--type <slug>] [--format hashcat|john] [--verbose|--json]
+omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|john] [--full]
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
-omniex extract <artifact> [--type <slug>|--all] [--format hashcat|john] [--json] [--deep]
+omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john] [--full] [--deep]
 ```
 
 - `parse` parses one hash string into a hash type instance and renders it again.
@@ -216,11 +216,14 @@ omniex extract <artifact> [--type <slug>|--all] [--format hashcat|john] [--json]
 - `extract --all` runs every confidently recognized extractor in registry order.
   It conflicts with `--type`, excludes `Maybe` candidates, writes no partial
   output if one extractor fails, and deduplicates by type and rendered hash.
-- `extract --json` emits one array of `{"type": ..., "hash": ...}` entries.
+- `extract --format json` emits one array of `{"type": ..., "hash": ...}` entries.
 - `extract --deep` allows slower exhaustive scans. Without it, extractors must
   use bounded structural checks such as headers and partition tables.
-- `--format` defaults to `hashcat`. Rendering fails when the concrete value has
+- `--tool` defaults to `hashcat`. Rendering fails when the concrete value has
   no mode for the selected tool.
+- `--format` controls presentation: `human`, `hash`, or `json`. `parse`
+  defaults to `human`; `extract` defaults to `hash`.
+- `--full` disables center truncation of long values in human output.
 - Hash lists are one hash per line of the same type. The first bad line aborts
   with its line number and byte offset. Partial output is not written.
 - Exit codes: `0` success, `1` input/parse/extract error, `2` usage error.
@@ -228,12 +231,13 @@ omniex extract <artifact> [--type <slug>|--all] [--format hashcat|john] [--json]
   headers on a terminal, and has exactly one horizontal rule below each title.
 - The minimum terminal size is 40x10. Human output is rejected on smaller
   terminals. Columns and mode lists wrap to the terminal width.
-- `--json` emits one JSON array per invocation, except `show --json`, which
-  emits one descriptor object. `types` entries contain slug, name, hashcat,
-  john, and field metadata. `identify` entries contain line, input, slug, name,
-  hashcat, and john. `parse` entries add fields with name, role, encoding,
-  description, and value.
-- `parse` without `--verbose` or `--json` prints only the rendered hash.
+- `--format json` emits one JSON array per invocation, except `show --json`,
+  which emits one descriptor object. `types` entries contain slug, name,
+  hashcat, john, and field metadata. `identify` entries contain line, input,
+  slug, name, hashcat, and john. `parse` entries add fields with name, role,
+  encoding, description, and value.
+- `parse --format hash` prints only the rendered hash, which keeps it usable in
+  a pipeline.
 
 ## Extraction
 

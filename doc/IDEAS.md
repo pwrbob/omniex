@@ -11,7 +11,7 @@ checking a target tool's serialization, and for smoke-testing a build.
 ```bash
 omniex example salted-md5          # by type slug
 omniex example 0                   # by hashcat mode
-omniex example salted-md5 --format john
+omniex example salted-md5 --tool john
 omniex example 10 --mode          # also print the selected mode
 omniex examples                    # maybe: one example per registered type
 ```

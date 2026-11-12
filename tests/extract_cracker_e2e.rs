@@ -298,16 +298,17 @@ fn cli_extract(case: &Case, tool: Tool) -> Result<Vec<String>, String> {
             "extract",
             "--type",
             case.descriptor.slug,
-            "--format",
+            "--tool",
             tool_name(tool),
-            "--json",
+            "--format",
+            "json",
         ])
         .arg(&case.artifact);
     let output = common::timed_assert_output(&mut command)
-        .map_err(|error| format!("run omniex extract --json: {error}"))?;
+        .map_err(|error| format!("run omniex extract --format json: {error}"))?;
     if !output.status.success() {
         return Err(format!(
-            "omniex extract --type {} --format {} --json failed for {}\nstatus: {}\nstdout:\n{}\nstderr:\n{}",
+            "omniex extract --type {} --tool {} --format json failed for {}\nstatus: {}\nstdout:\n{}\nstderr:\n{}",
             case.descriptor.slug,
             tool_name(tool),
             case.artifact.display(),

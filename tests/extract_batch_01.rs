@@ -97,7 +97,7 @@ fn pkzip_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("pkzip", "archive.zip"))
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());

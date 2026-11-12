@@ -170,7 +170,7 @@ fn wallet_files_auto_detect_without_type_hints() {
         let output = omniex()
             .arg("extract")
             .arg(fixture(kind, name))
-            .args(["--format", format])
+            .args(["--tool", format])
             .output()
             .unwrap();
         assert!(
@@ -197,7 +197,7 @@ fn john_only_wallets_need_their_format() {
         let output = omniex()
             .arg("extract")
             .arg(fixture(kind, name))
-            .args(["--type", slug, "--format", "john"])
+            .args(["--type", slug, "--tool", "john"])
             .output()
             .unwrap();
         assert!(output.status.success(), "{kind}");
@@ -226,7 +226,7 @@ fn all_extracts_recognized_wallets() {
             .arg("extract")
             .arg("--all")
             .arg(fixture(kind, name))
-            .args(["--format", format, "--json"])
+            .args(["--tool", format, "--format", "json"])
             .output()
             .unwrap();
         assert!(
@@ -650,7 +650,7 @@ fn network_artifacts_auto_detect_and_accept_explicit_types() {
         let auto = omniex()
             .arg("extract")
             .arg(fixture(kind, name))
-            .args(["--format", format])
+            .args(["--tool", format])
             .output()
             .unwrap();
         assert!(
@@ -662,7 +662,7 @@ fn network_artifacts_auto_detect_and_accept_explicit_types() {
         let explicit = omniex()
             .arg("extract")
             .arg(fixture(kind, name))
-            .args(["--type", slug, "--format", format])
+            .args(["--type", slug, "--tool", format])
             .output()
             .unwrap();
         assert!(explicit.status.success(), "{slug} explicit");
@@ -688,7 +688,7 @@ fn network_all_extracts_recognized_exchanges() {
             .arg("extract")
             .arg("--all")
             .arg(fixture(kind, name))
-            .args(["--format", format, "--json"])
+            .args(["--tool", format, "--format", "json"])
             .output()
             .unwrap();
         assert!(

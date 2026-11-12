@@ -226,7 +226,7 @@ fn openssl_enc_is_maybe_and_requires_type() {
         .arg("extract")
         .arg("--type")
         .arg("openssl-enc")
-        .arg("--format")
+        .arg("--tool")
         .arg("john")
         .arg(fixture("openssl-enc", "secret.enc"))
         .output()
@@ -241,7 +241,7 @@ fn openssl_enc_is_maybe_and_requires_type() {
         .arg("extract")
         .arg("--type")
         .arg("openssl-enc")
-        .arg("--format")
+        .arg("--tool")
         .arg("john")
         .arg(fixture("openssl-enc", "secret-b64.enc"))
         .output()
@@ -327,7 +327,7 @@ fn auto_detection_and_all_respect_probe_confidence() {
     let json = omniex()
         .arg("extract")
         .arg(fixture("pdf", "encrypted-r3.pdf"))
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());
@@ -337,7 +337,7 @@ fn auto_detection_and_all_respect_probe_confidence() {
     let pst = omniex()
         .arg("extract")
         .arg(fixture("pst", "checksum-32bit.pst"))
-        .arg("--format")
+        .arg("--tool")
         .arg("john")
         .output()
         .unwrap();

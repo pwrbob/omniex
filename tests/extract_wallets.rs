@@ -82,7 +82,7 @@ fn wallet_files_auto_detect_and_report_json() {
             .arg("extract")
             .arg("--all")
             .arg(fixture(kind))
-            .arg("--json")
+            .args(["--format", "json"])
             .output()
             .unwrap();
         assert!(json.status.success(), "{kind}");

@@ -103,7 +103,7 @@ fn new_extractors_auto_detect_or_require_type() {
         ("cloudkeychain", "default/profile.js", "cloudkeychain"),
     ] {
         let output = omniex()
-            .args(["extract", "--type", slug, "--format", "john"])
+            .args(["extract", "--type", slug, "--tool", "john"])
             .arg(fixture(kind, name))
             .output()
             .unwrap();

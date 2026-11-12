@@ -68,7 +68,7 @@ fn shadow_file_is_ambiguous_and_all_emits_every_scheme() {
     let all = omniex()
         .arg("extract")
         .arg("--all")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("shadow"))
         .output()
         .unwrap();

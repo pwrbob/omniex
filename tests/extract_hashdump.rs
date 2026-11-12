@@ -76,7 +76,7 @@ fn dump_is_ambiguous_and_requires_type() {
         ("sybase-prop", "john"),
     ] {
         let output = omniex()
-            .args(["extract", "--type", slug, "--format", format])
+            .args(["extract", "--type", slug, "--tool", format])
             .arg(fixture("dump.txt"))
             .output()
             .unwrap();

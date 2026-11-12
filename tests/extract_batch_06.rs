@@ -349,7 +349,7 @@ fn lpcli_requires_companions_and_a_complete_verify_file() {
     );
 
     let output = omniex()
-        .args(["extract", "--type", "lpcli", "--format", "john"])
+        .args(["extract", "--type", "lpcli", "--tool", "john"])
         .arg(fixture("lpcli", "verify.bin"))
         .output()
         .unwrap();

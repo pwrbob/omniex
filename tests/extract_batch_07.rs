@@ -192,9 +192,9 @@ fn extracted_kerberos_preauth_renders_for_john() {
             .arg("extract")
             .arg("--type")
             .arg(slug)
-            .arg("--format")
+            .arg("--tool")
             .arg("john")
-            .arg("--json")
+            .args(["--format", "json"])
             .arg(fixture(kind, name))
             .output()
             .unwrap();
@@ -250,7 +250,7 @@ fn cli_auto_detects_and_accepts_explicit_types() {
     ] {
         let auto = omniex()
             .arg("extract")
-            .arg("--json")
+            .args(["--format", "json"])
             .arg(fixture(kind, name))
             .output()
             .unwrap();
@@ -272,7 +272,7 @@ fn cli_auto_detects_and_accepts_explicit_types() {
     let all = omniex()
         .arg("extract")
         .arg("--all")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("krb5pa23", "multi.pcap"))
         .output()
         .unwrap();

@@ -62,7 +62,7 @@ $gpg$*1*348*1024*aec9d969...*3*254*8*7*16*2271f718af70d3bd9d60c2aed9469b67*65536
 $gpg$*1*348*1024*724234ac...*3*254*8*7*16*7a128c1924dc3b71cf6ee96199db60b5*65536*cb18e77884f2f055
 ```
 
-`--json` emits the same hashes as structured fields, and `--format john`
+`--format json` emits the same hashes as structured fields, and `--tool john`
 re-renders them for John instead of hashcat.
 
 ## Core model
@@ -207,7 +207,8 @@ omniex show oracle-h
 omniex show oracle-h --json
 ```
 
-Parse and re-render a hash. Use `--type` when more than one type matches:
+Parse and re-render a hash. Use `--type` when more than one type matches.
+`parse` defaults to human output:
 
 ```bash
 omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5
@@ -215,11 +216,18 @@ omniex parse --type salted-md5 3d83c8e717ff0e7ecfe187f088d69954:343141
 omniex parse --type md5crypt '$1$38652870$DUjsu4TTlTsOe/xxZ05uf/'
 ```
 
-Inspect fields:
+Inspect fields explicitly, or emit machine-readable JSON:
 
 ```bash
-omniex parse --type salted-md5 3d83c8e717ff0e7ecfe187f088d69954:343141 --verbose
-omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5 --json
+omniex parse --type salted-md5 3d83c8e717ff0e7ecfe187f088d69954:343141 --format human
+omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5 --format json
+```
+
+Emit only the rendered hash for a pipeline, optionally for John:
+
+```bash
+omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5 --format hash
+omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5 --format hash --tool john
 ```
 
 Identify candidates (ambiguous input is not an error):
@@ -239,8 +247,8 @@ are buffered to provide that atomic behavior, so available memory bounds the
 size of a single invocation:
 
 ```bash
-omniex parse --type md5 --file hashes.txt
-printf '8743b52063cd84097a65d1633f5c74f5\n' | omniex parse --type md5 --stdin
+omniex parse --type md5 --file hashes.txt --format hash
+printf '8743b52063cd84097a65d1633f5c74f5\n' | omniex parse --type md5 --stdin --format hash
 omniex identify --stdin < hashes.txt
 ```
 
@@ -248,10 +256,12 @@ Human output is a table with a title, one horizontal rule, and bold headers on a
 terminal. Long mode lists wrap to the terminal width. The minimum supported
 terminal is 40x10; smaller terminals are rejected instead of being rendered.
 
-`--json` is the machine format and normally emits one JSON array per
-invocation. `show --json` emits one descriptor object because it describes a
-single type. `parse` without flags prints only the rendered hash, which keeps it
-usable in a pipeline.
+`--format human` renders a titled field view, truncating long parameters unless
+`--full` is passed. `--format json` is the machine format and normally emits one
+JSON array per invocation. `show --json` emits one descriptor object because it
+describes a single type. `--format hash` prints only the rendered hash for a
+pipeline. `--tool hashcat|john` chooses the serialization target for `parse`
+and `extract`.
 
 ### Exit codes
 
@@ -267,9 +277,10 @@ usable in a pipeline.
 
 ```bash
 omniex extract secret-key.asc --type pgp
-omniex extract secret-key.asc --format john
+omniex extract secret-key.asc --format human
+omniex extract secret-key.asc --tool john
 omniex extract artifact --all
-omniex extract artifact --all --json
+omniex extract artifact --all --format json
 omniex extract filesystem.dat --type encdv \
   --companion enckey=/path/to/enckey.dat
 omniex extract disk.vdi --type bitlocker --deep
@@ -291,9 +302,11 @@ as candidates and require an explicit `--type`.
 `--all` runs every extractor that returned confident recognition, in registry
 order. It conflicts with `--type`, never promotes possible-but-unconfirmed
 matches, and fails without partial output if any confident extractor fails.
-`--json` emits an array of `{"type": "...", "hash": "..."}` entries so mixed
-output keeps its type. Plain output remains one hash per line, deduplicated by
-type and rendered hash.
+`--format json` emits an array of `{"type": "...", "hash": "..."}` entries so
+mixed output keeps its type. The default `--format hash` remains one hash per
+line, deduplicated by type and rendered hash. `--format human` shows the
+artifact, rendered hash, and field table for each extracted value; `--full`
+disables truncation.
 
 Registered extractors and their supported serializations are documented in
 [`doc/EXTRACTORS.md`](doc/EXTRACTORS.md). Extraction coverage is tracked in

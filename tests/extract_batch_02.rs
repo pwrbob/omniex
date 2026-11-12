@@ -254,7 +254,7 @@ fn cli_auto_detects_and_selects_by_type() {
             .arg("--type")
             .arg(slug)
             .arg(fixture(directory, name))
-            .arg("--json")
+            .args(["--format", "json"])
             .output()
             .unwrap();
         assert!(typed.status.success(), "{directory}/{name}: {typed:?}");
@@ -265,7 +265,7 @@ fn cli_auto_detects_and_selects_by_type() {
             .arg("extract")
             .arg("--all")
             .arg(fixture(directory, name))
-            .arg("--json")
+            .args(["--format", "json"])
             .output()
             .unwrap();
         assert!(all.status.success(), "{directory}/{name}: {all:?}");
@@ -464,7 +464,7 @@ fn apple_cli_auto_detects_and_selects_by_type() {
             .arg("--type")
             .arg(slug)
             .arg(fixture(directory, name))
-            .arg("--json")
+            .args(["--format", "json"])
             .output()
             .unwrap();
         assert!(typed.status.success(), "{directory}/{name}: {typed:?}");
@@ -475,7 +475,7 @@ fn apple_cli_auto_detects_and_selects_by_type() {
             .arg("extract")
             .arg("--all")
             .arg(fixture(directory, name))
-            .arg("--json")
+            .args(["--format", "json"])
             .output()
             .unwrap();
         assert!(all.status.success(), "{directory}/{name}: {all:?}");

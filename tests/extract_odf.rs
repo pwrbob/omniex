@@ -104,7 +104,7 @@ fn odf_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("sample.odt"))
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());

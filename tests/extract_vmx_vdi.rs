@@ -112,14 +112,14 @@ fn vmx_and_vdi_auto_detect_in_the_cli() {
     let vmx = omniex()
         .arg("extract")
         .arg(fixture("vmx", "sample.vmx"))
-        .args(["--type", "vmx-keysafe", "--format", "john"])
+        .args(["--type", "vmx-keysafe", "--tool", "john"])
         .output()
         .unwrap();
     assert!(vmx.status.success());
     let json = omniex()
         .arg("extract")
         .arg(fixture("vmx", "sample.vmx"))
-        .args(["--type", "vmware-vmx", "--json"])
+        .args(["--type", "vmware-vmx", "--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());
@@ -136,7 +136,7 @@ fn vmx_and_vdi_auto_detect_in_the_cli() {
 
     for (slug, format) in [("vdi", "john"), ("virtualbox", "hashcat")] {
         let output = omniex()
-            .args(["extract", "--type", slug, "--format", format])
+            .args(["extract", "--type", slug, "--tool", format])
             .arg(fixture("vdi", "sample.vbox"))
             .output()
             .unwrap();

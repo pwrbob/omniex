@@ -78,7 +78,7 @@ fn dashlane_secure_archive_auto_detects_but_aes_requires_type() {
     let auto = omniex()
         .arg("extract")
         .arg(fixture("dashlane", "sample.dash"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(auto.status.success());
@@ -92,7 +92,7 @@ fn dashlane_secure_archive_auto_detects_but_aes_requires_type() {
     assert!(String::from_utf8_lossy(&aes.stderr).contains("has no reliable signature"));
 
     let explicit = omniex()
-        .args(["extract", "--type", "dashlane", "--format", "john"])
+        .args(["extract", "--type", "dashlane", "--tool", "john"])
         .arg(fixture("dashlane", "sample.aes"))
         .output()
         .unwrap();
@@ -155,7 +155,7 @@ fn bks_auto_detects_and_rejects_truncation() {
     let auto = omniex()
         .arg("extract")
         .arg(fixture("bks", "empty-v2.bks"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(auto.status.success());

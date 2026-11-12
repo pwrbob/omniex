@@ -58,7 +58,7 @@ fn ldap_ldif_is_ambiguous_but_all_emits_every_type() {
     let all = omniex()
         .arg("extract")
         .arg("--all")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("sample.ldif"))
         .output()
         .unwrap();

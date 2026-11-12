@@ -67,7 +67,7 @@ fn kwallet_auto_detects_and_reports_json() {
     let auto = omniex()
         .arg("extract")
         .arg(fixture("legacy.kwl"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(auto.status.success());
@@ -76,7 +76,7 @@ fn kwallet_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("legacy.kwl"))
-        .args(["--format", "john", "--json"])
+        .args(["--tool", "john", "--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());
@@ -102,7 +102,7 @@ fn kwallet_extracts_a_modern_salted_wallet_with_its_sidecar() {
     let output = omniex()
         .arg("extract")
         .arg(fixture("modern.kwl"))
-        .args(["--type", "kwallet", "--format", "john"])
+        .args(["--type", "kwallet", "--tool", "john"])
         .output()
         .unwrap();
     assert!(output.status.success());

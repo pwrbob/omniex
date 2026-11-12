@@ -85,8 +85,8 @@ fn pwsafe_is_ambiguous_without_type_and_cannot_share_one_format() {
         let all = omniex()
             .arg("extract")
             .arg("--all")
-            .arg("--json")
-            .args(["--format", format])
+            .args(["--format", "json"])
+            .args(["--tool", format])
             .arg(fixture("sample.psafe3"))
             .output()
             .unwrap();

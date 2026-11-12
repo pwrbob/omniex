@@ -62,7 +62,7 @@ fn iwork_2009_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("iwork", "sample-2009.key"))
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());
@@ -159,7 +159,7 @@ fn pgp_symmetric_auto_detects_and_reports_json() {
     let auto = omniex()
         .arg("extract")
         .arg(fixture("pgp", "symmetric.gpg"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(auto.status.success());
@@ -168,7 +168,7 @@ fn pgp_symmetric_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("pgp", "symmetric.gpg"))
-        .args(["--format", "john", "--json"])
+        .args(["--tool", "john", "--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());

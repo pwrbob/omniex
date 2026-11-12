@@ -152,7 +152,7 @@ fn pgp_extracts_elliptic_curve_keys() {
     let output = omniex()
         .args(["extract"])
         .arg(fixture("ec_testkey1.key"))
-        .args(["--type", "pgp", "--format", "john"])
+        .args(["--type", "pgp", "--tool", "john"])
         .output()
         .expect("extract runs");
     assert!(output.status.success());
@@ -178,7 +178,7 @@ fn pgp_auto_detects_an_armored_artifact() {
     let output = omniex()
         .arg("extract")
         .arg(fixture("ec_testkey1.key"))
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .expect("extract runs");
     assert!(output.status.success());
@@ -226,7 +226,7 @@ fn extract_json_reports_type_and_hash() {
     let output = omniex()
         .arg("extract")
         .arg(fixture("testkey1.key"))
-        .args(["--all", "--json"])
+        .args(["--all", "--format", "json"])
         .output()
         .unwrap();
     assert!(output.status.success());

@@ -294,7 +294,7 @@ fn extractors_reject_the_wrong_message_shape() {
 fn captures_auto_detect_and_accept_explicit_types() {
     let auto = omniex()
         .arg("extract")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("wpa-pmkid", "eapol.pcap"))
         .output()
         .unwrap();
@@ -305,7 +305,7 @@ fn captures_auto_detect_and_accept_explicit_types() {
 
     let raw = omniex()
         .arg("extract")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("krb5asrep23", "asrep.der"))
         .output()
         .unwrap();
@@ -342,7 +342,7 @@ fn captures_auto_detect_and_accept_explicit_types() {
     let all = omniex()
         .arg("extract")
         .arg("--all")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("wpa-pmkid", "pmkid.pcap"))
         .output()
         .unwrap();
@@ -462,7 +462,7 @@ fn routing_empty_input_is_never_recognized() {
 fn routing_captures_auto_detect_and_accept_explicit_types() {
     let auto = omniex()
         .arg("extract")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("ospf-md5", "multi.pcap"))
         .output()
         .unwrap();
@@ -483,9 +483,9 @@ fn routing_captures_auto_detect_and_accept_explicit_types() {
     let all = omniex()
         .arg("extract")
         .arg("--all")
-        .arg("--format")
+        .arg("--tool")
         .arg("john")
-        .arg("--json")
+        .args(["--format", "json"])
         .arg(fixture("hsrp", "hsrp2.pcap"))
         .output()
         .unwrap();

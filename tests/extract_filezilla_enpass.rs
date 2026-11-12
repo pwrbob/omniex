@@ -75,7 +75,7 @@ fn filezilla_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("filezilla", "FileZilla Server.xml"))
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());
@@ -157,7 +157,7 @@ fn enpass_requires_an_explicit_type_in_the_cli() {
     assert!(String::from_utf8_lossy(&automatic.stderr).contains("has no reliable signature"));
 
     let explicit = omniex()
-        .args(["extract", "--type", "enpass", "--format", "john"])
+        .args(["extract", "--type", "enpass", "--tool", "john"])
         .arg(fixture("enpass", "test.enpassdb"))
         .output()
         .unwrap();

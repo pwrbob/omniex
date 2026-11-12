@@ -96,7 +96,7 @@ fn agile_onepassword_is_ambiguous_and_requires_type() {
         ("onepassword-agile", "hashcat", "onepassword.hash"),
     ] {
         let output = omniex()
-            .args(["extract", "--type", slug, "--format", format])
+            .args(["extract", "--type", slug, "--tool", format])
             .arg(fixture("onepassword-agile", "encryptionKeys.js"))
             .output()
             .unwrap();
@@ -183,7 +183,7 @@ fn monero_requires_an_explicit_type() {
     assert!(String::from_utf8_lossy(&auto.stderr).contains("has no reliable signature"));
 
     let explicit = omniex()
-        .args(["extract", "--type", "monero", "--format", "john"])
+        .args(["extract", "--type", "monero", "--tool", "john"])
         .arg(fixture("monero", "wallet.keys"))
         .output()
         .unwrap();

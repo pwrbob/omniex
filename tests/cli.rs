@@ -16,7 +16,7 @@ fn omniex() -> Command {
 #[test]
 fn parse_prints_the_rendered_hash() {
     omniex()
-        .args(["parse", MD5_HASH, "--type", "md5"])
+        .args(["parse", MD5_HASH, "--type", "md5", "--format", "hash"])
         .assert()
         .success()
         .stdout(format!("{MD5_HASH}\n"))
@@ -26,7 +26,9 @@ fn parse_prints_the_rendered_hash() {
 #[test]
 fn parse_supports_john_format() {
     omniex()
-        .args(["parse", MD5_HASH, "--type", "md5", "--format", "john"])
+        .args([
+            "parse", MD5_HASH, "--type", "md5", "--tool", "john", "--format", "hash",
+        ])
         .assert()
         .success()
         .stdout(format!("{MD5_HASH}\n"));
@@ -35,7 +37,14 @@ fn parse_supports_john_format() {
 #[test]
 fn parse_selects_a_type_by_slug() {
     omniex()
-        .args(["parse", SALTED_MD5_HASH, "--type", "salted-md5"])
+        .args([
+            "parse",
+            SALTED_MD5_HASH,
+            "--type",
+            "salted-md5",
+            "--format",
+            "hash",
+        ])
         .assert()
         .success()
         .stdout(format!("{SALTED_MD5_HASH}\n"));
@@ -63,7 +72,7 @@ fn parse_reports_a_bad_hash() {
 #[test]
 fn parse_json_has_the_pinned_shape() {
     let output = omniex()
-        .args(["parse", MD5_HASH, "--type", "md5", "--json"])
+        .args(["parse", MD5_HASH, "--type", "md5", "--format", "json"])
         .output()
         .expect("command runs");
     assert!(output.status.success());
@@ -90,7 +99,7 @@ fn parse_json_has_the_pinned_shape() {
 #[test]
 fn parse_verbose_reports_fields() {
     omniex()
-        .args(["parse", MD5_HASH, "--type", "md5", "--verbose"])
+        .args(["parse", MD5_HASH, "--type", "md5"])
         .assert()
         .success()
         .stdout(predicate::str::contains("MD5 (md5)"))
@@ -104,7 +113,7 @@ fn parse_verbose_reports_fields() {
 fn parse_verbose_truncates_long_values_unless_full_is_requested() {
     omniex()
         .env("COLUMNS", "40")
-        .args(["parse", MD5_HASH, "--type", "md5", "--verbose"])
+        .args(["parse", MD5_HASH, "--type", "md5"])
         .assert()
         .success()
         .stdout(predicate::str::contains(" ... "))
@@ -112,7 +121,7 @@ fn parse_verbose_truncates_long_values_unless_full_is_requested() {
 
     omniex()
         .env("COLUMNS", "120")
-        .args(["parse", MD5_HASH, "--type", "md5", "--verbose", "--full"])
+        .args(["parse", MD5_HASH, "--type", "md5", "--full"])
         .assert()
         .success()
         .stdout(predicate::str::contains(MD5_HASH));
@@ -121,7 +130,7 @@ fn parse_verbose_truncates_long_values_unless_full_is_requested() {
 #[test]
 fn parse_reads_a_hash_list_from_stdin() {
     omniex()
-        .args(["parse", "--type", "md5", "--stdin"])
+        .args(["parse", "--type", "md5", "--stdin", "--format", "hash"])
         .write_stdin(format!("{MD5_HASH}\n\n{MD5_HASH}\n"))
         .assert()
         .success()
@@ -131,7 +140,7 @@ fn parse_reads_a_hash_list_from_stdin() {
 #[test]
 fn parse_reports_the_line_number_and_writes_no_partial_output() {
     omniex()
-        .args(["parse", "--type", "md5", "--stdin"])
+        .args(["parse", "--type", "md5", "--stdin", "--format", "hash"])
         .write_stdin(format!("{MD5_HASH}\nbad\n"))
         .assert()
         .code(1)
@@ -162,6 +171,29 @@ fn identify_fails_when_nothing_matches() {
         .code(1)
         .stdout("")
         .stderr(predicate::str::contains("no hash type matched"));
+}
+
+#[test]
+fn extract_supports_human_output_and_validates_full() {
+    let artifact = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/artifacts/dpapi/masterkey.bin");
+
+    omniex()
+        .args(["extract", "--type", "dpapi"])
+        .arg(&artifact)
+        .args(["--format", "human"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("Artifact:"))
+        .stdout(predicate::str::contains("Fields"));
+
+    omniex()
+        .args(["extract", "--type", "dpapi"])
+        .arg(&artifact)
+        .args(["--format", "json", "--full"])
+        .assert()
+        .code(2)
+        .stderr(predicate::str::contains("--full requires --format human"));
 }
 
 #[test]
@@ -284,7 +316,7 @@ fn parse_reports_ambiguity_between_md4_and_md5() {
 #[test]
 fn parse_json_is_an_array_for_multiple_inputs() {
     let output = omniex()
-        .args(["parse", "--type", "md5", "--stdin", "--json"])
+        .args(["parse", "--type", "md5", "--stdin", "--format", "json"])
         .write_stdin(format!("{MD5_HASH}\n{MD5_HASH}\n"))
         .output()
         .expect("command runs");
@@ -343,6 +375,7 @@ fn parse_reads_files_with_crlf_line_endings() {
     omniex()
         .args(["parse", "--type", "md5", "--file"])
         .arg(&path)
+        .args(["--format", "hash"])
         .assert()
         .success()
         .stdout(format!("{MD5_HASH}\n{MD5_HASH}\n"));
@@ -372,8 +405,10 @@ fn parse_rejects_rendering_for_an_unsupported_tool() {
             SALTED_MD5_HASH,
             "--type",
             "salted-md5",
-            "--format",
+            "--tool",
             "john",
+            "--format",
+            "hash",
         ])
         .assert()
         .code(1)

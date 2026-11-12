@@ -186,7 +186,7 @@ fn encdv_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(&path)
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());
@@ -277,7 +277,7 @@ fn bestcrypt_auto_detects_and_honors_json() {
     let auto = omniex()
         .arg("extract")
         .arg(&path)
-        .args(["--format", "john"])
+        .args(["--tool", "john"])
         .output()
         .unwrap();
     assert!(auto.status.success());
@@ -290,8 +290,8 @@ fn bestcrypt_auto_detects_and_honors_json() {
         .arg("extract")
         .arg("--type")
         .arg("bestcrypt-payload")
-        .args(["--format", "john"])
-        .arg("--json")
+        .args(["--tool", "john"])
+        .args(["--format", "json"])
         .arg(&path)
         .output()
         .unwrap();
@@ -359,7 +359,7 @@ fn encdv_cli_attaches_a_named_companion() {
         .arg("extract")
         .arg("--type")
         .arg("encdv")
-        .arg("--format")
+        .arg("--tool")
         .arg("hashcat")
         .arg("--companion")
         .arg(companion)

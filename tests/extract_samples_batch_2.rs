@@ -137,7 +137,7 @@ fn keystore_is_ambiguous_with_private_key_extraction() {
     assert!(String::from_utf8_lossy(&auto.stderr).contains("ambiguous artifact"));
 
     let explicit = omniex()
-        .args(["extract", "--type", "keystore", "--format", "john"])
+        .args(["extract", "--type", "keystore", "--tool", "john"])
         .arg(fixture("keystore", "keystore-12345678.jks"))
         .output()
         .unwrap();
@@ -224,7 +224,7 @@ fn strip_requires_an_explicit_type() {
     assert!(String::from_utf8_lossy(&auto.stderr).contains("has no reliable signature"));
 
     let explicit = omniex()
-        .args(["extract", "--type", "strip", "--format", "john"])
+        .args(["extract", "--type", "strip", "--tool", "john"])
         .arg(fixture("strip", "strip.db"))
         .output()
         .unwrap();

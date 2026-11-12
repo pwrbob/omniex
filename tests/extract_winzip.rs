@@ -63,7 +63,7 @@ fn winzip_auto_detects_and_reports_json() {
         .arg("extract")
         .arg("--all")
         .arg(fixture("aes.zip"))
-        .arg("--json")
+        .args(["--format", "json"])
         .output()
         .unwrap();
     assert!(json.status.success());

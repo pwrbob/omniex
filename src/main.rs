@@ -62,20 +62,16 @@ struct ParseArgs {
     #[arg(long = "type", value_name = "SLUG")]
     type_slug: Option<String>,
 
-    /// Output serialization.
+    /// Output format.
+    #[arg(long, value_enum, default_value = "human")]
+    format: OutputFormat,
+
+    /// Serialization target.
     #[arg(long, value_enum, default_value = "hashcat")]
-    format: FormatArg,
-
-    /// Print the descriptor and field values.
-    #[arg(long, conflicts_with = "json")]
-    verbose: bool,
-
-    /// Print one JSON array containing every input.
-    #[arg(long, conflicts_with = "verbose")]
-    json: bool,
+    tool: ToolArg,
 
     /// Show complete field values instead of truncating long parameters.
-    #[arg(long, requires = "verbose")]
+    #[arg(long)]
     full: bool,
 }
 
@@ -119,9 +115,13 @@ struct ExtractArgs {
     #[arg(long, conflicts_with = "type_slug")]
     all: bool,
 
-    /// Print one JSON array containing every extracted hash.
-    #[arg(long)]
-    json: bool,
+    /// Output format.
+    #[arg(long, value_enum, default_value = "hash")]
+    format: OutputFormat,
+
+    /// Serialization target.
+    #[arg(long, value_enum, default_value = "hashcat")]
+    tool: ToolArg,
 
     /// Allow extractors to use slower exhaustive scans.
     #[arg(long)]
@@ -131,24 +131,31 @@ struct ExtractArgs {
     #[arg(long = "companion", value_name = "NAME=PATH")]
     companion: Vec<String>,
 
-    /// Output serialization.
-    #[arg(long, value_enum, default_value = "hashcat")]
-    format: FormatArg,
+    /// Show complete field values instead of truncating long parameters.
+    #[arg(long)]
+    full: bool,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
-enum FormatArg {
+enum ToolArg {
     Hashcat,
     John,
 }
 
-impl From<FormatArg> for Tool {
-    fn from(value: FormatArg) -> Self {
+impl From<ToolArg> for Tool {
+    fn from(value: ToolArg) -> Self {
         match value {
-            FormatArg::Hashcat => Self::Hashcat,
-            FormatArg::John => Self::John,
+            ToolArg::Hashcat => Self::Hashcat,
+            ToolArg::John => Self::John,
         }
     }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, ValueEnum)]
+enum OutputFormat {
+    Human,
+    Hash,
+    Json,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -263,7 +270,10 @@ fn run_types(args: TypesArgs) -> Result<(), CliError> {
 }
 
 fn run_parse(args: ParseArgs) -> Result<(), CliError> {
-    let tool = Tool::from(args.format);
+    if args.full && args.format != OutputFormat::Human {
+        return Err(CliError::Usage("--full requires --format human".to_owned()));
+    }
+    let tool = Tool::from(args.tool);
     let parse_opts = ParseOptions {
         tool,
         ..ParseOptions::default()
@@ -275,7 +285,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
     let selected = select_type(args.type_slug.as_deref())?;
     let lines = args.input.read()?;
     let total = lines.len();
-    let context = if args.verbose {
+    let context = if args.format == OutputFormat::Human {
         Some(human_context()?)
     } else {
         None
@@ -314,28 +324,31 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
             }
         };
 
-        if args.json {
-            json_output.push(json_value(descriptor, value.as_ref(), *line, text));
-        } else if args.verbose {
-            output.push(verbose_value(
-                &context.expect("verbose context"),
-                descriptor,
-                value.as_ref(),
-                *line,
-                total,
-                text,
-                args.full,
-            ));
-        } else {
-            output.push(
-                value
-                    .render(&render_opts)
-                    .map_err(|error| line_error(*line, total, error.to_string()))?,
-            );
+        match args.format {
+            OutputFormat::Json => {
+                json_output.push(json_value(descriptor, value.as_ref(), *line, text));
+            }
+            OutputFormat::Human => {
+                output.push(verbose_value(
+                    &context.expect("human context"),
+                    descriptor,
+                    value.as_ref(),
+                    text,
+                    args.full,
+                    ("Line", *line, total),
+                ));
+            }
+            OutputFormat::Hash => {
+                output.push(
+                    value
+                        .render(&render_opts)
+                        .map_err(|error| line_error(*line, total, error.to_string()))?,
+                );
+            }
         }
     }
 
-    if args.json {
+    if args.format == OutputFormat::Json {
         print_json(&Value::Array(json_output))
     } else {
         print_lines(&output)
@@ -393,7 +406,10 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
 }
 
 fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
-    let tool = Tool::from(args.format);
+    if args.full && args.format != OutputFormat::Human {
+        return Err(CliError::Usage("--full requires --format human".to_owned()));
+    }
+    let tool = Tool::from(args.tool);
     let selected = select_type(args.type_slug.as_deref())?;
     let extractor = selected
         .map(|descriptor| {
@@ -469,37 +485,62 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                     CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
                 })?;
             if seen.insert((slug, rendered.clone())) {
-                let fields = value
-                    .describe()
-                    .into_iter()
-                    .map(|entry| {
-                        json!({
-                            "name": entry.field.name,
-                            "value": entry.value,
-                        })
-                    })
-                    .collect::<Vec<_>>();
-                outputs.push((slug, rendered, fields));
+                outputs.push((slug, rendered, value));
             }
         }
     }
 
-    if args.json {
-        let entries = outputs
-            .iter()
-            .map(|(slug, hash, fields)| json!({"type": slug, "hash": hash, "fields": fields}))
-            .collect::<Vec<_>>();
-        return print_json(&Value::Array(entries));
+    match args.format {
+        OutputFormat::Json => {
+            let entries = outputs
+                .iter()
+                .map(|(slug, hash, value)| {
+                    let fields = value
+                        .describe()
+                        .into_iter()
+                        .map(|entry| {
+                            json!({
+                                "name": entry.field.name,
+                                "value": entry.value,
+                            })
+                        })
+                        .collect::<Vec<_>>();
+                    json!({"type": slug, "hash": hash, "fields": fields})
+                })
+                .collect::<Vec<_>>();
+            print_json(&Value::Array(entries))
+        }
+        OutputFormat::Hash => write_stdout(&format!(
+            "{}\n",
+            outputs
+                .iter()
+                .map(|(_, hash, _)| hash.as_str())
+                .collect::<Vec<_>>()
+                .join("\n")
+        )),
+        OutputFormat::Human => {
+            let context = human_context()?;
+            let mut blocks = Vec::with_capacity(outputs.len());
+            for (index, (slug, hash, value)) in outputs.iter().enumerate() {
+                let descriptor = registry::by_slug(slug).ok_or_else(|| {
+                    CliError::Input(format!("no descriptor registered for `{slug}`"))
+                })?;
+                blocks.push(verbose_value(
+                    &context,
+                    descriptor,
+                    value.as_ref(),
+                    hash,
+                    args.full,
+                    ("Hash", index + 1, outputs.len()),
+                ));
+            }
+            write_stdout(&format!(
+                "{}\n\n{}\n",
+                context.bold(&format!("Artifact: {}", args.artifact.display())),
+                blocks.join("\n\n")
+            ))
+        }
     }
-
-    write_stdout(&format!(
-        "{}\n",
-        outputs
-            .iter()
-            .map(|(_, hash, _)| hash.as_str())
-            .collect::<Vec<_>>()
-            .join("\n")
-    ))
 }
 
 fn format_candidates(candidates: &[extract::Candidate]) -> String {
@@ -741,11 +782,11 @@ fn verbose_value(
     context: &ui::Context,
     descriptor: &omniex::HashTypeDescriptor,
     value: &dyn HashValue,
-    line: usize,
-    total: usize,
     input: &str,
     full: bool,
+    count: (&str, usize, usize),
 ) -> String {
+    let (count_label, line, total) = count;
     let (hashcat, john) = mode_columns(&value.modes());
     let mut block = ui::title(
         context,
@@ -756,7 +797,7 @@ fn verbose_value(
     let fields = value.describe();
     let mut pairs = Vec::new();
     if total > 1 {
-        pairs.push(("Line", line.to_string()));
+        pairs.push((count_label, line.to_string()));
     }
     pairs.push(("Hashcat", hashcat));
     pairs.push(("John", john));
