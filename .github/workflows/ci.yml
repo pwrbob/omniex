@@ -159,7 +159,7 @@ jobs:
         run: scripts/build-hashcat.sh
 
       - name: Upload hashcat
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: hashcat-8.0.0
           path: |
@@ -199,7 +199,7 @@ jobs:
         run: scripts/build-john.sh
 
       - name: Upload John
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
           path: tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
@@ -225,7 +225,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Download hashcat
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: hashcat-8.0.0
           path: tmp/reference/hashcat-8.0.0
@@ -267,7 +267,7 @@ jobs:
 
       - name: Upload hashcat conformance diagnostics
         if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: hashcat-conformance-${{ matrix.shard }}-diagnostics
           path: |
@@ -300,7 +300,7 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Download John
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
           path: tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
@@ -356,13 +356,13 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Download John
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
           path: tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e
 
       - name: Download hashcat
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         with:
           name: hashcat-8.0.0
           path: tmp/reference/hashcat-8.0.0
