@@ -63,22 +63,12 @@ if [[ -n "${OMNIEX_JOHN:-}" ]]; then
     time cargo test -p omniex --test extract_cracker_e2e --locked -- --ignored --nocapture \
         john_loads_extracted_artifacts
 
-    export OMNIEX_JOHN_RUN="$(dirname "$OMNIEX_JOHN")"
-    echo "==> external sample extraction"
-    time python3 scripts/external-samples/run.py run \
-        --repo omniex-fixtures --source "omniex-fixtures=$root"
-    time python3 scripts/external-samples/run.py run \
-        --repo hashcat-2hashcat --repo john-samples --repo unarcrypto --repo msoffcrypto \
-        --repo oletools --repo keepassxc --repo geth --repo aircrack-ng \
-        --repo cryptography-vectors --repo openssl-tests --repo forensics-samples \
-        --repo py-pdf-samples --repo test-pdf-files --repo libarchive \
-        --repo picky-rs --repo gnome-keyring --repo gost-engine --repo plaso \
-        --repo pysap --repo ffpass --repo firefox-decrypt --repo gnupg-tests
-
-    if command -v 7z >/dev/null 2>&1; then
-        echo "==> real-file extractor tests"
-        time cargo test -p omniex --test extract_real_files --locked -- --ignored --nocapture
-    fi
+    # The shard lists and the cold-cache handling live in one script so the
+    # local mirror and the GitHub job cannot drift apart.
+    for shard in fixtures john-samples archives formats; do
+        echo "==> external samples ($shard)"
+        time scripts/ci-external-samples.sh "$shard" --skip-build
+    done
 else
     missing+=("John")
     echo "warning: pinned John jumbo build not found; John conformance skipped" >&2

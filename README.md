@@ -330,6 +330,13 @@ Run the fast local CI mirror before sending or committing work:
 scripts/ci.sh
 ```
 
+Jobs that depend on `tmp/` state are also runnable the way GitHub runs them,
+inside the same container image and with an empty cache:
+
+```bash
+scripts/ci-job.sh external-samples fixtures
+```
+
 Build the pinned reference tools and run conformance explicitly:
 
 ```bash

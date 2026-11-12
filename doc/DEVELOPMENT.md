@@ -73,6 +73,19 @@ Build dependencies come from `scripts/ci-deps.sh`, which retries the
 to resolve the Ubuntu mirrors; one aborted install for a few kilobytes of
 packages should not fail a job.
 
+Job logic lives in scripts, not inline in the workflow, so it can be run
+outside GitHub. The external-samples job is the reference example:
+
+```bash
+scripts/ci-job.sh external-samples fixtures
+```
+
+That runs inside the development container with the reference tools from the
+image and an empty sample cache mounted over `tmp/external-samples`. It is the
+state of a runner whose `actions/cache` restore missed, which is invisible to a
+warm local checkout and has caused CI-only failures. Run it before touching
+anything that reads `tmp/`.
+
 ## Scope
 
 Hashcat and John coverage is tracked in `MODES.md`. Extraction, version-specific

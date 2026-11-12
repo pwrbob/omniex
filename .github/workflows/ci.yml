@@ -327,21 +327,13 @@ jobs:
 
   external-samples:
     needs: [john-build, hashcat-build, lint, docs, tests, msrv]
-    name: External samples (${{ matrix.name }})
+    name: External samples (${{ matrix.shard }})
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - name: fixtures
-            repos: omniex-fixtures,keepassxc
-          - name: john-samples
-            repos: john-samples
-          - name: archives
-            repos: unarcrypto,libarchive,msoffcrypto,oletools,py-pdf-samples,test-pdf-files,forensics-samples
-          - name: formats
-            repos: hashcat-2hashcat,geth,aircrack-ng,gnupg-tests,ffpass,firefox-decrypt,pysap,cryptography-vectors,openssl-tests,picky-rs,gnome-keyring,gost-engine,plaso
+        shard: [fixtures, john-samples, archives, formats]
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
@@ -384,40 +376,11 @@ jobs:
         uses: actions/cache@v5
         with:
           path: tmp/external-samples
-          key: ${{ runner.os }}-external-samples-${{ hashFiles('scripts/external-samples/repos/**/manifest.toml', 'scripts/external-samples/locks/*.toml') }}
+          key: ${{ runner.os }}-external-samples-${{ matrix.shard }}-${{ hashFiles('scripts/external-samples/repos/**/manifest.toml', 'scripts/external-samples/locks/*.toml') }}
 
-      - name: Normalize sample cache permissions
-        run: chmod -R u+rwX,go+rX tmp/external-samples
-
-      - name: Build omniex
-        run: |
-          export TIMEFORMAT='  [time] %3R s'
-          time cargo build --workspace --locked
-
-      - name: Run external sample extraction
+      - name: Run external samples
         env:
           OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
           OMNIEX_JOHN_RUN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run
           OMNIEX_HASHCAT: ${{ github.workspace }}/tmp/reference/hashcat-8.0.0/hashcat
-        shell: bash
-        run: |
-          export TIMEFORMAT='  [time] %3R s'
-          IFS=',' read -r -a repos <<< "${{ matrix.repos }}"
-          args=()
-          for repo in "${repos[@]}"; do
-            args+=(--repo "$repo")
-          done
-          if [[ "${{ matrix.name }}" == "fixtures" ]]; then
-            time python3 scripts/external-samples/run.py run "${args[@]}" \
-              --source "omniex-fixtures=$GITHUB_WORKSPACE"
-          else
-            time python3 scripts/external-samples/run.py run "${args[@]}"
-          fi
-
-      - name: Run real-file extractor tests
-        if: matrix.name == 'fixtures'
-        env:
-          OMNIEX_JOHN: ${{ github.workspace }}/tmp/reference/john-5184bc0b8c105f8c5978b112e723d65b2de3e63e/run/john
-        run: |
-          export TIMEFORMAT='  [time] %3R s'
-          time cargo test -p omniex --test extract_real_files --locked -- --ignored --nocapture
+        run: scripts/ci-external-samples.sh "${{ matrix.shard }}"
