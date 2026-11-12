@@ -17,8 +17,14 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  verify:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+
   build:
     name: Build Linux artifacts
+    needs: [verify]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
