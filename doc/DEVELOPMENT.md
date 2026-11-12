@@ -124,7 +124,10 @@ scripts/package-release.sh v0.2.0
 ```
 
 `dist/` is ignored by git and holds the tarball, the unpacked directory, and
-`SHA256SUMS`. Never move a published tag; release a new patch version instead.
+`SHA256SUMS`. The archive ships `assets/` so the README logo resolves from the
+unpacked directory, and its copy of the README drops the remote badges, which
+only render for a reader with access to the repository. Never move a published
+tag; release a new patch version instead.
 
 ## Scope
 
