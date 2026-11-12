@@ -71,9 +71,6 @@ digest  digest      ascii     DUjsu4TTlTsOe/xxZ05uf/                  Twenty-two
                                                                       characters.
 ```
 
-On a terminal, each hash part and its field row share a color. Long parameters
-are truncated in the middle; add `--full` to show them completely.
-
 Point it at an artifact and get cracker-ready hashes, including every matching
 record when the artifact holds more than one:
 
