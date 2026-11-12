@@ -1689,6 +1689,36 @@ fn additional_john_only_types_reject_invalid_input() {
 }
 
 #[test]
+fn structured_john_formats_reject_other_serializations() {
+    let office = "$office$*2007*20*128*16*18410007331073848057180885845227*944c70a5ee6e5ab2a6a86ff54b5f621a*e6650f1f2630c27fd8fc0f5e56e2e01f99784b9f";
+    let cases: &[(&str, &[&str])] = &[
+        (
+            "krb5-18",
+            &[office, "REALM$deadbeef", "$krb18$REALM$", "REALM$zz"],
+        ),
+        ("leet", &[office, "salt$deadbeef", "$", "salt$"]),
+        (
+            "md5ns",
+            &[
+                office,
+                "admin$short",
+                "admin$BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+            ],
+        ),
+    ];
+
+    for (slug, inputs) in cases {
+        let descriptor = registry::by_slug(slug).expect("registered");
+        for input in *inputs {
+            assert!(
+                registry::parse(descriptor, input, &ParseOptions::default()).is_err(),
+                "`{slug}` accepted `{input}`"
+            );
+        }
+    }
+}
+
+#[test]
 fn john_only_plain_serialized_types_reject_empty_input() {
     for slug in [
         "mschapv2-naive",

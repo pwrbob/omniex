@@ -16,19 +16,32 @@ pub struct Krb5_18 {
     pub digest: String,
 }
 
+const TAG: &str = "$krb18$";
+
 impl Parse for Krb5_18 {
     fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        let (principal, digest, digest_offset) = parse::split_once(input, '$', 0)?;
-        if digest.is_empty() {
+        let base = usize::from(input.starts_with(TAG)) * TAG.len();
+        let rest = input.get(base..).unwrap_or_default();
+        let (principal, digest, digest_offset) = parse::split_once(rest, '$', base)?;
+        if principal.is_empty() {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                base,
+                "missing Kerberos principal",
+            ));
+        }
+        parse::check_text_length(principal, base, 128, "Kerberos principal")?;
+        if digest.len() != 64 {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
                 digest_offset,
-                "missing Kerberos digest",
+                "Kerberos etype 18 digests are 64 hexadecimal digits",
             ));
         }
+        parse::check_hex(digest, digest_offset, "Kerberos digest")?;
         Ok(Self {
             principal: principal.to_owned(),
             digest: digest.to_owned(),

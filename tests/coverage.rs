@@ -51,6 +51,34 @@ fn every_declared_mode_has_a_vector() {
 }
 
 #[test]
+fn office_hashes_are_not_claimed_by_other_types() {
+    let vector = VECTORS
+        .iter()
+        .find(|vector| vector.slug == "office")
+        .expect("office vector");
+    for entry in vector
+        .hashcat
+        .iter()
+        .map(|entry| entry.text())
+        .chain(vector.john.iter().map(|entry| entry.text()))
+    {
+        let mut slugs: Vec<&str> = registry::all()
+            .iter()
+            .filter(|descriptor| {
+                registry::parse(descriptor, &entry, &ParseOptions::default()).is_ok()
+            })
+            .map(|descriptor| descriptor.slug)
+            .collect();
+        slugs.sort_unstable();
+        assert_eq!(
+            slugs,
+            ["office"],
+            "the office hash `{entry}` must only identify as office"
+        );
+    }
+}
+
+#[test]
 fn every_vector_names_a_registered_type() {
     for vector in VECTORS {
         assert!(

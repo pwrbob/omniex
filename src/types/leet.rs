@@ -21,14 +21,31 @@ impl Parse for Leet {
         if input.is_empty() {
             return Err(parse::empty());
         }
-        let (salt, digest, digest_offset) = parse::split_once(input, '$', 0)?;
-        if digest.is_empty() {
+        let Some(index) = input.rfind('$') else {
+            return Err(parse::error(
+                ParseErrorKind::InvalidCharacter,
+                input.len(),
+                "expected `$` between the salt and the digest",
+            ));
+        };
+        let salt = &input[..index];
+        let digest = &input[index + 1..];
+        if salt.is_empty() {
             return Err(parse::error(
                 ParseErrorKind::InvalidLength,
-                digest_offset,
-                "missing leet digest",
+                0,
+                "missing leet salt",
             ));
         }
+        parse::check_text_length(salt, 0, 32, "leet salt")?;
+        if digest.len() != 128 {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                index + 1,
+                "leet digests are 128 hexadecimal digits",
+            ));
+        }
+        parse::check_hex(digest, index + 1, "leet digest")?;
         Ok(Self {
             salt: salt.to_owned(),
             digest: digest.to_owned(),

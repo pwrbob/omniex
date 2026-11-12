@@ -22,3 +22,5 @@ First release.
 - CLI for parsing, identifying, describing, and extracting, with table and JSON
   output.
 - Conformance tests against pinned hashcat and John builds.
+- Hash detection rejects malformed Kerberos, leet, and Netscreen values instead
+  of claiming unrelated hashes such as Office documents.
