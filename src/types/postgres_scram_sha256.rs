@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40055]
 )]
 pub struct PostgresScramSha256 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// Base64 stored key.
+    /// Stored key
     #[field(role = digest, encoding = base64)]
     pub stored_key: Vec<u8>,
 
-    /// Base64 server key.
+    /// Server key
     #[field(role = other, encoding = base64)]
     pub server_key: Vec<u8>,
 }

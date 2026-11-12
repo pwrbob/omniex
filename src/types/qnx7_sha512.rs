@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40041],
 )]
 pub struct Qnx7Sha512 {
-    /// Base64-encoded 64-byte digest.
+    /// 64-byte digest
     #[field(role = digest, encoding = base64)]
     pub digest: [u8; 64],
 
-    /// Base64-encoded salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 }

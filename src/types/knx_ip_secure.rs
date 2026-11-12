@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [25900],
 )]
 pub struct KnxIpSecure {
-    /// Secure session identifier bytes, serialized as hex.
+    /// Session ID
     #[field(role = other, encoding = hex)]
     pub session_id: Vec<u8>,
 
-    /// The 32-byte XORed public value.
+    /// 32-byte XORed public value
     #[field(role = other, encoding = hex)]
     pub public_value: [u8; 32],
 
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

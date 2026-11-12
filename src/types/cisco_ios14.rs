@@ -7,15 +7,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Cisco-IOS $14$", slug = "cisco-ios14", hashcat = [38200])]
 pub struct CiscoIos14 {
-    /// First salt.
+    /// First salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Second salt.
+    /// Second salt
     #[field(role = other, encoding = ascii)]
     pub salt2: String,
 
-    /// Crypt base64 digest.
+    /// Crypt base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

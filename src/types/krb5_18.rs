@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Kerberos 5 etype 18", slug = "krb5-18", hashcat = [], john = ["krb5-18"])]
 pub struct Krb5_18 {
-    /// Kerberos principal.
+    /// Kerberos principal
     #[field(role = username, encoding = ascii)]
     pub principal: String,
 
-    /// Hexadecimal digest.
+    /// Hexadecimal digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

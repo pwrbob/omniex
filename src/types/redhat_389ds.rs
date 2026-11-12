@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [40025]
 )]
 pub struct Redhat389ds {
-    /// Salt and digest payload.
+    /// Salt and digest payload
     #[field(role = salt, encoding = base64)]
     pub payload: Vec<u8>,
 }

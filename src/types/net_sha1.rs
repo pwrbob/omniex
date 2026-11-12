@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "NetSHA1", slug = "net-sha1", hashcat = [], john = ["net-sha1"])]
 pub struct NetSha1 {
-    /// Packet data.
+    /// Packet data
     #[field(role = salt, encoding = ascii)]
     pub packet: String,
 
-    /// Twenty-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

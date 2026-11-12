@@ -8,15 +8,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "MS-AzureSync", slug = "azure-sync", hashcat = [40037], john = ["AzureAD"])]
 pub struct AzureSync {
-    /// Object identifier.
+    /// Object identifier
     #[field(role = username, encoding = ascii)]
     pub object_id: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Thirty-two-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

@@ -7,15 +7,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "WoWSRP", slug = "wowsrp", hashcat = [], john = ["WoWSRP"])]
 pub struct Wowsrp {
-    /// User name.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Session data.
+    /// Session data
     #[field(role = other, encoding = ascii)]
     pub data: String,
 
-    /// Salt.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

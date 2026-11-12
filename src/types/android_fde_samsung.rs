@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [12900]
 )]
 pub struct AndroidFdeSamsung {
-    /// Forty-eight-byte salt.
+    /// 48-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Thirty-two-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 
-    /// Sixteen-byte initialization vector.
+    /// 16-byte IV
     #[field(role = other, encoding = hex)]
     pub iv: [u8; 16],
 }

@@ -15,7 +15,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = groestl_modes,
 )]
 pub struct Groestl {
-    /// The digest, whose length selects the Groestl output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

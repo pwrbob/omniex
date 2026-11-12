@@ -11,23 +11,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [5500, 27000],
 )]
 pub struct NetNtlmV1 {
-    /// User name from the authentication exchange.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Domain or workgroup from the authentication exchange.
+    /// Domain or workgroup
     #[field(role = other, encoding = ascii)]
     pub domain: String,
 
-    /// LM response, empty for an NT-only response.
+    /// LM response (empty for NT-only)
     #[field(role = ciphertext, encoding = hex)]
     pub lm_response: Vec<u8>,
 
-    /// NT response generated from the server challenge.
+    /// NT response
     #[field(role = ciphertext, encoding = hex)]
     pub nt_response: [u8; 24],
 
-    /// Eight-byte server challenge.
+    /// 8-byte server challenge
     #[field(role = ciphertext, encoding = hex)]
     pub challenge: [u8; 8],
 }

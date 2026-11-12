@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Google fscrypt", slug = "fscrypt", hashcat = [38900])]
 pub struct Fscrypt {
-    /// Version-specific fields, preserved verbatim.
+    /// Version-specific fields
     #[field(role = other, encoding = ascii)]
     pub data: String,
 }

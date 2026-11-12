@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "mega.nz", slug = "mega", hashcat = [33400])]
 pub struct Mega {
-    /// Encoded salt and key material.
+    /// Encoded salt/key material
     #[field(role = salt, encoding = ascii)]
     pub blob: String,
 }

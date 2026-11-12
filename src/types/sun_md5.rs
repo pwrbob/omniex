@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["SunMD5"],
 )]
 pub struct SunMd5 {
-    /// Round count.
+    /// Round count
     #[field(role = iterations, encoding = decimal)]
     pub rounds: u32,
 
-    /// Salt string.
+    /// Salt string
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Digest string.
+    /// Digest string
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

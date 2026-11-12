@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["Fortigate"],
 )]
 pub struct Fortigate {
-    /// The 12-byte salt.
+    /// 12-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 12],
 
-    /// The 20-byte SHA1 digest.
+    /// 20-byte SHA1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [10100],
 )]
 pub struct Siphash {
-    /// The 8-byte hash value.
+    /// 8-byte hash value
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 
-    /// Compression rounds parameter.
+    /// Compression rounds
     #[field(role = other, encoding = decimal)]
     pub compression_rounds: u8,
 
-    /// Finalization rounds parameter.
+    /// Finalization rounds
     #[field(role = other, encoding = decimal)]
     pub finalization_rounds: u8,
 
-    /// The 16-byte key.
+    /// 16-byte key
     #[field(role = key, encoding = hex)]
     pub key: [u8; 16],
 }

@@ -14,7 +14,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = bitcoin_wif_modes,
 )]
 pub struct BitcoinWif {
-    /// Bitcoin address text.
+    /// Bitcoin address text
     #[field(role = other, encoding = ascii)]
     pub address: String,
 }

@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [27200],
 )]
 pub struct RailsRestfulAuth {
-    /// The 20-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// The 20-byte salt or seed.
+    /// 20-byte salt or seed
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 20],
 }

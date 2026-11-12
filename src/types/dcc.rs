@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = dcc_modes,
 )]
 pub struct Dcc {
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// User name, serialized as ASCII.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 }

@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [3000],
 )]
 pub struct Lm {
-    /// The 8-byte LM digest.
+    /// 8-byte LM digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

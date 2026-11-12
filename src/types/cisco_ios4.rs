@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [5700],
 )]
 pub struct CiscoIos4 {
-    /// Base64 signature.
+    /// Base64 signature
     #[field(role = digest, encoding = ascii)]
     pub signature: String,
 }

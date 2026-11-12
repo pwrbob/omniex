@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [8000], john = ["SybaseASE"],
 )]
 pub struct SybaseAse {
-    /// The 8-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// The 32-byte SHA2-256 digest.
+    /// 32-byte SHA2-256 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

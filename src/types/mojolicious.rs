@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [16501],
 )]
 pub struct Mojolicious {
-    /// Base64 payload before the signature separator.
+    /// Base64 pre-signature payload
     #[field(role = ciphertext, encoding = ascii)]
     pub payload: String,
 
-    /// Hexadecimal HMAC signature.
+    /// HMAC signature
     #[field(role = digest, encoding = hex)]
     pub signature: [u8; 32],
 }

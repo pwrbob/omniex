@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "STRIP", slug = "strip", hashcat = [], john = ["STRIP"])]
 pub struct Strip {
-    /// Hex-encoded digest.
+    /// Hex-encoded digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

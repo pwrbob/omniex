@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "SAP PSE", slug = "sappse", hashcat = [], john = ["sappse"])]
 pub struct Sappse {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Remaining fields, preserved verbatim.
+    /// Remaining fields
     #[field(role = other, encoding = ascii)]
     pub fields: String,
 }

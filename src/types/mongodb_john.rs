@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["MongoDB"]
 )]
 pub struct MongodbJohn {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// User name.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

@@ -31,11 +31,11 @@ use omniex::HashType;
     hashcat = [10, 20, 3800],
 )]
 pub struct SaltedMd5 {
-    /// Salt used by the attack mode.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// The 16-byte MD5 digest.
+    /// 16-byte MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }
@@ -105,7 +105,7 @@ When compatibility depends on the values, provide a function:
     modes_fn = example_modes,
 )]
 pub struct Example {
-    /// Salt value.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 }
@@ -126,13 +126,42 @@ enforce that. The derive still records the full declared set.
 ## Field attributes
 
 ```rust
-/// Salt used by the attack mode.
+/// Salt
 #[field(role = salt, encoding = hex)]
 pub salt: Vec<u8>,
 ```
 
 Doc comments are the only source of descriptions. A field without one is a
 compile error.
+
+### Field descriptions
+
+Descriptions are short noun phrases for the verbose table and JSON output. They
+must make sense in a narrow terminal.
+
+- Do not start with an article: write `Salt`, not `The salt`.
+- Do not repeat the encoding column. Say only what the encoding does not:
+  `IV size (hex)` is redundant for a hex field, but `KDF salt (hex)` is useful
+  for an ASCII field whose text contains hexadecimal.
+- Use digits: `32-byte digest`, `8-character salt`, `22-character digest`.
+- Put defaults, optionality, units, and examples in parentheses:
+  `Round count (default 0)`, `IV size (0 if symmetric)`,
+  `MAC (may be empty)`, `Version (e.g. 2)`.
+- Prefer compact forms: `Digest (variable length)`, `First IKE fragment`,
+  ``Scheme (`a`/`b`)``.
+- Do not describe parser or serializer behavior. Avoid `preserved verbatim`,
+  `serialized as`, `used by the attack mode`, and `which selects the mode`.
+- Do not end the description with a period.
+
+| Avoid | Prefer |
+| --- | --- |
+| `The 16-byte MD5 digest.` | `16-byte MD5 digest` |
+| `Salt used by the attack mode.` | `Salt` |
+| `Explicit round count, or zero for the default.` | `Round count (default 0)` |
+| `Version-specific fields, preserved verbatim.` | `Version-specific fields` |
+| `The digest, whose length selects the BLAKE output size.` | `Digest (variable length)` |
+| `Twenty-two character digest from the phpass alphabet.` | `22-character phpass digest` |
+| `Initialization vector size in bytes, zero for symmetrically encrypted files.` | `IV size (0 if symmetric)` |
 
 | Key | Default | Meaning |
 | --- | --- | --- |

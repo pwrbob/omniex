@@ -18,7 +18,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = haval_modes,
 )]
 pub struct Haval {
-    /// The digest, whose length selects the HAVAL output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

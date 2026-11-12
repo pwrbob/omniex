@@ -15,7 +15,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = tiger_modes,
 )]
 pub struct Tiger {
-    /// The digest, whose length selects the Tiger output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

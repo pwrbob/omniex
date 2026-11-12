@@ -7,27 +7,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Bisq .wallet (scrypt)", slug = "bisq", hashcat = [29800])]
 pub struct Bisq {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// scrypt cost parameter.
+    /// scrypt cost parameter
     #[field(role = iterations, encoding = decimal)]
     pub n: u32,
 
-    /// scrypt block size parameter.
+    /// scrypt block size parameter
     #[field(role = other, encoding = decimal)]
     pub r: u8,
 
-    /// scrypt parallelization parameter.
+    /// scrypt parallelism
     #[field(role = other, encoding = decimal)]
     pub p: u8,
 
-    /// Eight-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// Thirty-two-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

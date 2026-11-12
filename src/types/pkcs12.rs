@@ -12,31 +12,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = pkcs12_modes,
 )]
 pub struct Pkcs12 {
-    /// HMAC version, which selects the mode.
+    /// HMAC version
     #[field(role = other, encoding = decimal)]
     pub version: u32,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Salt length.
+    /// Salt length
     #[field(role = other, encoding = decimal)]
     pub salt_length: u32,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Data length.
+    /// Data length
     #[field(role = other, encoding = decimal)]
     pub length: u32,
 
-    /// Hexadecimal encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 
-    /// Hexadecimal MAC.
+    /// MAC
     #[field(role = digest, encoding = hex)]
     pub mac: Vec<u8>,
 }

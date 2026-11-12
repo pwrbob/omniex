@@ -12,27 +12,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = iclass_modes,
 )]
 pub struct Iclass {
-    /// Scheme name, `iclass` or `iclass_leg`.
+    /// Scheme name (`iclass`/`iclass_leg`)
     #[field(role = other, encoding = ascii)]
     pub scheme: String,
 
-    /// Eight-byte key.
+    /// 8-byte key
     #[field(role = key, encoding = ascii)]
     pub key: String,
 
-    /// First block data.
+    /// First block data
     #[field(role = other, encoding = ascii)]
     pub block1: String,
 
-    /// First MAC.
+    /// First MAC
     #[field(role = digest, encoding = ascii)]
     pub mac1: String,
 
-    /// Second block data.
+    /// Second block data
     #[field(role = other, encoding = ascii)]
     pub block2: String,
 
-    /// Second MAC.
+    /// Second MAC
     #[field(role = other, encoding = ascii)]
     pub mac2: String,
 }

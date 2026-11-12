@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["oracle"]
 )]
 pub struct OracleJohn {
-    /// Oracle user name.
+    /// Oracle user name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Eight-byte digest.
+    /// 8-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

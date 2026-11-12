@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "SCRAM-PBKDF2-SHA1-MongoDB legacy", slug = "scram-pbkdf2-sha1-mongodb", hashcat = [], john = ["SCRAM-PBKDF2-SHA1-MongoDB"])]
 pub struct ScramJohn {
-    /// Serialized hash payload.
+    /// Serialized hash payload
     #[field(role = other, encoding = ascii)]
     pub data: String,
 }

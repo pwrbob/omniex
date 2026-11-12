@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [14000],
 )]
 pub struct DesPlaintext {
-    /// The 8-byte ciphertext.
+    /// 8-byte ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: [u8; 8],
 
-    /// The 8-byte salt or plaintext.
+    /// 8-byte salt or plaintext
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 }

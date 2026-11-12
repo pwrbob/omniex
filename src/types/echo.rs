@@ -15,7 +15,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = echo_modes,
 )]
 pub struct Echo {
-    /// The digest, whose length selects the ECHO output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

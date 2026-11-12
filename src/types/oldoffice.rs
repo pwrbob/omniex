@@ -13,27 +13,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = oldoffice_modes,
 )]
 pub struct OldOffice {
-    /// Encryption version, which selects the digest and mode family.
+    /// Encryption version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Sixteen-byte verifier.
+    /// 16-byte verifier
     #[field(role = other, encoding = hex)]
     pub verifier: [u8; 16],
 
-    /// Sixteen or twenty-byte key.
+    /// 16- or 20-byte key
     #[field(role = digest, encoding = hex)]
     pub key: Vec<u8>,
 
-    /// RC4 key recovered by the collider modes, empty when absent.
+    /// Collider RC4 key (may be empty)
     #[field(role = key, encoding = hex)]
     pub rc4_key: Vec<u8>,
 
-    /// Optional 32-byte second block for 40-bit Excel files.
+    /// Optional 32-byte Excel block
     #[field(role = other, encoding = hex)]
     pub second_block: Vec<u8>,
 }

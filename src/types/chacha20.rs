@@ -8,23 +8,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "ChaCha20", slug = "chacha20", hashcat = [15400])]
 pub struct ChaCha20 {
-    /// Eight-byte counter position.
+    /// 8-byte counter position
     #[field(role = other, encoding = hex)]
     pub position: [u8; 8],
 
-    /// Key offset from 0 to 63.
+    /// Key offset from 0 to 63
     #[field(role = other, encoding = decimal)]
     pub offset: u8,
 
-    /// Eight-byte initialization vector.
+    /// 8-byte IV
     #[field(role = salt, encoding = hex)]
     pub iv: [u8; 8],
 
-    /// Eight bytes of known plaintext.
+    /// 8-byte known plaintext
     #[field(role = other, encoding = hex)]
     pub plaintext: [u8; 8],
 
-    /// Eight bytes of ciphertext.
+    /// 8-byte ciphertext
     #[field(role = digest, encoding = hex)]
     pub ciphertext: [u8; 8],
 }

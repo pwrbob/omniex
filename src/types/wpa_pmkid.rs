@@ -11,27 +11,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [22000, 22001],
 )]
 pub struct WpaPmkid {
-    /// Two-digit frame type, for example `01` for PMKID.
+    /// Frame type (`01` = PMKID)
     #[field(role = other, encoding = ascii)]
     pub kind: String,
 
-    /// The 16-byte PMKID.
+    /// 16-byte PMKID
     #[field(role = digest, encoding = hex)]
     pub pmkid: [u8; 16],
 
-    /// Access point MAC address.
+    /// Access point MAC address
     #[field(role = other, encoding = hex)]
     pub access_point: [u8; 6],
 
-    /// Station MAC address.
+    /// Station MAC address
     #[field(role = other, encoding = hex)]
     pub station: [u8; 6],
 
-    /// ESSID bytes.
+    /// ESSID bytes
     #[field(role = salt, encoding = hex)]
     pub essid: Vec<u8>,
 
-    /// Remaining WPA fields, preserved verbatim.
+    /// Remaining WPA fields
     #[field(role = other, encoding = ascii)]
     pub extras: String,
 }

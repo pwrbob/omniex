@@ -11,31 +11,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [31800]
 )]
 pub struct OnepasswordMobile {
-    /// Account e-mail address.
+    /// Account e-mail address
     #[field(role = username, encoding = ascii)]
     pub email: String,
 
-    /// Hexadecimal HKDF salt.
+    /// Hexadecimal HKDF salt
     #[field(role = salt, encoding = ascii)]
     pub hkdf_salt: String,
 
-    /// Hexadecimal HKDF key.
+    /// Hexadecimal HKDF key
     #[field(role = key, encoding = ascii)]
     pub hkdf_key: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal initialization vector.
+    /// IV (hex)
     #[field(role = other, encoding = ascii)]
     pub iv: String,
 
-    /// Hexadecimal ciphertext.
+    /// Hexadecimal ciphertext
     #[field(role = ciphertext, encoding = ascii)]
     pub ciphertext: String,
 
-    /// Sixteen-byte authentication tag.
+    /// 16-byte authentication tag
     #[field(role = digest, encoding = ascii)]
     pub tag: String,
 }

@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [24800],
 )]
 pub struct UmbracoHmacSha1 {
-    /// The 20-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = base64)]
     pub digest: [u8; 20],
 }

@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40004],
 )]
 pub struct UuidV3 {
-    /// Generated UUID text.
+    /// Generated UUID text
     #[field(role = digest, encoding = ascii)]
     pub uuid: String,
 
-    /// Namespace UUID text.
+    /// Namespace UUID text
     #[field(role = other, encoding = ascii)]
     pub namespace: String,
 }

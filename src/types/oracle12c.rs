@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Oracle 12c", slug = "oracle12c", hashcat = [], john = ["Oracle12C"])]
 pub struct Oracle12c {
-    /// Hex-encoded digest.
+    /// Hex-encoded digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

@@ -8,11 +8,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "SecureCRT MasterPassphrase v2", slug = "securecrt", hashcat = [31400])]
 pub struct SecureCrt {
-    /// Configuration key name.
+    /// Configuration key name
     #[field(role = other, encoding = ascii)]
     pub name: String,
 
-    /// Encrypted data with colon separators.
+    /// Encrypted data (colon-separated)
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 }

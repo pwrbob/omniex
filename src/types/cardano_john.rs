@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["cardano"]
 )]
 pub struct CardanoJohn {
-    /// Version-specific fields, preserved verbatim.
+    /// Version-specific fields
     #[field(role = other, encoding = ascii)]
     pub fields: String,
 }

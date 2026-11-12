@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40033],
 )]
 pub struct AtlassianPbkdf2Sha1 {
-    /// The 16-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// The 32-byte digest block.
+    /// 32-byte digest block
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

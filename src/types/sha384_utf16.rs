@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [10870],
 )]
 pub struct Sha384Utf16 {
-    /// The 48-byte SHA2-384 digest.
+    /// 48-byte SHA2-384 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 48],
 }

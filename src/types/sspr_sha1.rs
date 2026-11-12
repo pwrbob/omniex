@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40058], john = ["sspr"],
 )]
 pub struct SsprSha1 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// The 20-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

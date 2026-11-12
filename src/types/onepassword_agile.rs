@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [6600],
 )]
 pub struct OnepasswordAgile {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal data.
+    /// Data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

@@ -106,7 +106,7 @@ fn parse_verbose_reports_fields() {
         .stdout(predicate::str::contains("Hashcat"))
         .stdout(predicate::str::contains("Fields"))
         .stdout(predicate::str::contains("digest"))
-        .stdout(predicate::str::contains("The 16-byte MD5 digest."));
+        .stdout(predicate::str::contains("16-byte MD5 digest"));
 }
 
 #[test]
@@ -339,7 +339,7 @@ fn show_reports_one_type_without_a_hash() {
         .stdout(predicate::str::contains("Hashcat: 3100 / John: -"))
         .stdout(predicate::str::contains("digest"))
         .stdout(predicate::str::contains("salt"))
-        .stdout(predicate::str::contains("Decimal salt."));
+        .stdout(predicate::str::contains("Decimal salt"));
 }
 
 #[test]

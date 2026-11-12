@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [35500]
 )]
 pub struct WordpressBcrypt {
-    /// bcrypt version marker.
+    /// bcrypt version marker
     #[field(role = other, encoding = ascii)]
     pub version: String,
 
-    /// Cost parameter.
+    /// Cost parameter
     #[field(role = iterations, encoding = decimal)]
     pub cost: u32,
 
-    /// Twenty-two base64 salt characters.
+    /// 22-character base64 salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Thirty-one base64 digest characters.
+    /// 31-character base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

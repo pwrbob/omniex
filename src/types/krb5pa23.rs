@@ -13,23 +13,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["krb5pa-md5"]
 )]
 pub struct Krb5pa23 {
-    /// Kerberos username.
+    /// Kerberos username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Kerberos realm.
+    /// Kerberos realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// Pre-authentication salt.
+    /// Pre-authentication salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Thirty-six-byte timestamp as hexadecimal.
+    /// 36-byte timestamp (hex)
     #[field(role = other, encoding = ascii)]
     pub timestamp: String,
 
-    /// Sixteen-byte checksum as hexadecimal.
+    /// 16-byte checksum (hex)
     #[field(role = digest, encoding = ascii)]
     pub checksum: String,
 }

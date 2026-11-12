@@ -55,7 +55,8 @@ raises the real requirement.
    those parameters, so one type can expose all matching modes. Do not merge a
    salt with an HMAC key.
 2. Otherwise add a module under `src/types/`, a struct with a doc comment on
-   every field, manual `Parse` and `Render`, and the derive for metadata.
+   every field following `doc/MACROS.md#field-descriptions`, manual `Parse` and
+   `Render`, and the derive for metadata.
 3. Register the descriptor in `src/registry.rs`.
 4. Add hashcat vectors (one per mode, with that mode's own canonical hash) and
    John vectors only where John accepts the same serialization to

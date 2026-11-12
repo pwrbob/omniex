@@ -8,31 +8,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Android Backup", slug = "android-backup", hashcat = [18900], john = ["AndroidBackup"])]
 pub struct AndroidBackup {
-    /// Backup format version.
+    /// Backup format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Cipher identifier.
+    /// Cipher identifier
     #[field(role = other, encoding = decimal)]
     pub cipher: u8,
 
-    /// Key derivation iteration count.
+    /// KDF iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Sixty-four-byte user salt.
+    /// 64-byte user salt
     #[field(role = salt, encoding = hex)]
     pub user_salt: [u8; 64],
 
-    /// Sixty-four-byte checksum salt.
+    /// 64-byte checksum salt
     #[field(role = other, encoding = hex)]
     pub checksum_salt: [u8; 64],
 
-    /// Sixteen-byte user initialization vector.
+    /// 16-byte user IV
     #[field(role = other, encoding = hex)]
     pub user_iv: [u8; 16],
 
-    /// Ninety-six-byte master key blob.
+    /// 96-byte master key blob
     #[field(role = ciphertext, encoding = hex)]
     pub master_key_blob: [u8; 96],
 }

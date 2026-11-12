@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [40077],
 )]
 pub struct Sha224Sha1 {
-    /// The 28-byte digest.
+    /// 28-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 28],
 }

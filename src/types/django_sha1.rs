@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [124],
 )]
 pub struct DjangoSha1 {
-    /// Salt used by the attack mode.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// The 20-byte SHA-1 digest.
+    /// 20-byte SHA-1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

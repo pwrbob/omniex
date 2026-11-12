@@ -7,15 +7,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "VTP", slug = "vtp", hashcat = [], john = ["vtp"])]
 pub struct Vtp {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Data length.
+    /// Data length
     #[field(role = other, encoding = decimal)]
     pub length: u32,
 
-    /// Packet data.
+    /// Packet data
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 }

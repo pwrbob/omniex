@@ -11,23 +11,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["LUKS"],
 )]
 pub struct LuksJohn {
-    /// Inline marker, which must be `1`.
+    /// Inline marker (must be 1)
     #[field(role = other, encoding = decimal)]
     pub inlined: u8,
 
-    /// Raw 592-byte LUKS header.
+    /// Raw 592-byte LUKS header
     #[field(role = salt, encoding = hex)]
     pub header: [u8; 592],
 
-    /// Anti-forensic data length.
+    /// Anti-forensic data length
     #[field(role = other, encoding = decimal)]
     pub af_size: u32,
 
-    /// Base64-encoded anti-forensic data.
+    /// Anti-forensic data
     #[field(role = ciphertext, encoding = base64)]
     pub af_data: Vec<u8>,
 
-    /// Twenty-byte master-key digest.
+    /// 20-byte master-key digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [5800],
 )]
 pub struct SamsungAndroid {
-    /// The 20-byte SHA-1 digest.
+    /// 20-byte SHA-1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// Decimal salt.
+    /// Decimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

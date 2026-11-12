@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "dominosec", slug = "dominosec", hashcat = [], john = ["dominosec"])]
 pub struct DominosecJohn {
-    /// Serialized hash payload.
+    /// Serialized hash payload
     #[field(role = other, encoding = ascii)]
     pub data: String,
 }

@@ -12,23 +12,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = krb5tgs23_modes,
 )]
 pub struct Krb5Tgs23 {
-    /// Kerberos username.
+    /// Kerberos username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Kerberos realm.
+    /// Kerberos realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// Service principal name.
+    /// Service principal name
     #[field(role = other, encoding = ascii)]
     pub spn: String,
 
-    /// The 16-byte checksum.
+    /// 16-byte checksum
     #[field(role = digest, encoding = hex)]
     pub checksum: [u8; 16],
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 }

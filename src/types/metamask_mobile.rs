@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [31900]
 )]
 pub struct MetamaskMobile {
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// Sixteen-byte initialization vector.
+    /// 16-byte IV
     #[field(role = other, encoding = hex)]
     pub iv: [u8; 16],
 
-    /// Base64 digest.
+    /// Digest
     #[field(role = digest, encoding = base64)]
     pub digest: Vec<u8>,
 }

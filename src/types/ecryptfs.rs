@@ -8,19 +8,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "eCryptfs", slug = "ecryptfs", hashcat = [12200], john = ["eCryptfs"])]
 pub struct Ecryptfs {
-    /// Format version, always `0`.
+    /// Format version, always `0`
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Feature flags, always `1`.
+    /// Feature flags, always `1`
     #[field(role = other, encoding = decimal)]
     pub flags: u8,
 
-    /// Eight-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// Eight-byte signature.
+    /// 8-byte signature
     #[field(role = digest, encoding = hex)]
     pub signature: [u8; 8],
 }

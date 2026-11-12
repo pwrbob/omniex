@@ -8,15 +8,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "GRUB 2", slug = "grub2", hashcat = [40019])]
 pub struct Grub2 {
-    /// PBKDF2 iteration count.
+    /// PBKDF2 iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Sixty-four-byte digest.
+    /// 64-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 }

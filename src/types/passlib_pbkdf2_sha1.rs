@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40044],
 )]
 pub struct PasslibPbkdf2Sha1 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Passlib base64 salt text.
+    /// Passlib base64 salt text
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Passlib base64 digest text.
+    /// Passlib base64 digest text
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

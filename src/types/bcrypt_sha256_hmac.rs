@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [30601]
 )]
 pub struct BcryptSha256Hmac {
-    /// bcrypt variant marker.
+    /// bcrypt variant marker
     #[field(role = other, encoding = ascii)]
     pub variant: String,
 
-    /// Cost parameter.
+    /// Cost parameter
     #[field(role = iterations, encoding = decimal)]
     pub cost: u32,
 
-    /// Base64 salt.
+    /// Base64 salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Base64 digest.
+    /// Base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

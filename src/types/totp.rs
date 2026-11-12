@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "TOTP (HMAC-SHA1)", slug = "totp", hashcat = [18100])]
 pub struct Totp {
-    /// OTP code and timestamp pairs.
+    /// OTP/timestamp pairs
     #[field(role = other, encoding = ascii)]
     pub pairs: String,
 }

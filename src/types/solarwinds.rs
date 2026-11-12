@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = solarwinds_modes,
 )]
 pub struct Solarwinds {
-    /// Format version, which selects the mode.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Base64 salt or username field.
+    /// Base64 salt or username field
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Base64 digest.
+    /// Base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

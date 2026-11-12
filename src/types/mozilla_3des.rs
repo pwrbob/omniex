@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [26000],
 )]
 pub struct Mozilla3des {
-    /// Cipher name.
+    /// Cipher name
     #[field(role = other, encoding = ascii)]
     pub cipher: String,
 
-    /// Hexadecimal global salt.
+    /// Hexadecimal global salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal entry salt.
+    /// Hexadecimal entry salt
     #[field(role = salt, encoding = ascii)]
     pub entry_salt: String,
 
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

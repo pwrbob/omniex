@@ -7,15 +7,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Veeam VBK", slug = "veeam", hashcat = [31200])]
 pub struct Veeam {
-    /// Encrypted data as a decimal string.
+    /// Encrypted data (decimal)
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

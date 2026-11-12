@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [30120]
 )]
 pub struct WerkzeugSha256 {
-    /// Salt value.
+    /// Salt value
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Thirty-two-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

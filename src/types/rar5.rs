@@ -8,19 +8,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "RAR5", slug = "rar5", hashcat = [13000], john = ["RAR5"])]
 pub struct Rar5 {
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Base-2 logarithm of the iteration count.
+    /// Iteration exponent (base 2)
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u8,
 
-    /// Sixteen-byte initialization vector.
+    /// 16-byte IV
     #[field(role = other, encoding = hex)]
     pub iv: [u8; 16],
 
-    /// Eight-byte password check value.
+    /// 8-byte password check value
     #[field(role = digest, encoding = hex)]
     pub password_check: [u8; 8],
 }

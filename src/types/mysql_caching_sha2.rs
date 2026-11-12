@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [40006],
 )]
 pub struct MysqlCachingSha2 {
-    /// Hexadecimal challenge.
+    /// Challenge
     #[field(role = other, encoding = hex)]
     pub challenge: Vec<u8>,
 
-    /// The 32-byte SHA2-256 digest.
+    /// 32-byte SHA2-256 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

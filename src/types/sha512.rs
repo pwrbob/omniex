@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["Raw-SHA512"],
 )]
 pub struct Sha512 {
-    /// The 64-byte SHA2-512 digest.
+    /// 64-byte SHA2-512 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 }

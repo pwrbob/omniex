@@ -8,11 +8,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Anope IRC Services", slug = "anope-sha256", hashcat = [30700])]
 pub struct AnopeSha256 {
-    /// Salt value.
+    /// Salt value
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 32],
 
-    /// Thirty-two-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [28000],
 )]
 pub struct Crc64Jones {
-    /// The 8-byte digest.
+    /// 8-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 
-    /// The 8-byte initial value.
+    /// 8-byte initial value
     #[field(role = other, encoding = hex)]
     pub initial: [u8; 8],
 }

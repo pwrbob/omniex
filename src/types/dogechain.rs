@@ -8,19 +8,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Dogechain.info Wallet", slug = "dogechain", hashcat = [32500])]
 pub struct Dogechain {
-    /// Wallet type, always `0`.
+    /// Wallet type, always `0`
     #[field(role = other, encoding = decimal)]
     pub kind: u8,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Base64 encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = base64)]
     pub data: Vec<u8>,
 
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 }

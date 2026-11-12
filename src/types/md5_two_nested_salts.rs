@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [21310],
 )]
 pub struct Md5TwoNestedSalts {
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// First salt used by the attack mode.
+    /// First salt
     #[field(role = salt, encoding = ascii)]
     pub salt1: String,
 
-    /// Second salt used by the attack mode.
+    /// Second salt
     #[field(role = salt, encoding = ascii)]
     pub salt2: String,
 }

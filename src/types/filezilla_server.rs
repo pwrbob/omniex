@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [15000],
 )]
 pub struct FilezillaServer {
-    /// The 64-byte SHA2-512 digest.
+    /// 64-byte SHA2-512 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 
-    /// Decimal salt used by the attack mode.
+    /// Decimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

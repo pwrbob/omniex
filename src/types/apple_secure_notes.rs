@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [16200], john = ["notes"],
 )]
 pub struct AppleSecureNotes {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u32,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// ASCII salt.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// The 24-byte digest.
+    /// 24-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 24],
 }

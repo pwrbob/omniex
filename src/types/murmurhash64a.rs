@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [34200],
 )]
 pub struct MurmurHash64A {
-    /// The 8-byte digest.
+    /// 8-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 
-    /// The 8-byte salt or seed.
+    /// 8-byte salt or seed
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 }

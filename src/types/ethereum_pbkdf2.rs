@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [15600], john = ["ethereum"],
 )]
 pub struct EthereumPbkdf2 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 
-    /// Hexadecimal MAC.
+    /// MAC
     #[field(role = digest, encoding = hex)]
     pub mac: Vec<u8>,
 }

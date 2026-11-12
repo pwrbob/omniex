@@ -7,19 +7,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "PGP SDA", slug = "pgpsda", hashcat = [], john = ["pgpsda"])]
 pub struct Pgpsda {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Eight-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// Eight-byte digest.
+    /// 8-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

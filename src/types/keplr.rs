@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Keplr", slug = "keplr", hashcat = [], john = ["keplr"])]
 pub struct Keplr {
-    /// Version-specific fields, preserved verbatim.
+    /// Version-specific fields
     #[field(role = other, encoding = ascii)]
     pub fields: String,
 }

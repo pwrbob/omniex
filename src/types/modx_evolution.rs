@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40007],
 )]
 pub struct ModxEvolution {
-    /// The 20-byte SHA1 digest.
+    /// 20-byte SHA1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// Salt used by the attack mode.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

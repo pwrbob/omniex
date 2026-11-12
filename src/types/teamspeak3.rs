@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [28300],
 )]
 pub struct Teamspeak3 {
-    /// Base64 salt.
+    /// Base64 salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Base64 digest.
+    /// Base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

@@ -7,23 +7,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "RADIUS", slug = "radius", hashcat = [], john = ["radius"])]
 pub struct Radius {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Authentication type.
+    /// Authentication type
     #[field(role = other, encoding = decimal)]
     pub kind: u8,
 
-    /// Shared secret.
+    /// Shared secret
     #[field(role = salt, encoding = ascii)]
     pub secret: String,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// Sixteen-byte authenticator data.
+    /// 16-byte authenticator data
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 16],
 }

@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [10810, 10820, 10830, 10840],
 )]
 pub struct SaltedSha384 {
-    /// The 48-byte SHA2-384 digest.
+    /// 48-byte SHA2-384 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 48],
 
-    /// Salt used by the attack mode.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

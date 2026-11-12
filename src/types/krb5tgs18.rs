@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [19700],
 )]
 pub struct Krb5Tgs18 {
-    /// Kerberos username.
+    /// Kerberos username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Kerberos realm.
+    /// Kerberos realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// The 12-byte checksum.
+    /// 12-byte checksum
     #[field(role = digest, encoding = hex)]
     pub checksum: [u8; 12],
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 }

@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [22],
 )]
 pub struct JuniperScreenos {
-    /// The 30-character ScreenOS digest encoding.
+    /// 30-character ScreenOS digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 
-    /// Decimal salt.
+    /// Decimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

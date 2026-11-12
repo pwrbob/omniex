@@ -8,15 +8,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Apache Shiro 1 SHA-512", slug = "shiro-sha512", hashcat = [40035])]
 pub struct ShiroSha512 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// Base64 digest.
+    /// Digest
     #[field(role = digest, encoding = base64)]
     pub digest: Vec<u8>,
 }

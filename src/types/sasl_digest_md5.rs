@@ -11,39 +11,39 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [37600],
 )]
 pub struct SaslDigestMd5 {
-    /// SASL mechanism.
+    /// SASL mechanism
     #[field(role = other, encoding = ascii)]
     pub mechanism: String,
 
-    /// Authentication realm.
+    /// Authentication realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// Username.
+    /// Username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Server nonce.
+    /// Server nonce
     #[field(role = other, encoding = ascii)]
     pub nonce: String,
 
-    /// Client nonce.
+    /// Client nonce
     #[field(role = other, encoding = ascii)]
     pub client_nonce: String,
 
-    /// Nonce count.
+    /// Nonce count
     #[field(role = iterations, encoding = ascii)]
     pub nonce_count: String,
 
-    /// Quality of protection.
+    /// Quality of protection
     #[field(role = other, encoding = ascii)]
     pub qop: String,
 
-    /// Digest URI.
+    /// Digest URI
     #[field(role = other, encoding = ascii)]
     pub digest_uri: String,
 
-    /// Response digest.
+    /// Response digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

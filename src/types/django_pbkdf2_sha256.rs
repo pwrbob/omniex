@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40022],
 )]
 pub struct DjangoPbkdf2Sha256 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// ASCII salt.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Base64-encoded digest.
+    /// Digest
     #[field(role = digest, encoding = base64)]
     pub digest: Vec<u8>,
 }

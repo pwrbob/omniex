@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [19200],
 )]
 pub struct QnxSha512 {
-    /// The 64-byte digest.
+    /// 64-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 
-    /// Decimal salt used by the attack mode.
+    /// Decimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

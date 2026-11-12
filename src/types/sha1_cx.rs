@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [14400],
 )]
 pub struct Sha1Cx {
-    /// The 20-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// The 10-byte salt or seed.
+    /// 10-byte salt or seed
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 10],
 }

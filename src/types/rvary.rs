@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "RVARY", slug = "rvary", hashcat = [], john = ["RVARY"])]
 pub struct Rvary {
-    /// Eight-byte digest.
+    /// 8-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["dahua"],
 )]
 pub struct DahuaMd5 {
-    /// Eight digest characters.
+    /// 8-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

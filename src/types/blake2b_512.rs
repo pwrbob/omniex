@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["Raw-Blake2"],
 )]
 pub struct Blake2b512 {
-    /// The 64-byte BLAKE2b digest.
+    /// 64-byte BLAKE2b digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 }

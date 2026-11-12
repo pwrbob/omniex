@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [20011, 20012, 20013], john = ["diskcryptor", "diskcryptor-aes-opencl"],
 )]
 pub struct Diskcryptor {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Hexadecimal encrypted key data.
+    /// Encrypted key data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

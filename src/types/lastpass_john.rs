@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["LastPass"]
 )]
 pub struct LastpassJohn {
-    /// Account e-mail.
+    /// Account e-mail
     #[field(role = username, encoding = ascii)]
     pub email: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Base64 digest.
+    /// Digest
     #[field(role = digest, encoding = base64)]
     pub digest: Vec<u8>,
 }

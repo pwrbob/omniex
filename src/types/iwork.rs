@@ -11,31 +11,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [23300], john = ["iwork"],
 )]
 pub struct Iwork {
-    /// Hash version.
+    /// Hash version
     #[field(role = other, encoding = decimal)]
     pub hash_version: u8,
 
-    /// File version.
+    /// File version
     #[field(role = other, encoding = decimal)]
     pub file_version: u8,
 
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub format_version: u8,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal IV.
+    /// IV
     #[field(role = iv, encoding = hex)]
     pub iv: [u8; 16],
 
-    /// Hexadecimal encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

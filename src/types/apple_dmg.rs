@@ -8,27 +8,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Apple DMG", slug = "apple-dmg", hashcat = [38300])]
 pub struct AppleDmg {
-    /// Salt size in bytes.
+    /// Salt size in bytes
     #[field(role = other, encoding = decimal)]
     pub salt_size: u8,
 
-    /// Twenty-byte salt.
+    /// 20-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 20],
 
-    /// AES key size in bits.
+    /// AES key size in bits
     #[field(role = other, encoding = decimal)]
     pub key_bits: u16,
 
-    /// Key blob size in bytes.
+    /// Key blob size in bytes
     #[field(role = other, encoding = decimal)]
     pub blob_size: u8,
 
-    /// Sixty-four-byte key blob.
+    /// 64-byte key blob
     #[field(role = ciphertext, encoding = hex)]
     pub key_blob: [u8; 64],
 
-    /// PBKDF2 iteration count.
+    /// PBKDF2 iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 }

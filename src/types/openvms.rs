@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "OpenVMS", slug = "openvms", hashcat = [], john = ["OpenVMS"])]
 pub struct Openvms {
-    /// Encoded payload.
+    /// Encoded payload
     #[field(role = salt, encoding = ascii)]
     pub payload: String,
 }

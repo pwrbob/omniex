@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "OSC", slug = "osc", hashcat = [], john = ["osc"])]
 pub struct Osc {
-    /// Year.
+    /// Year
     #[field(role = other, encoding = decimal)]
     pub year: u16,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

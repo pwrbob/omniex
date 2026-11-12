@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [23100], john = ["keychain"],
 )]
 pub struct AppleKeychain {
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal IV.
+    /// IV
     #[field(role = iv, encoding = hex)]
     pub iv: Vec<u8>,
 
-    /// Hexadecimal encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

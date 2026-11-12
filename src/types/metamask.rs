@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = metamask_modes,
 )]
 pub struct Metamask {
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// The 16-byte IV.
+    /// 16-byte IV
     #[field(role = iv, encoding = base64)]
     pub iv: [u8; 16],
 
-    /// Base64 ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = base64)]
     pub ciphertext: Vec<u8>,
 }

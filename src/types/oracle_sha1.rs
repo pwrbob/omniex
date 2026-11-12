@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [112],
 )]
 pub struct OracleSha1 {
-    /// The 20-byte SHA-1 digest.
+    /// 20-byte SHA-1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// The 10-byte salt.
+    /// 10-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 10],
 }

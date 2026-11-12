@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["mysqlna"],
 )]
 pub struct MysqlCramSha1 {
-    /// Decimal challenge value.
+    /// Decimal challenge value
     #[field(role = other, encoding = ascii)]
     pub challenge: String,
 
-    /// The 20-byte SHA1 digest.
+    /// 20-byte SHA1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

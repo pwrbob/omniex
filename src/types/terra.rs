@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [29600],
 )]
 pub struct Terra {
-    /// The 16-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// The 16-byte IV.
+    /// 16-byte IV
     #[field(role = iv, encoding = hex)]
     pub iv: [u8; 16],
 
-    /// Base64 ciphertext.
+    /// Base64 ciphertext
     #[field(role = ciphertext, encoding = ascii)]
     pub ciphertext: String,
 }

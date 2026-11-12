@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = sap_bcode_modes,
 )]
 pub struct SapBcode {
-    /// SAP user name.
+    /// SAP user name
     #[field(role = salt, encoding = ascii)]
     pub user: String,
 
-    /// Eight-byte digest.
+    /// 8-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

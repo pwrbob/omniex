@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [26403],
 )]
 pub struct Aes256EcbNokdf {
-    /// The 16-byte ciphertext.
+    /// 16-byte ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: [u8; 16],
 
-    /// The 16-byte salt or plaintext.
+    /// 16-byte salt or plaintext
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 }

@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [25500],
 )]
 pub struct Stellar {
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// Base64 IV.
+    /// IV
     #[field(role = iv, encoding = base64)]
     pub iv: Vec<u8>,
 
-    /// Base64 ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = base64)]
     pub ciphertext: Vec<u8>,
 }

@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [8400],
 )]
 pub struct Wbb3 {
-    /// The 20-byte SHA1 digest.
+    /// 20-byte SHA1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// Decimal salt used by the attack mode.
+    /// Decimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

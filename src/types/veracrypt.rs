@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [29411, 29412, 29413, 29421, 29422, 29423, 29431, 29432, 29433, 29441, 29442, 29443, 29451, 29452, 29453, 29461, 29462, 29463, 29471, 29472, 29473, 29481, 29482, 29483, 29491, 29492, 29493],
 )]
 pub struct VeraCrypt {
-    /// The 64-byte salt.
+    /// 64-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 64],
 
-    /// The 448-byte encrypted key data.
+    /// 448-byte encrypted key data
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 448],
 }

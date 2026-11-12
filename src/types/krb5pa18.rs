@@ -16,19 +16,19 @@ use crate::{
     john = ["krb5pa-sha1"],
 )]
 pub struct Krb5Pa18 {
-    /// Kerberos username.
+    /// Kerberos username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Kerberos realm.
+    /// Kerberos realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// Pre-authentication salt. Empty means the realm and username are used.
+    /// Pre-auth salt (default realm+user)
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 }

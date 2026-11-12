@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Armory", slug = "armory", hashcat = [], john = ["armory"])]
 pub struct Armory {
-    /// Base64-encoded wallet payload.
+    /// Wallet payload
     #[field(role = other, encoding = base64)]
     pub data: Vec<u8>,
 }

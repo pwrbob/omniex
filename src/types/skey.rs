@@ -7,15 +7,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "S/Key", slug = "skey", hashcat = [], john = ["skey"])]
 pub struct Skey {
-    /// Iteration number.
+    /// Iteration number
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Seed value.
+    /// Seed value
     #[field(role = salt, encoding = ascii)]
     pub seed: String,
 
-    /// Eight-byte digest.
+    /// 8-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

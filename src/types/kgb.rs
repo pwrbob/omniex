@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Kremlin Encrypt 3.0", slug = "kgb", hashcat = [32700])]
 pub struct Kgb {
-    /// Eight-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// Twenty-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

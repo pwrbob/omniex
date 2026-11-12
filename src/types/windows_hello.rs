@@ -11,35 +11,35 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [28100],
 )]
 pub struct WindowsHello {
-    /// Hash algorithm name.
+    /// Hash algorithm name
     #[field(role = other, encoding = ascii)]
     pub algorithm: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal signature.
+    /// Signature
     #[field(role = digest, encoding = hex)]
     pub signature: Vec<u8>,
 
-    /// Hexadecimal master key.
+    /// Master key
     #[field(role = key, encoding = hex)]
     pub master_key: Vec<u8>,
 
-    /// Hexadecimal HMAC.
+    /// HMAC
     #[field(role = other, encoding = hex)]
     pub hmac: Vec<u8>,
 
-    /// Hexadecimal verification blob.
+    /// Verification blob
     #[field(role = ciphertext, encoding = hex)]
     pub blob: Vec<u8>,
 
-    /// Hexadecimal magic value.
+    /// Magic value
     #[field(role = other, encoding = hex)]
     pub magic: Vec<u8>,
 }

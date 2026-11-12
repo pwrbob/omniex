@@ -13,15 +13,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = apr1_modes,
 )]
 pub struct Apr1 {
-    /// Explicit round count, or zero for the default.
+    /// Round count (default 0)
     #[field(role = iterations, encoding = decimal)]
     pub rounds: u32,
 
-    /// Up to eight salt characters.
+    /// Salt (up to 8 characters)
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Twenty-two digest characters.
+    /// 22-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

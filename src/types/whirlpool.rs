@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [6100, 40174, 40175], john = ["whirlpool", "whirlpool0", "whirlpool1"],
 )]
 pub struct Whirlpool {
-    /// The 64-byte digest.
+    /// 64-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 }

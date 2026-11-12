@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "PST", slug = "pst", hashcat = [], john = ["PST"])]
 pub struct Pst {
-    /// Four-byte digest.
+    /// 4-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 4],
 }

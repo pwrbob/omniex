@@ -16,11 +16,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = salted_md5_modes,
 )]
 pub struct SaltedMd5 {
-    /// The 16-byte MD5 digest.
+    /// 16-byte MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// Salt used by the attack mode.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

@@ -12,35 +12,35 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     modes_fn = luks_v1_modes,
 )]
 pub struct LuksV1 {
-    /// Password-hashing algorithm.
+    /// Password-hashing algorithm
     #[field(role = other, encoding = ascii)]
     pub hash: String,
 
-    /// Bulk cipher.
+    /// Bulk cipher
     #[field(role = other, encoding = ascii)]
     pub cipher: String,
 
-    /// Cipher mode.
+    /// Cipher mode
     #[field(role = other, encoding = ascii)]
     pub cipher_mode: String,
 
-    /// Key size in bits.
+    /// Key size in bits
     #[field(role = other, encoding = decimal)]
     pub key_bytes: u16,
 
-    /// PBKDF2 iteration count.
+    /// PBKDF2 iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Thirty-two-byte PBKDF2 salt.
+    /// 32-byte PBKDF2 salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 32],
 
-    /// Anti-forensic splitter data.
+    /// Anti-forensic splitter data
     #[field(role = ciphertext, encoding = hex)]
     pub af: Vec<u8>,
 
-    /// Encrypted master-key material.
+    /// Encrypted master key
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: [u8; 512],
 }

@@ -12,31 +12,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = pem_private_key_modes,
 )]
 pub struct PemPrivateKey {
-    /// KDF version, which selects the mode.
+    /// KDF version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Cipher identifier.
+    /// Cipher identifier
     #[field(role = other, encoding = decimal)]
     pub cipher: u8,
 
-    /// The 8-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// The 16-byte IV.
+    /// 16-byte IV
     #[field(role = iv, encoding = hex)]
     pub iv: [u8; 16],
 
-    /// Key material length.
+    /// Key material length
     #[field(role = other, encoding = decimal)]
     pub length: u32,
 
-    /// Hexadecimal encrypted key material.
+    /// Encrypted key material
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

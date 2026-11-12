@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "md5ns", slug = "md5ns", hashcat = [], john = ["md5ns"])]
 pub struct Md5ns {
-    /// User name.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Encoded digest.
+    /// Encoded digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

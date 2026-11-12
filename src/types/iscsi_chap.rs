@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [4800],
 )]
 pub struct IscsiChap {
-    /// The 16-byte MD5 digest.
+    /// 16-byte MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// CHAP challenge bytes.
+    /// CHAP challenge bytes
     #[field(role = ciphertext, encoding = hex)]
     pub challenge: Vec<u8>,
 
-    /// CHAP identifier bytes.
+    /// CHAP identifier bytes
     #[field(role = other, encoding = hex)]
     pub chap_id: Vec<u8>,
 }

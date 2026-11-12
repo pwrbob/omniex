@@ -15,7 +15,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = shavite3_modes,
 )]
 pub struct Shavite3 {
-    /// The digest, whose length selects the SHAvite-3 output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

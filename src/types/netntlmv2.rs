@@ -12,23 +12,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["netntlmv2", "ntlmv2-opencl"],
 )]
 pub struct NetNtlmV2 {
-    /// User name from the authentication exchange.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Domain or workgroup from the authentication exchange.
+    /// Domain or workgroup
     #[field(role = other, encoding = ascii)]
     pub domain: String,
 
-    /// Eight-byte server challenge.
+    /// 8-byte server challenge
     #[field(role = ciphertext, encoding = hex)]
     pub challenge: [u8; 8],
 
-    /// Sixteen-byte NT proof string.
+    /// 16-byte NT proof string
     #[field(role = ciphertext, encoding = hex)]
     pub nt_proof: [u8; 16],
 
-    /// Variable-length NTLMv2 client blob.
+    /// NTLMv2 client blob
     #[field(role = salt, encoding = hex)]
     pub blob: Vec<u8>,
 }

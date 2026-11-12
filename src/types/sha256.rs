@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["Raw-SHA256"],
 )]
 pub struct Sha256 {
-    /// The 32-byte SHA2-256 digest.
+    /// 32-byte SHA2-256 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

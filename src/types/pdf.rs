@@ -13,35 +13,35 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = pdf_modes,
 )]
 pub struct Pdf {
-    /// Encryption version.
+    /// Encryption version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Encryption revision.
+    /// Encryption revision
     #[field(role = other, encoding = decimal)]
     pub revision: u8,
 
-    /// Key length in bits.
+    /// Key length in bits
     #[field(role = other, encoding = decimal)]
     pub key_length: u32,
 
-    /// Permission flags.
+    /// Permission flags
     #[field(role = other, encoding = ascii)]
     pub permissions: String,
 
-    /// Encrypt-metadata flag.
+    /// Encrypt-metadata flag
     #[field(role = other, encoding = ascii)]
     pub encrypt_metadata: String,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Remaining length-prefixed values, preserved verbatim.
+    /// Remaining length-prefixed data
     #[field(role = other, encoding = ascii)]
     pub data: String,
 
-    /// RC4 key recovered by the collider modes, empty when absent.
+    /// Collider RC4 key (may be empty)
     #[field(role = key, encoding = ascii)]
     pub rc4_key: String,
 }

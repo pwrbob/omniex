@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["sha256crypt"],
 )]
 pub struct Sha256Crypt {
-    /// Explicit round count, or zero for the default.
+    /// Round count (default 0)
     #[field(role = iterations, encoding = decimal)]
     pub rounds: u32,
 
-    /// Up to sixteen salt characters.
+    /// Salt (max 16 chars)
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Forty-three digest characters.
+    /// 43-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

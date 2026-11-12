@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "BlackBerry ES10", slug = "blackberry-es10", hashcat = [], john = ["Blackberry-ES10"])]
 pub struct BlackberryEs10 {
-    /// Thirty-two-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 
-    /// Four-byte salt.
+    /// 4-byte salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

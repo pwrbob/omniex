@@ -11,31 +11,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [28200],
 )]
 pub struct Exodus {
-    /// CPU/memory cost parameter.
+    /// CPU/memory cost parameter
     #[field(role = iterations, encoding = decimal)]
     pub n: u32,
 
-    /// Block size parameter.
+    /// Block size parameter
     #[field(role = other, encoding = decimal)]
     pub r: u32,
 
-    /// Parallelization parameter.
+    /// Parallelization parameter
     #[field(role = other, encoding = decimal)]
     pub p: u32,
 
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// Base64 IV.
+    /// IV
     #[field(role = iv, encoding = base64)]
     pub iv: Vec<u8>,
 
-    /// Base64 ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = base64)]
     pub ciphertext: Vec<u8>,
 
-    /// Base64 MAC.
+    /// MAC
     #[field(role = digest, encoding = base64)]
     pub mac: Vec<u8>,
 }

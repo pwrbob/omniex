@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "MS SNTP", slug = "sntp-ms", hashcat = [31300], john = ["timeroast"])]
 pub struct SntpMs {
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// Packet data.
+    /// Packet data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

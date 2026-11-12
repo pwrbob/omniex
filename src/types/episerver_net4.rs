@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [1441],
 )]
 pub struct EpiserverNet4 {
-    /// Salt, base64 encoded in the hash string.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// The 32-byte SHA-256 digest.
+    /// 32-byte SHA-256 digest
     #[field(role = digest, encoding = base64)]
     pub digest: [u8; 32],
 }

@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["Drupal7"],
 )]
 pub struct Drupal7 {
-    /// Drupal iteration-count character.
+    /// Drupal iteration character
     #[field(role = iterations, encoding = ascii)]
     pub cost: String,
 
-    /// Eight salt characters.
+    /// 8-character salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Forty-three digest characters.
+    /// 43-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "sm3crypt", slug = "sm3crypt", hashcat = [35100], john = ["sm3crypt"])]
 pub struct Sm3crypt {
-    /// ASCII salt.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Base64 digest.
+    /// Digest
     #[field(role = digest, encoding = base64)]
     pub digest: Vec<u8>,
 }

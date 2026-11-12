@@ -7,15 +7,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Mikrotik RouterOS", slug = "mikrotik", hashcat = [38000])]
 pub struct Mikrotik {
-    /// RouterOS user name.
+    /// RouterOS user name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Twenty-eight-byte digest.
+    /// 28-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 28],
 }

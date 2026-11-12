@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["Iterated-SHA1"]
 )]
 pub struct IteratedSha1 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal digest.
+    /// Hexadecimal digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

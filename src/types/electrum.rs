@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = electrum_modes,
 )]
 pub struct Electrum {
-    /// Wallet format version, which selects the mode.
+    /// Wallet format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 
-    /// Hexadecimal MAC, empty for the older salt types.
+    /// MAC (may be empty)
     #[field(role = digest, encoding = hex)]
     pub mac: Vec<u8>,
 }

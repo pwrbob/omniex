@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [6800],
 )]
 pub struct Lastpass {
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Account username.
+    /// Account username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// The 16-byte verification hash.
+    /// 16-byte verification hash
     #[field(role = other, encoding = hex)]
     pub hash: [u8; 16],
 }

@@ -12,31 +12,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = securezip_modes,
 )]
 pub struct Securezip {
-    /// Archive version.
+    /// Archive version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Entry type.
+    /// Entry type
     #[field(role = other, encoding = decimal)]
     pub kind: u8,
 
-    /// AES key size in bits.
+    /// AES key size in bits
     #[field(role = other, encoding = decimal)]
     pub key_bits: u16,
 
-    /// Unused field.
+    /// Unused field
     #[field(role = other, encoding = ascii)]
     pub unused: String,
 
-    /// Initialization vector.
+    /// Initialization vector
     #[field(role = salt, encoding = ascii)]
     pub iv: String,
 
-    /// Encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 
-    /// Remaining flags and file name.
+    /// Flags and file name
     #[field(role = other, encoding = ascii)]
     pub rest: String,
 }

@@ -15,7 +15,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = luffa_modes,
 )]
 pub struct Luffa {
-    /// The digest, whose length selects the Luffa output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

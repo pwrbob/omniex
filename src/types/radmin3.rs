@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [29200],
 )]
 pub struct Radmin3 {
-    /// Username bytes, serialized as hex.
+    /// Username bytes
     #[field(role = username, encoding = hex)]
     pub username: Vec<u8>,
 
-    /// The 32-byte salt.
+    /// 32-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 32],
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 }

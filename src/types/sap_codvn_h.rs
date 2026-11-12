@@ -13,15 +13,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = sap_codvn_h_modes,
 )]
 pub struct SapCodvnH {
-    /// Scheme name, which selects the mode.
+    /// Scheme name
     #[field(role = other, encoding = ascii)]
     pub scheme: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Base64 salt and digest payload.
+    /// Salt/digest payload
     #[field(role = salt, encoding = base64)]
     pub payload: Vec<u8>,
 }

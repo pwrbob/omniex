@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [36000]
 )]
 pub struct Bip39 {
-    /// Space-separated mnemonic words.
+    /// Mnemonic words
     #[field(role = salt, encoding = ascii)]
     pub mnemonic: String,
 
-    /// Target Bitcoin address.
+    /// Target Bitcoin address
     #[field(role = other, encoding = ascii)]
     pub address: String,
 
-    /// Derivation path.
+    /// Derivation path
     #[field(role = other, encoding = ascii)]
     pub path: String,
 }

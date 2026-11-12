@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [26500],
 )]
 pub struct IphonePasscode {
-    /// Sixteen-byte UID key.
+    /// 16-byte UID key
     #[field(role = key, encoding = hex)]
     pub uid_key: [u8; 16],
 
-    /// Twenty-byte PBKDF2 salt.
+    /// 20-byte PBKDF2 salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 20],
 
-    /// PBKDF2 iteration count.
+    /// PBKDF2 iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Forty-byte class key.
+    /// 40-byte class key
     #[field(role = ciphertext, encoding = hex)]
     pub class_key: [u8; 40],
 }

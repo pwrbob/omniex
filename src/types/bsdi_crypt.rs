@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["bsdicrypt"],
 )]
 pub struct BsdiCrypt {
-    /// Twenty crypt characters.
+    /// 20-character crypt string
     #[field(role = digest, encoding = ascii)]
     pub crypt: String,
 }

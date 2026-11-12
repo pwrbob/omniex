@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [7401],
 )]
 pub struct MysqlA {
-    /// Rounds field as serialized, including leading zeroes.
+    /// Rounds (keeps zeroes)
     #[field(role = iterations, encoding = ascii)]
     pub rounds: String,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Digest characters.
+    /// Digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

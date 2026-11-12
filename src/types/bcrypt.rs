@@ -15,19 +15,19 @@ const ALPHABET: &[u8] = b"./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
     john = ["bcrypt"],
 )]
 pub struct Bcrypt {
-    /// Version prefix, for example `$2a$`.
+    /// Version prefix (e.g. `$2a$`)
     #[field(role = other, encoding = ascii)]
     pub prefix: String,
 
-    /// Cost parameter.
+    /// Cost parameter
     #[field(role = iterations, encoding = decimal)]
     pub cost: u32,
 
-    /// Twenty-two base64 salt characters.
+    /// 22-character base64 salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Thirty-one base64 digest characters.
+    /// 31-character base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

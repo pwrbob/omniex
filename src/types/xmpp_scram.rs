@@ -8,23 +8,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "XMPP SCRAM", slug = "xmpp-scram", hashcat = [40052], john = ["SCRAM-PBKDF2-SHA1"])]
 pub struct XmppScram {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Salt size in bytes.
+    /// Salt size in bytes
     #[field(role = other, encoding = decimal)]
     pub salt_size: u8,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal digest.
+    /// Hexadecimal digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

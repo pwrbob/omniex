@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["o10glogon"]
 )]
 pub struct O10glogon {
-    /// User name.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// First digest.
+    /// First digest
     #[field(role = digest, encoding = ascii)]
     pub digest1: String,
 
-    /// Second digest.
+    /// Second digest
     #[field(role = other, encoding = ascii)]
     pub digest2: String,
 
-    /// Remaining fields.
+    /// Remaining fields
     #[field(role = other, encoding = ascii)]
     pub rest: String,
 }

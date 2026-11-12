@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [26200],
 )]
 pub struct OpenedgeProgress {
-    /// Sixteen encoded characters.
+    /// 16-character encoded value
     #[field(role = digest, encoding = ascii)]
     pub value: String,
 }

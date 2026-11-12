@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["tacacs-plus"],
 )]
 pub struct TacacsPlus {
-    /// Protocol version byte.
+    /// Protocol version byte
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal session key.
+    /// Session key
     #[field(role = key, encoding = hex)]
     pub key: Vec<u8>,
 
-    /// Hexadecimal digest.
+    /// Digest
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

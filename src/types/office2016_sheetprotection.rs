@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [25300],
 )]
 pub struct Office2016Sheetprotection {
-    /// Spin count.
+    /// Spin count
     #[field(role = iterations, encoding = decimal)]
     pub spin_count: u32,
 
-    /// The 16-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = base64)]
     pub salt: [u8; 16],
 
-    /// The 64-byte hash.
+    /// 64-byte hash
     #[field(role = digest, encoding = base64)]
     pub digest: [u8; 64],
 }

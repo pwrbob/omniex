@@ -13,23 +13,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = rc4_dropn_modes,
 )]
 pub struct Rc4Dropn {
-    /// Key size in bits, which selects the mode.
+    /// Key size in bits
     #[field(role = other, encoding = decimal)]
     pub key_bits: u8,
 
-    /// Number of key stream bytes to drop.
+    /// Key stream bytes to drop
     #[field(role = other, encoding = decimal)]
     pub drop_count: u8,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Padding marker, always `0`.
+    /// Padding marker, always `0`
     #[field(role = other, encoding = decimal)]
     pub pad: u8,
 
-    /// Hexadecimal plaintext.
+    /// Hexadecimal plaintext
     #[field(role = digest, encoding = ascii)]
     pub plaintext: String,
 }

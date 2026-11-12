@@ -8,15 +8,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Android FDE <= 4.3", slug = "android-fde", hashcat = [8800], john = ["fde"])]
 pub struct AndroidFde {
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// Encrypted master key and footer.
+    /// Master key and footer
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

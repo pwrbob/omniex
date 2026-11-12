@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [24700],
 )]
 pub struct Stuffit5 {
-    /// The 5-byte digest.
+    /// 5-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 5],
 }

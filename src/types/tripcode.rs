@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [16000], john = ["tripcode"],
 )]
 pub struct Tripcode {
-    /// Ten character tripcode key.
+    /// 10-character tripcode key
     #[field(role = digest, encoding = ascii)]
     pub key: String,
 }

@@ -13,11 +13,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = john_hmac_modes,
 )]
 pub struct JohnHmac {
-    /// HMAC key.
+    /// HMAC key
     #[field(role = key, encoding = ascii)]
     pub key: String,
 
-    /// Hexadecimal digest, whose length selects the mode.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

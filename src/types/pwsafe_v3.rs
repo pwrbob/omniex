@@ -11,23 +11,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40011],
 )]
 pub struct PwsafeV3 {
-    /// Four-byte `PWS3` signature.
+    /// 4-byte `PWS3` signature
     #[field(role = other, encoding = ascii)]
     pub signature: String,
 
-    /// Thirty-two-byte salt.
+    /// 32-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 32],
 
-    /// PBKDF2-SHA256 iteration count.
+    /// PBKDF2-SHA256 iterations
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Thirty-two-byte verification hash.
+    /// 32-byte verification hash
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 
-    /// Remaining database header bytes.
+    /// Remaining DB header bytes
     #[field(role = ciphertext, encoding = hex)]
     pub payload: Vec<u8>,
 }

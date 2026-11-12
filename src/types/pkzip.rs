@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = pkzip_modes,
 )]
 pub struct Pkzip {
-    /// Signature variant, `pkzip` or `pkzip2`.
+    /// Signature variant (`pkzip`/`pkzip2`)
     #[field(role = other, encoding = ascii)]
     pub version: String,
 
-    /// Archive payload, preserved verbatim.
+    /// Archive payload
     #[field(role = ciphertext, encoding = ascii)]
     pub payload: String,
 }

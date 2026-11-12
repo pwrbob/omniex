@@ -13,31 +13,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = office_modes,
 )]
 pub struct Office {
-    /// Document year, which selects the mode.
+    /// Document year
     #[field(role = other, encoding = decimal)]
     pub year: u16,
 
-    /// Password derivation spin count.
+    /// Password spin count
     #[field(role = iterations, encoding = decimal)]
     pub spin_count: u32,
 
-    /// Derived key size in bits.
+    /// Derived key size in bits
     #[field(role = other, encoding = decimal)]
     pub key_size: u32,
 
-    /// Salt size in bytes.
+    /// Salt size in bytes
     #[field(role = other, encoding = decimal)]
     pub salt_size: u32,
 
-    /// Salt bytes.
+    /// Salt bytes
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Encrypted verifier.
+    /// Encrypted verifier
     #[field(role = ciphertext, encoding = hex)]
     pub verifier: Vec<u8>,
 
-    /// Encrypted verifier hash.
+    /// Encrypted verifier hash
     #[field(role = digest, encoding = hex)]
     pub verifier_hash: Vec<u8>,
 }

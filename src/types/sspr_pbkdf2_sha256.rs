@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40065],
 )]
 pub struct SsprPbkdf2Sha256 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Unpadded base64 salt text.
+    /// Unpadded base64 salt text
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Unpadded base64 digest text.
+    /// Unpadded base64 digest text
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40040]
 )]
 pub struct BlockchainSecond {
-    /// Base64 payload.
+    /// Payload
     #[field(role = salt, encoding = base64)]
     pub payload: Vec<u8>,
 }

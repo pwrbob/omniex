@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Lotus Notes 8.5", slug = "lotus85", hashcat = [], john = ["lotus85"])]
 pub struct Lotus85 {
-    /// The user blob, 16 to 100 bytes.
+    /// User blob (16-100 bytes)
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

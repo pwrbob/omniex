@@ -8,19 +8,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "MultiBit HD (scrypt)", slug = "multibit-hd", hashcat = [22700])]
 pub struct MultibitHd {
-    /// Format version, always `2`.
+    /// Format version, always `2`
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Sixteen-byte encrypted key.
+    /// 16-byte encrypted key
     #[field(role = ciphertext, encoding = hex)]
     pub encrypted: [u8; 16],
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

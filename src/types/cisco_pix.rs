@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["pix-md5"],
 )]
 pub struct CiscoPix {
-    /// The 16-character crypt string.
+    /// 16-character crypt string
     #[field(role = digest, encoding = ascii)]
     pub crypt: String,
 }

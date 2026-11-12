@@ -14,11 +14,11 @@ use crate::{
     john = ["asa-md5"],
 )]
 pub struct CiscoAsa {
-    /// The 16-character crypt string.
+    /// 16-character crypt string
     #[field(role = digest, encoding = ascii)]
     pub crypt: String,
 
-    /// Decimal salt.
+    /// Decimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

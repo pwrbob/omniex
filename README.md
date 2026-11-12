@@ -64,9 +64,9 @@ Hashcat  500
 John     md5crypt, md5crypt-long
 Fields
 Name    Role        Encoding  Value                   Description
-rounds  iterations  decimal   0                       Explicit round count, or zero for the default.
-salt    salt        ascii     38652870                Up to eight salt characters.
-digest  digest      ascii     DUjsu4TTlTsOe/xxZ05uf/  Twenty-two digest characters.
+rounds  iterations  decimal   0                       Round count (default 0)
+salt    salt        ascii     38652870                Salt (up to 8 characters)
+digest  digest      ascii     DUjsu4TTlTsOe/xxZ05uf/  22-character digest
 ```
 
 Point it at an artifact and get cracker-ready hashes, including every matching

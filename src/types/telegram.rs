@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = telegram_modes,
 )]
 pub struct Telegram {
-    /// Wallet format version, which selects the mode.
+    /// Wallet format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Iteration count, zero when the version does not serialize one.
+    /// Iteration count (0 if omitted)
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal digest.
+    /// Digest
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

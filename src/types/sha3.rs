@@ -16,7 +16,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = sha3_modes,
 )]
 pub struct Sha3 {
-    /// The digest, whose length selects the SHA3 output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

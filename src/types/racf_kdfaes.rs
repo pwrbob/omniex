@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [14200],
 )]
 pub struct RacfKdfaes {
-    /// RACF user identifier.
+    /// RACF user identifier
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal IV.
+    /// IV
     #[field(role = iv, encoding = hex)]
     pub iv: Vec<u8>,
 
-    /// Hexadecimal digest.
+    /// Digest
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

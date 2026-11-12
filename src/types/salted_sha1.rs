@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = salted_sha1_modes,
 )]
 pub struct SaltedSha1 {
-    /// The 20-byte SHA-1 digest.
+    /// 20-byte SHA-1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// Salt used by the attack mode.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

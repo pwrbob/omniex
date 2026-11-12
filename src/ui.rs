@@ -8,7 +8,7 @@ use std::env;
 use std::io::{self, IsTerminal};
 
 use comfy_table::presets::NOTHING;
-use comfy_table::{Attribute, Cell, Color, ColumnConstraint, ContentArrangement, Table, Width};
+use comfy_table::{Attribute, Cell, Color, ContentArrangement, Table};
 use textwrap::{Options, WordSeparator, WordSplitter};
 use unicode_width::UnicodeWidthStr;
 
@@ -205,8 +205,6 @@ pub fn table_with_accents(
 
     let mut table = Table::new();
     table.load_preset(NOTHING);
-    table.set_content_arrangement(ContentArrangement::Dynamic);
-    table.set_width(u16::try_from(context.width).unwrap_or(u16::MAX));
     if context.bold {
         table.enforce_styling();
     }
@@ -224,11 +222,6 @@ pub fn table_with_accents(
     for index in 0..headers.len() {
         if let Some(column) = table.column_mut(index) {
             column.set_padding((0, GAP as u16));
-            if let Some((value_column, _)) = value_column {
-                if index == value_column {
-                    column.set_constraint(ColumnConstraint::Absolute(Width::Percentage(40)));
-                }
-            }
         }
     }
 
@@ -254,6 +247,20 @@ pub fn table_with_accents(
             .collect::<Vec<_>>();
         table.add_row(cells);
     }
+
+    let natural_width = table
+        .column_max_content_widths()
+        .iter()
+        .map(|width| usize::from(*width))
+        .sum::<usize>()
+        + GAP * headers.len();
+    let table_width = natural_width.min(context.width);
+    table.set_width(u16::try_from(table_width).unwrap_or(u16::MAX));
+    table.set_content_arrangement(if natural_width <= context.width {
+        ContentArrangement::Disabled
+    } else {
+        ContentArrangement::Dynamic
+    });
 
     table
         .to_string()

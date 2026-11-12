@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [37400]
 )]
 pub struct RacfPassphrase {
-    /// RACF user name.
+    /// RACF user name
     #[field(role = username, encoding = ascii)]
     pub user: String,
 
-    /// Digest bytes.
+    /// Digest bytes
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

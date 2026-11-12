@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [6211, 6212, 6213, 6221, 6222, 6223, 6231, 6232, 6233, 6241, 6242, 6243],
 )]
 pub struct TrueCryptLegacy {
-    /// The 64-byte salt.
+    /// 64-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 64],
 
-    /// The 448-byte encrypted key data.
+    /// 448-byte encrypted key data
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 448],
 }

@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40015],
 )]
 pub struct AixSsha256 {
-    /// Iteration count, encoded as a power-of-two exponent.
+    /// Iteration exponent (base 2)
     #[field(role = iterations, encoding = decimal)]
     pub rounds: u32,
 
-    /// Salt characters.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Forty-three digest characters.
+    /// 43-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

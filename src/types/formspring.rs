@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "FormSpring", slug = "formspring", hashcat = [], john = ["FormSpring"])]
 pub struct FormSpring {
-    /// Hexadecimal digest.
+    /// Digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 
-    /// Case-sensitive salt suffix.
+    /// Case-sensitive salt suffix
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

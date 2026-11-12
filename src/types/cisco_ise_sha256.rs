@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40012],
 )]
 pub struct CiscoIseSha256 {
-    /// The 32-byte SHA2-256 digest.
+    /// 32-byte SHA2-256 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 
-    /// The 32-byte salt.
+    /// 32-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 32],
 }

@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [501],
 )]
 pub struct JuniperIve {
-    /// The base64-encoded ciphertext blob.
+    /// Base64 ciphertext blob
     #[field(role = ciphertext, encoding = ascii)]
     pub signature: String,
 }

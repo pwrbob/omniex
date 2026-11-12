@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["mssql05"],
 )]
 pub struct Mssql2005 {
-    /// The 4-byte salt.
+    /// 4-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 4],
 
-    /// The 20-byte SHA-1 digest.
+    /// 20-byte SHA-1 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

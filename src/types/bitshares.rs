@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [21000],
 )]
 pub struct Bitshares {
-    /// The 64-byte digest.
+    /// 64-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 }

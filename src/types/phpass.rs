@@ -14,19 +14,19 @@ const ITOA64: &[u8; 64] = b"./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmn
     john = ["phpass"],
 )]
 pub struct Phpass {
-    /// Hash signature, `$P$` or `$H$`.
+    /// Hash signature (`$P$`/`$H$`)
     #[field(role = other, encoding = ascii)]
     pub prefix: String,
 
-    /// Base-2 logarithm of the iteration count.
+    /// Iteration exponent (base 2)
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Eight-character salt from the phpass alphabet.
+    /// 8-character phpass salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Twenty-two-character digest from the phpass alphabet.
+    /// 22-character phpass digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

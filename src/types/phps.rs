@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["PHPS", "PHPS2"],
 )]
 pub struct Phps {
-    /// Decimal salt.
+    /// Decimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// The 16-byte MD5 digest.
+    /// 16-byte MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

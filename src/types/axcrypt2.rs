@@ -12,27 +12,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["axcrypt2-opencl"],
 )]
 pub struct Axcrypt2 {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal key block.
+    /// Key block
     #[field(role = key, encoding = hex)]
     pub key: Vec<u8>,
 
-    /// Hexadecimal encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 
-    /// Second iteration count.
+    /// Second iteration count
     #[field(role = iterations, encoding = decimal)]
     pub second_iterations: u32,
 
-    /// Hexadecimal digest.
+    /// Digest
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

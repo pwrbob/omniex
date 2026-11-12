@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = murmurhash64a_zero_modes,
 )]
 pub struct MurmurHash64aZero {
-    /// The digest, whose length selects the truncation.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

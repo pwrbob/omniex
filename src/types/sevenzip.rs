@@ -8,43 +8,43 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "7-Zip", slug = "sevenzip", hashcat = [11600], john = ["7z"])]
 pub struct SevenZip {
-    /// Data type identifier.
+    /// Data type identifier
     #[field(role = other, encoding = decimal)]
     pub data_type: u8,
 
-    /// Base-2 logarithm of the cycle count.
+    /// Cycle count exponent (base 2)
     #[field(role = iterations, encoding = decimal)]
     pub cycles_power: u8,
 
-    /// Salt size in bytes.
+    /// Salt size in bytes
     #[field(role = other, encoding = decimal)]
     pub salt_size: u8,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Initialization vector size in bytes.
+    /// IV size in bytes
     #[field(role = other, encoding = decimal)]
     pub iv_size: u8,
 
-    /// Hexadecimal initialization vector.
+    /// IV (hex)
     #[field(role = other, encoding = ascii)]
     pub iv: String,
 
-    /// CRC checksum.
+    /// CRC checksum
     #[field(role = other, encoding = decimal)]
     pub crc: u32,
 
-    /// Encrypted data length.
+    /// Encrypted data length
     #[field(role = other, encoding = decimal)]
     pub data_size: u32,
 
-    /// Unpacked data length.
+    /// Unpacked data length
     #[field(role = other, encoding = decimal)]
     pub unpacked_size: u32,
 
-    /// Encrypted data and optional trailing fields.
+    /// Encrypted data and extras
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 }

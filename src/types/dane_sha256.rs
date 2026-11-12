@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [30420]
 )]
 pub struct DaneSha256 {
-    /// Twenty-eight-byte SHA-224 digest.
+    /// 28-byte SHA-224 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 28],
 }

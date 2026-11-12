@@ -11,23 +11,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [9000],
 )]
 pub struct PwsafeV2 {
-    /// Eight-byte random salt used by the Blowfish KDF.
+    /// 8-byte Blowfish KDF salt
     #[field(role = salt, encoding = hex)]
     pub random: [u8; 8],
 
-    /// Twenty-byte verification hash.
+    /// 20-byte verification hash
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 
-    /// Reserved twenty-byte salt field.
+    /// Reserved 20-byte salt field
     #[field(role = salt, encoding = hex)]
     pub reserved_salt: [u8; 20],
 
-    /// Reserved eight-byte IV.
+    /// Reserved eight-byte IV
     #[field(role = iv, encoding = hex)]
     pub reserved_iv: [u8; 8],
 
-    /// Remaining database header bytes.
+    /// Remaining DB header bytes
     #[field(role = ciphertext, encoding = hex)]
     pub payload: Vec<u8>,
 }

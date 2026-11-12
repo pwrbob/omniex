@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Kerberos 4", slug = "krb4", hashcat = [], john = ["krb4"])]
 pub struct Krb4 {
-    /// Realm.
+    /// Realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// Encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 }

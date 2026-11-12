@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "scryptcrypt", slug = "scryptcrypt", hashcat = [36300])]
 pub struct Scryptcrypt {
-    /// Salt and parameter setting.
+    /// Salt and parameter setting
     #[field(role = salt, encoding = ascii)]
     pub setting: String,
 
-    /// Checksum.
+    /// Checksum
     #[field(role = digest, encoding = ascii)]
     pub checksum: String,
 }

@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "MSSQL (2025)", slug = "mssql-2025", hashcat = [36601])]
 pub struct Mssql2025 {
-    /// Hash payload.
+    /// Hash payload
     #[field(role = digest, encoding = hex)]
     pub payload: Vec<u8>,
 }

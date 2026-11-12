@@ -8,31 +8,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Argon2", slug = "argon2", hashcat = [34000, 70000], john = ["Argon2"])]
 pub struct Argon2 {
-    /// Variant name, for example `argon2id`.
+    /// Variant name (`argon2id`)
     #[field(role = other, encoding = ascii)]
     pub variant: String,
 
-    /// Argon2 format version.
+    /// Argon2 format version
     #[field(role = other, encoding = decimal)]
     pub version: u32,
 
-    /// Memory usage in KiB.
+    /// Memory usage in KiB
     #[field(role = other, encoding = decimal)]
     pub memory: u32,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Parallelism.
+    /// Parallelism
     #[field(role = other, encoding = decimal)]
     pub parallelism: u32,
 
-    /// Base64 salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// Base64 digest.
+    /// Digest
     #[field(role = digest, encoding = base64)]
     pub digest: Vec<u8>,
 }

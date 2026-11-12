@@ -7,31 +7,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "MIFARE Ultralight C", slug = "mifare", hashcat = [37000])]
 pub struct Mifare {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Key type.
+    /// Key type
     #[field(role = other, encoding = decimal)]
     pub key_type: u8,
 
-    /// Sector number.
+    /// Sector number
     #[field(role = other, encoding = decimal)]
     pub sector: u8,
 
-    /// Eight-byte UID.
+    /// 8-byte UID
     #[field(role = other, encoding = hex)]
     pub uid: [u8; 8],
 
-    /// Eight-byte key.
+    /// 8-byte key
     #[field(role = key, encoding = hex)]
     pub key: [u8; 8],
 
-    /// Eight-byte MAC.
+    /// 8-byte MAC
     #[field(role = digest, encoding = hex)]
     pub mac: [u8; 8],
 
-    /// Sixteen bytes of card data.
+    /// 16-byte card data
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 16],
 }

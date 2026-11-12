@@ -11,27 +11,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [28700],
 )]
 pub struct AwsSigv4 {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Request timestamp.
+    /// Request timestamp
     #[field(role = other, encoding = ascii)]
     pub timestamp: String,
 
-    /// AWS region.
+    /// AWS region
     #[field(role = other, encoding = ascii)]
     pub region: String,
 
-    /// AWS service name.
+    /// AWS service name
     #[field(role = other, encoding = ascii)]
     pub service: String,
 
-    /// The 32-byte signing key.
+    /// 32-byte signing key
     #[field(role = key, encoding = hex)]
     pub key: [u8; 32],
 
-    /// The 32-byte signature.
+    /// 32-byte signature
     #[field(role = digest, encoding = hex)]
     pub signature: [u8; 32],
 }

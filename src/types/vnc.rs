@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "VNC", slug = "vnc", hashcat = [], john = ["VNC"])]
 pub struct Vnc {
-    /// Sixteen-byte challenge.
+    /// 16-byte challenge
     #[field(role = salt, encoding = hex)]
     pub challenge: [u8; 16],
 
-    /// Sixteen-byte response.
+    /// 16-byte response
     #[field(role = digest, encoding = hex)]
     pub response: [u8; 16],
 }

@@ -11,23 +11,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [14500],
 )]
 pub struct LinuxCryptoapi {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Cipher mode.
+    /// Cipher mode
     #[field(role = other, encoding = decimal)]
     pub mode: u8,
 
-    /// The 16-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// The 16-byte IV.
+    /// 16-byte IV
     #[field(role = iv, encoding = hex)]
     pub iv: [u8; 16],
 
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

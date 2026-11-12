@@ -13,31 +13,31 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = keepass_modes,
 )]
 pub struct Keepass {
-    /// Database format version.
+    /// Database format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// AES key derivation round count.
+    /// AES key derivation rounds
     #[field(role = iterations, encoding = decimal)]
     pub rounds: u64,
 
-    /// Cipher algorithm identifier.
+    /// Cipher algorithm identifier
     #[field(role = other, encoding = decimal)]
     pub algorithm: u8,
 
-    /// Hexadecimal master seed.
+    /// Hexadecimal master seed
     #[field(role = salt, encoding = ascii)]
     pub seed: String,
 
-    /// Hexadecimal transform seed.
+    /// Hexadecimal transform seed
     #[field(role = other, encoding = ascii)]
     pub transform_seed: String,
 
-    /// Hexadecimal initialization vector.
+    /// IV (hex)
     #[field(role = other, encoding = ascii)]
     pub iv: String,
 
-    /// Version-specific fields, preserved verbatim.
+    /// Version-specific fields
     #[field(role = other, encoding = ascii)]
     pub details: String,
 }

@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = blockchain_modes,
 )]
 pub struct Blockchain {
-    /// Serialization version, either `1` or `v2`.
+    /// Version (`1` or `v2`)
     #[field(role = other, encoding = ascii)]
     pub version: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Data length.
+    /// Data length
     #[field(role = other, encoding = decimal)]
     pub length: u32,
 
-    /// Hexadecimal data.
+    /// Data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

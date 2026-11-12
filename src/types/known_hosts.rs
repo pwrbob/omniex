@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["known_hosts"]
 )]
 pub struct KnownHosts {
-    /// Base64 salt.
+    /// Base64 salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Base64 digest.
+    /// Base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

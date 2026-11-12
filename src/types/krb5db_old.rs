@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [38400],
 )]
 pub struct Krb5DbOld {
-    /// Kerberos encryption type.
+    /// Kerberos encryption type
     #[field(role = other, encoding = decimal)]
     pub etype: u8,
 
-    /// Kerberos username.
+    /// Kerberos username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Kerberos realm.
+    /// Kerberos realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// The 8-byte key digest.
+    /// 8-byte key digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

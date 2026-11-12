@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["Raw-MD4"],
 )]
 pub struct Md4 {
-    /// The 16-byte MD4 digest.
+    /// 16-byte MD4 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

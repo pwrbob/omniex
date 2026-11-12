@@ -16,7 +16,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = keccak_modes,
 )]
 pub struct Keccak {
-    /// The digest, whose length selects the Keccak output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

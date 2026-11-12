@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [20500, 20510],
 )]
 pub struct PkzipMasterKey {
-    /// The 12-byte digest.
+    /// 12-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 12],
 }

@@ -11,39 +11,39 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [5400],
 )]
 pub struct IkePskSha1 {
-    /// First fragment of the IKE exchange message.
+    /// First IKE fragment
     #[field(role = ciphertext, encoding = hex)]
     pub message_0: Vec<u8>,
 
-    /// Second fragment of the IKE exchange message.
+    /// Second IKE fragment
     #[field(role = ciphertext, encoding = hex)]
     pub message_1: Vec<u8>,
 
-    /// Third fragment of the IKE exchange message.
+    /// Third IKE fragment
     #[field(role = ciphertext, encoding = hex)]
     pub message_2: Vec<u8>,
 
-    /// Fourth fragment of the IKE exchange message.
+    /// Fourth IKE fragment
     #[field(role = ciphertext, encoding = hex)]
     pub message_3: Vec<u8>,
 
-    /// Fifth fragment of the IKE exchange message.
+    /// Fifth IKE fragment
     #[field(role = ciphertext, encoding = hex)]
     pub message_4: Vec<u8>,
 
-    /// Sixth fragment of the IKE exchange message.
+    /// Sixth IKE fragment
     #[field(role = ciphertext, encoding = hex)]
     pub message_5: Vec<u8>,
 
-    /// First responder nonce fragment.
+    /// First nonce fragment
     #[field(role = salt, encoding = hex)]
     pub nonce_0: Vec<u8>,
 
-    /// Second responder nonce fragment.
+    /// Second nonce fragment
     #[field(role = salt, encoding = hex)]
     pub nonce_1: Vec<u8>,
 
-    /// Twenty-byte SHA1 authentication digest.
+    /// 20-byte SHA1 auth digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

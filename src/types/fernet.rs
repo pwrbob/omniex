@@ -14,7 +14,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [40083],
 )]
 pub struct Fernet {
-    /// Base64-encoded Fernet token.
+    /// Base64-encoded Fernet token
     #[field(role = ciphertext, encoding = ascii)]
     pub token: String,
 }

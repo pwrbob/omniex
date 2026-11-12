@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["mysql"],
 )]
 pub struct Mysql323 {
-    /// The 8-byte MySQL323 digest.
+    /// 8-byte MySQL323 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 8],
 }

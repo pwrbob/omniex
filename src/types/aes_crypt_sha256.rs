@@ -11,23 +11,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [22400],
 )]
 pub struct AesCryptSha256 {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// The 16-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// The 16-byte IV.
+    /// 16-byte IV
     #[field(role = iv, encoding = hex)]
     pub iv: [u8; 16],
 
-    /// The 32-byte ciphertext.
+    /// 32-byte ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: [u8; 32],
 
-    /// The 32-byte HMAC.
+    /// 32-byte HMAC
     #[field(role = digest, encoding = hex)]
     pub hmac: [u8; 32],
 }

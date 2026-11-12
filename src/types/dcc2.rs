@@ -13,15 +13,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["mscash2"],
 )]
 pub struct Dcc2 {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// User name, serialized as ASCII.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

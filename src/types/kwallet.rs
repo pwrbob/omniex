@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = kwallet_modes,
 )]
 pub struct Kwallet {
-    /// Hash version.
+    /// Hash version
     #[field(role = other, encoding = decimal)]
     pub version: u32,
 
-    /// Version-specific fields, preserved verbatim.
+    /// Version-specific fields
     #[field(role = other, encoding = ascii)]
     pub data: String,
 }

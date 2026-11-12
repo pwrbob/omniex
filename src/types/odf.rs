@@ -13,47 +13,47 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = odf_modes,
 )]
 pub struct Odf {
-    /// Cipher type, `0` for Blowfish and `1` for AES.
+    /// Cipher (`0` Blowfish, `1` AES)
     #[field(role = other, encoding = decimal)]
     pub cipher_type: u8,
 
-    /// Checksum type, always `0`.
+    /// Checksum type, always `0`
     #[field(role = other, encoding = decimal)]
     pub checksum_type: u8,
 
-    /// Key derivation iteration count.
+    /// KDF iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Key size in bits.
+    /// Key size in bits
     #[field(role = other, encoding = decimal)]
     pub key_size: u32,
 
-    /// Hexadecimal checksum.
+    /// Hexadecimal checksum
     #[field(role = digest, encoding = ascii)]
     pub checksum: String,
 
-    /// Initialization vector size in bytes.
+    /// IV size in bytes
     #[field(role = other, encoding = decimal)]
     pub iv_size: u8,
 
-    /// Hexadecimal initialization vector.
+    /// IV (hex)
     #[field(role = other, encoding = ascii)]
     pub iv: String,
 
-    /// Salt size in bytes.
+    /// Salt size in bytes
     #[field(role = other, encoding = decimal)]
     pub salt_size: u8,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Unused field, always `0`.
+    /// Unused field, always `0`
     #[field(role = other, encoding = decimal)]
     pub unused: u8,
 
-    /// Encrypted data.
+    /// Encrypted data
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 }

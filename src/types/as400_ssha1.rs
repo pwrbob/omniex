@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "AS/400 SSHA1", slug = "as400-ssha1", hashcat = [35200], john = ["as400-ssha1"])]
 pub struct As400Ssha1 {
-    /// AS/400 user name.
+    /// AS/400 user name
     #[field(role = salt, encoding = ascii)]
     pub user: String,
 
-    /// Twenty-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

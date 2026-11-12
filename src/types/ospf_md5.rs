@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [40001],
 )]
 pub struct OspfMd5 {
-    /// Hexadecimal packet bytes.
+    /// Packet bytes
     #[field(role = other, encoding = hex)]
     pub packet: Vec<u8>,
 
-    /// The 16-byte MD5 digest.
+    /// 16-byte MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

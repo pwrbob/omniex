@@ -13,19 +13,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = sshng_modes,
 )]
 pub struct Sshng {
-    /// Cipher identifier, which selects the mode.
+    /// Cipher identifier
     #[field(role = other, encoding = decimal)]
     pub cipher: u8,
 
-    /// Eight-byte initialization vector.
+    /// 8-byte IV
     #[field(role = salt, encoding = hex)]
     pub iv: Vec<u8>,
 
-    /// Encrypted key data.
+    /// Encrypted key data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 
-    /// Optional bcrypt-pbkdf trailer, preserved verbatim.
+    /// Optional bcrypt-pbkdf trailer
     #[field(role = other, encoding = ascii)]
     pub extra: String,
 }

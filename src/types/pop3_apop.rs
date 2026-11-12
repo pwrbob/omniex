@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [37601],
 )]
 pub struct Pop3Apop {
-    /// Server challenge text.
+    /// Server challenge text
     #[field(role = other, encoding = ascii)]
     pub challenge: String,
 
-    /// The 16-byte MD5 digest.
+    /// 16-byte MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

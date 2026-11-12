@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["TrueCrypt-opencl"],
 )]
 pub struct TrueCryptJohn {
-    /// Hash variant prefix, such as `truecrypt_RIPEMD_160`.
+    /// Variant prefix (`truecrypt_*`)
     #[field(role = other, encoding = ascii)]
     pub variant: String,
 
-    /// Raw TrueCrypt header data.
+    /// Raw TrueCrypt header data
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 512],
 }

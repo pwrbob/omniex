@@ -11,23 +11,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [16900], john = ["ansible"],
 )]
 pub struct AnsibleVault {
-    /// Vault format version.
+    /// Vault format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Vault cipher identifier.
+    /// Vault cipher identifier
     #[field(role = other, encoding = decimal)]
     pub cipher: u8,
 
-    /// The 32-byte salt.
+    /// 32-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 32],
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 
-    /// The 32-byte HMAC.
+    /// 32-byte HMAC
     #[field(role = digest, encoding = hex)]
     pub hmac: [u8; 32],
 }

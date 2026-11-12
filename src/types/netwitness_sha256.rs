@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [20712],
 )]
 pub struct NetWitnessSha256 {
-    /// The 32-byte SHA2-256 digest.
+    /// 32-byte SHA2-256 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 
-    /// Base64-encoded salt used by the attack mode.
+    /// Base64 salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

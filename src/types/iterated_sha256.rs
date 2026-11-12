@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Iterated-SHA256", slug = "iterated-sha256", hashcat = [], john = ["Iterated-SHA256"])]
 pub struct IteratedSha256 {
-    /// The 64-byte SHA-256 iteration state.
+    /// 64-byte SHA-256 iteration state
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 }

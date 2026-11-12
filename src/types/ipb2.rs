@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "IPB2", slug = "ipb2", hashcat = [], john = ["ipb2"])]
 pub struct Ipb2 {
-    /// Five-byte salt as hexadecimal.
+    /// 5-byte salt as hexadecimal
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

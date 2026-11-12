@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Sybase-PROP", slug = "sybase-prop", hashcat = [], john = ["Sybase-PROP"])]
 pub struct SybaseProp {
-    /// Hexadecimal digest.
+    /// Hexadecimal digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

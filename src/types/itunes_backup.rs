@@ -13,27 +13,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = itunes_modes,
 )]
 pub struct ItunesBackup {
-    /// Backup format version.
+    /// Backup format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Wrapped protection key in hexadecimal.
+    /// Wrapped protection key (hex)
     #[field(role = ciphertext, encoding = ascii)]
     pub wrapped_key: String,
 
-    /// Key derivation iteration count.
+    /// KDF iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Double protection salt in hexadecimal.
+    /// Double-protection salt (hex)
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Double protection iteration count.
+    /// Double-protection iterations
     #[field(role = other, encoding = ascii)]
     pub iterations2: String,
 
-    /// Double protection fields, preserved verbatim.
+    /// Double protection fields
     #[field(role = other, encoding = ascii)]
     pub extra: String,
 }

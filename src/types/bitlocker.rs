@@ -14,35 +14,35 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = bitlocker_modes
 )]
 pub struct BitLocker {
-    /// Verification type, always `1`.
+    /// Verification type (`1`)
     #[field(role = other, encoding = decimal)]
     pub kind: u8,
 
-    /// Salt size in bytes.
+    /// Salt size in bytes
     #[field(role = other, encoding = decimal)]
     pub salt_size: u8,
 
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Key derivation iteration count.
+    /// KDF iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Nonce size in bytes.
+    /// Nonce size in bytes
     #[field(role = other, encoding = decimal)]
     pub nonce_size: u8,
 
-    /// Twelve-byte nonce.
+    /// 12-byte nonce
     #[field(role = other, encoding = hex)]
     pub nonce: [u8; 12],
 
-    /// Encrypted data size in bytes.
+    /// Encrypted data size (bytes)
     #[field(role = other, encoding = decimal)]
     pub data_size: u8,
 
-    /// Sixty-byte encrypted data.
+    /// 60-byte encrypted data
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 60],
 }

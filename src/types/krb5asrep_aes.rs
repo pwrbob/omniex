@@ -14,23 +14,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = krb5asrep_aes_modes,
 )]
 pub struct Krb5AsrepAes {
-    /// Encryption type, 17 or 18.
+    /// Encryption type, 17 or 18
     #[field(role = other, encoding = decimal)]
     pub etype: u8,
 
-    /// Kerberos username.
+    /// Kerberos username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Kerberos realm.
+    /// Kerberos realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// Twelve-byte checksum.
+    /// 12-byte checksum
     #[field(role = digest, encoding = hex)]
     pub checksum: [u8; 12],
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 }

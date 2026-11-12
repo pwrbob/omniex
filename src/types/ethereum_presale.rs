@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["ethereum-presale-opencl"],
 )]
 pub struct EthereumPresale {
-    /// Hexadecimal encrypted seed.
+    /// Encrypted seed
     #[field(role = ciphertext, encoding = hex)]
     pub encrypted_seed: Vec<u8>,
 
-    /// The 20-byte Ethereum address.
+    /// 20-byte Ethereum address
     #[field(role = other, encoding = hex)]
     pub address: [u8; 20],
 
-    /// The 16-byte MAC.
+    /// 16-byte MAC
     #[field(role = digest, encoding = hex)]
     pub mac: [u8; 16],
 }

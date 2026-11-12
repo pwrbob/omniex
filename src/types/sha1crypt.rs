@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["sha1crypt"],
 )]
 pub struct Sha1crypt {
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Eight salt characters.
+    /// 8-character salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Twenty-eight digest characters.
+    /// 28-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

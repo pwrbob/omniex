@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "IPMI2 RAKP HMAC-MD5", slug = "ipmi2-rakp-md5", hashcat = [7350])]
 pub struct Ipmi2RakpMd5 {
-    /// HMAC-MD5 digest.
+    /// HMAC-MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// Random session salt bytes.
+    /// Random session salt bytes
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 }

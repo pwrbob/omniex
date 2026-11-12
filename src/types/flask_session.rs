@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [40056]
 )]
 pub struct FlaskSession {
-    /// Base64url payload.
+    /// Base64url payload
     #[field(role = other, encoding = ascii)]
     pub payload: String,
 
-    /// Base64url timestamp.
+    /// Base64url timestamp
     #[field(role = salt, encoding = ascii)]
     pub timestamp: String,
 
-    /// Base64url signature.
+    /// Base64url signature
     #[field(role = digest, encoding = ascii)]
     pub signature: String,
 }

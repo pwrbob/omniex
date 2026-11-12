@@ -11,19 +11,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [8300],
 )]
 pub struct Nsec3 {
-    /// Base32 digest.
+    /// Base32 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 
-    /// Domain name.
+    /// Domain name
     #[field(role = other, encoding = ascii)]
     pub domain: String,
 
-    /// ASCII salt.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 }

@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [24901],
 )]
 pub struct BesderMd5 {
-    /// Eight digest characters.
+    /// 8-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

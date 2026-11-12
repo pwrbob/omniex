@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [27900],
 )]
 pub struct Crc32C {
-    /// The 4-byte digest.
+    /// 4-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 4],
 
-    /// The 4-byte initial value.
+    /// 4-byte initial value
     #[field(role = other, encoding = hex)]
     pub initial: [u8; 4],
 }

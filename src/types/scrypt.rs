@@ -14,23 +14,23 @@ use crate::{
     john = ["scrypt"],
 )]
 pub struct Scrypt {
-    /// CPU/memory cost parameter.
+    /// CPU/memory cost parameter
     #[field(role = iterations, encoding = decimal)]
     pub n: u32,
 
-    /// Block size parameter.
+    /// Block size parameter
     #[field(role = other, encoding = decimal)]
     pub r: u32,
 
-    /// Parallelization parameter.
+    /// Parallelization parameter
     #[field(role = other, encoding = decimal)]
     pub p: u32,
 
-    /// Base64-encoded salt.
+    /// Salt
     #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 
-    /// Base64-encoded digest.
+    /// Digest
     #[field(role = digest, encoding = base64)]
     pub digest: Vec<u8>,
 }

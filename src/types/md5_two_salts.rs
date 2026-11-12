@@ -12,15 +12,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = md5_two_salts_modes,
 )]
 pub struct Md5TwoSalts {
-    /// The 16-byte MD5 digest.
+    /// 16-byte MD5 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 
-    /// First salt, serialized as ASCII.
+    /// First salt
     #[field(role = salt, encoding = ascii)]
     pub salt1: String,
 
-    /// Second salt, serialized as ASCII.
+    /// Second salt
     #[field(role = salt, encoding = ascii)]
     pub salt2: String,
 }

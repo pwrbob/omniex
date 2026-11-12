@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["hMailServer"],
 )]
 pub struct HmailServer {
-    /// The 6-character salt.
+    /// 6-character salt
     #[field(role = salt, encoding = ascii)]
     pub salt: [u8; 6],
 
-    /// The 32-byte SHA2-256 digest.
+    /// 32-byte SHA2-256 digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

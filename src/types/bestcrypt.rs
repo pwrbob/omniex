@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = bestcrypt_modes,
 )]
 pub struct Bestcrypt {
-    /// Format version, which selects the mode.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Key size identifier.
+    /// Key size identifier
     #[field(role = other, encoding = ascii)]
     pub key_size: String,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal data.
+    /// Data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 }

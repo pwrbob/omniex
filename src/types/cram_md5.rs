@@ -8,15 +8,15 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "CRAM-MD5", slug = "cram-md5", hashcat = [10200])]
 pub struct CramMd5 {
-    /// Base64 challenge sent by the server.
+    /// Server challenge
     #[field(role = salt, encoding = base64)]
     pub challenge: Vec<u8>,
 
-    /// User name echoed in the response.
+    /// Echoed user name
     #[field(role = other, encoding = ascii)]
     pub user: String,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

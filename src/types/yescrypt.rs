@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "yescrypt", slug = "yescrypt", hashcat = [36100])]
 pub struct Yescrypt {
-    /// Complete crypt string.
+    /// Complete crypt string
     #[field(role = salt, encoding = ascii)]
     pub crypt: String,
 }

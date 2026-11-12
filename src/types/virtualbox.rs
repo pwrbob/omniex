@@ -12,35 +12,35 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = virtualbox_modes,
 )]
 pub struct Virtualbox {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Iteration count for the first derivation.
+    /// First derivation iterations
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// The 32-byte salt.
+    /// 32-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 32],
 
-    /// XTS key size in bytes.
+    /// XTS key size in bytes
     #[field(role = other, encoding = decimal)]
     pub key_size: u8,
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 
-    /// Iteration count for the second derivation.
+    /// Second derivation iterations
     #[field(role = iterations, encoding = decimal)]
     pub second_iterations: u32,
 
-    /// The second 32-byte salt.
+    /// Second 32-byte salt
     #[field(role = salt, encoding = hex)]
     pub second_salt: [u8; 32],
 
-    /// The 32-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 }

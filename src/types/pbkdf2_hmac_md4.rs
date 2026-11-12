@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "PBKDF2-HMAC-MD4", slug = "pbkdf2-hmac-md4", hashcat = [], john = ["PBKDF2-HMAC-MD4"])]
 pub struct Pbkdf2HmacMd4John {
-    /// Serialized hash payload.
+    /// Serialized hash payload
     #[field(role = other, encoding = ascii)]
     pub data: String,
 }

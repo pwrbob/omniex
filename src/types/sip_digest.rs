@@ -11,59 +11,59 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [11400], john = ["SIP"]
 )]
 pub struct SipDigest {
-    /// First unused field.
+    /// First unused field
     #[field(role = other, encoding = ascii)]
     pub unused1: String,
 
-    /// Second unused field.
+    /// Second unused field
     #[field(role = other, encoding = ascii)]
     pub unused2: String,
 
-    /// SIP user name.
+    /// SIP user name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// SIP realm.
+    /// SIP realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// Request method.
+    /// Request method
     #[field(role = other, encoding = ascii)]
     pub method: String,
 
-    /// URI prefix.
+    /// URI prefix
     #[field(role = other, encoding = ascii)]
     pub uri_prefix: String,
 
-    /// URI resource.
+    /// URI resource
     #[field(role = salt, encoding = ascii)]
     pub uri_resource: String,
 
-    /// URI suffix.
+    /// URI suffix
     #[field(role = other, encoding = ascii)]
     pub uri_suffix: String,
 
-    /// Server nonce.
+    /// Server nonce
     #[field(role = other, encoding = ascii)]
     pub nonce: String,
 
-    /// Client nonce.
+    /// Client nonce
     #[field(role = other, encoding = ascii)]
     pub nonce_client: String,
 
-    /// Nonce count.
+    /// Nonce count
     #[field(role = other, encoding = ascii)]
     pub nonce_count: String,
 
-    /// Quality of protection.
+    /// Quality of protection
     #[field(role = other, encoding = ascii)]
     pub qop: String,
 
-    /// Authentication directive.
+    /// Authentication directive
     #[field(role = other, encoding = ascii)]
     pub directive: String,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

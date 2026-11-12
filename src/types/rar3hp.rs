@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "RAR3-hp", slug = "rar3hp", hashcat = [12500], john = ["rar"])]
 pub struct Rar3hp {
-    /// Eight-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// Sixteen bytes of encrypted header data.
+    /// 16-byte encrypted header
     #[field(role = ciphertext, encoding = hex)]
     pub data: [u8; 16],
 }

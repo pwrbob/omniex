@@ -11,27 +11,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [15700],
 )]
 pub struct EthereumScrypt {
-    /// CPU/memory cost parameter.
+    /// CPU/memory cost parameter
     #[field(role = iterations, encoding = decimal)]
     pub n: u32,
 
-    /// Block size parameter.
+    /// Block size parameter
     #[field(role = other, encoding = decimal)]
     pub r: u32,
 
-    /// Parallelization parameter.
+    /// Parallelization parameter
     #[field(role = other, encoding = decimal)]
     pub p: u32,
 
-    /// Hexadecimal salt.
+    /// Salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Hexadecimal ciphertext.
+    /// Ciphertext
     #[field(role = ciphertext, encoding = hex)]
     pub ciphertext: Vec<u8>,
 
-    /// Hexadecimal MAC.
+    /// MAC
     #[field(role = digest, encoding = hex)]
     pub mac: Vec<u8>,
 }

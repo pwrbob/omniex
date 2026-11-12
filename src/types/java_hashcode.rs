@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [18700],
 )]
 pub struct JavaHashcode {
-    /// The 4-byte hash value.
+    /// 4-byte hash value
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 4],
 }

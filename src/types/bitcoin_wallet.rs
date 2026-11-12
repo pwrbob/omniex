@@ -8,23 +8,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Bitcoin/Litecoin wallet.dat", slug = "bitcoin-wallet", hashcat = [11300], john = ["Bitcoin"])]
 pub struct BitcoinWallet {
-    /// Encrypted master key.
+    /// Encrypted master key
     #[field(role = ciphertext, encoding = hex)]
     pub master: Vec<u8>,
 
-    /// Initialization vector.
+    /// Initialization vector
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 
-    /// Key derivation round count.
+    /// Key derivation round count
     #[field(role = other, encoding = decimal)]
     pub rounds: u64,
 
-    /// Encrypted private key, empty when unavailable.
+    /// Encrypted private key (may be empty)
     #[field(role = ciphertext, encoding = hex)]
     pub ckey: Vec<u8>,
 
-    /// Public key, empty when unavailable.
+    /// Public key (may be empty)
     #[field(role = other, encoding = hex)]
     pub public_key: Vec<u8>,
 }

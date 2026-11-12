@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "MySQL 4.1+", slug = "mysql-sha1", hashcat = [], john = ["mysql-sha1"])]
 pub struct MysqlSha1 {
-    /// Twenty-byte digest.
+    /// 20-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 20],
 }

@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "XCA database", slug = "xca", hashcat = [40000])]
 pub struct Xca {
-    /// Encoded payload.
+    /// Encoded payload
     #[field(role = salt, encoding = ascii)]
     pub payload: String,
 }

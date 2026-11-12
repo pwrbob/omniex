@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [30000]
 )]
 pub struct WerkzeugMd5 {
-    /// Salt value.
+    /// Salt value
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

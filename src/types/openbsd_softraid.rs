@@ -13,11 +13,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = openbsd_softraid_modes,
 )]
 pub struct OpenbsdSoftraid {
-    /// Iteration count for PBKDF2, or the bcrypt cost marker.
+    /// PBKDF2/bcrypt cost
     #[field(role = other, encoding = decimal)]
     pub iterations: u32,
 
-    /// Version-specific fields, preserved verbatim.
+    /// Version-specific fields
     #[field(role = other, encoding = ascii)]
     pub data: String,
 }

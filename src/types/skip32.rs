@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [14900],
 )]
 pub struct Skip32 {
-    /// The 4-byte digest.
+    /// 4-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 4],
 
-    /// The 4-byte salt or seed.
+    /// 4-byte salt or seed
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 4],
 }

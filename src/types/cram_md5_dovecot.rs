@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [16400],
 )]
 pub struct CramMd5Dovecot {
-    /// The 16-byte challenge.
+    /// 16-byte challenge
     #[field(role = other, encoding = hex)]
     pub challenge: [u8; 16],
 
-    /// The 16-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

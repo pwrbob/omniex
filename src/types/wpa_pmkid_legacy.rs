@@ -12,19 +12,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = wpa_pmkid_legacy_modes,
 )]
 pub struct WpaPmkidLegacy {
-    /// The 16-byte PMKID.
+    /// 16-byte PMKID
     #[field(role = digest, encoding = hex)]
     pub pmkid: [u8; 16],
 
-    /// Access point MAC address.
+    /// Access point MAC address
     #[field(role = other, encoding = hex)]
     pub access_point: [u8; 6],
 
-    /// Station MAC address.
+    /// Station MAC address
     #[field(role = other, encoding = hex)]
     pub station: [u8; 6],
 
-    /// ESSID bytes, empty when the hash does not serialize an ESSID.
+    /// ESSID (may be empty)
     #[field(role = salt, encoding = hex)]
     pub essid: Vec<u8>,
 }

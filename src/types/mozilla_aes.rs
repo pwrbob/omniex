@@ -12,27 +12,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = mozilla_aes_modes,
 )]
 pub struct MozillaAes {
-    /// Cipher name.
+    /// Cipher name
     #[field(role = other, encoding = ascii)]
     pub cipher: String,
 
-    /// Hexadecimal global salt.
+    /// Hexadecimal global salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal IV or entry salt.
+    /// IV or entry salt (hex)
     #[field(role = salt, encoding = ascii)]
     pub entry_salt: String,
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Hexadecimal IV.
+    /// Hexadecimal IV
     #[field(role = iv, encoding = ascii)]
     pub iv: String,
 
-    /// Hexadecimal digest.
+    /// Digest
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

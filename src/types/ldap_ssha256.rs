@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [1411],
 )]
 pub struct LdapSsha256 {
-    /// The 32-byte SHA-256 digest.
+    /// 32-byte SHA-256 digest
     #[field(role = digest, encoding = base64)]
     pub digest: [u8; 32],
 
-    /// Salt appended after the digest.
+    /// Salt after digest
     #[field(role = salt, encoding = ascii)]
     pub salt: Vec<u8>,
 }

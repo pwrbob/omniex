@@ -12,23 +12,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = snmpv3_modes,
 )]
 pub struct Snmpv3 {
-    /// Protocol variant, which selects the mode.
+    /// Protocol variant
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Packet number.
+    /// Packet number
     #[field(role = other, encoding = ascii)]
     pub packet_number: String,
 
-    /// Hexadecimal message bytes.
+    /// Hexadecimal message bytes
     #[field(role = ciphertext, encoding = ascii)]
     pub message: String,
 
-    /// Engine identifier.
+    /// Engine identifier
     #[field(role = other, encoding = ascii)]
     pub engine_id: String,
 
-    /// Hexadecimal authentication digest.
+    /// Auth digest
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

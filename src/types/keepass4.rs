@@ -13,47 +13,47 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = keepass4_modes,
 )]
 pub struct Keepass4 {
-    /// Database format version, always `4`.
+    /// Database version (`4`)
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Key derivation iteration count.
+    /// KDF iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Key derivation function UUID.
+    /// KDF UUID
     #[field(role = other, encoding = ascii)]
     pub kdf_uuid: String,
 
-    /// Memory usage in bytes.
+    /// Memory usage in bytes
     #[field(role = other, encoding = decimal)]
     pub memory: u64,
 
-    /// KDF format version.
+    /// KDF format version
     #[field(role = other, encoding = decimal)]
     pub kdf_version: u8,
 
-    /// Argon2 lanes or AES-KDF parameter.
+    /// Argon2 lanes / AES-KDF param
     #[field(role = other, encoding = decimal)]
     pub parallelism: u8,
 
-    /// Hexadecimal master seed.
+    /// Hexadecimal master seed
     #[field(role = salt, encoding = ascii)]
     pub master_seed: String,
 
-    /// Hexadecimal key derivation salt.
+    /// KDF salt (hex)
     #[field(role = other, encoding = ascii)]
     pub salt: String,
 
-    /// Hexadecimal header bytes.
+    /// Hexadecimal header bytes
     #[field(role = other, encoding = ascii)]
     pub header: String,
 
-    /// Thirty-two-byte digest.
+    /// 32-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 32],
 
-    /// Optional keyfile fields, preserved verbatim.
+    /// Optional keyfile fields
     #[field(role = other, encoding = ascii)]
     pub keyfile: String,
 }

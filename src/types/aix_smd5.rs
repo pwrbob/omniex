@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [6300],
 )]
 pub struct AixSmd5 {
-    /// Up to eight salt characters.
+    /// Salt (up to 8 characters)
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Twenty-two digest characters.
+    /// 22-character digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

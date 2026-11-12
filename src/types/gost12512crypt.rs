@@ -11,11 +11,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [35600], john = ["streebog512crypt"]
 )]
 pub struct Gost12512crypt {
-    /// ASCII salt.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Crypt base64 digest.
+    /// Crypt base64 digest
     #[field(role = digest, encoding = ascii)]
     pub digest: String,
 }

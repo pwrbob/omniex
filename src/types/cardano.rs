@@ -7,7 +7,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Cardano Eternl Wallet", slug = "cardano", hashcat = [37700])]
 pub struct Cardano {
-    /// Encoded payload.
+    /// Encoded payload
     #[field(role = salt, encoding = ascii)]
     pub payload: String,
 }

@@ -8,23 +8,23 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "LastPass CLI", slug = "lpcli", hashcat = [], john = ["lpcli"])]
 pub struct Lpcli {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Account e-mail.
+    /// Account e-mail
     #[field(role = username, encoding = ascii)]
     pub email: String,
 
-    /// PIN.
+    /// PIN
     #[field(role = other, encoding = ascii)]
     pub pin: String,
 
-    /// Encrypted key.
+    /// Encrypted key
     #[field(role = ciphertext, encoding = hex)]
     pub encrypted: Vec<u8>,
 
-    /// Sixteen-byte digest.
+    /// 16-byte digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

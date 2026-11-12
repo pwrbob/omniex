@@ -8,19 +8,19 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Apple File System (APFS)", slug = "apfs", hashcat = [18300])]
 pub struct Apfs {
-    /// Core Data primary key, always `2`.
+    /// Core Data key (`2`)
     #[field(role = other, encoding = decimal)]
     pub primary_key: u32,
 
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Iteration count.
+    /// Iteration count
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Forty-byte wrapped key.
+    /// 40-byte wrapped key
     #[field(role = ciphertext, encoding = hex)]
     pub wrapped_key: [u8; 40],
 }

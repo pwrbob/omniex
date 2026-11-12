@@ -7,11 +7,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "cryptoSafe", slug = "cryptosafe", hashcat = [], john = ["cryptoSafe"])]
 pub struct Cryptosafe {
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Encoded payload.
+    /// Encoded payload
     #[field(role = ciphertext, encoding = ascii)]
     pub payload: String,
 }

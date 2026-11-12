@@ -11,27 +11,27 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [15500],
 )]
 pub struct JksPrivateKey {
-    /// Hexadecimal checksum.
+    /// Checksum
     #[field(role = digest, encoding = hex)]
     pub checksum: [u8; 20],
 
-    /// Hexadecimal IV.
+    /// IV
     #[field(role = iv, encoding = hex)]
     pub iv: [u8; 20],
 
-    /// Hexadecimal encrypted key.
+    /// Encrypted key
     #[field(role = ciphertext, encoding = hex)]
     pub encrypted_key: Vec<u8>,
 
-    /// First DER byte.
+    /// First DER byte
     #[field(role = other, encoding = hex)]
     pub der1: [u8; 1],
 
-    /// Remaining DER bytes.
+    /// Remaining DER bytes
     #[field(role = other, encoding = hex)]
     pub der2: [u8; 14],
 
-    /// Key alias.
+    /// Key alias
     #[field(role = other, encoding = ascii)]
     pub alias: String,
 }

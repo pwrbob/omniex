@@ -11,35 +11,35 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [23700, 23800],
 )]
 pub struct Rar3p {
-    /// Header type.
+    /// Header type
     #[field(role = other, encoding = ascii)]
     pub header_type: String,
 
-    /// The 8-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// The 4-byte CRC.
+    /// 4-byte CRC
     #[field(role = other, encoding = hex)]
     pub crc: [u8; 4],
 
-    /// Packed size.
+    /// Packed size
     #[field(role = other, encoding = decimal)]
     pub pack_size: u32,
 
-    /// Unpacked size.
+    /// Unpacked size
     #[field(role = other, encoding = decimal)]
     pub unpack_size: u32,
 
-    /// Compression method.
+    /// Compression method
     #[field(role = other, encoding = decimal)]
     pub method: u8,
 
-    /// Hexadecimal data.
+    /// Data
     #[field(role = ciphertext, encoding = hex)]
     pub data: Vec<u8>,
 
-    /// Final check byte.
+    /// Final check byte
     #[field(role = digest, encoding = hex)]
     pub check: [u8; 1],
 }

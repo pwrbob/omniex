@@ -12,7 +12,7 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     john = ["NT", "NT-long"],
 )]
 pub struct Ntlm {
-    /// The 16-byte NTLM digest.
+    /// 16-byte NTLM digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

@@ -13,39 +13,39 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = dpapi_modes,
 )]
 pub struct Dpapi {
-    /// Master key format version.
+    /// Master key format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Credential history context.
+    /// Credential history context
     #[field(role = other, encoding = decimal)]
     pub context: u8,
 
-    /// Security identifier of the account.
+    /// Account SID
     #[field(role = username, encoding = ascii)]
     pub sid: String,
 
-    /// Cipher algorithm name.
+    /// Cipher algorithm name
     #[field(role = other, encoding = ascii)]
     pub cipher: String,
 
-    /// Hash algorithm name.
+    /// Hash algorithm name
     #[field(role = other, encoding = ascii)]
     pub hash: String,
 
-    /// Key derivation round count.
+    /// Key derivation round count
     #[field(role = iterations, encoding = decimal)]
     pub rounds: u32,
 
-    /// Sixteen-byte salt.
+    /// 16-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 16],
 
-    /// Encrypted blob length in hex digits.
+    /// Blob length (hex digits)
     #[field(role = other, encoding = decimal)]
     pub contents_size: u32,
 
-    /// Encrypted master key blob.
+    /// Encrypted master key blob
     #[field(role = ciphertext, encoding = hex)]
     pub contents: Vec<u8>,
 }

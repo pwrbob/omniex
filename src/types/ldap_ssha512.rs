@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     john = ["SSHA512"],
 )]
 pub struct LdapSsha512 {
-    /// The 64-byte SHA-512 digest.
+    /// 64-byte SHA-512 digest
     #[field(role = digest, encoding = base64)]
     pub digest: [u8; 64],
 
-    /// Salt appended after the digest.
+    /// Salt after digest
     #[field(role = salt, encoding = ascii)]
     pub salt: Vec<u8>,
 }

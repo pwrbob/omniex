@@ -8,35 +8,35 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "WinZip", slug = "winzip", hashcat = [13600], john = ["ZIP"])]
 pub struct WinZip {
-    /// Encryption type, always `0`.
+    /// Encryption type, always `0`
     #[field(role = other, encoding = decimal)]
     pub kind: u8,
 
-    /// AES strength mode.
+    /// AES strength mode
     #[field(role = other, encoding = decimal)]
     pub mode: u8,
 
-    /// Magic marker, always `0`.
+    /// Magic marker, always `0`
     #[field(role = other, encoding = decimal)]
     pub magic: u8,
 
-    /// Hexadecimal salt.
+    /// Hexadecimal salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 
-    /// Password verification bytes.
+    /// Password verification bytes
     #[field(role = other, encoding = ascii)]
     pub verify_bytes: String,
 
-    /// Compressed data length in hex.
+    /// Compressed data length (hex)
     #[field(role = other, encoding = ascii)]
     pub compressed_length: String,
 
-    /// Compressed data.
+    /// Compressed data
     #[field(role = ciphertext, encoding = ascii)]
     pub data: String,
 
-    /// Authentication checksum.
+    /// Authentication checksum
     #[field(role = digest, encoding = ascii)]
     pub checksum: String,
 }

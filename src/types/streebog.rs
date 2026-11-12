@@ -14,7 +14,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = streebog_modes,
 )]
 pub struct Streebog {
-    /// The digest, whose length selects the Streebog output size.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }

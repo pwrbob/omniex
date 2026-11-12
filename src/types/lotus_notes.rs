@@ -11,7 +11,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     hashcat = [8700, 9100],
 )]
 pub struct LotusNotes {
-    /// Parenthesized encoded digest.
+    /// Parenthesized digest
     #[field(role = digest, encoding = ascii)]
     pub value: String,
 }

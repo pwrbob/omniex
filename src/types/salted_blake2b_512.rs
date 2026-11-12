@@ -12,11 +12,11 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = salted_blake2b_modes,
 )]
 pub struct SaltedBlake2b512 {
-    /// The 64-byte BLAKE2b digest.
+    /// 64-byte BLAKE2b digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 64],
 
-    /// Salt used by the attack mode.
+    /// Salt
     #[field(role = salt, encoding = ascii)]
     pub salt: String,
 }

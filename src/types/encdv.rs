@@ -13,27 +13,27 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = encdv_modes,
 )]
 pub struct Encdv {
-    /// Scheme name, `encdv-pbkdf2` or `encdv`.
+    /// Scheme (`encdv-pbkdf2`/`encdv`)
     #[field(role = other, encoding = ascii)]
     pub scheme: String,
 
-    /// Format version.
+    /// Format version
     #[field(role = other, encoding = decimal)]
     pub version: u8,
 
-    /// Scheme-specific parameter.
+    /// Scheme-specific parameter
     #[field(role = other, encoding = decimal)]
     pub parameter: u8,
 
-    /// Eight-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: [u8; 8],
 
-    /// Eight-byte check value.
+    /// 8-byte check value
     #[field(role = other, encoding = hex)]
     pub check: [u8; 8],
 
-    /// Scheme-specific remainder, empty when absent.
+    /// Scheme remainder (optional)
     #[field(role = other, encoding = ascii)]
     pub extra: String,
 }

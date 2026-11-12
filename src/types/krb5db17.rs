@@ -11,15 +11,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
     hashcat = [28800],
 )]
 pub struct Krb5Db17 {
-    /// Kerberos username.
+    /// Kerberos username
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// Kerberos realm.
+    /// Kerberos realm
     #[field(role = other, encoding = ascii)]
     pub realm: String,
 
-    /// The 16-byte key digest.
+    /// 16-byte key digest
     #[field(role = digest, encoding = hex)]
     pub digest: [u8; 16],
 }

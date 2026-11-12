@@ -7,15 +7,15 @@ use crate::{HashType, Parse, ParseError, ParseOptions, Render, RenderOptions};
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(name = "Oracle O3LOGON", slug = "o3logon", hashcat = [], john = ["o3logon"])]
 pub struct O3logon {
-    /// User name.
+    /// User name
     #[field(role = username, encoding = ascii)]
     pub username: String,
 
-    /// First sixteen-byte digest.
+    /// First sixteen-byte digest
     #[field(role = digest, encoding = ascii)]
     pub digest1: String,
 
-    /// Second sixteen-byte digest.
+    /// Second sixteen-byte digest
     #[field(role = other, encoding = ascii)]
     pub digest2: String,
 }

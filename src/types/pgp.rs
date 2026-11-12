@@ -16,51 +16,51 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = pgp_modes,
 )]
 pub struct Pgp {
-    /// Public-key algorithm identifier.
+    /// Public-key algorithm
     #[field(role = other, encoding = decimal)]
     pub algorithm: u8,
 
-    /// Encrypted data size in bytes.
+    /// Encrypted data size (bytes)
     #[field(role = other, encoding = decimal)]
     pub encrypted_size: u32,
 
-    /// Modulus size in bits, zero for symmetrically encrypted files.
+    /// Modulus bits (0 if symmetric)
     #[field(role = other, encoding = decimal)]
     pub modulus_size: u32,
 
-    /// Encrypted key packet.
+    /// Encrypted key packet
     #[field(role = ciphertext, encoding = hex)]
     pub encrypted_data: Vec<u8>,
 
-    /// String-to-key type, always `3`.
+    /// String-to-key type (`3`)
     #[field(role = other, encoding = decimal)]
     pub s2k_type: u8,
 
-    /// String-to-key usage identifier.
+    /// String-to-key usage
     #[field(role = other, encoding = decimal)]
     pub s2k_mode: u8,
 
-    /// String-to-key hash identifier.
+    /// String-to-key hash
     #[field(role = other, encoding = decimal)]
     pub s2k_hash: u32,
 
-    /// Cipher algorithm identifier.
+    /// Cipher algorithm identifier
     #[field(role = other, encoding = decimal)]
     pub cipher: u8,
 
-    /// Initialization vector size in bytes, zero for symmetrically encrypted files.
+    /// IV size (0 if symmetric)
     #[field(role = other, encoding = decimal)]
     pub iv_size: u8,
 
-    /// Initialization vector, empty for symmetrically encrypted files.
+    /// IV (empty if symmetric)
     #[field(role = other, encoding = hex)]
     pub iv: Vec<u8>,
 
-    /// String-to-key iteration count.
+    /// String-to-key iterations
     #[field(role = iterations, encoding = decimal)]
     pub iterations: u32,
 
-    /// Eight-byte salt.
+    /// 8-byte salt
     #[field(role = salt, encoding = hex)]
     pub salt: Vec<u8>,
 }

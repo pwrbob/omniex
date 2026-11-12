@@ -14,7 +14,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = ripemd_modes,
 )]
 pub struct Ripemd {
-    /// The digest, whose length selects the RIPEMD variant.
+    /// Digest (variable length)
     #[field(role = digest, encoding = hex)]
     pub digest: Vec<u8>,
 }
