@@ -193,7 +193,9 @@ Primary goals:
 
 Non-goals:
 
-- Run cracking attacks in CI.
+- Distinguish individual hashcat modes; modes that share an algorithm, fields,
+  and serialization are grouped under one hash type regardless of the concrete
+  attack.
 - Link against or vendor hashcat or John.
 - Add a C shim, FFI module harness, or long-running server.
 - Support John ad-hoc `dynamic=...` formats.
