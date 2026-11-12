@@ -193,7 +193,7 @@ Primary goals:
 
 Non-goals:
 
-- Model concrete hashcat attacks; equivalent modes share one hash type.
+- Model concrete attacks; equivalent modes share one hash type.
 - Link against or vendor hashcat or John.
 - Add a C shim, FFI module harness, or long-running server.
 - Support John ad-hoc `dynamic=...` formats.
@@ -268,10 +268,6 @@ omniex parse --type md5 --file hashes.txt --format hash
 printf '8743b52063cd84097a65d1633f5c74f5\n' | omniex parse --type md5 --stdin --format hash
 omniex identify --stdin < hashes.txt
 ```
-
-Human output is a table with a title, one horizontal rule, and bold headers on a
-terminal. Long mode lists wrap to the terminal width. The minimum supported
-terminal is 40x10; smaller terminals are rejected instead of being rendered.
 
 `--format human` renders a titled field view, truncating long parameters unless
 `--full` is passed. `--format json` is the machine format and normally emits one
