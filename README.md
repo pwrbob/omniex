@@ -193,7 +193,7 @@ Primary goals:
 
 Non-goals:
 
-- Model concrete attacks; equivalent modes share one hash type.
+- Model concrete attacks; modes that operate on the same hash string share one hash type.
 - Link against or vendor hashcat or John.
 - Add a C shim, FFI module harness, or long-running server.
 - Support John ad-hoc `dynamic=...` formats.
