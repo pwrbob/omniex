@@ -86,6 +86,46 @@ state of a runner whose `actions/cache` restore missed, which is invisible to a
 warm local checkout and has caused CI-only failures. Run it before touching
 anything that reads `tmp/`.
 
+## Releasing
+
+The version lives in `[workspace.package]` in `Cargo.toml` and in the newest
+`CHANGELOG.md` entry. `tests/coverage.rs` fails when they disagree, and
+`scripts/check-version.sh TAG` compares both against a release tag.
+
+A release is a commit whose `main` CI run is green, plus an annotated tag:
+
+1. Bump the version, add the changelog entry, commit, and push `main`.
+2. Wait for the push to pass CI, including the conformance jobs.
+3. Push a release-candidate tag to rehearse the build:
+
+   ```bash
+   git tag -a v0.2.0-rc1 -m "omniex 0.2.0-rc1"
+   git push origin v0.2.0-rc1
+   ```
+
+   The `Release` workflow builds, packages, and uploads the artifacts but
+   publishes nothing, because the publish job skips tags containing `-rc`.
+4. Push the final tag:
+
+   ```bash
+   git tag -a v0.2.0 -m "omniex 0.2.0"
+   git push origin v0.2.0
+   ```
+
+   The same job builds the artifacts and creates the GitHub release with the
+   tarball, `SHA256SUMS`, and the changelog section as notes.
+
+The build job can be rehearsed without CI:
+
+```bash
+scripts/check-version.sh v0.2.0
+cargo build --release --locked
+scripts/package-release.sh v0.2.0
+```
+
+`dist/` is ignored by git and holds the tarball, the unpacked directory, and
+`SHA256SUMS`. Never move a published tag; release a new patch version instead.
+
 ## Scope
 
 Hashcat and John coverage is tracked in `MODES.md`. Extraction, version-specific

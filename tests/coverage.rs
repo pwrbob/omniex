@@ -300,6 +300,42 @@ fn readme_extraction_badge_matches_the_checklist() {
 }
 
 #[test]
+fn changelog_matches_the_workspace_version() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let manifest = std::fs::read_to_string(root.join("Cargo.toml")).expect("read Cargo.toml");
+    let changelog = std::fs::read_to_string(root.join("CHANGELOG.md")).expect("read CHANGELOG.md");
+
+    let mut in_workspace = false;
+    let mut version = None;
+    for line in manifest.lines() {
+        let trimmed = line.trim();
+        if trimmed.starts_with('[') {
+            in_workspace = trimmed == "[workspace.package]";
+            continue;
+        }
+        if in_workspace {
+            if let Some(rest) = trimmed.strip_prefix("version = ") {
+                version = Some(rest.trim().trim_matches('"').to_owned());
+                break;
+            }
+        }
+    }
+    let version = version.expect("Cargo.toml must set the version under [workspace.package]");
+
+    let first = changelog
+        .lines()
+        .filter_map(|line| line.strip_prefix("## ["))
+        .filter_map(|line| line.split(']').next())
+        .find(|entry| *entry != "Unreleased")
+        .expect("CHANGELOG.md must list at least one release");
+
+    assert_eq!(
+        first, version,
+        "the newest CHANGELOG.md entry must match the Cargo.toml version"
+    );
+}
+
+#[test]
 fn readme_artifact_table_matches_the_checklist() {
     let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
     let readme = std::fs::read_to_string(root.join("README.md")).expect("read README.md");
