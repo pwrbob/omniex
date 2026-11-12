@@ -101,6 +101,24 @@ fn parse_verbose_reports_fields() {
 }
 
 #[test]
+fn parse_verbose_truncates_long_values_unless_full_is_requested() {
+    omniex()
+        .env("COLUMNS", "40")
+        .args(["parse", MD5_HASH, "--type", "md5", "--verbose"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(" ... "))
+        .stdout(predicate::str::contains(MD5_HASH).not());
+
+    omniex()
+        .env("COLUMNS", "120")
+        .args(["parse", MD5_HASH, "--type", "md5", "--verbose", "--full"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains(MD5_HASH));
+}
+
+#[test]
 fn parse_reads_a_hash_list_from_stdin() {
     omniex()
         .args(["parse", "--type", "md5", "--stdin"])

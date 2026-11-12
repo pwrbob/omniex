@@ -73,6 +73,10 @@ struct ParseArgs {
     /// Print one JSON array containing every input.
     #[arg(long, conflicts_with = "verbose")]
     json: bool,
+
+    /// Show complete field values instead of truncating long parameters.
+    #[arg(long, requires = "verbose")]
+    full: bool,
 }
 
 #[derive(Args)]
@@ -320,6 +324,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
                 *line,
                 total,
                 text,
+                args.full,
             ));
         } else {
             output.push(
@@ -739,6 +744,7 @@ fn verbose_value(
     line: usize,
     total: usize,
     input: &str,
+    full: bool,
 ) -> String {
     let (hashcat, john) = mode_columns(&value.modes());
     let mut block = ui::title(
@@ -766,6 +772,7 @@ fn verbose_value(
         input,
         &accent_spans(&fields, input),
         label_width,
+        full,
     ));
     block.push('\n');
     block.push_str(&ui::key_values(context, &pairs));
@@ -795,6 +802,11 @@ fn verbose_value(
         &rows,
         &accents,
         &[0, 3],
+        if full {
+            None
+        } else {
+            Some((3, ui::detail_width(context)))
+        },
     ));
 
     block
@@ -805,9 +817,6 @@ fn accent_spans(fields: &[omniex::FieldValue], input: &str) -> Vec<ui::AccentSpa
     let mut cursor = 0;
     for entry in fields {
         let value = entry.value.as_str();
-        let Some(accent) = accent_for(entry.field.role) else {
-            continue;
-        };
         if value.is_empty() {
             continue;
         }
@@ -818,7 +827,7 @@ fn accent_spans(fields: &[omniex::FieldValue], input: &str) -> Vec<ui::AccentSpa
         spans.push(ui::AccentSpan {
             start,
             end: start + value.len(),
-            accent,
+            accent: accent_for(entry.field.role),
         });
         cursor = start + value.len();
     }
@@ -899,9 +908,9 @@ mod tests {
         assert_eq!(spans.len(), 2);
         assert_eq!(spans[0].start, 0);
         assert_eq!(spans[0].end, 4);
-        assert_eq!(spans[0].accent, ui::Accent::Blue);
+        assert_eq!(spans[0].accent, Some(ui::Accent::Blue));
         assert_eq!(spans[1].start, 5);
         assert_eq!(spans[1].end, 7);
-        assert_eq!(spans[1].accent, ui::Accent::Red);
+        assert_eq!(spans[1].accent, Some(ui::Accent::Red));
     }
 }

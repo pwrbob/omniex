@@ -8,7 +8,7 @@ use std::env;
 use std::io::{self, IsTerminal};
 
 use comfy_table::presets::NOTHING;
-use comfy_table::{Attribute, Cell, Color, ContentArrangement, Table};
+use comfy_table::{Attribute, Cell, Color, ColumnConstraint, ContentArrangement, Table, Width};
 use textwrap::{Options, WordSeparator, WordSplitter};
 use unicode_width::UnicodeWidthStr;
 
@@ -186,7 +186,7 @@ pub fn title(context: &Context, title: &str) -> String {
 /// Renders a table with a bold header row. It never draws a rule.
 #[must_use]
 pub fn table(context: &Context, headers: &[&str], rows: &[Vec<String>]) -> String {
-    table_with_accents(context, headers, rows, &[], &[])
+    table_with_accents(context, headers, rows, &[], &[], None)
 }
 
 /// Renders a table whose accent columns are colored per row.
@@ -197,6 +197,7 @@ pub fn table_with_accents(
     rows: &[Vec<String>],
     accents: &[Option<Accent>],
     accent_columns: &[usize],
+    value_column: Option<(usize, usize)>,
 ) -> String {
     if headers.is_empty() {
         return String::new();
@@ -223,6 +224,11 @@ pub fn table_with_accents(
     for index in 0..headers.len() {
         if let Some(column) = table.column_mut(index) {
             column.set_padding((0, GAP as u16));
+            if let Some((value_column, _)) = value_column {
+                if index == value_column {
+                    column.set_constraint(ColumnConstraint::Absolute(Width::Percentage(40)));
+                }
+            }
         }
     }
 
@@ -232,7 +238,14 @@ pub fn table_with_accents(
             .iter()
             .enumerate()
             .map(|(index, _)| {
-                let mut cell = Cell::new(cell_or_dash(row.get(index).map_or("", String::as_str)));
+                let text = row.get(index).map_or("", String::as_str);
+                let text = match value_column {
+                    Some((value_column, width)) if index == value_column => {
+                        truncate_blocks(text, width)
+                    }
+                    _ => text.to_owned(),
+                };
+                let mut cell = Cell::new(cell_or_dash(&text));
                 if let Some(accent) = accent.filter(|_| accent_columns.contains(&index)) {
                     cell = cell.fg(accent.color());
                 }
@@ -257,8 +270,78 @@ pub struct AccentSpan {
     pub start: usize,
     /// Byte offset where the span ends.
     pub end: usize,
-    /// Accent used for the span.
-    pub accent: Accent,
+    /// Accent used for the span, or `None` for default styling.
+    pub accent: Option<Accent>,
+}
+
+/// Maximum width for a detailed field value before center truncation.
+#[must_use]
+pub fn detail_width(context: &Context) -> usize {
+    (context.width.saturating_mul(2) / 5)
+        .saturating_sub(2)
+        .max(12)
+}
+
+/// Truncates the center of a plain value, keeping its head and tail.
+#[must_use]
+pub fn truncate_middle(text: &str, limit: usize) -> String {
+    let bounds: Vec<(usize, char)> = text.char_indices().collect();
+    let length = bounds.len();
+    if length <= limit || limit < 8 {
+        return text.to_owned();
+    }
+
+    let budget = limit - 5;
+    let head_length = budget.div_ceil(2);
+    let tail_length = budget / 2;
+    let head_end = bounds[head_length].0;
+    let tail_start = bounds[length - tail_length].0;
+    let mut truncated = String::with_capacity(limit);
+    truncated.push_str(&text[..head_end]);
+    truncated.push_str(" ... ");
+    truncated.push_str(&text[tail_start..]);
+    truncated
+}
+
+/// Truncates each separator-delimited block without removing separators.
+#[must_use]
+pub fn truncate_blocks(text: &str, limit: usize) -> String {
+    let mut output = String::with_capacity(text.len());
+    let mut start = 0;
+    for (index, character) in text.char_indices() {
+        if matches!(character, '$' | ':' | '*' | ',') {
+            output.push_str(&truncate_middle(&text[start..index], limit));
+            output.push(character);
+            start = index + character.len_utf8();
+        }
+    }
+    output.push_str(&truncate_middle(&text[start..], limit));
+    output
+}
+
+/// Truncates each spanned field while preserving text outside the spans.
+#[must_use]
+pub fn truncate_spans(text: &str, spans: &[AccentSpan], limit: usize) -> (String, Vec<AccentSpan>) {
+    let mut output = String::with_capacity(text.len());
+    let mut mapped = Vec::new();
+    let mut last = 0;
+    for span in spans {
+        if span.start < last || span.end > text.len() || span.start > span.end {
+            continue;
+        }
+        output.push_str(&text[last..span.start]);
+        let value = truncate_blocks(&text[span.start..span.end], limit);
+        let start = output.len();
+        output.push_str(&value);
+        mapped.push(AccentSpan {
+            start,
+            end: output.len(),
+            accent: span.accent,
+        });
+        last = span.end;
+    }
+    output.push_str(&text[last..]);
+    (output, mapped)
 }
 
 /// Renders one aligned key/value pair, coloring and wrapping spans.
@@ -269,10 +352,16 @@ pub fn key_value_accented(
     value: &str,
     spans: &[AccentSpan],
     label_width: usize,
+    full: bool,
 ) -> String {
     let value_width = context.width.saturating_sub(label_width + GAP).max(1);
     let padding = " ".repeat(label_width.saturating_sub(label.width()));
-    styled_wrap(context, value, value_width, spans)
+    let (value, spans) = if full {
+        (value.to_owned(), spans.to_vec())
+    } else {
+        truncate_spans(value, spans, value_width)
+    };
+    styled_wrap(context, &value, value_width, &spans)
         .into_iter()
         .enumerate()
         .map(|(index, line)| {
@@ -323,7 +412,10 @@ fn color_range(context: &Context, text: &str, start: usize, spans: &[AccentSpan]
             continue;
         }
         output.push_str(&text[last..local_start]);
-        output.push_str(&context.accent(span.accent, &text[local_start..local_end]));
+        match span.accent {
+            Some(accent) => output.push_str(&context.accent(accent, &text[local_start..local_end])),
+            None => output.push_str(&text[local_start..local_end]),
+        }
         last = local_end;
     }
     output.push_str(&text[last..]);
@@ -472,6 +564,29 @@ mod tests {
     }
 
     #[test]
+    fn truncation_keeps_separators_and_both_ends() {
+        let text = "0123456789abcdef:fedcba9876543210";
+        let truncated = truncate_blocks(text, 12);
+        assert!(truncated.contains(" ... "));
+        assert!(truncated.contains(':'));
+        assert!(truncated.starts_with("0123"));
+        assert!(truncated.ends_with("210"));
+
+        let (styled, spans) = truncate_spans(
+            "0123456789abcdef:fedcba9876543210",
+            &[AccentSpan {
+                start: 0,
+                end: 33,
+                accent: Some(Accent::Blue),
+            }],
+            12,
+        );
+        assert_eq!(styled, truncated);
+        assert_eq!(spans.len(), 1);
+        assert_eq!(spans[0].accent, Some(Accent::Blue));
+    }
+
+    #[test]
     fn table_colors_accent_columns() {
         let plain = Context::from_parts(80, 20, false, false).unwrap();
         let styled = Context::from_parts(80, 20, false, true).unwrap();
@@ -483,6 +598,7 @@ mod tests {
             &rows,
             &[Some(Accent::Red)],
             &[0],
+            None,
         );
         let styled_output = table_with_accents(
             &styled,
@@ -490,6 +606,7 @@ mod tests {
             &rows,
             &[Some(Accent::Red)],
             &[0],
+            None,
         );
 
         assert!(!plain_output.contains('\u{1b}'));
