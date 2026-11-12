@@ -13,7 +13,7 @@ use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, R
     modes_fn = office_modes,
 )]
 pub struct Office {
-    /// Document year
+    /// Office version
     #[field(role = other, encoding = decimal)]
     pub year: u16,
 
