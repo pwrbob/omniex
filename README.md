@@ -53,27 +53,13 @@ lotus5              Lotus Notes/Domino  8600                -
 ...
 ```
 
-Inspect a known hash as an analyst, with each field identified and described:
+Inspect a known hash as an analyst, with each field identified and described.
+The terminal colors match every hash part to its field row:
 
-```console
-$ omniex parse --type md5crypt '$1$38652870$DUjsu4TTlTsOe/xxZ05uf/'
-md5crypt (md5crypt)
-───────────────────
-Input    $1$38652870$DUjsu4TTlTsOe/xxZ05uf/
-Hashcat  500
-John     md5crypt, md5crypt-long
-Fields
-Name    Role        Encoding  Value                                   Description
-rounds  iterations  decimal   0                                       Explicit round count, or
-                                                                      zero for the default.
-salt    salt        ascii     38652870                                Up to eight salt characters.
-digest  digest      ascii     DUjsu4TTlTsOe/xxZ05uf/                  Twenty-two digest
-                                                                      characters.
-```
+![omniex parse showing colored hash parts and field descriptions](assets/readme/parse-human.svg)
 
-In a terminal the hash parts and their field rows share colors: salts, digests,
-iteration counts, and other roles are visually matched. Long parameters are
-truncated in the middle; add `--full` to show them completely.
+Long parameters are truncated in the middle; add `--full` to show them
+completely.
 
 Point it at an artifact and get cracker-ready hashes, including every matching
 record when the artifact holds more than one:

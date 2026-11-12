@@ -807,11 +807,12 @@ fn verbose_value(
         .max()
         .unwrap_or(0)
         .max("Input".len());
+    let (spans, accents) = field_spans(&fields, input);
     block.push_str(&ui::key_value_accented(
         context,
         "Input",
         input,
-        &accent_spans(&fields, input),
+        &spans,
         label_width,
         full,
     ));
@@ -833,10 +834,6 @@ fn verbose_value(
             ]
         })
         .collect::<Vec<_>>();
-    let accents = fields
-        .iter()
-        .map(|entry| accent_for(entry.field.role))
-        .collect::<Vec<_>>();
     block.push_str(&ui::table_with_accents(
         context,
         &["Name", "Role", "Encoding", "Value", "Description"],
@@ -853,26 +850,53 @@ fn verbose_value(
     block
 }
 
-fn accent_spans(fields: &[omniex::FieldValue], input: &str) -> Vec<ui::AccentSpan> {
+fn field_spans(
+    fields: &[omniex::FieldValue],
+    input: &str,
+) -> (Vec<ui::AccentSpan>, Vec<Option<ui::Accent>>) {
     let mut spans = Vec::new();
+    let mut accents = vec![None; fields.len()];
     let mut cursor = 0;
-    for entry in fields {
+    for (index, entry) in fields.iter().enumerate() {
         let value = entry.value.as_str();
         if value.is_empty() {
             continue;
         }
-        let Some(relative) = input.get(cursor..).and_then(|rest| rest.find(value)) else {
+        let mut search = cursor;
+        let mut found = None;
+        while let Some(relative) = input.get(search..).and_then(|rest| rest.find(value)) {
+            let start = search + relative;
+            let end = start + value.len();
+            if is_field_boundary(input, start, end) {
+                found = Some((start, end));
+                break;
+            }
+            search = start + 1;
+        }
+        let Some((start, end)) = found else {
             continue;
         };
-        let start = cursor + relative;
-        spans.push(ui::AccentSpan {
-            start,
-            end: start + value.len(),
-            accent: accent_for(entry.field.role),
-        });
-        cursor = start + value.len();
+        let accent = accent_for(entry.field.role);
+        accents[index] = accent;
+        spans.push(ui::AccentSpan { start, end, accent });
+        cursor = end;
     }
-    spans
+    (spans, accents)
+}
+
+fn is_field_boundary(input: &str, start: usize, end: usize) -> bool {
+    let separator = |byte: u8| matches!(byte, b'$' | b':' | b'*' | b',');
+    let before = start == 0
+        || input
+            .as_bytes()
+            .get(start - 1)
+            .is_some_and(|byte| separator(*byte));
+    let after = end == input.len()
+        || input
+            .as_bytes()
+            .get(end)
+            .is_some_and(|byte| separator(*byte));
+    before && after
 }
 
 fn accent_for(role: FieldRole) -> Option<ui::Accent> {
@@ -945,8 +969,9 @@ mod tests {
                 value: "12".to_owned(),
             },
         ];
-        let spans = accent_spans(&fields, "abcd:12");
+        let (spans, accents) = field_spans(&fields, "abcd:12");
         assert_eq!(spans.len(), 2);
+        assert_eq!(accents, vec![Some(ui::Accent::Blue), Some(ui::Accent::Red)]);
         assert_eq!(spans[0].start, 0);
         assert_eq!(spans[0].end, 4);
         assert_eq!(spans[0].accent, Some(ui::Accent::Blue));

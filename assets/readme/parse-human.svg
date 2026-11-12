@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="872" height="292" viewBox="0 0 872 292">
+<rect width="872" height="292" rx="8" fill="#0d1117"/>
+<text x="16" y="32.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#7ee787">$</tspan>
+<tspan fill="#c9d1d9"> omniex parse &#x27;$1$38652870$DUjsu4TTlTsOe/xxZ05uf/&#x27;</tspan>
+</text>
+<text x="16" y="52.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9" font-weight="600">md5crypt (md5crypt)</tspan>
+</text>
+<text x="16" y="72.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9">───────────────────</tspan>
+</text>
+<text x="16" y="92.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9" font-weight="600">Input</tspan>
+<tspan fill="#c9d1d9">    $1$</tspan>
+<tspan fill="#ff7b72">38652870</tspan>
+<tspan fill="#c9d1d9">$</tspan>
+<tspan fill="#79c0ff">DUjsu4TTlTsOe/xxZ05uf/</tspan>
+</text>
+<text x="16" y="112.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9" font-weight="600">Hashcat</tspan>
+<tspan fill="#c9d1d9">  500</tspan>
+</text>
+<text x="16" y="132.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9" font-weight="600">John</tspan>
+<tspan fill="#c9d1d9">     md5crypt, md5crypt-long</tspan>
+</text>
+<text x="16" y="152.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9" font-weight="600">Fields</tspan>
+</text>
+<text x="16" y="172.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9" font-weight="600">Name    </tspan>
+<tspan fill="#c9d1d9" font-weight="600">Role        </tspan>
+<tspan fill="#c9d1d9" font-weight="600">Encoding  </tspan>
+<tspan fill="#c9d1d9" font-weight="600">Value                                   </tspan>
+<tspan fill="#c9d1d9" font-weight="600">Description                   </tspan>
+</text>
+<text x="16" y="192.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9">rounds  iterations  decimal   0                                       Explicit round count, or</tspan>
+</text>
+<text x="16" y="212.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9">                                                                      zero for the default.</tspan>
+</text>
+<text x="16" y="232.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#ff7b72">salt    </tspan>
+<tspan fill="#c9d1d9">salt        ascii     </tspan>
+<tspan fill="#ff7b72">38652870                                </tspan>
+<tspan fill="#c9d1d9">Up to eight salt characters.</tspan>
+</text>
+<text x="16" y="252.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#79c0ff">digest  </tspan>
+<tspan fill="#c9d1d9">digest      ascii     </tspan>
+<tspan fill="#79c0ff">DUjsu4TTlTsOe/xxZ05uf/                  </tspan>
+<tspan fill="#c9d1d9">Twenty-two digest</tspan>
+</text>
+<text x="16" y="272.0" xml:space="preserve" font-family="DejaVu Sans Mono, ui-monospace, Menlo, Consolas, monospace" font-size="14" fill="#c9d1d9">
+<tspan fill="#c9d1d9">                                                                      characters.</tspan>
+</text>
+</svg>
