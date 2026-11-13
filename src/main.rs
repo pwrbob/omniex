@@ -62,9 +62,9 @@ struct ParseArgs {
     #[arg(long, value_enum, default_value = "human")]
     format: OutputFormat,
 
-    /// Serialization target.
-    #[arg(long, value_enum, default_value = "hashcat")]
-    tool: ToolArg,
+    /// Serialization target. Defaults to hashcat when available, otherwise John.
+    #[arg(long, value_enum)]
+    tool: Option<ToolArg>,
 
     /// Show complete field values instead of truncating long parameters.
     #[arg(long)]
@@ -115,9 +115,9 @@ struct ExtractArgs {
     #[arg(long, value_enum, default_value = "hash")]
     format: OutputFormat,
 
-    /// Serialization target.
-    #[arg(long, value_enum, default_value = "hashcat")]
-    tool: ToolArg,
+    /// Serialization target. Defaults to hashcat when available, otherwise John.
+    #[arg(long, value_enum)]
+    tool: Option<ToolArg>,
 
     /// Allow extractors to use slower exhaustive scans.
     #[arg(long)]
@@ -132,7 +132,7 @@ struct ExtractArgs {
     full: bool,
 }
 
-#[derive(Clone, Copy, Debug, ValueEnum)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, ValueEnum)]
 enum ToolArg {
     Hashcat,
     John,
@@ -291,6 +291,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
 
     let mut output = Vec::with_capacity(total);
     let mut json_output = Vec::with_capacity(total);
+    let mut used_tools = Vec::new();
 
     for (line, text) in &lines {
         let (descriptor, value) = match selected {
@@ -324,11 +325,13 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
 
         match args.format {
             OutputFormat::Json => {
-                let hash = render_hash(tool, value.as_ref())
+                let (used, hash) = render_hash(tool, value.as_ref())
                     .map_err(|error| line_error(*line, total, error))?;
+                used_tools.push(used);
                 json_output.push(json!({
                     "line": line,
                     "type": descriptor.slug,
+                    "tool": used.name(),
                     "input": text,
                     "hash": hash,
                     "fields": json_fields(value.as_ref()),
@@ -339,16 +342,15 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
                     &context.expect("human context"),
                     descriptor,
                     value.as_ref(),
-                    text,
+                    Some(("Input", text)),
                     args.full,
                     ("Line", *line, total),
                 ));
             }
             OutputFormat::Hash => {
-                output.push(
-                    render_hash(tool, value.as_ref())
-                        .map_err(|error| line_error(*line, total, error))?,
-                );
+                let (_, hash) = render_hash(tool, value.as_ref())
+                    .map_err(|error| line_error(*line, total, error))?;
+                output.push(hash);
             }
         }
     }
@@ -357,7 +359,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
         print_json(&json!({
             "omniex_version": env!("CARGO_PKG_VERSION"),
             "command": "parse",
-            "tool": tool.name(),
+            "tool": report_tool(tool, &used_tools),
             "results": json_output,
         }))
     } else {
@@ -419,7 +421,7 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
     if args.full && args.format != OutputFormat::Human {
         return Err(CliError::Usage("--full requires --format human".to_owned()));
     }
-    let tool = Tool::from(args.tool);
+    let tool = args.tool;
     let selected = select_type(args.type_slug.as_deref())?;
     let extractor = selected
         .map(|descriptor| {
@@ -486,60 +488,64 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
             ))
         })?;
         for value in hashes {
-            let rendered = value
-                .render(&RenderOptions {
-                    tool,
-                    ..RenderOptions::default()
-                })
-                .map_err(|error| {
-                    CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
-                })?;
-            if seen.insert((slug, rendered.clone())) {
-                outputs.push((slug, rendered, value));
+            let key = serde_json::to_string(&json_fields(value.as_ref()))
+                .expect("JSON values always serialize");
+            if seen.insert((slug, key)) {
+                outputs.push((slug, value));
             }
         }
     }
 
     match args.format {
         OutputFormat::Json => {
+            let mut used_tools = Vec::with_capacity(outputs.len());
             let entries = outputs
                 .iter()
-                .map(|(slug, hash, value)| {
-                    json!({
+                .map(|(slug, value)| {
+                    let (used, hash) = render_hash(tool, value.as_ref()).map_err(|error| {
+                        CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+                    })?;
+                    used_tools.push(used);
+                    Ok(json!({
                         "type": slug,
+                        "tool": used.name(),
                         "hash": hash,
                         "fields": json_fields(value.as_ref()),
-                    })
+                    }))
                 })
-                .collect::<Vec<_>>();
+                .collect::<Result<Vec<_>, CliError>>()?;
             print_json(&json!({
                 "omniex_version": env!("CARGO_PKG_VERSION"),
                 "command": "extract",
-                "tool": args.tool.name(),
+                "tool": report_tool(tool, &used_tools),
                 "artifact": args.artifact.display().to_string(),
                 "results": entries,
             }))
         }
-        OutputFormat::Hash => write_stdout(&format!(
-            "{}\n",
-            outputs
-                .iter()
-                .map(|(_, hash, _)| hash.as_str())
-                .collect::<Vec<_>>()
-                .join("\n")
-        )),
+        OutputFormat::Hash => {
+            let mut lines = Vec::with_capacity(outputs.len());
+            for (slug, value) in &outputs {
+                let (_, hash) = render_hash(tool, value.as_ref()).map_err(|error| {
+                    CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+                })?;
+                lines.push(hash);
+            }
+            write_stdout(&format!("{}\n", lines.join("\n")))
+        }
         OutputFormat::Human => {
             let context = human_context()?;
             let mut blocks = Vec::with_capacity(outputs.len());
-            for (index, (slug, hash, value)) in outputs.iter().enumerate() {
+            for (index, (slug, value)) in outputs.iter().enumerate() {
                 let descriptor = registry::by_slug(slug).ok_or_else(|| {
                     CliError::Input(format!("no descriptor registered for `{slug}`"))
                 })?;
+                let rendered = render_hash(None, value.as_ref()).ok();
+                let serialized = rendered.as_ref().map(|(_, hash)| ("Hash", hash.as_str()));
                 blocks.push(verbose_value(
                     &context,
                     descriptor,
                     value.as_ref(),
-                    hash,
+                    serialized,
                     args.full,
                     ("Hash", index + 1, outputs.len()),
                 ));
@@ -762,13 +768,46 @@ fn identify_json(
     })
 }
 
-fn render_hash(tool: ToolArg, value: &dyn HashValue) -> Result<String, String> {
+fn render_hash(
+    requested: Option<ToolArg>,
+    value: &dyn HashValue,
+) -> Result<(ToolArg, String), String> {
+    if let Some(tool) = requested {
+        return value
+            .render(&RenderOptions {
+                tool: tool.into(),
+                ..RenderOptions::default()
+            })
+            .map(|hash| (tool, hash))
+            .map_err(|error| error.to_string());
+    }
+
+    let modes = value.modes();
+    let preferred = if modes.iter().any(|mode| matches!(mode, Mode::Hashcat(_))) {
+        ToolArg::Hashcat
+    } else if modes.iter().any(|mode| matches!(mode, Mode::John(_))) {
+        ToolArg::John
+    } else {
+        return Err("no compatible hashcat or John serialization".to_owned());
+    };
     value
         .render(&RenderOptions {
-            tool: tool.into(),
+            tool: preferred.into(),
             ..RenderOptions::default()
         })
+        .map(|hash| (preferred, hash))
         .map_err(|error| error.to_string())
+}
+
+fn report_tool(requested: Option<ToolArg>, used: &[ToolArg]) -> &'static str {
+    if let Some(tool) = requested {
+        return tool.name();
+    }
+    match used {
+        [first, rest @ ..] if rest.iter().all(|tool| tool == first) => first.name(),
+        [] => "auto",
+        _ => "auto",
+    }
 }
 
 fn json_fields(value: &dyn HashValue) -> Value {
@@ -815,7 +854,7 @@ fn verbose_value(
     context: &ui::Context,
     descriptor: &omniex::HashTypeDescriptor,
     value: &dyn HashValue,
-    input: &str,
+    serialized: Option<(&str, &str)>,
     full: bool,
     count: (&str, usize, usize),
 ) -> String {
@@ -839,22 +878,26 @@ fn verbose_value(
         .map(|(label, _)| label.len())
         .max()
         .unwrap_or(0)
-        .max("Input".len());
-    let (spans, accents) = field_spans(&fields, input);
-    block.push_str(&ui::key_value_accented(
-        context,
-        "Input",
-        input,
-        &spans,
-        label_width,
-        full,
-    ));
-    block.push('\n');
+        .max(serialized.map_or(0, |(label, _)| label.len()))
+        .max(5);
+    if let Some((label, input)) = serialized {
+        let (spans, _) = field_spans(&fields, input);
+        block.push_str(&ui::key_value_accented(
+            context,
+            label,
+            input,
+            &spans,
+            label_width,
+            full,
+        ));
+        block.push('\n');
+    }
     block.push_str(&ui::key_values(context, &pairs));
     block.push('\n');
     block.push_str(&context.bold("Fields"));
     block.push('\n');
 
+    let (_, accents) = field_spans(&fields, serialized.map_or("", |(_, value)| value));
     let rows = fields
         .iter()
         .map(|entry| {
