@@ -685,35 +685,29 @@ def fields_for_hash(binary: Path, slug: str, format_name: str, hash_text: str) -
         handle.write(hash_text)
         handle.write("\n")
         handle.close()
-        command = [
-            str(binary),
-            "parse",
-            "--type",
-            slug,
-            "--tool",
-            format_name,
-            "--format",
-            "json",
-            "--file",
-            handle.name,
-        ]
-        result = timed_run(command, text=True, capture_output=True)
-        if result.returncode != 0:
-            alternate = "john" if format_name == "hashcat" else "hashcat"
-            command[command.index("--tool") + 1] = alternate
-            result = timed_run(command, text=True, capture_output=True)
-        if result.returncode != 0:
-            fail(
-                f"command failed ({' '.join(command)}): "
-                f"{result.stderr.strip() or result.stdout.strip()}"
-            )
-        output = result.stdout
+        output = run_command(
+            [
+                str(binary),
+                "parse",
+                "--type",
+                slug,
+                "--format",
+                "json",
+                "--tool",
+                "json",
+                "--file",
+                handle.name,
+            ]
+        )
     finally:
         Path(handle.name).unlink(missing_ok=True)
     document = json.loads(output)
     entries = document["results"]
     if entries:
-        return entries[0]["fields"]
+        return [
+            {"name": name, **data}
+            for name, data in entries[0]["hash"]["fields"].items()
+        ]
     return []
 
 
@@ -724,9 +718,9 @@ def extract(binary: Path, slug: str, format_name: str, artifact: Path, args: lis
             "extract",
             "--type",
             slug,
-            "--tool",
-            format_name,
             "--format",
+            "json",
+            "--tool",
             "json",
             *args,
             str(artifact),
@@ -881,7 +875,10 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
     if not reference_fields:
         fail(f"{manifest.ident}/{case.name}: no reference hash could be parsed")
 
-    got = [entry["fields"] for entry in wanted]
+    got = [
+        [{"name": name, **data} for name, data in entry["hash"]["fields"].items()]
+        for entry in wanted
+    ]
     compare(
         f"{manifest.ident}/{case.name}",
         got,
