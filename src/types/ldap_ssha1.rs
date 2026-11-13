@@ -17,7 +17,7 @@ pub struct LdapSsha1 {
     pub digest: [u8; 20],
 
     /// Salt after digest
-    #[field(role = salt, encoding = ascii)]
+    #[field(role = salt, encoding = base64)]
     pub salt: Vec<u8>,
 }
 

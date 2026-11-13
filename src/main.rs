@@ -7,8 +7,9 @@ use std::process::ExitCode;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use omniex::extract;
+use omniex::json::{encoding_name, hash_document, role_name};
 use omniex::registry;
-use omniex::{Encoding, FieldRole, HashValue, Mode, ParseOptions, RenderOptions, Tool};
+use omniex::{FieldRole, HashValue, Mode, ParseOptions, RenderOptions, Tool};
 use serde_json::{Value, json};
 
 mod ui;
@@ -298,30 +299,55 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
     let mut json_output = Vec::with_capacity(total);
 
     for (line, text) in &lines {
-        let (descriptor, value) = match selected {
-            Some(descriptor) => (
-                descriptor,
-                registry::parse(descriptor, text, &parse_opts)
-                    .map_err(|error| line_error(*line, total, error.to_string()))?,
-            ),
-            None => {
-                let mut matches = matches(text, &parse_opts);
-                match matches.len() {
-                    0 => {
-                        return Err(CliError::Input(format!(
-                            "line {line}: no hash type matched `{text}`"
-                        )));
-                    }
-                    1 => matches.pop().expect("one match"),
-                    _ => {
-                        let candidates = matches
-                            .iter()
-                            .map(|(descriptor, _)| descriptor.slug)
-                            .collect::<Vec<_>>()
-                            .join(", ");
-                        return Err(CliError::Input(format!(
-                            "line {line}: ambiguous hash type (candidates: {candidates}); use --type"
-                        )));
+        let document = serde_json::from_str::<Value>(text)
+            .ok()
+            .filter(Value::is_object);
+        let (descriptor, value) = if let Some(document) = document {
+            let slug = document
+                .get("type")
+                .and_then(Value::as_str)
+                .ok_or_else(|| CliError::Input(format!("line {line}: JSON hash has no type")))?;
+            let descriptor = match selected {
+                Some(descriptor) if descriptor.slug == slug => descriptor,
+                Some(descriptor) => {
+                    return Err(CliError::Input(format!(
+                        "line {line}: JSON hash type `{slug}` does not match `{}`",
+                        descriptor.slug
+                    )));
+                }
+                None => registry::by_slug(slug).ok_or_else(|| {
+                    CliError::Input(format!("line {line}: unknown JSON hash type `{slug}`"))
+                })?,
+            };
+            let value = (descriptor.parse_json)(text)
+                .map_err(|error| line_error(*line, total, error.to_string()))?;
+            (descriptor, value)
+        } else {
+            match selected {
+                Some(descriptor) => (
+                    descriptor,
+                    registry::parse(descriptor, text, &parse_opts)
+                        .map_err(|error| line_error(*line, total, error.to_string()))?,
+                ),
+                None => {
+                    let mut matches = matches(text, &parse_opts);
+                    match matches.len() {
+                        0 => {
+                            return Err(CliError::Input(format!(
+                                "line {line}: no hash type matched `{text}`"
+                            )));
+                        }
+                        1 => matches.pop().expect("one match"),
+                        _ => {
+                            let candidates = matches
+                                .iter()
+                                .map(|(descriptor, _)| descriptor.slug)
+                                .collect::<Vec<_>>()
+                                .join(", ");
+                            return Err(CliError::Input(format!(
+                                "line {line}: ambiguous hash type (candidates: {candidates}); use --type"
+                            )));
+                        }
                     }
                 }
             }
@@ -494,7 +520,7 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
         for value in hashes {
             let descriptor = registry::by_slug(slug)
                 .ok_or_else(|| CliError::Input(format!("no descriptor registered for `{slug}`")))?;
-            let key = serde_json::to_string(&json_hash(descriptor, value.as_ref()))
+            let key = serde_json::to_string(&hash_document(descriptor, value.as_ref()))
                 .expect("JSON values always serialize");
             if seen.insert((slug, key)) {
                 outputs.push((slug, value));
@@ -581,7 +607,7 @@ fn display_hash(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) 
             })
         })
         .unwrap_or_else(|_| {
-            serde_json::to_string(&json_hash(descriptor, value))
+            serde_json::to_string(&hash_document(descriptor, value))
                 .expect("JSON values always serialize")
         })
 }
@@ -789,29 +815,6 @@ fn identify_json(
     })
 }
 
-fn json_hash(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) -> Value {
-    let fields = value
-        .describe()
-        .into_iter()
-        .map(|entry| {
-            (
-                entry.field.name.to_owned(),
-                json!({
-                    "role": role_name(entry.field.role),
-                    "encoding": encoding_name(entry.field.encoding),
-                    "value": entry.value,
-                }),
-            )
-        })
-        .collect::<serde_json::Map<String, Value>>();
-
-    json!({
-        "schema": "omniex.hash.v1",
-        "type": descriptor.slug,
-        "fields": fields,
-    })
-}
-
 fn serialized_value(
     tool: ToolArg,
     descriptor: &omniex::HashTypeDescriptor,
@@ -825,7 +828,7 @@ fn serialized_value(
             })
             .map(Value::String)
             .map_err(|error| error.to_string()),
-        None => Ok(json_hash(descriptor, value)),
+        None => Ok(hash_document(descriptor, value)),
     }
 }
 
@@ -963,33 +966,10 @@ fn accent_for(role: FieldRole) -> Option<ui::Accent> {
     }
 }
 
-fn role_name(role: FieldRole) -> &'static str {
-    match role {
-        FieldRole::Salt => "salt",
-        FieldRole::Key => "key",
-        FieldRole::Digest => "digest",
-        FieldRole::Iv => "iv",
-        FieldRole::Ciphertext => "ciphertext",
-        FieldRole::Iterations => "iterations",
-        FieldRole::Username => "username",
-        FieldRole::Other => "other",
-    }
-}
-
-fn encoding_name(encoding: Encoding) -> &'static str {
-    match encoding {
-        Encoding::Raw => "raw",
-        Encoding::Hex => "hex",
-        Encoding::Base64 => "base64",
-        Encoding::Decimal => "decimal",
-        Encoding::Ascii => "ascii",
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omniex::FieldValue;
+    use omniex::{Encoding, FieldValue};
 
     static FIELDS: [omniex::Field; 2] = [
         omniex::Field {

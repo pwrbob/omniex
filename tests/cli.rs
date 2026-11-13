@@ -132,6 +132,40 @@ fn parse_hash_with_the_json_tool_is_a_hash_document() {
 }
 
 #[test]
+fn parse_reads_json_hash_documents() {
+    let document = omniex()
+        .args([
+            "parse", MD5_HASH, "--type", "md5", "--format", "hash", "--tool", "json",
+        ])
+        .output()
+        .expect("command runs")
+        .stdout;
+
+    omniex()
+        .args(["parse", "--stdin", "--format", "hash", "--tool", "hashcat"])
+        .write_stdin(document.clone())
+        .assert()
+        .success()
+        .stdout(format!("{MD5_HASH}\n"));
+
+    omniex()
+        .args(["parse", "--stdin", "--format", "hash", "--tool", "john"])
+        .write_stdin(document.clone())
+        .assert()
+        .success()
+        .stdout(format!("{MD5_HASH}\n"));
+
+    omniex()
+        .args([
+            "parse", "--stdin", "--type", "sha1", "--format", "hash", "--tool", "hashcat",
+        ])
+        .write_stdin(document)
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains("does not match"));
+}
+
+#[test]
 fn parse_verbose_reports_fields() {
     omniex()
         .args(["parse", MD5_HASH, "--type", "md5"])
