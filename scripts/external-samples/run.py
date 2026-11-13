@@ -685,20 +685,29 @@ def fields_for_hash(binary: Path, slug: str, format_name: str, hash_text: str) -
         handle.write(hash_text)
         handle.write("\n")
         handle.close()
-        output = run_command(
-            [
-                str(binary),
-                "parse",
-                "--type",
-                slug,
-                "--tool",
-                format_name,
-                "--format",
-                "json",
-                "--file",
-                handle.name,
-            ]
-        )
+        command = [
+            str(binary),
+            "parse",
+            "--type",
+            slug,
+            "--tool",
+            format_name,
+            "--format",
+            "json",
+            "--file",
+            handle.name,
+        ]
+        result = timed_run(command, text=True, capture_output=True)
+        if result.returncode != 0:
+            alternate = "john" if format_name == "hashcat" else "hashcat"
+            command[command.index("--tool") + 1] = alternate
+            result = timed_run(command, text=True, capture_output=True)
+        if result.returncode != 0:
+            fail(
+                f"command failed ({' '.join(command)}): "
+                f"{result.stderr.strip() or result.stdout.strip()}"
+            )
+        output = result.stdout
     finally:
         Path(handle.name).unlink(missing_ok=True)
     document = json.loads(output)
