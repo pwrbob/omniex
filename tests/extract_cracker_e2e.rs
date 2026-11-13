@@ -376,10 +376,7 @@ fn library_extract(case: &Case, tool: Tool) -> Result<Vec<String>, String> {
 }
 
 fn round_trip(case: &Case, tool: Tool, hashes: &[String]) -> Result<(), String> {
-    let parse_opts = ParseOptions {
-        tool,
-        ..ParseOptions::default()
-    };
+    let parse_opts = ParseOptions::default();
     let render_opts = RenderOptions {
         tool,
         ..RenderOptions::default()

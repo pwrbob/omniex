@@ -8,11 +8,8 @@ use omniex::{
 const MD5_HASH: &str = "8743b52063cd84097a65d1633f5c74f5";
 const SALTED_MD5_HASH: &str = "3d83c8e717ff0e7ecfe187f088d69954:343141";
 
-fn parse_opts(tool: Tool) -> ParseOptions {
-    ParseOptions {
-        tool,
-        ..ParseOptions::default()
-    }
+fn parse_opts(_tool: Tool) -> ParseOptions {
+    ParseOptions::default()
 }
 
 fn render_opts(tool: Tool) -> RenderOptions {

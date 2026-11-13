@@ -274,10 +274,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
         return Err(CliError::Usage("--full requires --format human".to_owned()));
     }
     let tool = Tool::from(args.tool);
-    let parse_opts = ParseOptions {
-        tool,
-        ..ParseOptions::default()
-    };
+    let parse_opts = ParseOptions::default();
     let render_opts = RenderOptions {
         tool,
         ..RenderOptions::default()

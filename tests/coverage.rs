@@ -136,10 +136,7 @@ fn every_vector_names_a_registered_type() {
 fn hashcat_vectors_round_trip_and_report_their_mode() {
     for vector in VECTORS {
         let descriptor = registry::by_slug(vector.slug).expect("registered");
-        let opts = ParseOptions {
-            tool: Tool::Hashcat,
-            ..ParseOptions::default()
-        };
+        let opts = ParseOptions::default();
         let render_opts = RenderOptions {
             tool: Tool::Hashcat,
             ..RenderOptions::default()
@@ -180,10 +177,7 @@ fn john_vectors_round_trip_and_report_their_format() {
         let descriptor = registry::by_slug(vector.slug).expect("registered");
 
         for entry in vector.john {
-            let opts = ParseOptions {
-                tool: Tool::John,
-                ..ParseOptions::default()
-            };
+            let opts = ParseOptions::default();
             let render_opts = RenderOptions {
                 tool: Tool::John,
                 ..RenderOptions::default()

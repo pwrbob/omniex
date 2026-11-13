@@ -269,8 +269,6 @@ pub trait Parse: Sized {
 /// Options that affect parsing.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ParseOptions {
-    /// Target tool.
-    pub tool: Tool,
     /// Hashcat version used when parsing for hashcat.
     pub hc_version: HashcatVersion,
 }
@@ -278,7 +276,6 @@ pub struct ParseOptions {
 impl Default for ParseOptions {
     fn default() -> Self {
         Self {
-            tool: Tool::Hashcat,
             hc_version: HashcatVersion::NEWEST_RELEASE,
         }
     }
@@ -435,10 +432,9 @@ mod tests {
     }
 
     #[test]
-    fn parse_options_default_to_hashcat() {
+    fn parse_options_default_to_the_newest_release() {
         let opts = ParseOptions::default();
 
-        assert_eq!(opts.tool, Tool::Hashcat);
         assert_eq!(opts.hc_version, HashcatVersion::NEWEST_RELEASE);
     }
 

@@ -24,17 +24,38 @@ pub struct CiscoAsa {
 }
 
 impl Parse for CiscoAsa {
-    fn parse(input: &str, opts: &ParseOptions) -> Result<Self, ParseError> {
+    fn parse(input: &str, _opts: &ParseOptions) -> Result<Self, ParseError> {
         if input.is_empty() {
             return Err(parse::empty());
         }
 
-        let (crypt, salt, crypt_offset, salt_offset) = if opts.tool == Tool::John {
-            let (salt, crypt, crypt_offset) = parse::split_once(input, ':', 0)?;
-            (crypt, salt, crypt_offset, 0)
+        let (first, second, second_offset) = parse::split_once(input, ':', 0)?;
+        let first_offset = 0;
+        let is_crypt = |value: &str| value.len() == 16 && value.bytes().all(is_crypt_character);
+        let is_salt = |value: &str| {
+            !value.is_empty() && value.len() <= 4 && value.bytes().all(|byte| byte.is_ascii_digit())
+        };
+        let (crypt, salt, crypt_offset, salt_offset) = if is_crypt(first) && is_salt(second) {
+            (first, second, first_offset, second_offset)
+        } else if is_crypt(second) && is_salt(first) {
+            (second, first, second_offset, first_offset)
+        } else if !is_crypt(first) && !is_crypt(second) {
+            return Err(parse::error(
+                ParseErrorKind::InvalidLength,
+                first_offset,
+                "Cisco-ASA crypt string must be 16 characters",
+            ));
         } else {
-            let (crypt, salt, salt_offset) = parse::split_once(input, ':', 0)?;
-            (crypt, salt, 0, salt_offset)
+            let salt_offset = if is_crypt(second) {
+                first_offset
+            } else {
+                second_offset
+            };
+            return Err(parse::error(
+                ParseErrorKind::InvalidCharacter,
+                salt_offset,
+                "Cisco-ASA salt must be 1 to 4 decimal digits",
+            ));
         };
         if crypt.len() != 16 {
             return Err(parse::error(

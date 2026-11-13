@@ -341,10 +341,7 @@ fn parse_bestcrypt(hash: &str) -> Box<dyn omniex::HashValue> {
     omniex::registry::parse(
         omniex::registry::by_slug("bestcrypt-payload").unwrap(),
         hash,
-        &omniex::ParseOptions {
-            tool: Tool::John,
-            ..omniex::ParseOptions::default()
-        },
+        &omniex::ParseOptions::default(),
     )
     .unwrap()
 }
