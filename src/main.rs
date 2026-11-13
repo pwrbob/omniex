@@ -597,7 +597,7 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                     value.as_ref(),
                     serialized,
                     args.full,
-                    ("Hash", index + 1, outputs.len()),
+                    ("Index", index + 1, outputs.len()),
                 ));
             }
             write_stdout(&format!(
