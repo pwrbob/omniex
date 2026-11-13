@@ -5,7 +5,6 @@ mod common;
 use assert_cmd::Command;
 use common::{VECTORS, vector_for, vector_modes};
 use omniex::extract::EXTRACTORS;
-use omniex::json::hash_document;
 use omniex::{Mode, ParseOptions, RenderOptions, Tool, registry};
 
 #[test]
@@ -130,55 +129,6 @@ fn every_vector_names_a_registered_type() {
             "vector `{}` does not name a registered type",
             vector.slug
         );
-    }
-}
-
-#[test]
-fn every_vector_round_trips_through_a_json_hash_document() {
-    for vector in VECTORS {
-        let descriptor = registry::by_slug(vector.slug).expect("registered");
-
-        let cases = vector
-            .hashcat
-            .iter()
-            .map(|entry| (Tool::Hashcat, entry.text(), entry.mode.to_string()))
-            .chain(
-                vector
-                    .john
-                    .iter()
-                    .map(|entry| (Tool::John, entry.text(), entry.format.to_owned())),
-            );
-
-        for (tool, original, label) in cases {
-            let value = registry::parse(descriptor, &original, &ParseOptions::default())
-                .unwrap_or_else(|error| {
-                    panic!(
-                        "`{}` failed to parse the {label} vector: {error}",
-                        vector.slug
-                    )
-                });
-            let document = hash_document(descriptor, value.as_ref());
-            let text = serde_json::to_string(&document).expect("JSON document serializes");
-            let again = (descriptor.parse_json)(&text).unwrap_or_else(|error| {
-                panic!(
-                    "`{}` failed to parse its JSON document: {error}",
-                    vector.slug
-                )
-            });
-            let rendered = again
-                .render(&RenderOptions {
-                    tool,
-                    ..RenderOptions::default()
-                })
-                .unwrap_or_else(|error| {
-                    panic!("`{}` failed to render from JSON: {error}", vector.slug)
-                });
-            assert_eq!(
-                rendered, original,
-                "`{}` did not round-trip through JSON for {label}",
-                vector.slug
-            );
-        }
     }
 }
 
