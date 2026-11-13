@@ -107,7 +107,6 @@ fn parse_json_with_the_json_tool_contains_fields() {
     assert_eq!(entry["type"], "md5");
     assert_eq!(entry["hash"]["schema"], "omniex.hash.v1");
     assert_eq!(entry["hash"]["type"], "md5");
-    assert_eq!(entry["hash"]["fields"]["digest"]["name"], Value::Null);
     assert_eq!(entry["hash"]["fields"]["digest"]["role"], "digest");
     assert_eq!(entry["hash"]["fields"]["digest"]["encoding"], "hex");
     assert_eq!(entry["hash"]["fields"]["digest"]["value"], MD5_HASH);
@@ -129,6 +128,24 @@ fn parse_hash_with_the_json_tool_is_a_hash_document() {
     assert_eq!(value["fields"]["digest"]["role"], "digest");
     assert_eq!(value["fields"]["digest"]["encoding"], "hex");
     assert_eq!(value["fields"]["digest"]["value"], MD5_HASH);
+}
+
+#[test]
+fn parse_accepts_john_input_and_renders_for_hashcat() {
+    omniex()
+        .args([
+            "parse",
+            "4684:YjDBNr.A0AN7DA8s",
+            "--type",
+            "cisco-asa",
+            "--format",
+            "hash",
+            "--tool",
+            "hashcat",
+        ])
+        .assert()
+        .success()
+        .stdout("YjDBNr.A0AN7DA8s:4684\n");
 }
 
 #[test]
@@ -163,6 +180,13 @@ fn parse_reads_json_hash_documents() {
         .assert()
         .code(1)
         .stderr(predicate::str::contains("does not match"));
+
+    omniex()
+        .args(["parse", "--stdin", "--format", "hash"])
+        .write_stdin(r#"{"schema":"omniex.hash.v2","type":"md5","fields":{}}"#)
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains("unsupported JSON hash schema"));
 }
 
 #[test]

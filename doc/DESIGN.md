@@ -195,14 +195,16 @@ pub enum Mode {
 The CLI is intentionally small:
 
 ```text
-omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|john] [--full]
+omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|john|json] [--full]
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
-omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john] [--full] [--deep]
+omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john|json] [--full] [--deep]
 ```
 
 - `parse` parses one hash string into a hash type instance and renders it again.
+  Input may be a hashcat string, a John string, or an `omniex.hash.v1` JSON
+  document; JSON is detected automatically.
 - `--type` selects the hash type by slug. The same slug is used by `parse` and
   `extract`.
 - `identify` lists every hash type that parses the input. Ambiguous input is
@@ -216,11 +218,13 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
 - `extract --all` runs every confidently recognized extractor in registry order.
   It conflicts with `--type`, excludes `Maybe` candidates, writes no partial
   output if one extractor fails, and deduplicates by type and rendered hash.
-- `extract --format json` emits one array of `{"type": ..., "hash": ...}` entries.
+- `extract --format json` emits a versioned envelope whose `results` entries
+  contain `type` and `hash`.
 - `extract --deep` allows slower exhaustive scans. Without it, extractors must
   use bounded structural checks such as headers and partition tables.
-- `--tool` defaults to `hashcat`. Rendering fails when the concrete value has
-  no mode for the selected tool.
+- `--tool` defaults to `hashcat` and selects only the output serialization:
+  `hashcat`, `john`, or `json`. It never changes input parsing. Rendering fails
+  when the concrete value has no mode for the selected text tool.
 - `--format` controls presentation: `human`, `hash`, or `json`. `parse`
   defaults to `human`; `extract` defaults to `hash`.
 - `--full` disables center truncation of long values in human output.
@@ -231,11 +235,10 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   headers on a terminal, and has exactly one horizontal rule below each title.
 - The minimum terminal size is 40x10. Human output is rejected on smaller
   terminals. Columns and mode lists wrap to the terminal width.
-- `--format json` emits one JSON array per invocation, except `show --json`,
-  which emits one descriptor object. `types` entries contain slug, name,
-  hashcat, john, and field metadata. `identify` entries contain line, input,
-  slug, name, hashcat, and john. `parse` entries add fields with name, role,
-  encoding, description, and value.
+- `--format json` emits one envelope per invocation with `omniex_version`,
+  `command`, `tool`, and `results`. `show --json` keeps emitting one descriptor
+  object. Field details live in the `--tool json` hash document, not duplicated
+  in the envelope. See [`JSON.md`](JSON.md).
 - `parse --format hash` prints only the rendered hash, which keeps it usable in
   a pipeline.
 
