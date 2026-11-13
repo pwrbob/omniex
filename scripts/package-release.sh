@@ -62,4 +62,6 @@ tar --create --gzip --file "$dist/omniex-${tag}-${target}.tar.gz" \
     sha256sum "omniex-${tag}-${target}.tar.gz" >SHA256SUMS
 )
 
+rm -rf "$stage"
+
 echo "packaged dist/omniex-${tag}-${target}.tar.gz"
