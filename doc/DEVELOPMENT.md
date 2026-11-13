@@ -115,6 +115,12 @@ A release is a commit whose `main` CI run is green, plus an annotated tag:
    The same job builds the artifacts and creates the GitHub release with the
    tarball, `SHA256SUMS`, and the changelog section as notes.
 
+The `Release` workflow does not repeat the test suite. Before building, it
+checks the CI run for the tagged commit and fails unless that run finished
+successfully, waiting up to 15 minutes for a run that is still in progress. A
+tag pushed before its commit reached CI fails immediately with a message saying
+so.
+
 The build job can be rehearsed without CI:
 
 ```bash

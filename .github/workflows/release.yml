@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: release-${{ github.ref }}
@@ -17,19 +18,18 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  verify:
-    permissions:
-      contents: read
-    uses: ./.github/workflows/ci.yml
-
   build:
     name: Build Linux artifacts
-    needs: [verify]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@v5
+
+      - name: Require a green CI run for the tagged commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/check-ci-status.sh "$GITHUB_SHA" --wait 900
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
