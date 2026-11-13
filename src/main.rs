@@ -63,9 +63,9 @@ struct ParseArgs {
     #[arg(long, value_enum, default_value = "human")]
     format: OutputFormat,
 
-    /// Serialization target.
-    #[arg(long, value_enum, default_value = "hashcat")]
-    tool: ToolArg,
+    /// Serialization target. Defaults to hashcat when available, otherwise John.
+    #[arg(long, value_enum)]
+    tool: Option<ToolArg>,
 
     /// Show complete field values instead of truncating long parameters.
     #[arg(long)]
@@ -116,9 +116,9 @@ struct ExtractArgs {
     #[arg(long, value_enum, default_value = "hash")]
     format: OutputFormat,
 
-    /// Serialization target.
-    #[arg(long, value_enum, default_value = "hashcat")]
-    tool: ToolArg,
+    /// Serialization target. Defaults to hashcat when available, otherwise John.
+    #[arg(long, value_enum)]
+    tool: Option<ToolArg>,
 
     /// Allow extractors to use slower exhaustive scans.
     #[arg(long)]
@@ -133,7 +133,7 @@ struct ExtractArgs {
     full: bool,
 }
 
-#[derive(Clone, Copy, Debug, ValueEnum)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, ValueEnum)]
 enum ToolArg {
     Hashcat,
     John,
@@ -155,6 +155,14 @@ impl ToolArg {
             Self::John => "john",
             Self::Json => "json",
         }
+    }
+}
+
+impl From<ToolArg> for Tool {
+    fn from(value: ToolArg) -> Self {
+        value
+            .tool()
+            .expect("JSON output is handled by render_value")
     }
 }
 
@@ -293,6 +301,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
 
     let mut output = Vec::with_capacity(total);
     let mut json_output = Vec::with_capacity(total);
+    let mut used_tools = Vec::new();
 
     for (line, text) in &lines {
         let document = serde_json::from_str::<Value>(text)
@@ -351,11 +360,13 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
 
         match args.format {
             OutputFormat::Json => {
-                let hash = serialized_value(tool, descriptor, value.as_ref())
+                let (used, hash) = render_value(tool, descriptor, value.as_ref())
                     .map_err(|error| line_error(*line, total, error))?;
+                used_tools.push(used);
                 json_output.push(json!({
                     "line": line,
                     "type": descriptor.slug,
+                    "tool": used.name(),
                     "input": text,
                     "hash": hash,
                 }));
@@ -365,13 +376,13 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
                     &context.expect("human context"),
                     descriptor,
                     value.as_ref(),
-                    text,
+                    Some(("Input", text)),
                     args.full,
                     ("Line", *line, total),
                 ));
             }
             OutputFormat::Hash => {
-                let hash = serialized_value(tool, descriptor, value.as_ref())
+                let (_, hash) = render_value(tool, descriptor, value.as_ref())
                     .map_err(|error| line_error(*line, total, error))?;
                 output.push(match hash {
                     Value::String(hash) => hash,
@@ -385,7 +396,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
         print_json(&json!({
             "omniex_version": env!("CARGO_PKG_VERSION"),
             "command": "parse",
-            "tool": tool.name(),
+            "tool": report_tool(tool, &used_tools),
             "results": json_output,
         }))
     } else {
@@ -514,9 +525,7 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
             ))
         })?;
         for value in hashes {
-            let descriptor = registry::by_slug(slug)
-                .ok_or_else(|| CliError::Input(format!("no descriptor registered for `{slug}`")))?;
-            let key = serde_json::to_string(&hash_document(descriptor, value.as_ref()))
+            let key = serde_json::to_string(&json_fields(value.as_ref()))
                 .expect("JSON values always serialize");
             if seen.insert((slug, key)) {
                 outputs.push((slug, value));
@@ -526,25 +535,32 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
 
     match args.format {
         OutputFormat::Json => {
+            let mut used_tools = Vec::with_capacity(outputs.len());
             let entries = outputs
                 .iter()
                 .map(|(slug, value)| {
                     let descriptor = registry::by_slug(slug).ok_or_else(|| {
                         CliError::Input(format!("no descriptor registered for `{slug}`"))
                     })?;
-                    let hash =
-                        serialized_value(tool, descriptor, value.as_ref()).map_err(|error| {
+                    let (used, hash) =
+                        render_value(tool, descriptor, value.as_ref()).map_err(|error| {
                             CliError::Input(format!(
                                 "cannot render extracted `{slug}` hash: {error}"
                             ))
                         })?;
-                    Ok(json!({"type": slug, "hash": hash}))
+                    used_tools.push(used);
+                    Ok(json!({
+                        "type": slug,
+                        "tool": used.name(),
+                        "hash": hash,
+                        "fields": json_fields(value.as_ref()),
+                    }))
                 })
                 .collect::<Result<Vec<_>, CliError>>()?;
             print_json(&json!({
                 "omniex_version": env!("CARGO_PKG_VERSION"),
                 "command": "extract",
-                "tool": tool.name(),
+                "tool": report_tool(tool, &used_tools),
                 "artifact": args.artifact.display().to_string(),
                 "results": entries,
             }))
@@ -555,9 +571,10 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                 let descriptor = registry::by_slug(slug).ok_or_else(|| {
                     CliError::Input(format!("no descriptor registered for `{slug}`"))
                 })?;
-                let hash = serialized_value(tool, descriptor, value.as_ref()).map_err(|error| {
-                    CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
-                })?;
+                let (_, hash) =
+                    render_value(tool, descriptor, value.as_ref()).map_err(|error| {
+                        CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+                    })?;
                 lines.push(match hash {
                     Value::String(hash) => hash,
                     other => serde_json::to_string(&other).expect("JSON values always serialize"),
@@ -572,11 +589,13 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                 let descriptor = registry::by_slug(slug).ok_or_else(|| {
                     CliError::Input(format!("no descriptor registered for `{slug}`"))
                 })?;
+                let rendered = render_hash(None, value.as_ref()).ok();
+                let serialized = rendered.as_ref().map(|(_, hash)| ("Hash", hash.as_str()));
                 blocks.push(verbose_value(
                     &context,
                     descriptor,
                     value.as_ref(),
-                    &display_hash(descriptor, value.as_ref()),
+                    serialized,
                     args.full,
                     ("Hash", index + 1, outputs.len()),
                 ));
@@ -588,24 +607,6 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
             ))
         }
     }
-}
-
-fn display_hash(descriptor: &omniex::HashTypeDescriptor, value: &dyn HashValue) -> String {
-    value
-        .render(&RenderOptions {
-            tool: Tool::Hashcat,
-            ..RenderOptions::default()
-        })
-        .or_else(|_| {
-            value.render(&RenderOptions {
-                tool: Tool::John,
-                ..RenderOptions::default()
-            })
-        })
-        .unwrap_or_else(|_| {
-            serde_json::to_string(&hash_document(descriptor, value))
-                .expect("JSON values always serialize")
-        })
 }
 
 fn format_candidates(candidates: &[extract::Candidate]) -> String {
@@ -817,28 +818,81 @@ fn identify_json(
     })
 }
 
-fn serialized_value(
-    tool: ToolArg,
-    descriptor: &omniex::HashTypeDescriptor,
+fn render_hash(
+    requested: Option<ToolArg>,
     value: &dyn HashValue,
-) -> Result<Value, String> {
-    match tool.tool() {
-        Some(tool) => value
+) -> Result<(ToolArg, String), String> {
+    if let Some(tool) = requested {
+        return value
             .render(&RenderOptions {
-                tool,
+                tool: tool.into(),
                 ..RenderOptions::default()
             })
-            .map(Value::String)
-            .map_err(|error| error.to_string()),
-        None => Ok(hash_document(descriptor, value)),
+            .map(|hash| (tool, hash))
+            .map_err(|error| error.to_string());
     }
+
+    let modes = value.modes();
+    let preferred = if modes.iter().any(|mode| matches!(mode, Mode::Hashcat(_))) {
+        ToolArg::Hashcat
+    } else if modes.iter().any(|mode| matches!(mode, Mode::John(_))) {
+        ToolArg::John
+    } else {
+        return Err("no compatible hashcat or John serialization".to_owned());
+    };
+    value
+        .render(&RenderOptions {
+            tool: preferred.into(),
+            ..RenderOptions::default()
+        })
+        .map(|hash| (preferred, hash))
+        .map_err(|error| error.to_string())
+}
+
+fn render_value(
+    requested: Option<ToolArg>,
+    descriptor: &omniex::HashTypeDescriptor,
+    value: &dyn HashValue,
+) -> Result<(ToolArg, Value), String> {
+    if requested == Some(ToolArg::Json) {
+        return Ok((ToolArg::Json, hash_document(descriptor, value)));
+    }
+    render_hash(requested, value).map(|(tool, hash)| (tool, Value::String(hash)))
+}
+
+fn report_tool(requested: Option<ToolArg>, used: &[ToolArg]) -> &'static str {
+    if let Some(tool) = requested {
+        return tool.name();
+    }
+    match used {
+        [first, rest @ ..] if rest.iter().all(|tool| tool == first) => first.name(),
+        [] => "auto",
+        _ => "auto",
+    }
+}
+
+fn json_fields(value: &dyn HashValue) -> Value {
+    Value::Array(
+        value
+            .describe()
+            .into_iter()
+            .map(|entry| {
+                json!({
+                    "name": entry.field.name,
+                    "role": role_name(entry.field.role),
+                    "encoding": encoding_name(entry.field.encoding),
+                    "value": entry.value,
+                })
+            })
+            .collect(),
+    )
 }
 
 fn verbose_value(
     context: &ui::Context,
     descriptor: &omniex::HashTypeDescriptor,
     value: &dyn HashValue,
-    input: &str,
+    serialized: Option<(&str, &str)>,
     full: bool,
     count: (&str, usize, usize),
 ) -> String {
@@ -862,22 +916,26 @@ fn verbose_value(
         .map(|(label, _)| label.len())
         .max()
         .unwrap_or(0)
-        .max("Input".len());
-    let (spans, accents) = field_spans(&fields, input);
-    block.push_str(&ui::key_value_accented(
-        context,
-        "Input",
-        input,
-        &spans,
-        label_width,
-        full,
-    ));
-    block.push('\n');
+        .max(serialized.map_or(0, |(label, _)| label.len()))
+        .max(5);
+    if let Some((label, input)) = serialized {
+        let (spans, _) = field_spans(&fields, input);
+        block.push_str(&ui::key_value_accented(
+            context,
+            label,
+            input,
+            &spans,
+            label_width,
+            full,
+        ));
+        block.push('\n');
+    }
     block.push_str(&ui::key_values(context, &pairs));
     block.push('\n');
     block.push_str(&context.bold("Fields"));
     block.push('\n');
 
+    let (_, accents) = field_spans(&fields, serialized.map_or("", |(_, value)| value));
     let rows = fields
         .iter()
         .map(|entry| {

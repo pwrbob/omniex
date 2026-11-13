@@ -45,6 +45,11 @@ impl Extractor for StripExtractor {
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
+        if matches!(self.probe(artifact), Probe::No) {
+            return Err(ExtractError::Unsupported(
+                "artifact is not a STRIP database".to_owned(),
+            ));
+        }
         Ok(vec![Box::new(parse(artifact)?) as Box<dyn HashValue>])
     }
 }
