@@ -200,7 +200,7 @@ fn extracted_kerberos_preauth_renders_for_john() {
             .unwrap();
         assert!(output.status.success(), "{slug}");
         let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
-        assert_eq!(value[0]["hash"], expected, "{slug}");
+        assert_eq!(value["results"][0]["hash"], expected, "{slug}");
     }
 }
 
@@ -256,8 +256,8 @@ fn cli_auto_detects_and_accepts_explicit_types() {
             .unwrap();
         assert!(auto.status.success(), "{slug}");
         let value: serde_json::Value = serde_json::from_slice(&auto.stdout).unwrap();
-        assert_eq!(value.as_array().unwrap().len(), 1, "{slug}");
-        assert_eq!(value[0]["type"], slug);
+        assert_eq!(value["results"].as_array().unwrap().len(), 1, "{slug}");
+        assert_eq!(value["results"][0]["type"], slug);
 
         let explicit = omniex()
             .arg("extract")
@@ -278,7 +278,7 @@ fn cli_auto_detects_and_accepts_explicit_types() {
         .unwrap();
     assert!(all.status.success());
     let value: serde_json::Value = serde_json::from_slice(&all.stdout).unwrap();
-    assert_eq!(value.as_array().unwrap().len(), 2);
+    assert_eq!(value["results"].as_array().unwrap().len(), 2);
 
     let wrong = omniex()
         .arg("extract")

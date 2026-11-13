@@ -78,22 +78,57 @@ fn parse_json_has_the_pinned_shape() {
     assert!(output.status.success());
 
     let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
-    let entries = value.as_array().expect("array");
+    assert_eq!(value["command"], "parse");
+    assert_eq!(value["tool"], "hashcat");
+    assert!(value["omniex_version"].as_str().is_some());
+    let entries = value["results"].as_array().expect("results array");
     assert_eq!(entries.len(), 1);
     let entry = &entries[0];
-    assert_eq!(entry["name"], "MD5");
-    assert_eq!(entry["slug"], "md5");
+    assert_eq!(entry["type"], "md5");
     assert_eq!(entry["line"], 1);
     assert_eq!(entry["input"], MD5_HASH);
-    assert_eq!(
-        entry["hashcat"],
-        serde_json::json!([0, 70, 2600, 3500, 4300, 4400])
-    );
-    assert_eq!(entry["john"], serde_json::json!(["Raw-MD5", "Raw-MD5u"]));
-    assert_eq!(entry["fields"][0]["name"], "digest");
-    assert_eq!(entry["fields"][0]["role"], "digest");
-    assert_eq!(entry["fields"][0]["encoding"], "hex");
-    assert_eq!(entry["fields"][0]["value"], MD5_HASH);
+    assert_eq!(entry["hash"], MD5_HASH);
+    assert!(entry.get("fields").is_none());
+}
+
+#[test]
+fn parse_json_with_the_json_tool_contains_fields() {
+    let output = omniex()
+        .args([
+            "parse", MD5_HASH, "--type", "md5", "--format", "json", "--tool", "json",
+        ])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    assert_eq!(value["tool"], "json");
+    let entry = &value["results"][0];
+    assert_eq!(entry["type"], "md5");
+    assert_eq!(entry["hash"]["schema"], "omniex.hash.v1");
+    assert_eq!(entry["hash"]["type"], "md5");
+    assert_eq!(entry["hash"]["fields"]["digest"]["name"], Value::Null);
+    assert_eq!(entry["hash"]["fields"]["digest"]["role"], "digest");
+    assert_eq!(entry["hash"]["fields"]["digest"]["encoding"], "hex");
+    assert_eq!(entry["hash"]["fields"]["digest"]["value"], MD5_HASH);
+}
+
+#[test]
+fn parse_hash_with_the_json_tool_is_a_hash_document() {
+    let output = omniex()
+        .args([
+            "parse", MD5_HASH, "--type", "md5", "--format", "hash", "--tool", "json",
+        ])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    assert_eq!(value["schema"], "omniex.hash.v1");
+    assert_eq!(value["type"], "md5");
+    assert_eq!(value["fields"]["digest"]["role"], "digest");
+    assert_eq!(value["fields"]["digest"]["encoding"], "hex");
+    assert_eq!(value["fields"]["digest"]["value"], MD5_HASH);
 }
 
 #[test]
@@ -323,7 +358,7 @@ fn parse_json_is_an_array_for_multiple_inputs() {
     assert!(output.status.success());
 
     let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
-    let entries = value.as_array().expect("array");
+    let entries = value["results"].as_array().expect("results array");
     assert_eq!(entries.len(), 2);
     assert_eq!(entries[0]["line"], 1);
     assert_eq!(entries[1]["line"], 2);

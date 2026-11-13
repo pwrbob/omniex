@@ -236,7 +236,7 @@ fn all_extracts_recognized_wallets() {
         );
         let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
         assert!(
-            value
+            value["results"]
                 .as_array()
                 .unwrap()
                 .iter()
@@ -698,7 +698,7 @@ fn network_all_extracts_recognized_exchanges() {
         );
         let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
         assert!(
-            value
+            value["results"]
                 .as_array()
                 .unwrap()
                 .iter()

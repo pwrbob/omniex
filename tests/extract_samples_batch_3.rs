@@ -228,7 +228,7 @@ fn cli_auto_detects_both_formats() {
             String::from_utf8_lossy(&typed.stderr)
         );
         let value: serde_json::Value = serde_json::from_slice(&typed.stdout).unwrap();
-        assert_eq!(value[0]["type"], slug);
+        assert_eq!(value["results"][0]["type"], slug);
     }
 }
 

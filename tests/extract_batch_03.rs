@@ -332,7 +332,7 @@ fn auto_detection_and_all_respect_probe_confidence() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "pdf");
+    assert_eq!(value["results"][0]["type"], "pdf");
 
     let pst = omniex()
         .arg("extract")

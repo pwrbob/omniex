@@ -691,9 +691,9 @@ def fields_for_hash(binary: Path, slug: str, format_name: str, hash_text: str) -
                 "parse",
                 "--type",
                 slug,
-                "--tool",
-                format_name,
                 "--format",
+                "json",
+                "--tool",
                 "json",
                 "--file",
                 handle.name,
@@ -701,9 +701,13 @@ def fields_for_hash(binary: Path, slug: str, format_name: str, hash_text: str) -
         )
     finally:
         Path(handle.name).unlink(missing_ok=True)
-    entries = json.loads(output)
+    document = json.loads(output)
+    entries = document["results"]
     if entries:
-        return entries[0]["fields"]
+        return [
+            {"name": name, **data}
+            for name, data in entries[0]["hash"]["fields"].items()
+        ]
     return []
 
 
@@ -714,15 +718,15 @@ def extract(binary: Path, slug: str, format_name: str, artifact: Path, args: lis
             "extract",
             "--type",
             slug,
-            "--tool",
-            format_name,
             "--format",
+            "json",
+            "--tool",
             "json",
             *args,
             str(artifact),
         ]
     )
-    return json.loads(output)
+    return json.loads(output)["results"]
 
 
 def comparable(hashes: list[list[dict]], ignore: list[str]) -> list[tuple[tuple[str, str], ...]]:
@@ -871,7 +875,10 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
     if not reference_fields:
         fail(f"{manifest.ident}/{case.name}: no reference hash could be parsed")
 
-    got = [entry["fields"] for entry in wanted]
+    got = [
+        [{"name": name, **data} for name, data in entry["hash"]["fields"].items()]
+        for entry in wanted
+    ]
     compare(
         f"{manifest.ident}/{case.name}",
         got,

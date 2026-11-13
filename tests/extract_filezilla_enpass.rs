@@ -80,7 +80,7 @@ fn filezilla_auto_detects_and_reports_json() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "filezilla-server");
+    assert_eq!(value["results"][0]["type"], "filezilla-server");
 }
 
 #[test]

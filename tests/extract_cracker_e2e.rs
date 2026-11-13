@@ -321,8 +321,9 @@ fn cli_extract(case: &Case, tool: Tool) -> Result<Vec<String>, String> {
     let entries = serde_json::from_slice::<serde_json::Value>(&output.stdout)
         .map_err(|error| format!("parse omniex extract JSON: {error}"))?;
     let entries = entries
-        .as_array()
-        .ok_or_else(|| "omniex extract JSON is not an array".to_owned())?;
+        .get("results")
+        .and_then(serde_json::Value::as_array)
+        .ok_or_else(|| "omniex extract JSON has no results array".to_owned())?;
     let hashes = entries
         .iter()
         .map(|entry| {

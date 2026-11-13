@@ -98,7 +98,7 @@ fn ansible_extract_json_reports_the_type() {
         .unwrap();
     assert!(output.status.success());
     let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
-    let entries = value.as_array().unwrap();
+    let entries = value["results"].as_array().unwrap();
     assert_eq!(entries.len(), 1);
     assert_eq!(entries[0]["type"], "ansible-vault");
 }

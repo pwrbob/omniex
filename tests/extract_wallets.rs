@@ -87,7 +87,7 @@ fn wallet_files_auto_detect_and_report_json() {
             .unwrap();
         assert!(json.status.success(), "{kind}");
         let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-        assert_eq!(value[0]["type"], slug);
+        assert_eq!(value["results"][0]["type"], slug);
     }
 }
 

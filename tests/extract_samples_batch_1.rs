@@ -191,8 +191,11 @@ fn encdv_auto_detects_and_reports_json() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "encdv");
-    assert_eq!(value[0]["hash"], expected("encdv", "filesystem-v1.hash"));
+    assert_eq!(value["results"][0]["type"], "encdv");
+    assert_eq!(
+        value["results"][0]["hash"],
+        expected("encdv", "filesystem-v1.hash")
+    );
 }
 
 #[test]
@@ -297,9 +300,9 @@ fn bestcrypt_auto_detects_and_honors_json() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "bestcrypt-payload");
+    assert_eq!(value["results"][0]["type"], "bestcrypt-payload");
     assert_eq!(
-        value[0]["hash"],
+        value["results"][0]["hash"],
         expected("bestcrypt", "container-openwall.hash")
     );
 }

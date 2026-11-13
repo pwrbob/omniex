@@ -259,7 +259,7 @@ fn cli_auto_detects_and_selects_by_type() {
             .unwrap();
         assert!(typed.status.success(), "{directory}/{name}: {typed:?}");
         let value: serde_json::Value = serde_json::from_slice(&typed.stdout).unwrap();
-        assert_eq!(value[0]["type"], slug);
+        assert_eq!(value["results"][0]["type"], slug);
 
         let all = omniex()
             .arg("extract")
@@ -271,7 +271,7 @@ fn cli_auto_detects_and_selects_by_type() {
         assert!(all.status.success(), "{directory}/{name}: {all:?}");
         let value: serde_json::Value = serde_json::from_slice(&all.stdout).unwrap();
         assert!(
-            value
+            value["results"]
                 .as_array()
                 .unwrap()
                 .iter()
@@ -469,7 +469,7 @@ fn apple_cli_auto_detects_and_selects_by_type() {
             .unwrap();
         assert!(typed.status.success(), "{directory}/{name}: {typed:?}");
         let value: serde_json::Value = serde_json::from_slice(&typed.stdout).unwrap();
-        assert_eq!(value[0]["type"], slug);
+        assert_eq!(value["results"][0]["type"], slug);
 
         let all = omniex()
             .arg("extract")
@@ -481,7 +481,7 @@ fn apple_cli_auto_detects_and_selects_by_type() {
         assert!(all.status.success(), "{directory}/{name}: {all:?}");
         let value: serde_json::Value = serde_json::from_slice(&all.stdout).unwrap();
         assert!(
-            value
+            value["results"]
                 .as_array()
                 .unwrap()
                 .iter()

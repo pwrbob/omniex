@@ -124,7 +124,7 @@ fn vmx_and_vdi_auto_detect_in_the_cli() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "vmware-vmx");
+    assert_eq!(value["results"][0]["type"], "vmware-vmx");
 
     let ambiguous = omniex()
         .arg("extract")

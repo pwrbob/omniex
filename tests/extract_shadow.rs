@@ -74,7 +74,7 @@ fn shadow_file_is_ambiguous_and_all_emits_every_scheme() {
         .unwrap();
     assert!(all.status.success());
     let value: serde_json::Value = serde_json::from_slice(&all.stdout).unwrap();
-    assert_eq!(value.as_array().unwrap().len(), SLUGS.len());
+    assert_eq!(value["results"].as_array().unwrap().len(), SLUGS.len());
 }
 
 #[test]

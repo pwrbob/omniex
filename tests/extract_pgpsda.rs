@@ -85,7 +85,7 @@ fn pgpsda_auto_detects_and_reports_json() {
         .unwrap();
     assert!(json.status.success());
     let value: serde_json::Value = serde_json::from_slice(&json.stdout).unwrap();
-    assert_eq!(value[0]["type"], "pgpsda");
+    assert_eq!(value["results"][0]["type"], "pgpsda");
 }
 
 #[test]

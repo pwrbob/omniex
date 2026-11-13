@@ -232,7 +232,7 @@ fn extract_json_reports_type_and_hash() {
     assert!(output.status.success());
 
     let value: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
-    let entries = value.as_array().expect("array");
+    let entries = value["results"].as_array().expect("array");
     assert_eq!(entries.len(), 2);
     assert_eq!(entries[0]["type"], "pgp");
     assert_eq!(entries[0]["hash"], expected("testkey1.hash")[0].as_str());
