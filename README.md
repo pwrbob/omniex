@@ -267,8 +267,8 @@ size of a single invocation:
 
 ```bash
 omniex parse --type md5 --file hashes.txt --format hash
-printf '8743b52063cd84097a65d1633f5c74f5\n' | omniex parse --type md5 --stdin --format hash
-omniex identify --stdin < hashes.txt
+printf '8743b52063cd84097a65d1633f5c74f5\n' | omniex parse --type md5 --format hash
+omniex identify < hashes.txt
 ```
 
 `--format human` renders a titled field view, truncating long parameters unless

@@ -159,14 +159,14 @@ fn parse_reads_json_hash_documents() {
         .stdout;
 
     omniex()
-        .args(["parse", "--stdin", "--format", "hash", "--tool", "hashcat"])
+        .args(["parse", "--format", "hash", "--tool", "hashcat"])
         .write_stdin(document.clone())
         .assert()
         .success()
         .stdout(format!("{MD5_HASH}\n"));
 
     omniex()
-        .args(["parse", "--stdin", "--format", "hash", "--tool", "john"])
+        .args(["parse", "--format", "hash", "--tool", "john"])
         .write_stdin(document.clone())
         .assert()
         .success()
@@ -174,7 +174,7 @@ fn parse_reads_json_hash_documents() {
 
     omniex()
         .args([
-            "parse", "--stdin", "--type", "sha1", "--format", "hash", "--tool", "hashcat",
+            "parse", "--type", "sha1", "--format", "hash", "--tool", "hashcat",
         ])
         .write_stdin(document)
         .assert()
@@ -182,7 +182,7 @@ fn parse_reads_json_hash_documents() {
         .stderr(predicate::str::contains("does not match"));
 
     omniex()
-        .args(["parse", "--stdin", "--format", "hash"])
+        .args(["parse", "--format", "hash"])
         .write_stdin(r#"{"schema":"omniex.hash.v2","type":"md5","fields":{}}"#)
         .assert()
         .code(1)
@@ -223,7 +223,7 @@ fn parse_verbose_truncates_long_values_unless_full_is_requested() {
 #[test]
 fn parse_reads_a_hash_list_from_stdin() {
     omniex()
-        .args(["parse", "--type", "md5", "--stdin", "--format", "hash"])
+        .args(["parse", "--type", "md5", "--format", "hash"])
         .write_stdin(format!("{MD5_HASH}\n\n{MD5_HASH}\n"))
         .assert()
         .success()
@@ -233,7 +233,7 @@ fn parse_reads_a_hash_list_from_stdin() {
 #[test]
 fn parse_reports_the_line_number_and_writes_no_partial_output() {
     omniex()
-        .args(["parse", "--type", "md5", "--stdin", "--format", "hash"])
+        .args(["parse", "--type", "md5", "--format", "hash"])
         .write_stdin(format!("{MD5_HASH}\nbad\n"))
         .assert()
         .code(1)
@@ -409,7 +409,7 @@ fn parse_reports_ambiguity_between_md4_and_md5() {
 #[test]
 fn parse_json_is_an_array_for_multiple_inputs() {
     let output = omniex()
-        .args(["parse", "--type", "md5", "--stdin", "--format", "json"])
+        .args(["parse", "--type", "md5", "--format", "json"])
         .write_stdin(format!("{MD5_HASH}\n{MD5_HASH}\n"))
         .output()
         .expect("command runs");

@@ -1,7 +1,7 @@
 //! `omniex` command-line interface.
 
 use std::collections::HashSet;
-use std::io::{Read, Write};
+use std::io::{IsTerminal, Read, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
@@ -48,10 +48,6 @@ struct InputArgs {
     /// Read one hash per line from a file.
     #[arg(long, value_name = "FILE", conflicts_with = "hash")]
     file: Option<PathBuf>,
-
-    /// Read one hash per line from standard input.
-    #[arg(long, conflicts_with_all = ["hash", "file"])]
-    stdin: bool,
 }
 
 #[derive(Args)]
@@ -658,20 +654,21 @@ impl InputArgs {
             return Ok(vec![(1, hash.clone())]);
         }
 
+        let implicit_stdin = self.file.is_none();
         let text = if let Some(path) = &self.file {
             std::fs::read_to_string(path).map_err(|error| {
                 CliError::Input(format!("cannot read {}: {error}", path.display()))
             })?
-        } else if self.stdin {
+        } else if std::io::stdin().is_terminal() {
+            return Err(CliError::Usage(
+                "provide a hash, --file <FILE>, or pipe hashes on standard input".to_owned(),
+            ));
+        } else {
             let mut text = String::new();
             std::io::stdin()
                 .read_to_string(&mut text)
                 .map_err(|error| CliError::Input(format!("cannot read stdin: {error}")))?;
             text
-        } else {
-            return Err(CliError::Usage(
-                "provide a hash, --file <FILE>, or --stdin".to_owned(),
-            ));
         };
 
         let lines = text
@@ -682,6 +679,11 @@ impl InputArgs {
             .collect::<Vec<_>>();
 
         if lines.is_empty() {
+            if implicit_stdin {
+                return Err(CliError::Usage(
+                    "provide a hash, --file <FILE>, or pipe hashes on standard input".to_owned(),
+                ));
+            }
             return Err(CliError::Input("no hashes found".to_owned()));
         }
 
