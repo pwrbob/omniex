@@ -3,7 +3,7 @@
 use pgp::crypto::hash::HashAlgorithm;
 
 use super::hashlist::{extract_from_data, probe_data};
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Ntlm;
 use crate::{HashType, HashValue};
 
@@ -791,9 +791,7 @@ fn account_boot_key(hive: &Hive<'_>, account: &Key) -> Result<[u8; 16], ExtractE
 }
 
 fn system_boot_key(artifact: &Artifact) -> Option<Result<[u8; 16], ExtractError>> {
-    let source = artifact
-        .member("SYSTEM")
-        .or_else(|| artifact.member("system"))?;
+    let source = artifact.member("SYSTEM")?;
     let data = source.read_all().ok()?;
     let hive = Hive::parse(&data).ok()?;
     let root = hive.key(hive.root).ok()?;
@@ -866,7 +864,16 @@ fn data(artifact: &Artifact) -> Result<Vec<u8>, ExtractError> {
 /// Extractor for NTLM hashes in SAM hives and plain hash lists.
 pub struct NtlmExtractor;
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::required(
+    "SYSTEM",
+    "SYSTEM hive that accompanies the SAM hive",
+)];
+
 impl Extractor for NtlmExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Ntlm::SLUG
     }

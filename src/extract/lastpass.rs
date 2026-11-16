@@ -6,7 +6,7 @@ use base64::Engine;
 use base64::engine::general_purpose::{STANDARD, STANDARD_NO_PAD};
 use byteorder::{BigEndian, ByteOrder};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe, sqlite};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe, sqlite};
 use crate::types::Lastpass;
 use crate::{HashType, HashValue};
 
@@ -179,11 +179,11 @@ fn text_member(artifact: &Artifact, names: &[&str]) -> Option<String> {
 }
 
 fn username(artifact: &Artifact) -> Option<String> {
-    text_member(artifact, &["username", "email"]).map(|name| name.to_lowercase())
+    text_member(artifact, &["username"]).map(|name| name.to_lowercase())
 }
 
 fn iterations(artifact: &Artifact) -> Option<u32> {
-    text_member(artifact, &["iterations", "iter"])
+    text_member(artifact, &["iterations"])
         .and_then(|text| text.parse::<u32>().ok())
         .filter(|iterations| *iterations > 0)
 }
@@ -191,9 +191,7 @@ fn iterations(artifact: &Artifact) -> Option<u32> {
 fn build(artifact: &Artifact) -> Result<Lastpass, ExtractError> {
     let vault = vault(artifact)?;
     let username = username(artifact).ok_or_else(|| {
-        ExtractError::Unsupported(
-            "missing LastPass username companion (`username` or `email`)".to_owned(),
-        )
+        ExtractError::Unsupported("missing LastPass username companion (`username`)".to_owned())
     })?;
     let iterations = vault
         .iterations
@@ -217,7 +215,19 @@ fn build(artifact: &Artifact) -> Result<Lastpass, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[
+    CompanionSpec::required("username", "account username, usually the account email"),
+    CompanionSpec::optional(
+        "iterations",
+        "KDF iteration count when the vault does not embed it",
+    ),
+];
+
 impl Extractor for LastpassExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Lastpass::SLUG
     }

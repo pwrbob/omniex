@@ -123,7 +123,7 @@ struct ExtractArgs {
     #[arg(long = "opt", value_name = "NAME[=VALUE]")]
     options: Vec<String>,
 
-    /// Named companion file, as NAME=PATH. May be repeated.
+    /// Named companion file, as NAME=PATH. May be repeated; `show` lists them.
     #[arg(long = "companion", value_name = "NAME=PATH")]
     companion: Vec<String>,
 
@@ -266,6 +266,31 @@ fn run_show(args: ShowArgs) -> Result<(), CliError> {
             block.push_str(&ui::table(
                 &context,
                 &["Option", "Argument", "Description"],
+                &rows,
+            ));
+        }
+
+        let specs = extractor.companions();
+        if !specs.is_empty() {
+            block.push('\n');
+            block.push('\n');
+            let rows = specs
+                .iter()
+                .map(|spec| {
+                    vec![
+                        spec.name.to_owned(),
+                        if spec.required {
+                            "required".to_owned()
+                        } else {
+                            "optional".to_owned()
+                        },
+                        spec.help.to_owned(),
+                    ]
+                })
+                .collect::<Vec<_>>();
+            block.push_str(&ui::table(
+                &context,
+                &["Companion", "Required", "Description"],
                 &rows,
             ));
         }
@@ -780,6 +805,21 @@ fn descriptor_json(descriptor: &omniex::HashTypeDescriptor) -> Value {
                 .collect::<Vec<_>>()
         })
         .unwrap_or_default();
+    let companions = extract::by_slug(descriptor.slug)
+        .map(|extractor| {
+            extractor
+                .companions()
+                .iter()
+                .map(|spec| {
+                    json!({
+                        "name": spec.name,
+                        "required": spec.required,
+                        "help": spec.help,
+                    })
+                })
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
 
     json!({
         "slug": descriptor.slug,
@@ -788,6 +828,7 @@ fn descriptor_json(descriptor: &omniex::HashTypeDescriptor) -> Value {
         "john": john,
         "fields": fields,
         "options": options,
+        "companions": companions,
     })
 }
 

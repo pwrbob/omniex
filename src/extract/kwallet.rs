@@ -2,7 +2,7 @@
 
 use byteorder::{BigEndian, ByteOrder};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Kwallet;
 use crate::{HashType, HashValue};
 
@@ -101,7 +101,16 @@ fn parse(artifact: &Artifact) -> Result<Kwallet, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::required(
+    "salt",
+    "KWallet `.salt` sidecar; a `<base>.salt` sibling is loaded automatically",
+)];
+
 impl Extractor for KwalletExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Kwallet::SLUG
     }

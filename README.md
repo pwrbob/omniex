@@ -303,7 +303,10 @@ omniex extract archive.zip --type pkzip --opt checksum-only
 
 `--companion NAME=PATH` attaches a named sidecar input, such as the `enckey`
 file used by ENCDataVault or a KeePass `keyfile`. Repeat it for extractors that
-need more than one.
+need more than one. `omniex show <slug>` lists the companions an extractor
+accepts, whether each one is required, and what it is used for. Siblings named
+`<artifact>.salt`, `<artifact>.keyfile`, and `<artifact>.key` are attached
+automatically.
 
 `--opt NAME` passes an extractor-specific switch. `--opt NAME=VALUE` passes a
 value where the extractor declares one; unknown or misused options are a usage

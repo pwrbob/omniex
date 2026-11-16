@@ -2,7 +2,9 @@
 
 use byteorder::{BigEndian, ByteOrder};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, MemberRole, Probe, ReadAt};
+use super::{
+    Artifact, CompanionSpec, ExtractError, Extracted, Extractor, MemberRole, Probe, ReadAt,
+};
 use crate::parse;
 use crate::types::IphonePasscode;
 use crate::{HashType, HashValue};
@@ -181,7 +183,7 @@ fn uid_key(artifact: &Artifact) -> Result<[u8; 16], ExtractError> {
             .filter(|character| character.is_ascii_alphanumeric())
             .flat_map(char::to_lowercase)
             .collect();
-        if !matches!(normalized.as_str(), "uid" | "uidkey" | "uidkeyhex") {
+        if normalized != "uidkey" {
             continue;
         }
         let length = usize::try_from(member.source.len().min(128)).unwrap_or(0);
@@ -209,7 +211,16 @@ fn uid_key(artifact: &Artifact) -> Result<[u8; 16], ExtractError> {
     ))
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::optional(
+    "uid-key",
+    "device UID key when it is not stored in the keybag; `uid_key` and `uidkey` are accepted",
+)];
+
 impl Extractor for IphonePasscodeExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         IphonePasscode::SLUG
     }

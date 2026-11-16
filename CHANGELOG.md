@@ -11,6 +11,10 @@ version is zero, a minor release may change the CLI or a serialization.
   lists them. `--deep` moved to `--opt deep`.
 - Auto-detection bounds each probe to 2 MiB, so a multi-gigabyte artifact no
   longer makes detection read the whole file once per extractor.
+- `omniex show` now documents each extractor's companion roles and marks the
+  ones extraction requires. Companion aliases without upstream support
+  (`email`, `iter`, `system`, `uidkeyhex`) were removed; use the canonical
+  `username`, `iterations`, `SYSTEM`, and `uid-key` roles.
 - Probes for APFS, Android FDE, Android backups, FileVault 2, iTunes backups,
   iPhone keybags, Telegram, Veeam, and KeePass-style containers now read
   bounded headers and tails instead of scanning the artifact. LastPass CLI and

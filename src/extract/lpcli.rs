@@ -1,6 +1,6 @@
 //! LastPass CLI state extraction.
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Lpcli;
 use crate::{HashType, HashValue};
 
@@ -20,11 +20,11 @@ fn text_member(artifact: &Artifact, names: &[&str]) -> Option<String> {
 }
 
 fn username(artifact: &Artifact) -> Option<String> {
-    text_member(artifact, &["username", "email"]).map(|name| name.to_lowercase())
+    text_member(artifact, &["username"]).map(|name| name.to_lowercase())
 }
 
 fn iterations(artifact: &Artifact) -> Option<u32> {
-    text_member(artifact, &["iterations", "iter"])
+    text_member(artifact, &["iterations"])
         .and_then(|text| text.parse::<u32>().ok())
         .filter(|iterations| *iterations > 0)
 }
@@ -43,9 +43,7 @@ fn build(artifact: &Artifact) -> Result<Lpcli, ExtractError> {
             ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
         })?;
     let username = username(artifact).ok_or_else(|| {
-        ExtractError::Unsupported(
-            "missing LastPass CLI username companion (`username` or `email`)".to_owned(),
-        )
+        ExtractError::Unsupported("missing LastPass CLI username companion (`username`)".to_owned())
     })?;
     let iterations = iterations(artifact).ok_or_else(|| {
         ExtractError::Unsupported("missing LastPass CLI iteration companion".to_owned())
@@ -61,7 +59,16 @@ fn build(artifact: &Artifact) -> Result<Lpcli, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[
+    CompanionSpec::required("username", "account username, usually the account email"),
+    CompanionSpec::required("iterations", "KDF iteration count"),
+];
+
 impl Extractor for LpcliExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Lpcli::SLUG
     }

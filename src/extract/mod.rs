@@ -178,6 +178,39 @@ impl OptionSpec {
     }
 }
 
+/// One companion input an extractor accepts.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct CompanionSpec {
+    /// Role passed to `--companion NAME=PATH`.
+    pub name: &'static str,
+    /// Whether extraction fails without this companion.
+    pub required: bool,
+    /// One-line description shown by `omniex show`.
+    pub help: &'static str,
+}
+
+impl CompanionSpec {
+    /// Declares a companion that extraction requires.
+    #[must_use]
+    pub const fn required(name: &'static str, help: &'static str) -> Self {
+        Self {
+            name,
+            required: true,
+            help,
+        }
+    }
+
+    /// Declares a companion that only some artifacts need.
+    #[must_use]
+    pub const fn optional(name: &'static str, help: &'static str) -> Self {
+        Self {
+            name,
+            required: false,
+            help,
+        }
+    }
+}
+
 /// Extractor options supplied by the caller.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct ExtractOptions {
@@ -477,6 +510,11 @@ pub trait Extractor: Sync {
 
     /// Options this extractor understands, for `--opt` validation.
     fn options(&self) -> &'static [OptionSpec] {
+        &[]
+    }
+
+    /// Companion inputs this extractor accepts.
+    fn companions(&self) -> &'static [CompanionSpec] {
         &[]
     }
 

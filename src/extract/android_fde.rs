@@ -2,7 +2,7 @@
 
 use byteorder::{ByteOrder, LittleEndian};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe, ReadAt};
 use crate::types::AndroidFde;
 use crate::{HashType, HashValue};
 
@@ -135,7 +135,16 @@ fn parse_footer(artifact: &Artifact, offset: u64) -> Result<AndroidFde, ExtractE
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::optional(
+    "data",
+    "data sample when the header does not carry it",
+)];
+
 impl Extractor for AndroidFdeExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         AndroidFde::SLUG
     }

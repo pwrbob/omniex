@@ -9,7 +9,7 @@
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::OpensslEnc;
 use crate::{HashType, HashValue};
 
@@ -106,7 +106,16 @@ fn parse(artifact: &Artifact) -> Result<OpensslEnc, ExtractError> {
     Ok(OpensslEnc { fields })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[
+    CompanionSpec::optional("openssl-cipher", "OpenSSL cipher byte; defaults to 1"),
+    CompanionSpec::optional("openssl-digest", "OpenSSL digest byte; defaults to 6"),
+];
+
 impl Extractor for OpensslEncExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         OpensslEnc::SLUG
     }

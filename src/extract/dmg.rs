@@ -2,7 +2,7 @@
 
 use byteorder::{BigEndian, ByteOrder};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::DmgJohn;
 use crate::{HashType, HashValue};
 
@@ -143,7 +143,13 @@ fn parse(artifact: &Artifact) -> Result<DmgJohn, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::optional("data", "sparsebundle data fork")];
+
 impl Extractor for DmgExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         DmgJohn::SLUG
     }

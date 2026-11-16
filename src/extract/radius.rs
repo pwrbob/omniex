@@ -8,7 +8,7 @@
 use std::collections::BTreeSet;
 
 use super::iscsi_chap::capture::{self, Protocol};
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Radius;
 use crate::{HashType, HashValue};
 
@@ -130,7 +130,26 @@ fn data(artifact: &Artifact, name: &str) -> Result<Vec<u8>, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[
+    CompanionSpec::optional(
+        "radius-password",
+        "user password; one of the three sidecars is required",
+    ),
+    CompanionSpec::optional(
+        "radius-secret",
+        "shared secret; one of the three sidecars is required",
+    ),
+    CompanionSpec::optional(
+        "salt",
+        "shared secret; one of the three sidecars is required",
+    ),
+];
+
 impl Extractor for RadiusExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Radius::SLUG
     }

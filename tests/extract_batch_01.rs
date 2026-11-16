@@ -499,6 +499,34 @@ fn show_lists_extractor_options() {
     let human = omniex().args(["show", "bitlocker"]).output().unwrap();
     assert!(human.status.success());
     assert!(String::from_utf8_lossy(&human.stdout).contains("deep"));
+
+    let encdv = omniex().args(["show", "encdv", "--json"]).output().unwrap();
+    assert!(encdv.status.success());
+    let value: serde_json::Value = serde_json::from_slice(&encdv.stdout).unwrap();
+    let companions = value["companions"].as_array().unwrap();
+    assert_eq!(companions.len(), 2);
+    assert_eq!(companions[0]["name"], "enckey");
+    assert_eq!(companions[0]["required"], false);
+    assert_eq!(companions[1]["name"], "keychain");
+    assert_eq!(companions[1]["required"], false);
+
+    let human = omniex().args(["show", "encdv"]).output().unwrap();
+    assert!(human.status.success());
+    let text = String::from_utf8_lossy(&human.stdout);
+    assert!(text.contains("Companion"), "{text}");
+    assert!(text.contains("enckey"), "{text}");
+    assert!(text.contains("keychain"), "{text}");
+
+    let lpcli = omniex().args(["show", "lpcli", "--json"]).output().unwrap();
+    assert!(lpcli.status.success());
+    let value: serde_json::Value = serde_json::from_slice(&lpcli.stdout).unwrap();
+    let required = value["companions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|companion| companion["required"] == true)
+        .count();
+    assert_eq!(required, 2);
 }
 
 #[test]

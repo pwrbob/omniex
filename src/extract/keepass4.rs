@@ -1,6 +1,6 @@
 //! KeePass KDBX v4 database extraction.
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Keepass4;
 use crate::{HashType, HashValue};
 use sha2::{Digest, Sha256};
@@ -303,7 +303,16 @@ fn keyfile(artifact: &Artifact) -> Result<String, ExtractError> {
     Ok(format!("1*64*{}", crate::format::hex(keyfile_key(&data))))
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::optional(
+    "keyfile",
+    "key file used in addition to the password",
+)];
+
 impl Extractor for Keepass4Extractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Keepass4::SLUG
     }

@@ -210,7 +210,9 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   not an error; the user disambiguates with `--type`.
 - `types` lists the hash types registered in this build. It is separate from
   `identify`, which is always input-driven.
-- `show` prints one type's fields and modes without requiring a hash.
+- `show` prints one type's fields and modes without requiring a hash, plus the
+  extractor's `--opt` options and companion roles, marking companions that
+  extraction requires.
 - `extract` uses the extractor registered for the selected hash type. Without
   `--type`, it auto-detects when exactly one type reports confident recognition;
   otherwise it lists candidates.

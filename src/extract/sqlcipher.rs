@@ -2,7 +2,7 @@
 
 use std::str;
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Sqlcipher;
 use crate::{HashType, HashValue};
 
@@ -96,7 +96,26 @@ fn parse(artifact: &Artifact) -> Result<Sqlcipher, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[
+    CompanionSpec::optional(
+        "sqlcipher-preset",
+        "`1` (64,000 PBKDF2-SHA1) or `2` (256,000 PBKDF2-SHA512) shortcut",
+    ),
+    CompanionSpec::optional(
+        "sqlcipher-type",
+        "KDF type; required unless `sqlcipher-preset` is supplied",
+    ),
+    CompanionSpec::optional(
+        "sqlcipher-iterations",
+        "KDF iteration count; required unless `sqlcipher-preset` is supplied",
+    ),
+];
+
 impl Extractor for SqlcipherExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Sqlcipher::SLUG
     }
