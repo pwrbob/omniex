@@ -42,9 +42,15 @@ impl Extractor for AdxcryptExtractor {
         Adxcrypt::SLUG
     }
 
+    fn exact(&self) -> bool {
+        false
+    }
+
     fn probe(&self, artifact: &Artifact) -> Probe {
         match artifact.primary().read_all() {
-            Ok(data) if !pairs(&data).is_empty() => Probe::yes("ADXCSOUF user records"),
+            Ok(data) if !pairs(&data).is_empty() => {
+                Probe::maybe("ADXCSOUF-style user records; use `--type adxcrypt`")
+            }
             _ => Probe::No,
         }
     }

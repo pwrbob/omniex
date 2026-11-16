@@ -495,7 +495,7 @@ impl Extractor for KeplrExtractor {
     fn probe(&self, artifact: &Artifact) -> Probe {
         match parse(artifact) {
             Ok((_, true)) => Probe::yes("Keplr Chromium LevelDB keyring"),
-            Ok((_, false)) => Probe::maybe("Keplr keyring JSON"),
+            Ok((_, false)) => Probe::yes("Keplr keyring JSON"),
             Err(_) => Probe::No,
         }
     }

@@ -13,6 +13,7 @@ pub struct ApfsExtractor;
 
 const CHUNK_SIZE: usize = 1 << 20;
 const BLOCK_MAGIC: &[u8] = b"NXSB";
+const PROBE_WINDOW: u64 = 1 << 20;
 const CONTAINER_KEYBAG: &[u8] = b"syek";
 const VOLUME_KEYBAG: &[u8] = b"scer";
 const VOLUME_UNLOCK_TAG: u16 = 3;
@@ -33,11 +34,11 @@ struct Entry {
     data: Vec<u8>,
 }
 
-fn candidates(source: &dyn ReadAt) -> io::Result<Vec<u64>> {
+fn candidates(source: &dyn ReadAt, window: u64) -> io::Result<Vec<u64>> {
     let mut offsets = Vec::new();
     let mut chunk = vec![0u8; CHUNK_SIZE];
     let mut base = 0u64;
-    while base < source.len() {
+    while base < source.len().min(window) {
         let read = source.read_at(base, &mut chunk)?;
         if read < 4 {
             break;
@@ -268,9 +269,9 @@ fn container(source: &dyn ReadAt, start: u64) -> Result<Vec<Apfs>, ExtractError>
     Ok(hashes)
 }
 
-fn extract_all(artifact: &Artifact) -> Result<Vec<Apfs>, ExtractError> {
+fn extract_all(artifact: &Artifact, window: u64) -> Result<Vec<Apfs>, ExtractError> {
     let source = artifact.primary();
-    let offsets = candidates(source).map_err(|error| {
+    let offsets = candidates(source, window).map_err(|error| {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
     })?;
     let mut hashes = Vec::new();
@@ -295,14 +296,14 @@ impl Extractor for ApfsExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        match extract_all(artifact) {
+        match extract_all(artifact, PROBE_WINDOW) {
             Ok(_) => Probe::yes("APFS container keybag"),
             Err(_) => Probe::No,
         }
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
-        Ok(extract_all(artifact)?
+        Ok(extract_all(artifact, u64::MAX)?
             .into_iter()
             .map(|value| Box::new(value) as Box<dyn HashValue>)
             .collect())

@@ -17,7 +17,7 @@ that understands both hashcat and John the Ripper serializations.
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-265%2F265-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
-![exact extractors](https://img.shields.io/badge/exact_extractors-187%2F239-8957e5)
+![exact extractors](https://img.shields.io/badge/exact_extractors-185%2F239-8957e5)
 ![external samples](https://img.shields.io/badge/external_samples-65_formats_%2F_617_cases-8957e5)
 
 Status: pre-1.0. Every hashcat 8.0.0 mode entry and John jumbo format label

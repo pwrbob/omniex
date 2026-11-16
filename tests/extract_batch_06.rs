@@ -319,9 +319,10 @@ fn lpcli_extracts_the_cli_state() {
             ("iterations", "iterations.txt"),
         ],
     );
+    assert!(!extractor.exact());
     assert!(matches!(
         extractor.probe(&artifact),
-        Probe::Yes(reason) if reason == "LastPass CLI verify file"
+        Probe::Maybe(reason) if reason.contains("no structural signature")
     ));
     let hashes = extractor.extract(&artifact).expect("extract");
     assert_eq!(hashes.len(), 1);
@@ -335,7 +336,7 @@ fn lpcli_requires_companions_and_a_complete_verify_file() {
     let artifact = artifact("lpcli", "verify.bin");
     assert!(matches!(
         extractor.probe(&artifact),
-        Probe::Maybe(reason) if reason.contains("companions")
+        Probe::Maybe(reason) if reason.contains("no structural signature")
     ));
     assert!(extractor.extract(&artifact).is_err());
 

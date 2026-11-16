@@ -82,7 +82,7 @@ fn probes_are_structural() {
     let keplr = extract::by_slug("keplr").unwrap();
     assert!(matches!(
         keplr.probe(&artifact("keplr", "keyring.json")),
-        Probe::Maybe(_)
+        Probe::Yes(reason) if reason == "Keplr keyring JSON"
     ));
     let blockchain = extract::by_slug("blockchain-second").unwrap();
     assert!(matches!(

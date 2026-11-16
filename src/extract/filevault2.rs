@@ -594,7 +594,7 @@ impl Extractor for FileVault2Extractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        match extract_all(artifact) {
+        match volume(artifact.primary(), 0) {
             Ok(_) => Probe::yes("CoreStorage encryption context"),
             Err(_) => Probe::No,
         }

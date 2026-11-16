@@ -221,7 +221,9 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   contain `type` and `hash`.
 - Auto-detection gives every probe a 2 MiB read budget. A probe that needs
   more does full-artifact analysis and must be selected with `--type`, so
-  detection time stays bounded regardless of artifact size.
+  detection time stays bounded regardless of artifact size. Probes inspect
+  signatures, headers, and tails rather than reading the artifact; a fixture
+  test checks that detection reads a bounded number of bytes.
 - `extract --opt NAME[=VALUE]` passes an extractor-specific option. Each
   extractor declares its options through `Extractor::options`; the CLI rejects
   unknown names, missing values, and values supplied to flags. `show` prints

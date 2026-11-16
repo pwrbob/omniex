@@ -11,6 +11,7 @@ const PREFIX: usize = 96;
 const DIGEST: usize = 16;
 const DATA: usize = 64;
 const RECORD: usize = SIGNATURE.len() + PREFIX + DIGEST + DATA;
+const PROBE_WINDOW: u64 = 1 << 20;
 const CHUNK: usize = 1 << 20;
 const OVERLAP: usize = 256;
 const ITERATIONS: u32 = 10_000;
@@ -21,8 +22,8 @@ fn find(haystack: &[u8], needle: &[u8]) -> Option<usize> {
         .position(|window| window == needle)
 }
 
-fn offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
-    let total = source.len();
+fn offsets(source: &dyn ReadAt, window: u64) -> Result<Vec<u64>, ExtractError> {
+    let total = source.len().min(window);
     let mut found = Vec::new();
     let mut carry: Vec<u8> = Vec::new();
     let mut offset = 0u64;
@@ -59,7 +60,7 @@ fn offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
 fn extract(artifact: &Artifact) -> Result<Vec<Veeam>, ExtractError> {
     let source = artifact.primary();
     let mut hashes = Vec::new();
-    for offset in offsets(source)? {
+    for offset in offsets(source, u64::MAX)? {
         let mut record = [0u8; RECORD];
         source
             .read_exact_at(offset, &mut record)
@@ -91,9 +92,9 @@ impl Extractor for VeeamExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        match extract(artifact) {
-            Ok(_) => Probe::yes("Veeam VBK backup block"),
-            Err(_) => Probe::No,
+        match offsets(artifact.primary(), PROBE_WINDOW) {
+            Ok(found) if !found.is_empty() => Probe::yes("Veeam VBK backup block"),
+            _ => Probe::No,
         }
     }
 

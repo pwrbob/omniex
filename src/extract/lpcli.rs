@@ -66,16 +66,15 @@ impl Extractor for LpcliExtractor {
         Lpcli::SLUG
     }
 
+    fn exact(&self) -> bool {
+        false
+    }
+
     fn probe(&self, artifact: &Artifact) -> Probe {
         if artifact.primary().len() < VERIFY_LENGTH {
             return Probe::No;
         }
-        if username(artifact).is_none() || iterations(artifact).is_none() {
-            return Probe::Maybe(
-                "LastPass CLI verify file needs `username` and `iterations` companions".to_owned(),
-            );
-        }
-        Probe::yes("LastPass CLI verify file")
+        Probe::maybe("LastPass CLI verify file has no structural signature; use `--type lpcli`")
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
