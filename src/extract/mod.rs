@@ -3,7 +3,6 @@
 use std::fs::File;
 use std::io::{self, Read, Seek, SeekFrom};
 use std::path::Path;
-use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 
 use crate::HashValue;
@@ -421,24 +420,29 @@ const PROBE_BUDGET: u64 = 2 * 1024 * 1024;
 /// Read budget applied to one probe.
 struct ProbeSource {
     inner: Arc<dyn ReadAt>,
-    remaining: AtomicU64,
+    remaining: Mutex<u64>,
 }
 
 impl ProbeSource {
     fn new(inner: Arc<dyn ReadAt>, budget: u64) -> Self {
         Self {
             inner,
-            remaining: AtomicU64::new(budget),
+            remaining: Mutex::new(budget),
         }
     }
 
     fn charge(&self, bytes: u64) -> io::Result<()> {
-        self.remaining
-            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |remaining| {
-                (bytes <= remaining).then(|| remaining - bytes)
-            })
-            .map(|_| ())
-            .map_err(|_| io::Error::other("probe read budget exceeded; use --type for a full scan"))
+        let mut remaining = self
+            .remaining
+            .lock()
+            .map_err(|_| io::Error::other("probe read budget lock is poisoned"))?;
+        if bytes > *remaining {
+            return Err(io::Error::other(
+                "probe read budget exceeded; use --type for a full scan",
+            ));
+        }
+        *remaining -= bytes;
+        Ok(())
     }
 }
 
