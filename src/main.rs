@@ -119,7 +119,7 @@ struct ExtractArgs {
     #[arg(long, value_enum)]
     tool: Option<ToolArg>,
 
-    /// Extractor option, as NAME or NAME=VALUE. May be repeated.
+    /// Extractor option, as NAME or NAME=VALUE. May be repeated; `show` lists them.
     #[arg(long = "opt", value_name = "NAME[=VALUE]")]
     options: Vec<String>,
 
