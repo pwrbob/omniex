@@ -120,7 +120,7 @@ omniex extract artifact --all --format json
 
 ```json
 {
-  "omniex_version": "0.2.0",
+  "omniex_version": "0.2.1",
   "command": "parse",
   "tool": "hashcat",
   "results": [

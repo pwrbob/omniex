@@ -7,6 +7,8 @@ version is zero, a minor release may change the CLI or a serialization.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-16
+
 - `extract --opt NAME[=VALUE]` passes extractor-specific options; `omniex show`
   lists them. `--deep` moved to `--opt deep`.
 - Auto-detection bounds each probe to 2 MiB, so a multi-gigabyte artifact no
