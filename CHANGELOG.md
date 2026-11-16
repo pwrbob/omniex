@@ -9,6 +9,8 @@ version is zero, a minor release may change the CLI or a serialization.
 
 - `extract --opt NAME[=VALUE]` passes extractor-specific options; `omniex show`
   lists them. `--deep` moved to `--opt deep`.
+- Auto-detection bounds each probe to 2 MiB, so a multi-gigabyte artifact no
+  longer makes detection read the whole file once per extractor.
 - PKZIP extraction reads the central directory, understands zip64 archives, and
   no longer loads the whole archive. New `--opt checksum-only` matches
   `zip2john -c`; `--opt full-data` streams the embedded entry instead of

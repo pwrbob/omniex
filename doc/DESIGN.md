@@ -219,6 +219,9 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   output if one extractor fails, and deduplicates by type and rendered hash.
 - `extract --format json` emits a versioned envelope whose `results` entries
   contain `type` and `hash`.
+- Auto-detection gives every probe a 2 MiB read budget. A probe that needs
+  more does full-artifact analysis and must be selected with `--type`, so
+  detection time stays bounded regardless of artifact size.
 - `extract --opt NAME[=VALUE]` passes an extractor-specific option. Each
   extractor declares its options through `Extractor::options`; the CLI rejects
   unknown names, missing values, and values supplied to flags. `show` prints

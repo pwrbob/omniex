@@ -322,7 +322,9 @@ error. `omniex show <slug>` lists the options a type's extractor accepts.
 Without `--type`, every extractor first probes the artifact. Auto-detection
 succeeds only when exactly one extractor reports confident recognition. Formats
 without a reliable signature, and artifacts that only look possible, are listed
-as candidates and require an explicit `--type`.
+as candidates and require an explicit `--type`. Each probe reads at most a
+2 MiB budget, so auto-detection does not scale with artifact size; formats that
+need a full scan require `--type`.
 
 `--all` runs every extractor that returned confident recognition, in registry
 order. It conflicts with `--type`, never promotes possible-but-unconfirmed

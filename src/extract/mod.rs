@@ -3,6 +3,7 @@
 use std::fs::File;
 use std::io::{self, Read, Seek, SeekFrom};
 use std::path::Path;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 
 use crate::HashValue;
@@ -360,6 +361,68 @@ impl Artifact {
     pub fn members(&self) -> &[ArtifactMember] {
         &self.members
     }
+
+    fn bounded(&self, budget: u64) -> Self {
+        Self {
+            label: self.label.clone(),
+            members: self
+                .members
+                .iter()
+                .map(|member| ArtifactMember {
+                    role: member.role.clone(),
+                    source: Arc::new(ProbeSource::new(Arc::clone(&member.source), budget)),
+                })
+                .collect(),
+            options: self.options.clone(),
+        }
+    }
+}
+
+/// Bytes a single probe may read before it is treated as not recognized.
+///
+/// Auto-detection probes every registered extractor. A probe that needs more
+/// than this is doing full-artifact analysis, which belongs behind `--type`,
+/// and would otherwise make detection proportional to the artifact size.
+const PROBE_BUDGET: u64 = 2 * 1024 * 1024;
+
+/// Read budget applied to one probe.
+struct ProbeSource {
+    inner: Arc<dyn ReadAt>,
+    remaining: AtomicU64,
+}
+
+impl ProbeSource {
+    fn new(inner: Arc<dyn ReadAt>, budget: u64) -> Self {
+        Self {
+            inner,
+            remaining: AtomicU64::new(budget),
+        }
+    }
+
+    fn charge(&self, bytes: u64) -> io::Result<()> {
+        self.remaining
+            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |remaining| {
+                (bytes <= remaining).then(|| remaining - bytes)
+            })
+            .map(|_| ())
+            .map_err(|_| io::Error::other("probe read budget exceeded; use --type for a full scan"))
+    }
+}
+
+impl ReadAt for ProbeSource {
+    fn len(&self) -> u64 {
+        self.inner.len()
+    }
+
+    fn read_at(&self, offset: u64, out: &mut [u8]) -> io::Result<usize> {
+        self.charge(out.len() as u64)?;
+        self.inner.read_at(offset, out)
+    }
+
+    fn read_all(&self) -> io::Result<Vec<u8>> {
+        self.charge(self.inner.len())?;
+        self.inner.read_all()
+    }
 }
 
 /// Result of asking an extractor whether it recognizes an artifact.
@@ -462,7 +525,8 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
     let mut possible = Vec::new();
 
     for extractor in extractors {
-        match extractor.probe(artifact) {
+        let artifact = artifact.bounded(PROBE_BUDGET);
+        match extractor.probe(&artifact) {
             Probe::No => {}
             Probe::Maybe(reason) => possible.push(Candidate {
                 extractor: *extractor,
@@ -1033,5 +1097,25 @@ mod tests {
 
         let _ = select(&[&Counting], &artifact());
         assert_eq!(CALLS.load(std::sync::atomic::Ordering::Relaxed), 0);
+    }
+}
+
+#[cfg(test)]
+mod probe_budget_tests {
+    use super::*;
+
+    #[test]
+    fn probe_sources_stop_after_the_budget() {
+        let artifact = Artifact::from_bytes("large", vec![0u8; 3 * 1024 * 1024]);
+        let bounded = artifact.bounded(PROBE_BUDGET);
+
+        assert!(bounded.primary().read_all().is_err());
+        assert!(bounded.primary().read_exact_at(0, &mut [0u8; 4096]).is_ok());
+        assert!(
+            bounded
+                .primary()
+                .read_exact_at(0, &mut vec![0u8; 3 * 1024 * 1024])
+                .is_err()
+        );
     }
 }

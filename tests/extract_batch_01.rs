@@ -145,6 +145,31 @@ fn pkzip_rejects_conflicting_options() {
 }
 
 #[test]
+fn pkzip_auto_detects_zip64_and_large_archives() {
+    let zip64 = omniex()
+        .arg("extract")
+        .arg(fixture("pkzip", "zip64.zip"))
+        .output()
+        .unwrap();
+    assert!(zip64.status.success());
+    assert_eq!(
+        String::from_utf8(zip64.stdout).unwrap().trim_end(),
+        expected_file("pkzip", "zip64.hash")
+    );
+
+    let multi = omniex()
+        .arg("extract")
+        .arg(fixture("pkzip", "multi.zip"))
+        .output()
+        .unwrap();
+    assert!(multi.status.success());
+    assert_eq!(
+        String::from_utf8(multi.stdout).unwrap().trim_end(),
+        expected_file("pkzip", "multi.hash")
+    );
+}
+
+#[test]
 fn pkzip_auto_detects_and_reports_json() {
     let auto = omniex()
         .arg("extract")
