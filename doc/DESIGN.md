@@ -199,7 +199,7 @@ omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|j
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
-omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john] [--full] [--deep]
+omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john] [--full] [--opt NAME[=VALUE]]
 ```
 
 - `parse` parses one hash string into a hash type instance and renders it again.
@@ -219,8 +219,15 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   output if one extractor fails, and deduplicates by type and rendered hash.
 - `extract --format json` emits a versioned envelope whose `results` entries
   contain `type` and `hash`.
-- `extract --deep` allows slower exhaustive scans. Without it, extractors must
-  use bounded structural checks such as headers and partition tables.
+- `extract --opt NAME[=VALUE]` passes an extractor-specific option. Each
+  extractor declares its options through `Extractor::options`; the CLI rejects
+  unknown names, missing values, and values supplied to flags. `show` prints
+  the list. `--opt deep` allows slower exhaustive scans; without it,
+  extractors must use bounded structural checks such as headers and partition
+  tables.
+- `extract` values whose payload streams from the artifact, such as a PKZIP
+  data record above hashcat's 320 KiB limit, require `--format hash`; JSON and
+  human output reject them instead of buffering the payload.
 - `--tool` defaults to `hashcat` and selects only the output serialization:
   `hashcat` or `john`. It never changes input parsing. Rendering fails when the
   concrete value has no mode for the selected tool.

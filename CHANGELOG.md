@@ -7,6 +7,13 @@ version is zero, a minor release may change the CLI or a serialization.
 
 ## [Unreleased]
 
+- `extract --opt NAME[=VALUE]` passes extractor-specific options; `omniex show`
+  lists them. `--deep` moved to `--opt deep`.
+- PKZIP extraction reads the central directory, understands zip64 archives, and
+  no longer loads the whole archive. New `--opt checksum-only` matches
+  `zip2john -c`; `--opt full-data` streams the embedded entry instead of
+  buffering it when it exceeds hashcat's 320 KiB data limit.
+
 ## [0.2.0] - 2026-11-11
 
 First release.

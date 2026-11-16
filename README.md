@@ -297,16 +297,27 @@ omniex extract artifact --all
 omniex extract artifact --all --format json
 omniex extract filesystem.dat --type encdv \
   --companion enckey=/path/to/enckey.dat
-omniex extract disk.vdi --type bitlocker --deep
+omniex extract disk.vdi --type bitlocker --opt deep
+omniex extract archive.zip --type pkzip --opt checksum-only
 ```
 
 `--companion NAME=PATH` attaches a named sidecar input, such as the `enckey`
 file used by ENCDataVault or a KeePass `keyfile`. Repeat it for extractors that
 need more than one.
 
-`--deep` permits slower exhaustive scans. Extractors that only inspect
-partition tables or headers by default may scan the whole artifact when it is
-explicitly requested, as the BitLocker extractor does for embedded volumes.
+`--opt NAME` passes an extractor-specific switch. `--opt NAME=VALUE` passes a
+value where the extractor declares one; unknown or misused options are a usage
+error. `omniex show <slug>` lists the options a type's extractor accepts.
+
+- `--opt deep` permits slower exhaustive scans, such as looking for BitLocker
+  volumes that are not at a partition start.
+- `--opt checksum-only` (PKZIP) emits only checksum records, matching
+  `zip2john -c`. The hash embeds no entry data and cracks only through the
+  2-byte checksum, which hashcat exposes as mode 17230 for three or more
+  entries.
+- `--opt full-data` (PKZIP) embeds the compressed entry even when it exceeds
+  hashcat's 320 KiB data limit. The value streams from the artifact to stdout,
+  so only `--format hash` is available.
 
 Without `--type`, every extractor first probes the artifact. Auto-detection
 succeeds only when exactly one extractor reports confident recognition. Formats

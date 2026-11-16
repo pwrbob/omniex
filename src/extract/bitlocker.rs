@@ -1,9 +1,14 @@
 //! BitLocker FVE volume metadata, VMK material, and recovery-key records.
 
 use super::container::Window;
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt, container};
+use super::{Artifact, ExtractError, Extracted, Extractor, OptionSpec, Probe, ReadAt, container};
 use crate::types::BitLocker;
 use crate::{HashType, HashValue};
+
+const OPTIONS: &[OptionSpec] = &[OptionSpec::flag(
+    "deep",
+    "scan for volumes that are not at a partition start",
+)];
 
 const BITLOCKER: &[u8] = b"-FVE-FS-";
 const BITLOCKER_TO_GO: &[u8] = b"MSWIN4.1";
@@ -534,6 +539,10 @@ pub struct BitlockerExtractor;
 impl Extractor for BitlockerExtractor {
     fn slug(&self) -> &'static str {
         BitLocker::SLUG
+    }
+
+    fn options(&self) -> &'static [OptionSpec] {
+        OPTIONS
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {

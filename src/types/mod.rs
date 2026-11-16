@@ -863,7 +863,7 @@ pub use phpass::Phpass;
 pub use phpass_md5::PhpassMd5;
 pub use phps::Phps;
 pub use pkcs12::Pkcs12;
-pub use pkzip::Pkzip;
+pub use pkzip::{Pkzip, PkzipPayload};
 pub use pkzip_master_key::PkzipMasterKey;
 pub use po::Po;
 pub use pop3_apop::Pop3Apop;

@@ -167,6 +167,7 @@ must make sense in a narrow terminal.
 | --- | --- | --- |
 | `role` | `other` | Semantic role. |
 | `encoding` | `raw` | How `Describe` formats the value. |
+| `ty` | the Rust type | Type shown by `show`; set it when the internal type is not the serialized type. |
 | `rename` | field name | Name used in verbose/JSON output. |
 
 Supported roles: `salt`, `key`, `digest`, `iv`, `ciphertext`, `iterations`,

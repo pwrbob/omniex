@@ -93,14 +93,16 @@ Hash lists are atomic: the first bad line aborts without partial output.
 
 ```bash
 omniex extract secret-key.asc --type pgp
-omniex extract disk.vdi --type bitlocker --deep
+omniex extract disk.vdi --type bitlocker --opt deep
 omniex extract artifact --all
 ```
 
 - Without `--type`, omniex auto-detects only when exactly one extractor is
   confident.
 - `--all` runs every confident extractor and conflicts with `--type`.
-- `--deep` permits slower exhaustive scans such as embedded BitLocker volumes.
+- `--opt NAME[=VALUE]` passes extractor options; `--opt deep` permits slower
+exhaustive scans such as embedded BitLocker volumes, and `omniex show <slug>`
+lists the options an extractor accepts.
 - `--format human` shows the artifact, rendered hashes, and field tables.
 - `--format json` emits a versioned envelope.
 - `--full` disables human-value truncation.

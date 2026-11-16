@@ -141,14 +141,104 @@ pub struct ArtifactMember {
     /// Role that identifies this member.
     pub role: MemberRole,
     /// Byte source for the member.
-    pub source: Box<dyn ReadAt>,
+    pub source: Arc<dyn ReadAt>,
+}
+
+/// One named option an extractor accepts.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct OptionSpec {
+    /// Name passed to `--opt`.
+    pub name: &'static str,
+    /// Whether the option requires a `NAME=VALUE` argument.
+    pub takes_value: bool,
+    /// One-line description shown by `omniex show`.
+    pub help: &'static str,
+}
+
+impl OptionSpec {
+    /// Declares a boolean option.
+    #[must_use]
+    pub const fn flag(name: &'static str, help: &'static str) -> Self {
+        Self {
+            name,
+            takes_value: false,
+            help,
+        }
+    }
+
+    /// Declares an option that requires a value.
+    #[must_use]
+    pub const fn value(name: &'static str, help: &'static str) -> Self {
+        Self {
+            name,
+            takes_value: true,
+            help,
+        }
+    }
+}
+
+/// Extractor options supplied by the caller.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct ExtractOptions {
+    entries: Vec<(String, Option<String>)>,
+}
+
+impl ExtractOptions {
+    /// Creates an empty option set.
+    #[must_use]
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Adds an option, returning `false` when the name is already present.
+    pub fn set(&mut self, name: impl Into<String>, value: Option<String>) -> bool {
+        let name = name.into();
+        if self.flag(&name) {
+            return false;
+        }
+        self.entries.push((name, value));
+        true
+    }
+
+    /// Removes an option.
+    pub fn remove(&mut self, name: &str) {
+        self.entries.retain(|(entry, _)| entry != name);
+    }
+
+    /// Returns whether an option was supplied.
+    #[must_use]
+    pub fn flag(&self, name: &str) -> bool {
+        self.entries.iter().any(|(entry, _)| entry == name)
+    }
+
+    /// Returns the value of an option that takes one.
+    #[must_use]
+    pub fn value(&self, name: &str) -> Option<&str> {
+        self.entries
+            .iter()
+            .find(|(entry, _)| entry == name)
+            .and_then(|(_, value)| value.as_deref())
+    }
+
+    /// Iterates over the supplied options in declaration order.
+    pub fn iter(&self) -> impl Iterator<Item = (&str, Option<&str>)> {
+        self.entries
+            .iter()
+            .map(|(name, value)| (name.as_str(), value.as_deref()))
+    }
+
+    /// Whether no options were supplied.
+    #[must_use]
+    pub fn is_empty(&self) -> bool {
+        self.entries.is_empty()
+    }
 }
 
 /// Logical input presented to extractors.
 pub struct Artifact {
     label: String,
     members: Vec<ArtifactMember>,
-    deep: bool,
+    options: ExtractOptions,
 }
 
 impl Artifact {
@@ -159,9 +249,9 @@ impl Artifact {
             label: label.into(),
             members: vec![ArtifactMember {
                 role: MemberRole::Primary,
-                source: Box::new(source),
+                source: Arc::new(source),
             }],
-            deep: false,
+            options: ExtractOptions::new(),
         }
     }
 
@@ -179,24 +269,53 @@ impl Artifact {
             if companion.is_file() {
                 artifact.members.push(ArtifactMember {
                     role: MemberRole::Named(role.to_owned()),
-                    source: Box::new(FileSource::open(&companion)?),
+                    source: Arc::new(FileSource::open(&companion)?),
                 });
             }
         }
         Ok(artifact)
     }
 
+    /// Attaches extractor options.
+    #[must_use]
+    pub fn with_options(mut self, options: ExtractOptions) -> Self {
+        self.options = options;
+        self
+    }
+
     /// Enables slower exhaustive extraction where an extractor supports it.
     #[must_use]
     pub fn with_deep(mut self, deep: bool) -> Self {
-        self.deep = deep;
+        if deep {
+            self.options.set("deep", None);
+        } else {
+            self.options.remove("deep");
+        }
         self
     }
 
     /// Whether the caller explicitly requested a slower exhaustive scan.
     #[must_use]
     pub fn deep(&self) -> bool {
-        self.deep
+        self.flag("deep")
+    }
+
+    /// Options supplied by the caller.
+    #[must_use]
+    pub fn options(&self) -> &ExtractOptions {
+        &self.options
+    }
+
+    /// Whether a named option was supplied.
+    #[must_use]
+    pub fn flag(&self, name: &str) -> bool {
+        self.options.flag(name)
+    }
+
+    /// Value of a named option.
+    #[must_use]
+    pub fn option(&self, name: &str) -> Option<&str> {
+        self.options.value(name)
     }
 
     /// Adds a named companion member.
@@ -204,7 +323,7 @@ impl Artifact {
     pub fn with_member(mut self, name: impl Into<String>, source: impl ReadAt + 'static) -> Self {
         self.members.push(ArtifactMember {
             role: MemberRole::Named(name.into()),
-            source: Box::new(source),
+            source: Arc::new(source),
         });
         self
     }
@@ -219,6 +338,12 @@ impl Artifact {
     #[must_use]
     pub fn primary(&self) -> &dyn ReadAt {
         &*self.members[0].source
+    }
+
+    /// Shared handle to the primary member, for values that outlive extraction.
+    #[must_use]
+    pub fn primary_shared(&self) -> Arc<dyn ReadAt> {
+        Arc::clone(&self.members[0].source)
     }
 
     /// Looks up a named companion member.
@@ -286,6 +411,11 @@ pub enum ExtractError {
 pub trait Extractor: Sync {
     /// Hash type slug this extractor produces.
     fn slug(&self) -> &'static str;
+
+    /// Options this extractor understands, for `--opt` validation.
+    fn options(&self) -> &'static [OptionSpec] {
+        &[]
+    }
 
     /// Whether this extractor can return `Probe::Yes` for a valid artifact.
     ///
