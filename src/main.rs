@@ -440,9 +440,17 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
             )));
         }
 
+        let ambiguous = matches.len() > 1;
+        let count = matches.len();
         if args.json {
             for (descriptor, value) in &matches {
-                json_output.push(identify_json(descriptor, value.as_ref(), *line, text));
+                json_output.push(identify_json(
+                    descriptor,
+                    value.as_ref(),
+                    *line,
+                    text,
+                    ambiguous,
+                ));
             }
             continue;
         }
@@ -459,6 +467,12 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
             &["Slug", "Name", "Hashcat", "John"],
             &rows,
         ));
+        if ambiguous {
+            block.push('\n');
+            block.push_str(&format!(
+                "{count} hash types match this input; use --type <slug> to select one."
+            ));
+        }
         blocks.push(block);
     }
 
@@ -837,6 +851,7 @@ fn identify_json(
     value: &dyn HashValue,
     line: usize,
     input: &str,
+    ambiguous: bool,
 ) -> Value {
     let (hashcat, john) = split_modes(&value.modes());
     json!({
@@ -846,6 +861,7 @@ fn identify_json(
         "name": descriptor.name,
         "hashcat": hashcat,
         "john": john,
+        "ambiguous": ambiguous,
     })
 }
 

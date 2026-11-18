@@ -469,7 +469,9 @@ fn convert_dictionary(entries: &[(Vec<u8>, Value)], id: &[u8]) -> Result<Pdf, Ex
             .map_err(|_| ExtractError::Invalid("invalid PDF revision".to_owned()))?,
         key_length: u32::try_from(key_length)
             .map_err(|_| ExtractError::Invalid("invalid PDF key length".to_owned()))?,
-        permissions: permissions.to_string(),
+        permissions: crate::types::signed_permissions(permissions)
+            .ok_or_else(|| ExtractError::Invalid(format!("invalid PDF permissions {permissions}")))?
+            .to_string(),
         encrypt_metadata: u8::from(encrypt_metadata).to_string(),
         salt: id.len().to_string(),
         data,

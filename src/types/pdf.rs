@@ -4,6 +4,17 @@
 use crate::parse;
 use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
 
+/// Canonicalizes a PDF `/P` value to its signed 32-bit form.
+///
+/// PDFs encode the permission flags as a signed integer, but some producers
+/// write the unsigned two's-complement value.
+#[must_use]
+pub(crate) fn signed_permissions(value: i64) -> Option<i32> {
+    i32::try_from(value)
+        .ok()
+        .or_else(|| u32::try_from(value).ok().map(|value| value as i32))
+}
+
 /// Password-protected PDF documents.
 #[derive(Debug, Clone, PartialEq, Eq, HashType)]
 #[hash(
@@ -99,12 +110,23 @@ impl Parse for Pdf {
                 "invalid PDF key length",
             )
         })?;
+        let permissions = permissions
+            .parse::<i64>()
+            .ok()
+            .and_then(signed_permissions)
+            .ok_or_else(|| {
+                parse::error(
+                    ParseErrorKind::InvalidCharacter,
+                    11,
+                    "invalid PDF permissions",
+                )
+            })?;
 
         Ok(Self {
             version,
             revision,
             key_length,
-            permissions: permissions.to_owned(),
+            permissions: permissions.to_string(),
             encrypt_metadata: encrypt_metadata.to_owned(),
             salt: salt.to_owned(),
             data: data.to_owned(),
@@ -130,5 +152,19 @@ impl Render for Pdf {
             value.push_str(&self.rc4_key);
         }
         value
+    }
+}
+
+#[cfg(test)]
+mod permissions_tests {
+    use super::signed_permissions;
+
+    #[test]
+    fn permissions_are_canonicalized_to_signed_int32() {
+        assert_eq!(signed_permissions(-4), Some(-4));
+        assert_eq!(signed_permissions(4_294_967_292), Some(-4));
+        assert_eq!(signed_permissions(0), Some(0));
+        assert_eq!(signed_permissions(4_294_967_296), None);
+        assert_eq!(signed_permissions(-2_147_483_649), None);
     }
 }

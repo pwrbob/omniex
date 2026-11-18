@@ -289,6 +289,34 @@ fn identify_json_is_an_array_of_matches() {
     assert_eq!(entries[0]["slug"], "md4");
     assert_eq!(entries[0]["hashcat"], serde_json::json!([900]));
     assert_eq!(entries[0]["john"], serde_json::json!(["Raw-MD4"]));
+    assert_eq!(entries[0]["ambiguous"], true);
+}
+
+#[test]
+fn identify_flags_ambiguous_input() {
+    let output = omniex()
+        .args(["identify", "6d4988f143dc3870"])
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    let text = String::from_utf8_lossy(&output.stdout);
+    assert!(text.contains("hash types match this input"), "{text}");
+
+    let single = omniex()
+        .args(["identify", MD5_HASH, "--json"])
+        .output()
+        .unwrap();
+    assert!(single.status.success());
+    let value: Value = serde_json::from_slice(&single.stdout).unwrap();
+    assert_eq!(value[0]["ambiguous"], true);
+
+    let unique = omniex()
+        .args(["identify", "$1$38652870$DUjsu4TTlTsOe/xxZ05uf/"])
+        .output()
+        .unwrap();
+    if unique.status.success() {
+        assert!(!String::from_utf8_lossy(&unique.stdout).contains("hash types match"));
+    }
 }
 
 #[test]

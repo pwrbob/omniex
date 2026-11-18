@@ -517,6 +517,21 @@ fn show_lists_extractor_options() {
     assert!(text.contains("enckey"), "{text}");
     assert!(text.contains("keychain"), "{text}");
 
+    let openssl = omniex()
+        .args(["show", "openssl-enc", "--json"])
+        .output()
+        .unwrap();
+    assert!(openssl.status.success());
+    let value: serde_json::Value = serde_json::from_slice(&openssl.stdout).unwrap();
+    let names = value["options"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|option| option["name"].as_str().unwrap())
+        .collect::<Vec<_>>();
+    assert_eq!(names, ["cipher", "digest"]);
+    assert!(value["companions"].as_array().unwrap().is_empty());
+
     let lpcli = omniex().args(["show", "lpcli", "--json"]).output().unwrap();
     assert!(lpcli.status.success());
     let value: serde_json::Value = serde_json::from_slice(&lpcli.stdout).unwrap();

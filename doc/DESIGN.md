@@ -207,7 +207,8 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
 - `--type` selects the hash type by slug. The same slug is used by `parse` and
   `extract`.
 - `identify` lists every hash type that parses the input. Ambiguous input is
-  not an error; the user disambiguates with `--type`.
+  not an error; the table is followed by a notice and JSON records carry an
+  `ambiguous` flag so the user can disambiguate with `--type`.
 - `types` lists the hash types registered in this build. It is separate from
   `identify`, which is always input-driven.
 - `show` prints one type's fields and modes without requiring a hash, plus the

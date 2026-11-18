@@ -7,6 +7,17 @@ version is zero, a minor release may change the CLI or a serialization.
 
 ## [Unreleased]
 
+- PDF `/P` permissions are canonicalized to signed 32-bit integers; both signed
+  and unsigned input spellings are accepted and unsigned values render in the
+  form hashcat and John expect.
+- `openssl-enc` is auto-detected from the `Salted__` envelope and reads only the
+  header, sample, and tail instead of the whole artifact. `--opt cipher=...`
+  and `--opt digest=...` replace the one-byte companion files; non-AES block
+  sizes are refused instead of being labelled AES-256. `show` now documents the
+  real defaults (`aes-256`, `sha256`).
+- `identify` marks ambiguous input with a follow-up notice and an `ambiguous`
+  flag in JSON output.
+
 ## [0.2.1] - 2026-11-16
 
 - `extract --opt NAME[=VALUE]` passes extractor-specific options; `omniex show`

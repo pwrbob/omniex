@@ -850,6 +850,7 @@ pub use pbkdf2_hmac_sha512::Pbkdf2HmacSha512;
 pub use pbkdf2_hmac_sha512_john::Pbkdf2HmacSha512John;
 pub use pbkdf2_utf16::Pbkdf2Sha512Utf16;
 pub use pdf::Pdf;
+pub(crate) use pdf::signed_permissions;
 pub use pem_john::PemJohn;
 pub use pem_private_key::PemPrivateKey;
 pub use peoplesoft_ps_token::PeoplesoftPsToken;

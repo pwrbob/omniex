@@ -17,7 +17,7 @@ that understands both hashcat and John the Ripper serializations.
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-265%2F265-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
-![exact extractors](https://img.shields.io/badge/exact_extractors-185%2F239-8957e5)
+![exact extractors](https://img.shields.io/badge/exact_extractors-186%2F239-8957e5)
 ![external samples](https://img.shields.io/badge/external_samples-65_formats_%2F_617_cases-8957e5)
 
 Status: pre-1.0. Every hashcat 8.0.0 mode entry and John jumbo format label
@@ -254,9 +254,10 @@ omniex identify 8743b52063cd84097a65d1633f5c74f5
 ```
 
 The table names every type that accepts the input, so an ambiguous short hex
-string lists all of its interpretations rather than picking one. `--json` emits
-the same records as objects with `line`, `input`, `slug`, `name`, `hashcat`, and
-`john` keys.
+string lists all of its interpretations rather than picking one, followed by a
+`N hash types match this input; use --type <slug>` notice. `--json` emits the
+same records as objects with `line`, `input`, `slug`, `name`, `hashcat`, `john`,
+and `ambiguous` keys.
 
 Process a hash list. Blank lines are skipped and the first bad line aborts with
 a line number; nothing is printed for a partially valid list. Input and output
@@ -314,6 +315,9 @@ error. `omniex show <slug>` lists the options a type's extractor accepts.
 
 - `--opt deep` permits slower exhaustive scans, such as looking for BitLocker
   volumes that are not at a partition start.
+- `--opt cipher=<aes-256|aes-128>` and `--opt digest=<md5|sha1|sha256>`
+  (OpenSSL `enc`) set the cipher and digest the envelope does not record. Only
+  AES block sizes are serialized; non-AES payloads are refused.
 - `--opt checksum-only` (PKZIP) emits only checksum records, matching
   `zip2john -c`. The hash embeds no entry data and cracks only through the
   2-byte checksum, which hashcat exposes as mode 17230 for three or more

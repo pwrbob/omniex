@@ -106,7 +106,7 @@ This file documents the extractors currently registered in
 - `pdf` - PDF user and owner password encryption dictionaries.
 - `pst` - PST mail stores.
 - `sappse` - SAP PSE files.
-- `openssl-enc` - OpenSSL `enc` files, requiring `--type` when the cipher is not recoverable.
+- `openssl-enc` - OpenSSL `enc` files. The `Salted__` envelope is detected directly; the cipher and digest are not stored, so extraction assumes AES-256/SHA-256 unless `--opt cipher=aes-256|aes-128` or `--opt digest=md5|sha1|sha256` is given. Ciphertexts that are not a multiple of the AES block size are refused because John's format only serializes AES. Base64 inputs are buffered up to 16 MiB; decode larger files first.
 - `pkcs12`, `pfx` - PKCS#12 and PFX bundle MAC records.
 - `pem-private-key` - PEM private keys.
 - `jks-private-key` - JKS and JCEKS private keys.
