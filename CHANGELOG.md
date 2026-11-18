@@ -7,6 +7,8 @@ version is zero, a minor release may change the CLI or a serialization.
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-18
+
 - PDF `/P` permissions are canonicalized to signed 32-bit integers; both signed
   and unsigned input spellings are accepted and unsigned values render in the
   form hashcat and John expect.

@@ -1064,7 +1064,7 @@ dependencies = [
 
 [[package]]
 name = "omniex"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "assert_cmd",
  "base64 0.22.1",
@@ -1092,7 +1092,7 @@ dependencies = [
 
 [[package]]
 name = "omniex-core"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "hex",
  "thiserror",
@@ -1100,7 +1100,7 @@ dependencies = [
 
 [[package]]
 name = "omniex-macros"
-version = "0.2.1"
+version = "0.2.2"
 dependencies = [
  "proc-macro2",
  "quote",
