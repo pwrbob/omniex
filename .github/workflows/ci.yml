@@ -32,10 +32,17 @@ jobs:
         with:
           components: rustfmt, clippy
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
         with:
-          shared-key: stable-lint
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Check formatting
         run: |
@@ -58,10 +65,17 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@1.100.0
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
         with:
-          shared-key: stable-docs
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Build documentation
         run: |
@@ -81,10 +95,17 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@1.100.0
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
         with:
-          shared-key: stable-tests
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Run tests
         run: |
@@ -107,10 +128,17 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@1.100.0
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
         with:
-          shared-key: stable-ui
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Run derive UI tests
         run: |
@@ -128,8 +156,17 @@ jobs:
       - name: Install Rust 1.90
         uses: dtolnay/rust-toolchain@1.90.0
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Check workspace
         run: cargo check --workspace --all-targets --locked
@@ -181,8 +218,17 @@ jobs:
           scripts/ci-deps.sh musl-tools
           rustup target add x86_64-unknown-linux-musl
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Build static binary
         run: cargo build --release --locked --target x86_64-unknown-linux-musl
@@ -283,8 +329,17 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@1.100.0
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Download hashcat
         uses: actions/download-artifact@v7
@@ -367,8 +422,17 @@ jobs:
           uv venv .venv --python python3
           uv pip install --python .venv/bin/python -r requirements-dev.txt
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Download John
         uses: actions/download-artifact@v7
@@ -428,8 +492,17 @@ jobs:
           uv venv .venv --python python3
           uv pip install --python .venv/bin/python -r requirements-dev.txt
 
-      - name: Cache Rust artifacts
-        uses: Swatinem/rust-cache@v2
+      - name: Cache Cargo
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ github.job }}-
 
       - name: Download John
         uses: actions/download-artifact@v7
