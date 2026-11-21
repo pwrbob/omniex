@@ -29,11 +29,7 @@ else
 fi
 
 echo "==> secret scan"
-if command -v gitleaks >/dev/null 2>&1; then
-    time gitleaks git . --log-opts="--all" --redact
-else
-    echo "warning: gitleaks is not installed; secret scan skipped" >&2
-fi
+time scripts/secret-scan.sh
 
 echo "==> cargo doc"
 time RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked

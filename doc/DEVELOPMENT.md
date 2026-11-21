@@ -79,10 +79,6 @@ Native prerequisites come from `scripts/ci-deps.sh` (it needs root or a
 `SUDO_CMD` wrapper): `libdb-dev` and `python3-dev` for `bsddb3`, `tshark`,
 `p7zip-full`, and `libcompress-raw-lzma-perl`.
 
-The secret scan uses the official gitleaks GitHub Action in CI. Locally, install
-the gitleaks binary and run `gitleaks git . --log-opts=--all --redact`;
-`scripts/ci.sh` runs it when it is on `PATH`.
-
 The external-sample shards fail rather than skip when a requirement is
 missing. GitHub CI installs every requirement; local runs need the packages
 above.
