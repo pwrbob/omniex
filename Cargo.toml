@@ -8,6 +8,11 @@ version = "0.2.2"
 edition = "2024"
 rust-version = "1.90"
 license = "MIT"
+description = "Strongly typed hash parser, renderer, and extractor for hashcat and John the Ripper."
+repository = "https://github.com/pwrbob/omniex"
+homepage = "https://pwrbob.github.io/omniex/"
+keywords = ["hash", "hashcat", "john-the-ripper", "forensics", "password"]
+categories = ["command-line-utilities", "cryptography", "parsing", "development-tools"]
 
 [workspace.dependencies]
 omniex-core = { path = "omniex-core" }
@@ -19,6 +24,11 @@ version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
+description.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
 
 [dependencies]
 base64 = "0.22"
