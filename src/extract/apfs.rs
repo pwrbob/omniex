@@ -195,10 +195,10 @@ fn volume_users(data: &[u8]) -> Result<Vec<Apfs>, ExtractError> {
             let chunk = packed
                 .get(start..start + usize::from(*length))
                 .ok_or_else(|| ExtractError::Invalid("truncated APFS packed object".to_owned()))?;
-            if *tag == 0xa3 {
-                if let Some(hash) = wrapped_user(chunk)? {
-                    hashes.push(hash);
-                }
+            if *tag == 0xa3
+                && let Some(hash) = wrapped_user(chunk)?
+            {
+                hashes.push(hash);
             }
             position = start + usize::from(*length);
         }

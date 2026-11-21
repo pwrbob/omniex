@@ -71,9 +71,9 @@ RUN chmod +x scripts/build-hashcat.sh scripts/build-john.sh \
 RUN chmod -R a+rwX /opt/reference/hashcat-8.0.0
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o /tmp/rustup-init.sh \
-    && sh /tmp/rustup-init.sh -y --no-modify-path --profile minimal --default-toolchain stable \
+    && sh /tmp/rustup-init.sh -y --no-modify-path --profile minimal --default-toolchain 1.100.0 \
     && rustup component add rustfmt clippy \
-    && rustup toolchain install 1.85.0 --profile minimal \
+    && rustup toolchain install 1.90.0 --profile minimal \
     && rm /tmp/rustup-init.sh \
     && chmod -R a+rwX "$RUSTUP_HOME" "$CARGO_HOME"
 

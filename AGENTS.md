@@ -14,10 +14,10 @@
 Before calling an iteration finished:
 
 1. Run `scripts/ci.sh` locally. It executes the fast CI jobs: formatting, clippy,
-   the Rust 1.85 MSRV check when that toolchain is installed, docs, workspace
+   the Rust 1.90 MSRV check when that toolchain is installed, docs, workspace
    tests, and doc tests. It also runs hashcat and John conformance when the
    reference binaries are available.
-2. Run `cargo +1.85.0 check --workspace --all-targets --locked` whenever
+2. Run `cargo +1.90.0 check --workspace --all-targets --locked` whenever
    dependencies change. Treat the CI `msrv` job as the final authority.
 3. If a conformance tool is not available, record that explicitly rather than
    claiming it passed.
@@ -33,15 +33,15 @@ Before calling an iteration finished:
 
 ## Dependency MSRV
 
-The workspace supports Rust 1.85.0. `cargo add` only honors a dependency's own
+The workspace supports Rust 1.90.0. `cargo add` only honors a dependency's own
 `rust-version` field, and some crates omit it or publish a patch release that
 raises the real requirement.
 
 - Check the resolved version with `cargo tree -i <crate>` and
   `cargo info <crate>@<version>`.
-- Run `cargo +1.85.0 check --workspace --all-targets --locked` after adding,
+- Run `cargo +1.90.0 check --workspace --all-targets --locked` after adding,
   updating, or pinning a dependency.
-- Pin an exact version when a newer patch release cannot compile on 1.85, and
+- Pin an exact version when a newer patch release cannot compile on 1.90, and
   record why in the commit message.
 - Do not rely on `--locked` alone; it proves reproducibility, not MSRV.
 

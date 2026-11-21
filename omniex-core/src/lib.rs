@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 //! Core runtime types shared by `omniex`.
 //!
 //! This crate contains no CLI, no I/O, and no concrete hash implementations. It
@@ -234,12 +236,11 @@ pub trait Render: ModeCompat {
 
     /// Render the type using the given options.
     fn render(&self, opts: &RenderOptions) -> Result<String, RenderError> {
-        if let Some(version) = opts.hc_version.release() {
-            if let Some(first) = HashcatVersion::FIRST_SUPPORTED_RELEASE.release() {
-                if version < first {
-                    return Err(RenderError::UnsupportedRelease(version));
-                }
-            }
+        if let Some(version) = opts.hc_version.release()
+            && let Some(first) = HashcatVersion::FIRST_SUPPORTED_RELEASE.release()
+            && version < first
+        {
+            return Err(RenderError::UnsupportedRelease(version));
         }
 
         let supported = self.modes().iter().any(|mode| {

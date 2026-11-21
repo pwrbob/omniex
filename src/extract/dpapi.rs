@@ -120,7 +120,7 @@ struct MasterKeyFile {
 }
 
 fn utf16_text(field: &[u8]) -> Option<String> {
-    if field.len() % 2 != 0 {
+    if !field.len().is_multiple_of(2) {
         return None;
     }
     let mut text = String::new();

@@ -12,7 +12,7 @@ forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
 [![CI](https://github.com/pwrbob/omniex/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pwrbob/omniex/actions/workflows/ci.yml)
-![Rust 1.85](https://img.shields.io/badge/rust-1.85%2B-dea584)
+![Rust 1.90](https://img.shields.io/badge/rust-1.90%2B-dea584)
 ![license](https://img.shields.io/badge/license-MIT-blue)
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-265%2F265-1f6feb)
@@ -26,7 +26,7 @@ extraction checklist has an extractor. Coverage is tracked in
 [`MODES.md`](MODES.md) and [`EXTRACTION.md`](EXTRACTION.md).
 
 - Over 500 hash types covering 720 hashcat modes and 265 John labels.
-- 239 extractors for 208 artifact formats, 187 of which recognise their input
+- 239 extractors for 208 artifact formats, 186 of which recognise their input
   without being told the type.
 - 617 pinned external files across 65 formats extracted in CI from 23 upstream
   projects, on top of synthetic fixtures for every extractor.
@@ -203,15 +203,26 @@ Non-goals:
 
 ## Install
 
-Rust 1.85 or newer is required.
+Rust 1.90 or newer is required.
+
+Release archives contain a static `x86_64` Linux binary built with musl, so
+they run on any modern Linux distribution without matching the build host's
+glibc:
+
+```bash
+tar -xzf omniex-vX.Y.Z-x86_64-unknown-linux-musl.tar.gz
+./omniex-vX.Y.Z-x86_64-unknown-linux-musl/omniex --help
+```
+
+To build from a checkout:
 
 ```bash
 cargo build --release
 ./target/release/omniex --help
+cargo install --path .
 ```
 
-The workspace is not published, so install from a checkout with
-`cargo install --path .`. There are no release binaries yet.
+The workspace is not published on crates.io.
 
 ## Usage
 

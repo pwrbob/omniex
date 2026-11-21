@@ -75,7 +75,10 @@ fn hashes(data: Vec<u8>) -> Result<Vec<Office2016Sheetprotection>, ExtractError>
         let mut entry = archive
             .by_index(index)
             .map_err(|error| ExtractError::Invalid(format!("invalid Office ZIP entry: {error}")))?;
-        let name = entry.name().to_owned();
+        let name = entry
+            .name()
+            .map_err(|error| ExtractError::Invalid(format!("invalid Office entry name: {error}")))?
+            .into_owned();
         if !name.starts_with("xl/worksheets/") || !name.ends_with(".xml") {
             continue;
         }

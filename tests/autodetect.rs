@@ -159,10 +159,10 @@ fn every_supported_fixture_auto_detects() {
             let selection = extract::select(extract::EXTRACTORS, &artifact);
 
             if !extractor.exact() {
-                if let Selection::Unique(found) = selection {
-                    if found.slug() == slug {
-                        failures.push(format!("{label}: {slug} is Maybe-only but auto-detected"));
-                    }
+                if let Selection::Unique(found) = selection
+                    && found.slug() == slug
+                {
+                    failures.push(format!("{label}: {slug} is Maybe-only but auto-detected"));
                 }
                 skipped.push(label);
                 continue;

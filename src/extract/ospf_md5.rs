@@ -203,21 +203,21 @@ fn scan_records(artifact: &Artifact) -> Result<Vec<OspfMd5>, ExtractError> {
     let mut values = Vec::new();
     packet::scan(artifact.primary(), |ip| {
         if ip.protocol == packet::PROTOCOL_OSPF {
-            if let Some(value) = ospf(ip.payload) {
-                if seen.insert((value.packet.clone(), value.digest)) {
-                    values.push(value);
-                }
+            if let Some(value) = ospf(ip.payload)
+                && seen.insert((value.packet.clone(), value.digest))
+            {
+                values.push(value);
             }
-        } else if ip.protocol == packet::PROTOCOL_UDP {
-            if let Some((source, destination, data)) = packet::udp(ip.payload) {
-                if source != 520 && destination != 520 {
-                    return;
-                }
-                if let Some(value) = rip(data) {
-                    if seen.insert((value.packet.clone(), value.digest)) {
-                        values.push(value);
-                    }
-                }
+        } else if ip.protocol == packet::PROTOCOL_UDP
+            && let Some((source, destination, data)) = packet::udp(ip.payload)
+        {
+            if source != 520 && destination != 520 {
+                return;
+            }
+            if let Some(value) = rip(data)
+                && seen.insert((value.packet.clone(), value.digest))
+            {
+                values.push(value);
             }
         }
     })?;

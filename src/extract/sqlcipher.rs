@@ -75,7 +75,7 @@ fn parse(artifact: &Artifact) -> Result<Sqlcipher, ExtractError> {
             "database is plaintext SQLite, not SQLCipher".to_owned(),
         ));
     }
-    if artifact.primary().len() % 512 != 0 {
+    if !artifact.primary().len().is_multiple_of(512) {
         return Err(ExtractError::Unsupported(
             "database length is not a multiple of a SQLCipher page size".to_owned(),
         ));
@@ -126,7 +126,7 @@ impl Extractor for SqlcipherExtractor {
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         let len = artifact.primary().len();
-        if len < HEADER_SIZE as u64 || len % 512 != 0 {
+        if len < HEADER_SIZE as u64 || !len.is_multiple_of(512) {
             return Probe::No;
         }
         let mut magic = [0; 16];

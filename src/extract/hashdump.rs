@@ -123,12 +123,12 @@ fn profile_at(data: &[u8], start: usize) -> Result<Profile, ExtractError> {
             "unknown AS/400 user profile format".to_owned(),
         ));
     }
-    if let Some(fixed) = profile.get(AS400_PROFILE_FIXED_OFFSET..AS400_PROFILE_FIXED_OFFSET + 2) {
-        if fixed != AS400_PROFILE_FIXED {
-            return Err(ExtractError::Invalid(
-                "invalid AS/400 user profile header".to_owned(),
-            ));
-        }
+    if let Some(fixed) = profile.get(AS400_PROFILE_FIXED_OFFSET..AS400_PROFILE_FIXED_OFFSET + 2)
+        && fixed != AS400_PROFILE_FIXED
+    {
+        return Err(ExtractError::Invalid(
+            "invalid AS/400 user profile header".to_owned(),
+        ));
     }
     let user = cp037_user(&profile[AS400_USER_OFFSET..AS400_USER_OFFSET + AS400_USER_LEN])
         .ok_or_else(|| ExtractError::Invalid("invalid AS/400 user profile name".to_owned()))?;
@@ -185,19 +185,18 @@ fn profiles(data: &[u8]) -> Vec<Profile> {
             break;
         };
         let anchor = index + position;
-        if let Some(start) = anchor.checked_sub(AS400_PROFILE_FIXED_OFFSET) {
-            if let Ok(profile) = profile_at(data, start) {
-                if !found.contains(&profile) {
-                    found.push(profile);
-                }
-            }
+        if let Some(start) = anchor.checked_sub(AS400_PROFILE_FIXED_OFFSET)
+            && let Ok(profile) = profile_at(data, start)
+            && !found.contains(&profile)
+        {
+            found.push(profile);
         }
         index = anchor + 1;
     }
-    if found.is_empty() {
-        if let Ok(profile) = profile_at(data, 0) {
-            found.push(profile);
-        }
+    if found.is_empty()
+        && let Ok(profile) = profile_at(data, 0)
+    {
+        found.push(profile);
     }
     found
 }

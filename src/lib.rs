@@ -1,3 +1,6 @@
+#![forbid(unsafe_code)]
+#![allow(clippy::chunks_exact_to_as_chunks)]
+
 //! `omniex` public facade: hash types, registry, and derive re-export.
 //!
 //! The data model lives in `omniex-core`. This crate holds the concrete hash

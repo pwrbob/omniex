@@ -1,0 +1,7 @@
+[allowlist]
+description = "Synthetic keys, hashes, and credentials used by tests"
+
+paths = [
+  '''tests/fixtures/''',
+  '''tests/.*\.rs''',
+]

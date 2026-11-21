@@ -144,10 +144,10 @@ fn vault(artifact: &Artifact) -> Result<Vault, ExtractError> {
             return Ok(vault);
         }
         for line in text.lines() {
-            if let Some(blob) = decode_base64(line.trim()) {
-                if blob.starts_with(b"LPAV") {
-                    return decode_vault(&blob, None);
-                }
+            if let Some(blob) = decode_base64(line.trim())
+                && blob.starts_with(b"LPAV")
+            {
+                return decode_vault(&blob, None);
             }
         }
     }

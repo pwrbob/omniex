@@ -59,7 +59,7 @@ pub fn split_once(
 ///
 /// `base` is the byte offset of `input` in the original hash string.
 pub fn decode_hex(input: &str, base: usize) -> Result<Vec<u8>, ParseError> {
-    if input.len() % 2 != 0 {
+    if !input.len().is_multiple_of(2) {
         return Err(error(
             ParseErrorKind::InvalidLength,
             base + input.len(),
@@ -200,7 +200,7 @@ pub fn check_text_length(
 
 /// Validates that a field is hexadecimal and has an even number of digits.
 pub fn check_hex(value: &str, base: usize, field: &str) -> Result<(), ParseError> {
-    if value.len() % 2 != 0 {
+    if !value.len().is_multiple_of(2) {
         return Err(error(
             ParseErrorKind::InvalidLength,
             base + value.len(),
@@ -250,14 +250,14 @@ pub fn check_uuid(
             format!("{field} must be a canonical UUID"),
         ));
     }
-    if let Some(version) = version {
-        if bytes[14] != b'0' + version {
-            return Err(error(
-                ParseErrorKind::InvalidCharacter,
-                base + 14,
-                format!("{field} must be version {version}"),
-            ));
-        }
+    if let Some(version) = version
+        && bytes[14] != b'0' + version
+    {
+        return Err(error(
+            ParseErrorKind::InvalidCharacter,
+            base + 14,
+            format!("{field} must be version {version}"),
+        ));
     }
     Ok(())
 }

@@ -61,6 +61,28 @@ be recorded, not silently treated as passing.
 
 Then remove covered entries from `MODES.md` and commit. Do not push.
 
+## Python test dependencies
+
+The external-sample harness and its reference converters need Python packages
+that are not installed by `cargo`. They are managed with `uv`:
+
+```bash
+uv venv .venv
+uv pip install -r requirements-dev.txt
+```
+
+`scripts/ci-external-samples.sh` automatically uses `.venv/bin/python` when it
+exists, and the harness calls `sys.executable` for reference scripts, so the
+same environment reaches the upstream converters.
+
+Native prerequisites come from `scripts/ci-deps.sh` (it needs root or a
+`SUDO_CMD` wrapper): `libdb-dev` and `python3-dev` for `bsddb3`, `tshark`,
+`p7zip-full`, and `libcompress-raw-lzma-perl`.
+
+The external-sample shards fail rather than skip when a requirement is
+missing. GitHub CI installs every requirement; local runs need the packages
+above.
+
 ## CI environment
 
 The GitHub workflow pins `ubuntu-24.04`, the same base image as
@@ -125,8 +147,9 @@ The build job can be rehearsed without CI:
 
 ```bash
 scripts/check-version.sh v0.2.0
-cargo build --release --locked
-scripts/package-release.sh v0.2.0
+rustup target add x86_64-unknown-linux-musl
+cargo build --release --locked --target x86_64-unknown-linux-musl
+scripts/package-release.sh v0.2.0 x86_64-unknown-linux-musl
 ```
 
 `dist/` is ignored by git and holds the tarball, the unpacked directory, and

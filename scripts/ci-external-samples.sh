@@ -18,6 +18,15 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
+python="${PYTHON:-}"
+if [[ -z "$python" ]]; then
+    if [[ -x "$root/.venv/bin/python" ]]; then
+        python="$root/.venv/bin/python"
+    else
+        python=python3
+    fi
+fi
+
 if [[ $# -lt 1 ]]; then
     echo "usage: scripts/ci-external-samples.sh SHARD [--cold] [--skip-build]" >&2
     exit 2
@@ -105,10 +114,10 @@ done
 
 echo "==> external sample extraction ($shard)"
 if [[ "$shard" == "fixtures" ]]; then
-    time python3 scripts/external-samples/run.py run "${args[@]}" \
-        --source "omniex-fixtures=$root"
+    time "$python" scripts/external-samples/run.py run "${args[@]}" \
+        --source "omniex-fixtures=$root" --fail-on-skip
 else
-    time python3 scripts/external-samples/run.py run "${args[@]}"
+    time "$python" scripts/external-samples/run.py run "${args[@]}" --fail-on-skip
 fi
 
 if [[ "$shard" == "fixtures" ]]; then

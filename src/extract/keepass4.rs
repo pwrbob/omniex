@@ -265,10 +265,11 @@ fn keyfile_key(data: &[u8]) -> Vec<u8> {
     }
     let text = String::from_utf8_lossy(data);
     let trimmed = text.trim();
-    if trimmed.len() == 64 && trimmed.bytes().all(|byte| byte.is_ascii_hexdigit()) {
-        if let Ok(key) = crate::parse::decode_hex(trimmed, 0) {
-            return key;
-        }
+    if trimmed.len() == 64
+        && trimmed.bytes().all(|byte| byte.is_ascii_hexdigit())
+        && let Ok(key) = crate::parse::decode_hex(trimmed, 0)
+    {
+        return key;
     }
     Sha256::digest(data).to_vec()
 }

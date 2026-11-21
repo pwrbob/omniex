@@ -53,13 +53,12 @@ fn parameter(
     {
         return Ok(value);
     }
-    if let Ok(value) = text.parse::<u8>() {
-        if let Some(value) = choices
+    if let Ok(value) = text.parse::<u8>()
+        && let Some(value) = choices
             .iter()
             .find_map(|(_, candidate)| (*candidate == value).then_some(value))
-        {
-            return Ok(value);
-        }
+    {
+        return Ok(value);
     }
     Err(ExtractError::Unsupported(format!(
         "unsupported OpenSSL {name} `{text}`; expected {}",
@@ -149,7 +148,7 @@ fn envelope(artifact: &Artifact) -> Result<Payload, ExtractError> {
 fn parse(artifact: &Artifact) -> Result<OpensslEnc, ExtractError> {
     let payload = envelope(artifact)?;
     let ciphertext = payload.length - SALTED_HEADER;
-    if ciphertext % 16 != 0 {
+    if !ciphertext.is_multiple_of(16) {
         return Err(ExtractError::Unsupported(format!(
             "OpenSSL ciphertext is {ciphertext} bytes, not a multiple of the AES block size; \
              John's openssl-enc format only serializes AES-128 and AES-256"

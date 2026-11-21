@@ -31,7 +31,7 @@ fn candidates(source: &dyn ReadAt, from: u64) -> io::Result<Vec<u64>> {
                 continue;
             }
             let offset = base + index as u64;
-            if offset % 512 != 0 {
+            if !offset.is_multiple_of(512) {
                 continue;
             }
             offsets.push(offset);

@@ -59,7 +59,7 @@ fn decode_digest(text: &str) -> Option<[u8; 16]> {
         return None;
     }
     let mut out = [0u8; 16];
-    for (index, pair) in text.as_bytes().chunks_exact(2).enumerate() {
+    for (index, pair) in text.as_bytes().as_chunks::<2>().0.iter().enumerate() {
         out[index] = (hex_value(pair[0])? << 4) | hex_value(pair[1])?;
     }
     Some(out)
@@ -145,10 +145,10 @@ fn digest_record(method: &str, value: &str) -> Option<Digest> {
             .map(|(_, value)| value.as_str())
     };
 
-    if let Some(algorithm) = get("algorithm") {
-        if !algorithm.eq_ignore_ascii_case("MD5") {
-            return Some(Digest::Unsupported);
-        }
+    if let Some(algorithm) = get("algorithm")
+        && !algorithm.eq_ignore_ascii_case("MD5")
+    {
+        return Some(Digest::Unsupported);
     }
     let qop = get("qop").unwrap_or("");
     if !qop.is_empty() && !qop.eq_ignore_ascii_case("auth") && !qop.eq_ignore_ascii_case("auth-int")

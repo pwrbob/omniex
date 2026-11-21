@@ -1,3 +1,6 @@
+#![forbid(unsafe_code)]
+#![allow(clippy::chunks_exact_to_as_chunks)]
+
 //! `omniex` command-line interface.
 
 use std::collections::HashSet;

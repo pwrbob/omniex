@@ -420,11 +420,11 @@ fn decode_hex(text: &str) -> Option<Vec<u8>> {
         .strip_prefix("0x")
         .or_else(|| text.strip_prefix("0X"))
         .unwrap_or(text);
-    if text.len() % 2 != 0 {
+    if !text.len().is_multiple_of(2) {
         return None;
     }
     let mut out = Vec::with_capacity(text.len() / 2);
-    for pair in text.as_bytes().chunks_exact(2) {
+    for pair in text.as_bytes().as_chunks::<2>().0 {
         let high = hex_digit(pair[0])?;
         let low = hex_digit(pair[1])?;
         out.push((high << 4) | low);
@@ -507,19 +507,17 @@ fn scan(artifact: &Artifact) -> Result<(BTreeSet<HashRecord>, bool), ExtractErro
             direction.buffer.drain(..total);
             let end = (48 + ahs + data_length).min(pdu.len());
             let fields = text_keys(pdu.get(48 + ahs..end).unwrap_or_default());
-            if let Some(algorithm) = fields.get("CHAP_A") {
-                if algorithm != CHAP_ALGORITHM_MD5 {
-                    continue;
-                }
+            if let Some(algorithm) = fields.get("CHAP_A")
+                && algorithm != CHAP_ALGORITHM_MD5
+            {
+                continue;
             }
             if let (Some(challenge), Some(identifier)) =
                 (fields.get("CHAP_C"), fields.get("CHAP_I"))
-            {
-                if let (Some(challenge), Ok(identifier)) =
+                && let (Some(challenge), Ok(identifier)) =
                     (decode_hex(challenge), chap_id(identifier))
-                {
-                    connection.challenge = Some((challenge, vec![identifier]));
-                }
+            {
+                connection.challenge = Some((challenge, vec![identifier]));
             }
             let response = fields
                 .get("CHAP_R")

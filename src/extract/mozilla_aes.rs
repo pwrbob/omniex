@@ -295,10 +295,11 @@ fn metadata_row(data: &[u8]) -> Result<(Vec<u8>, Vec<u8>), ExtractError> {
     let mut row = None;
     sqlite.walk_table(root, &mut |payload| {
         let values = parse_record(payload)?;
-        if values.len() >= 3 && values[0].text() == Some(b"password") {
-            if let (Some(salt), Some(item)) = (values[1].blob(), values[2].blob()) {
-                row = Some((salt.to_vec(), item.to_vec()));
-            }
+        if values.len() >= 3
+            && values[0].text() == Some(b"password")
+            && let (Some(salt), Some(item)) = (values[1].blob(), values[2].blob())
+        {
+            row = Some((salt.to_vec(), item.to_vec()));
         }
         Ok(())
     })?;

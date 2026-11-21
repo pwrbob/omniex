@@ -2,14 +2,15 @@
 # Package the release binary and its documentation for a tag.
 #
 # Usage:
-#   scripts/package-release.sh v0.2.0
+#   scripts/package-release.sh v0.2.0 [TARGET]
 #
-# Writes dist/omniex-<tag>-<target>.tar.gz and dist/SHA256SUMS. Requires
-# `cargo build --release --locked` to have run first.
+# TARGET defaults to x86_64-unknown-linux-musl. Writes
+# dist/omniex-<tag>-<target>.tar.gz and dist/SHA256SUMS. Requires
+# `cargo build --release --locked --target TARGET` to have run first.
 set -euo pipefail
 
-if [[ $# -ne 1 ]]; then
-    echo "usage: scripts/package-release.sh TAG" >&2
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+    echo "usage: scripts/package-release.sh TAG [TARGET]" >&2
     exit 2
 fi
 
@@ -22,21 +23,12 @@ fi
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
-binary="$root/target/release/omniex"
+target="${2:-x86_64-unknown-linux-musl}"
+binary="$root/target/$target/release/omniex"
 if [[ ! -x "$binary" ]]; then
-    echo "missing $binary; run cargo build --release --locked first" >&2
+    echo "missing $binary; run cargo build --release --locked --target $target first" >&2
     exit 1
 fi
-
-machine="$(uname -m)"
-case "$machine" in
-    x86_64 | aarch64) ;;
-    *)
-        echo "unsupported architecture: ${machine}" >&2
-        exit 1
-        ;;
-esac
-target="${machine}-unknown-linux-gnu"
 
 dist="$root/dist"
 stage="$dist/omniex-${tag}-${target}"
@@ -44,6 +36,7 @@ rm -rf "$dist"
 mkdir -p "$stage"
 
 cp "$binary" "$stage/"
+strip "$stage/omniex"
 cp LICENSE CHANGELOG.md "$stage/"
 
 # The archive is flat: only the two logo variants the README shows travel with

@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 //! Derive macro for hash-type metadata.
 //!
 //! See `doc/MACROS.md` for the supported attribute syntax. The derive only
@@ -334,14 +336,13 @@ fn doc_comment(field: &Field) -> syn::Result<LitStr> {
         if !attr.path().is_ident("doc") {
             continue;
         }
-        if let syn::Meta::NameValue(value) = &attr.meta {
-            if let Expr::Lit(ExprLit {
+        if let syn::Meta::NameValue(value) = &attr.meta
+            && let Expr::Lit(ExprLit {
                 lit: Lit::Str(text),
                 ..
             }) = &value.value
-            {
-                lines.push(text.value().trim().to_owned());
-            }
+        {
+            lines.push(text.value().trim().to_owned());
         }
     }
 

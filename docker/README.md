@@ -3,7 +3,7 @@
 `docker/Dockerfile` builds an Ubuntu 24.04 image with everything the local CI
 suite needs:
 
-- Rust stable and 1.85.0, with rustfmt and clippy
+- Rust 1.100.0 and 1.90.0, with rustfmt and clippy
 - prebuilt pinned hashcat 8.0.0 and John jumbo reference binaries
 - hashcat, John, and conformance build dependencies
 - `tshark`, `7z`, Perl `Compress::Raw::Lzma`, and the Python modules used by the

@@ -48,7 +48,7 @@ fn decode_ascii(bytes: &[u8]) -> Result<String, ExtractError> {
 }
 
 fn decode_utf16(bytes: &[u8]) -> Result<String, ExtractError> {
-    if bytes.len() % 2 != 0 {
+    if !bytes.len().is_multiple_of(2) {
         return Err(invalid("registry string has an odd byte length"));
     }
     let mut units = Vec::with_capacity(bytes.len() / 2);
@@ -111,7 +111,7 @@ impl<'a> Hive<'a> {
                 return Err(invalid("registry hive bin offset mismatch"));
             }
             let size = u32_at(data, start + 8)? as usize;
-            if size < 0x1000 || size % 0x1000 != 0 || start + size > bins_end {
+            if size < 0x1000 || !size.is_multiple_of(0x1000) || start + size > bins_end {
                 return Err(invalid("invalid registry hive bin size"));
             }
             bins.push((start, start + size));
@@ -614,7 +614,7 @@ fn aes128_decrypt_block(round_keys: &[[u8; 16]; 11], block: [u8; 16]) -> [u8; 16
 }
 
 fn aes128_cbc_decrypt(key: &[u8; 16], iv: &[u8; 16], data: &[u8]) -> Result<Vec<u8>, ExtractError> {
-    if data.is_empty() || data.len() % 16 != 0 {
+    if data.is_empty() || !data.len().is_multiple_of(16) {
         return Err(invalid("AES ciphertext is not a whole number of blocks"));
     }
     let round_keys = aes128_expand(key);

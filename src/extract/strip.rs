@@ -38,7 +38,7 @@ impl Extractor for StripExtractor {
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         let length = artifact.primary().len();
-        if length < STRIP_BYTES as u64 || length % DATABASE_PAGE_ALIGNMENT != 0 {
+        if length < STRIP_BYTES as u64 || !length.is_multiple_of(DATABASE_PAGE_ALIGNMENT) {
             return Probe::No;
         }
         Probe::maybe("STRIP encrypted database; no reliable signature")

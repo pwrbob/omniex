@@ -179,40 +179,42 @@ pub(crate) mod net {
                 6 if body >= 20 => {
                     let interface = u32_at(source, offset + 8, big_endian)? as usize;
                     let captured = u64::from(u32_at(source, offset + 20, big_endian)?);
-                    if let Some(link_type) = interfaces.get(interface) {
-                        if captured <= MAX_PACKET && 20 + captured <= body {
-                            buffer.resize(captured as usize, 0);
-                            source
-                                .read_exact_at(offset + 28, &mut buffer)
-                                .map_err(|_| truncated())?;
-                            visit(*link_type, &buffer);
-                        }
+                    if let Some(link_type) = interfaces.get(interface)
+                        && captured <= MAX_PACKET
+                        && 20 + captured <= body
+                    {
+                        buffer.resize(captured as usize, 0);
+                        source
+                            .read_exact_at(offset + 28, &mut buffer)
+                            .map_err(|_| truncated())?;
+                        visit(*link_type, &buffer);
                     }
                 }
                 3 if body >= 4 => {
                     let original = u64::from(u32_at(source, offset + 8, big_endian)?);
                     let length = original.min(body - 4).min(MAX_PACKET);
-                    if let Some(link_type) = interfaces.first().copied() {
-                        if length > 0 {
-                            buffer.resize(length as usize, 0);
-                            source
-                                .read_exact_at(offset + 12, &mut buffer)
-                                .map_err(|_| truncated())?;
-                            visit(link_type, &buffer);
-                        }
+                    if let Some(link_type) = interfaces.first().copied()
+                        && length > 0
+                    {
+                        buffer.resize(length as usize, 0);
+                        source
+                            .read_exact_at(offset + 12, &mut buffer)
+                            .map_err(|_| truncated())?;
+                        visit(link_type, &buffer);
                     }
                 }
                 2 if body >= 20 => {
                     let interface = u16_at(source, offset + 8, big_endian)? as usize;
                     let captured = u64::from(u32_at(source, offset + 20, big_endian)?);
-                    if let Some(link_type) = interfaces.get(interface) {
-                        if captured <= MAX_PACKET && 20 + captured <= body {
-                            buffer.resize(captured as usize, 0);
-                            source
-                                .read_exact_at(offset + 28, &mut buffer)
-                                .map_err(|_| truncated())?;
-                            visit(*link_type, &buffer);
-                        }
+                    if let Some(link_type) = interfaces.get(interface)
+                        && captured <= MAX_PACKET
+                        && 20 + captured <= body
+                    {
+                        buffer.resize(captured as usize, 0);
+                        source
+                            .read_exact_at(offset + 28, &mut buffer)
+                            .map_err(|_| truncated())?;
+                        visit(*link_type, &buffer);
                     }
                 }
                 _ => {}
@@ -523,10 +525,12 @@ fn key_data_pmkids(data: &[u8]) -> Vec<[u8; 16]> {
         let Some(value) = data.get(offset + 2..offset + 2 + length) else {
             break;
         };
-        if id == 0xdd && length == 20 && value[..4] == [0x00, 0x0f, 0xac, 0x04] {
-            if let Ok(pmkid) = value[4..20].try_into() {
-                pmkids.push(pmkid);
-            }
+        if id == 0xdd
+            && length == 20
+            && value[..4] == [0x00, 0x0f, 0xac, 0x04]
+            && let Ok(pmkid) = value[4..20].try_into()
+        {
+            pmkids.push(pmkid);
         }
         offset += 2 + length;
     }

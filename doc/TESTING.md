@@ -216,7 +216,10 @@ tables are enough.
 | Job | Contents | Blocking |
 | --- | --- | --- |
 | `checks` | fmt, clippy, docs, unit, property, CLI, and macro tests | yes |
-| `msrv` | compile check with Rust 1.85 | yes |
+| `msrv` | compile check with Rust 1.90 | yes |
+| `audit` | dependency audit against RustSec | yes |
+| `secret-scan` | full-history gitleaks scan | yes |
+| `musl` | static x86_64 musl release build | yes |
 | `hashcat` | conformance against `8.0.0` | yes when implemented |
 | `john` | conformance against pinned jumbo | yes when implemented |
 | `extraction` | extraction fixtures | yes when implemented |

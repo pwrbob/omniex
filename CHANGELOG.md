@@ -19,6 +19,14 @@ version is zero, a minor release may change the CLI or a serialization.
   real defaults (`aes-256`, `sha256`).
 - `identify` marks ambiguous input with a follow-up notice and an `ambiguous`
   flag in JSON output.
+- OpenPGP extraction uses `pgp` 0.14 and ZIP readers use `zip` 9, clearing the
+  RustSec findings; `cargo audit` runs in CI with documented ignores for
+  cryptographic operations the parser never performs.
+- The minimum supported Rust version is now 1.90, and the toolchain is pinned
+  for local and CI builds.
+- Release archives are static `x86_64` Linux binaries built with musl.
+- CI installs the Python sample dependencies with `uv`, fails when an
+  external-sample case is skipped, and runs a full-history secret scan.
 
 ## [0.2.1] - 2026-11-16
 

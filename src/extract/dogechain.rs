@@ -30,12 +30,12 @@ fn object(map: &Map<String, Value>) -> Result<Option<Dogechain>, ExtractError> {
     if !map.contains_key("payload") || !map.contains_key("salt") {
         return Ok(None);
     }
-    if let Some(cipher) = map.get("cipher").and_then(Value::as_str) {
-        if cipher != "AES-CBC" {
-            return Err(ExtractError::Unsupported(format!(
-                "unsupported Dogechain cipher `{cipher}`"
-            )));
-        }
+    if let Some(cipher) = map.get("cipher").and_then(Value::as_str)
+        && cipher != "AES-CBC"
+    {
+        return Err(ExtractError::Unsupported(format!(
+            "unsupported Dogechain cipher `{cipher}`"
+        )));
     }
     let iterations = map
         .get("pbkdf2_iterations")

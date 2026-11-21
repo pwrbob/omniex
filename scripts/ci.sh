@@ -14,15 +14,33 @@ time cargo fmt --all --check
 echo "==> cargo clippy"
 time cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 
-echo "==> cargo +1.85.0 check"
-if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.85\.0'; then
-    time cargo +1.85.0 check --workspace --all-targets --locked
+echo "==> cargo +1.90.0 check"
+if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.90\.0'; then
+    time cargo +1.90.0 check --workspace --all-targets --locked
 else
-    echo "warning: Rust 1.85.0 toolchain not installed; MSRV check skipped" >&2
+    echo "warning: Rust 1.90.0 toolchain not installed; MSRV check skipped" >&2
 fi
+
+echo "==> cargo audit"
+if command -v cargo-audit >/dev/null 2>&1; then
+    time cargo audit
+else
+    echo "warning: cargo-audit is not installed; dependency audit skipped" >&2
+fi
+
+echo "==> secret scan"
+time scripts/secret-scan.sh
 
 echo "==> cargo doc"
 time RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
+
+echo "==> musl build"
+if rustup target list --installed 2>/dev/null | grep -q '^x86_64-unknown-linux-musl$'; then
+    time cargo build --release --locked --target x86_64-unknown-linux-musl
+    file target/x86_64-unknown-linux-musl/release/omniex
+else
+    echo "warning: x86_64-unknown-linux-musl target is not installed; musl build skipped" >&2
+fi
 
 echo "==> cargo test"
 time cargo test --workspace --all-targets --locked

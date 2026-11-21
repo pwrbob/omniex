@@ -76,7 +76,7 @@ fn first_hex_run(value: &[u8]) -> Option<Vec<u8>> {
         .take_while(|byte| byte.is_ascii_hexdigit())
         .count();
     let run = &compact[start..start + length];
-    (run.len() >= 8 && run.len() % 2 == 0).then(|| run.to_vec())
+    (run.len() >= 8 && run.len().is_multiple_of(2)).then(|| run.to_vec())
 }
 
 fn key_values(data: &[u8]) -> Vec<(&'static str, Vec<u8>)> {
@@ -94,7 +94,10 @@ fn key_values(data: &[u8]) -> Vec<(&'static str, Vec<u8>)> {
 }
 
 fn hex_text(value: &[u8]) -> Option<String> {
-    if value.is_empty() || value.len() % 2 != 0 || !value.iter().all(u8::is_ascii_hexdigit) {
+    if value.is_empty()
+        || !value.len().is_multiple_of(2)
+        || !value.iter().all(u8::is_ascii_hexdigit)
+    {
         return None;
     }
     std::str::from_utf8(value).ok().map(str::to_owned)

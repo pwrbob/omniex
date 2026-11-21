@@ -781,7 +781,7 @@ def compare(
     raise SystemExit(1)
 
 
-def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: bool) -> None:
+def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: bool) -> bool:
     for requirement in case.requires:
         kind, _, name = requirement.partition(":")
         if kind == "perl":
@@ -791,7 +791,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             )
             if result.returncode != 0:
                 print(f"skip {manifest.ident}/{case.name}: Perl module `{name}` is missing")
-                return
+                return True
         elif kind == "python":
             result = timed_run(
                 [sys.executable, "-c", f"import {name}"],
@@ -799,11 +799,11 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             )
             if result.returncode != 0:
                 print(f"skip {manifest.ident}/{case.name}: Python module `{name}` is missing")
-                return
+                return True
         elif kind == "tool":
             if shutil.which(name) is None:
                 print(f"skip {manifest.ident}/{case.name}: tool `{name}` is missing")
-                return
+                return True
         else:
             fail(f"{manifest.ident}/{case.name}: unknown requirement `{requirement}`")
     artifact = artifact_path(manifest, case, sources, offline)
@@ -891,6 +891,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         case.subset,
         case.reference_subset,
     )
+    return False
 
 
 def command_list(args: argparse.Namespace) -> None:
@@ -969,6 +970,11 @@ def main() -> int:
                 action="store_true",
                 help="skip reference extraction and only require omniex output",
             )
+            sub.add_argument(
+                "--fail-on-skip",
+                action="store_true",
+                help="fail when a case is skipped because a requirement is missing",
+            )
 
     args = parser.parse_args()
     global SOURCES, LOCKS_BY_REPO
@@ -989,6 +995,7 @@ def main() -> int:
 
     manifests = load_manifests(args.repo)
     failures = []
+    skipped = 0
     for manifest in manifests:
         local_root = SOURCES.get(manifest.ident)
         if local_root is None:
@@ -1014,7 +1021,8 @@ def main() -> int:
             if args.structural:
                 case.reference = "structural"
             try:
-                run_case(manifest, case, SOURCES, args.offline)
+                if run_case(manifest, case, SOURCES, args.offline):
+                    skipped += 1
             except SystemExit as error:
                 failures.append((manifest.ident, case.name, str(error)))
         print(f"{manifest.ident}: {len(selected)} case(s) checked")
@@ -1023,6 +1031,9 @@ def main() -> int:
         for repo, name, message in failures:
             print(f"  {repo}/{case_name(name)}: {message}")
         return 1
+    if skipped:
+        print(f"\n{skipped} case(s) skipped")
+        return 1 if args.fail_on_skip else 0
     return 0
 
 

@@ -378,11 +378,9 @@ fn changelog_matches_the_workspace_version() {
             in_workspace = trimmed == "[workspace.package]";
             continue;
         }
-        if in_workspace {
-            if let Some(rest) = trimmed.strip_prefix("version = ") {
-                version = Some(rest.trim().trim_matches('"').to_owned());
-                break;
-            }
+        if in_workspace && let Some(rest) = trimmed.strip_prefix("version = ") {
+            version = Some(rest.trim().trim_matches('"').to_owned());
+            break;
         }
     }
     let version = version.expect("Cargo.toml must set the version under [workspace.package]");
@@ -411,10 +409,10 @@ fn readme_artifact_table_matches_the_checklist() {
     for line in extraction.lines() {
         if let Some(heading) = line.strip_prefix("## ") {
             expected.push((heading.trim().to_owned(), 0));
-        } else if line.starts_with("- [x] ") {
-            if let Some((_, count)) = expected.last_mut() {
-                *count += 1;
-            }
+        } else if line.starts_with("- [x] ")
+            && let Some((_, count)) = expected.last_mut()
+        {
+            *count += 1;
         }
     }
     expected.retain(|(_, count)| *count > 0);

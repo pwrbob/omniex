@@ -26,7 +26,7 @@ fn decode_digest(text: &[u8]) -> Option<[u8; 64]> {
         return None;
     }
     let mut digest = [0; 64];
-    for (index, pair) in text.chunks_exact(2).enumerate() {
+    for (index, pair) in text.as_chunks::<2>().0.iter().enumerate() {
         let high = hex_value(pair[0])?;
         let low = hex_value(pair[1])?;
         digest[index] = (high << 4) | low;
