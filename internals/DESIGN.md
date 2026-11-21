@@ -199,7 +199,7 @@ omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|j
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
-omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john] [--full] [--opt NAME[=VALUE]]
+omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john] [--full] [--opt NAME[=VALUE]] [--companion NAME=PATH]...
 ```
 
 - `parse` parses one hash string into a hash type instance and renders it again.
@@ -233,6 +233,11 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   the list. `--opt deep` allows slower exhaustive scans; without it,
   extractors must use bounded structural checks such as headers and partition
   tables.
+- `extract --companion NAME=PATH` supplies an auxiliary file whose role the
+  extractor declares through `Extractor::companions`. It may be repeated, and
+  `show` marks the companions extraction requires. Missing or unknown role
+  names are usage errors, and an artifact that needs a companion fails rather
+  than guessing its parameters.
 - `extract` values whose payload streams from the artifact, such as a PKZIP
   data record above hashcat's 320 KiB limit, require `--format hash`; JSON and
   human output reject them instead of buffering the payload.

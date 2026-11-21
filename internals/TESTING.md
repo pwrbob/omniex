@@ -210,15 +210,17 @@ enough.
 
 | Job | Contents | Blocking |
 | --- | --- | --- |
-| `checks` | fmt, clippy, docs, unit, property, CLI, and macro tests | yes |
+| `lint` | formatting and clippy | yes |
+| `docs` | documentation build | yes |
+| `tests` | unit, property, CLI, and macro tests | yes |
+| `ui` | `trybuild` derive diagnostics | yes |
 | `msrv` | compile check with Rust 1.90 | yes |
 | `audit` | dependency audit against RustSec | yes |
 | `secret-scan` | full-history gitleaks scan | yes |
 | `musl` | static x86_64 musl release build | yes |
-| `hashcat` | conformance against `8.0.0` | yes when implemented |
-| `john` | conformance against pinned jumbo | yes when implemented |
-| `extraction` | extraction fixtures | yes when implemented |
-| `master` | hashcat master drift | no, later |
+| `hashcat` | conformance against `8.0.0`, four shards | yes |
+| `john` | conformance against pinned jumbo | yes |
+| `external-samples` | extraction against external corpora, four shards | yes |
 
 The fast suite must run without hashcat or John. Missing reference tools are a
 failure when a conformance test is run; an explicit
@@ -226,9 +228,8 @@ failure when a conformance test is run; an explicit
 warning.
 
 `cargo check --workspace --all-targets --locked` runs on the declared MSRV.
-Pull requests run a representative conformance subset; `main` runs the full
-vector set. Target budgets: fast suite under 5 minutes; PR total under 10
-minutes.
+Every job runs on every push and pull request; the conformance and
+external-sample jobs wait for the fast jobs first through `needs`.
 
 ## Definition of done for a mode
 
