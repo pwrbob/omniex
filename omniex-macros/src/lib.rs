@@ -2,7 +2,7 @@
 
 //! Derive macro for hash-type metadata.
 //!
-//! See `doc/MACROS.md` for the supported attribute syntax. The derive only
+//! See `internals/MACROS.md` for the supported attribute syntax. The derive only
 //! generates metadata and the inherent descriptor; `Parse` and `Render` are
 //! implemented by hand.
 

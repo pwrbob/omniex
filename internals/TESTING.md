@@ -149,8 +149,7 @@ Use `assert_cmd` or `trycmd` plus `insta` for snapshots:
 3. Add the John case if a named format exists: format label, hash, password.
 4. Add an extraction fixture if the type is extractable.
 5. Add a CLI snapshot if the type has a user-visible example.
-6. Remove the corresponding entries from `MODES.md`.
-7. Run:
+6. Run:
 
 ```text
 cargo test --workspace
@@ -198,18 +197,14 @@ committed.
 
 ## Coverage
 
-`MODES.md` is the working checklist. Remove entries when a type is implemented.
+The registry and the vector table in `tests/common/mod.rs` are the source of
+truth for hashcat and John coverage. `tests/coverage.rs` enforces it: every
+registered type has a conformance vector, every mode in
+`HashTypeDescriptor::all_modes` appears in that vector's modes, and the README
+badges match the registry counts.
 
-In v0 there is no global coverage gate. Once the first release is complete, add
-one simple test:
-
-- every mode in every `HashTypeDescriptor::all_modes` has at least one
-  canonical test or fixture,
-- every remaining `MODES.md` entry is either implemented or explicitly listed
-  as unsupported.
-
-Do not build a separate coverage framework before that. The registry and test
-tables are enough.
+Do not build a separate coverage framework. The registry and test tables are
+enough.
 
 ## CI and local workflow
 
@@ -245,7 +240,6 @@ minutes.
 - Hashcat conformance passes for the mode.
 - John conformance passes where a named John format exists.
 - An extraction test exists if the mode is extractable.
-- The `MODES.md` entry is removed.
 
 ## Deferred decisions
 
@@ -267,4 +261,5 @@ pairs KeePass KDBX v4 files with hashcat and John serializations, and GPG
 OCB-AES private keys with hashcat serializations. The artifacts are not stored
 in this repository.
 
-See `doc/SAMPLE_CORPORA.md` for artifact-only corpora and their limitations.
+See `scripts/external-samples/README.md` for the manifest format and the
+available corpora.

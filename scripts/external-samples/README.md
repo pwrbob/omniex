@@ -4,6 +4,14 @@ Runs `omniex` extraction against artifacts from external repositories. Artifacts
 are not committed. A manifest names the source repository, the pinned commit,
 and the files or globs to use.
 
+## Corpora
+
+`repos/` holds one manifest and one integrity lock per upstream project. The
+set covers both extraction fixtures from project test suites and artifact-only
+corpora whose expected hashes come from a reference tool at run time. Add a
+corpus by dropping a manifest in `repos/` and regenerating its lock; do not
+check the artifacts in.
+
 ## Usage
 
 ```bash

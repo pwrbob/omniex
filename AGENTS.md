@@ -6,8 +6,8 @@
 - Commit changes when the work is complete. Never push.
 - Never commit `tmp/`, `target/`, credentials, or generated binaries.
 - Do not add comments to Rust code unless they explain something non-obvious.
-- Match the style and structure described in `doc/DESIGN.md`, `doc/MACROS.md`,
-  and `doc/TESTING.md`.
+- Match the style and structure described in `internals/DESIGN.md`,
+  `internals/MACROS.md`, and `internals/TESTING.md`.
 
 ## Definition of done
 
@@ -21,15 +21,14 @@ Before calling an iteration finished:
    dependencies change. Treat the CI `msrv` job as the final authority.
 3. If a conformance tool is not available, record that explicitly rather than
    claiming it passed.
-4. Update `MODES.md` by removing every mode the iteration now covers.
-5. Before committing, review the registry for grouping opportunities. Try to
+4. Before committing, review the registry for grouping opportunities. Try to
    merge types whose algorithm, fields, and serialization match, with the
    varying parameter (output size, round count, variant, or similar) selected
    by the mode and filtered through `modes_fn`. This keeps the type count
    driven by logical hash types rather than hashcat mode numbers.
-6. Run all Cargo tests with `cargo test --workspace --locked`, including any
+5. Run all Cargo tests with `cargo test --workspace --locked`, including any
    ignored conformance suites, and fix every failure before committing.
-7. Commit the result. Do not push.
+6. Commit the result. Do not push.
 
 ## Dependency MSRV
 
@@ -55,7 +54,7 @@ raises the real requirement.
    those parameters, so one type can expose all matching modes. Do not merge a
    salt with an HMAC key.
 2. Otherwise add a module under `src/types/`, a struct with a doc comment on
-   every field following `doc/MACROS.md#field-descriptions`, manual `Parse` and
+   every field following `internals/MACROS.md#field-descriptions`, manual `Parse` and
    `Render`, and the derive for metadata.
 3. Register the descriptor in `src/registry.rs`.
 4. Add hashcat vectors (one per mode, with that mode's own canonical hash) and
@@ -63,7 +62,6 @@ raises the real requirement.
    `tests/common/mod.rs`.
 5. Add invalid-input and field-decoding cases to `tests/types.rs`.
 6. Run conformance against the reference tools under `tmp/` when available.
-7. Remove the covered entries from `MODES.md`.
 
 ## Adding an extractor
 

@@ -22,8 +22,9 @@ that understands both hashcat and John the Ripper serializations.
 
 Status: pre-1.0. Every hashcat 8.0.0 mode entry and John jumbo format label
 that describes a hash is implemented, and every artifact format on the
-extraction checklist has an extractor. Coverage is tracked in
-[`MODES.md`](MODES.md) and [`EXTRACTION.md`](EXTRACTION.md).
+extraction checklist has an extractor. Artifact coverage is tracked in
+[`EXTRACTION.md`](EXTRACTION.md); hash type and mode coverage is enforced by the
+registry and its conformance vectors.
 
 - Over 500 hash types covering 720 hashcat modes and 265 John labels.
 - 239 extractors for 208 artifact formats, 186 of which recognise their input
@@ -355,7 +356,7 @@ remains one hash per line, deduplicated by type and rendered hash.
 extracted value; `--full` disables truncation.
 
 Registered extractors and their supported serializations are documented in
-[`doc/EXTRACTORS.md`](doc/EXTRACTORS.md). Extraction coverage is tracked in
+[`internals/EXTRACTORS.md`](internals/EXTRACTORS.md). Extraction coverage is tracked in
 [`EXTRACTION.md`](EXTRACTION.md).
 
 ### Supported artifacts
@@ -440,18 +441,18 @@ python3 scripts/external-samples/run.py run --repo omniex-fixtures \
 
 Cases whose prerequisites are missing, such as `tshark` for Kerberos captures or
 the Perl LZMA module for 7-Zip headers, skip with a recorded reason instead of
-passing silently. `doc/SAMPLE_CORPORA.md` lists the corpora.
+passing silently. `scripts/external-samples/repos/` holds one manifest per
+upstream project and `scripts/external-samples/README.md` documents the format.
 
 ## Documentation
 
-- [`doc/DESIGN.md`](doc/DESIGN.md) - data model and CLI behavior.
-- [`doc/MACROS.md`](doc/MACROS.md) - `#[derive(HashType)]` reference.
-- [`doc/TESTING.md`](doc/TESTING.md) - test strategy and fixtures.
-- [`doc/EXTRACTORS.md`](doc/EXTRACTORS.md) - registered extractors.
-- [`doc/DEVELOPMENT.md`](doc/DEVELOPMENT.md) - project goal, layout, and workflow.
-- [`doc/SAMPLE_CORPORA.md`](doc/SAMPLE_CORPORA.md) - external corpora used for extraction tests.
-- [`doc/UNSUPPORTED_FORMATS.md`](doc/UNSUPPORTED_FORMATS.md) - formats outside mainline hashcat and John.
-- [`doc/IDEAS.md`](doc/IDEAS.md) - features that are not implemented yet.
+- [`internals/DESIGN.md`](internals/DESIGN.md) - data model and CLI behavior.
+- [`internals/MACROS.md`](internals/MACROS.md) - `#[derive(HashType)]` reference.
+- [`internals/TESTING.md`](internals/TESTING.md) - test strategy and fixtures.
+- [`internals/EXTRACTORS.md`](internals/EXTRACTORS.md) - registered extractors.
+- [`internals/DEVELOPMENT.md`](internals/DEVELOPMENT.md) - project goal, layout, and workflow.
+- [`internals/UNSUPPORTED_FORMATS.md`](internals/UNSUPPORTED_FORMATS.md) - formats outside mainline hashcat and John.
+- [`internals/IDEAS.md`](internals/IDEAS.md) - features that are not implemented yet.
 - [`CHANGELOG.md`](CHANGELOG.md) - release history.
 - [`AGENTS.md`](AGENTS.md) - instructions for automated contributors.
 

@@ -7,6 +7,10 @@ version is zero, a minor release may change the CLI or a serialization.
 
 ## [Unreleased]
 
+- The completed hashcat and John mode checklist is gone. The registry and its
+  conformance vectors are now the only record of mode coverage, and the README
+  badges are checked against fixed upstream mode counts.
+
 ## [0.2.2] - 2026-11-18
 
 - PDF `/P` permissions are canonicalized to signed 32-bit integers; both signed

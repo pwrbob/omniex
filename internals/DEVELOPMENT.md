@@ -13,16 +13,19 @@ src/             facade library, registry, CLI
 src/types/       one module per logical hash type
 tests/           CLI, coverage, per-type, and conformance tests
 scripts/         pinned reference-tool builds and local CI
-doc/             normative design documents
+assets/          logo sources used by the README and the site
+docs/            published site, the GitHub Pages source
+internals/       design, development, and testing documents
+docker/          development container image
 ```
 
 ## How to build this
 
 - Use Rust.
-- Read `doc/DESIGN.md` first. It defines the data model and CLI behavior.
-- Read `doc/MACROS.md` before adding a struct. The derive generates metadata,
+- Read `internals/DESIGN.md` first. It defines the data model and CLI behavior.
+- Read `internals/MACROS.md` before adding a struct. The derive generates metadata,
   `Describe`, `ModeCompat`, and the descriptor. `Parse` and `Render` are manual.
-- Read `doc/TESTING.md` before adding tests.
+- Read `internals/TESTING.md` before adding tests.
 - Use `Md5` and `SaltedMd5` as reference implementations.
 - Do not add a C shim, FFI module harness, or long-running server. Do not link
   against hashcat or John. Tests invoke the tools or their shipped Python test
@@ -31,8 +34,6 @@ doc/             normative design documents
   Master is informational only.
 
 ## Implementation workflow
-
-`MODES.md` is a temporary checklist. It is not the source of truth.
 
 Identity is algorithm-based. See the naming rule in `DESIGN.md`: only modes
 with the same algorithm, field meanings, and serialization share a type. A salt
@@ -48,7 +49,6 @@ For each mode or named John format:
    and `Render`; let the derive generate the rest.
 4. Add unit tests, hashcat/John conformance cases, and an extraction fixture if
    the type is extractable.
-5. Remove the covered entries from `MODES.md`.
 
 Do not merge two modes into one type just because they have the same field
 shape. If they need different hashcat serializations, they are different types.
@@ -59,7 +59,7 @@ Run `scripts/ci.sh` locally. It mirrors the fast CI jobs and, when the reference
 binaries are present, hashcat and John conformance. Missing reference tools must
 be recorded, not silently treated as passing.
 
-Then remove covered entries from `MODES.md` and commit. Do not push.
+Then commit. Do not push.
 
 ## Python test dependencies
 
@@ -161,6 +161,6 @@ release a new patch version instead.
 
 ## Scope
 
-Hashcat and John coverage is tracked in `MODES.md`. Extraction, version-specific
-format changes, custom base64 alphabets, and optional/repeated fields are
-future work.
+Hashcat and John coverage is complete and enforced by the registry and its
+conformance vectors. Extraction, version-specific format changes, custom base64
+alphabets, and optional/repeated fields are future work.

@@ -227,44 +227,6 @@ fn vector_modes_are_a_subset_of_declared_modes() {
 }
 
 #[test]
-fn modes_checklist_does_not_list_implemented_modes() {
-    let mut section = "";
-    for line in include_str!("../MODES.md").lines() {
-        if line.starts_with("## ") {
-            section = line;
-        }
-        if !matches!(
-            section,
-            "## hashcat modes" | "## John the Ripper formats" | "## hashcat bridged modes"
-        ) {
-            continue;
-        }
-
-        let Some(entry) = line.strip_prefix("- [ ] `") else {
-            continue;
-        };
-        let Some((label, _)) = entry.split_once('`') else {
-            continue;
-        };
-
-        for descriptor in registry::all() {
-            let implemented = if section == "## John the Ripper formats" {
-                descriptor.all_modes.contains(&Mode::John(label))
-            } else {
-                label
-                    .parse::<u32>()
-                    .is_ok_and(|number| descriptor.all_modes.contains(&Mode::Hashcat(number)))
-            };
-            assert!(
-                !implemented,
-                "`{label}` is implemented by `{}` but remains in MODES.md under {section}",
-                descriptor.slug
-            );
-        }
-    }
-}
-
-#[test]
 fn readme_type_table_matches_the_types_command() {
     let output = Command::cargo_bin("omniex")
         .expect("binary is built")
@@ -506,56 +468,39 @@ fn readme_external_sample_badge_matches_the_runner() {
     );
 }
 
+// hashcat 8.0.0 mode entries and pinned John jumbo format labels.
+const HASHCAT_MODES: usize = 720;
+const JOHN_LABELS: usize = 265;
+
 #[test]
-fn readme_mode_badge_matches_the_registry_and_checklist() {
-    let root = env!("CARGO_MANIFEST_DIR");
-    let readme = std::fs::read_to_string(std::path::Path::new(root).join("README.md"))
-        .expect("read README.md");
-    let modes = std::fs::read_to_string(std::path::Path::new(root).join("MODES.md"))
-        .expect("read MODES.md");
+fn readme_mode_badges_match_the_registry() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let readme = std::fs::read_to_string(root.join("README.md")).expect("read README.md");
 
-    let john_implemented: usize = registry::all()
-        .iter()
-        .map(|descriptor| {
-            descriptor
-                .all_modes
-                .iter()
-                .filter(|mode| matches!(mode, Mode::John(_)))
-                .count()
-        })
-        .sum();
-    let implemented: usize = registry::all()
-        .iter()
-        .map(|descriptor| descriptor.all_modes.len())
-        .sum();
-    let hashcat_implemented = implemented - john_implemented;
-
-    let mut section = "";
-    let mut hashcat_remaining = 0;
-    let mut john_remaining = 0;
-    for line in modes.lines() {
-        if line.starts_with("## ") {
-            section = line;
-        }
-        if !line.starts_with("- [ ] `") {
-            continue;
-        }
-        match section {
-            "## John the Ripper formats" => john_remaining += 1,
-            "## hashcat modes" | "## hashcat bridged modes" => hashcat_remaining += 1,
-            _ => {}
+    let mut hashcat = 0;
+    let mut john = 0;
+    for descriptor in registry::all() {
+        for mode in descriptor.all_modes {
+            match mode {
+                Mode::Hashcat(_) => hashcat += 1,
+                Mode::John(_) => john += 1,
+            }
         }
     }
 
-    let hashcat = format!(
-        "hashcat_modes-{hashcat_implemented}%2F{}-",
-        hashcat_implemented + hashcat_remaining
+    assert_eq!(
+        hashcat, HASHCAT_MODES,
+        "the registry no longer covers every hashcat 8.0.0 mode; update the count and the README badge together"
     );
-    let john = format!(
-        "John_modes-{john_implemented}%2F{}-",
-        john_implemented + john_remaining
+    assert_eq!(
+        john, JOHN_LABELS,
+        "the registry no longer covers every John jumbo label; update the count and the README badge together"
     );
-    for badge in [hashcat, john] {
+
+    for badge in [
+        format!("hashcat_modes-{hashcat}%2F{HASHCAT_MODES}-"),
+        format!("John_modes-{john}%2F{JOHN_LABELS}-"),
+    ] {
         assert!(
             readme.contains(&badge),
             "README must advertise `{badge}`; found no matching badge"
