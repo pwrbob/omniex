@@ -797,15 +797,15 @@ fn hashes(data: &[u8]) -> Result<Vec<SevenZip>, ExtractError> {
         let mut data_type = 0u8;
         let mut crc_len = 0u64;
         let mut compression_attributes = Vec::new();
-        if let Some(coder) = folder.coders.get(aes_index + 1) {
-            if let Some(kind) = compression_type(&coder.codec_id) {
-                data_type = kind;
-                crc_len = substreams
-                    .as_ref()
-                    .and_then(|substreams| substreams.unpack_sizes.first().copied())
-                    .unwrap_or(folder_size);
-                compression_attributes = coder.attributes.clone();
-            }
+        if let Some(coder) = folder.coders.get(aes_index + 1)
+            && let Some(kind) = compression_type(&coder.codec_id)
+        {
+            data_type = kind;
+            crc_len = substreams
+                .as_ref()
+                .and_then(|substreams| substreams.unpack_sizes.first().copied())
+                .unwrap_or(folder_size);
+            compression_attributes = coder.attributes.clone();
         }
 
         let mut data_field = crate::format::hex(&ciphertext);

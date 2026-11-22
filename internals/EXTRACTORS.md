@@ -89,7 +89,13 @@ This file documents the extractors currently registered in
 - `oracle11`, `oracle12c`, `oracle-otm` - Oracle hash exports.
 - `racf-kdfaes`, `racf-passphrase` - RACF KDFAES and passphrase exports.
 - `sybase-prop` - Sybase hash exports.
-- `pkzip` - ZIP archives with ZipCrypto entry encryption.
+- `pkzip` - ZIP archives with ZipCrypto entry encryption. Reads the central
+  directory, including zip64 records, and falls back to scanning local headers
+  only when no directory is present. It never loads the archive. Options:
+  `--opt checksum-only` emits checksum records only, like `zip2john -c`;
+  `--opt full-data` streams the compressed entry when it exceeds hashcat's
+  320 KiB data limit. Without either option, an entry above that limit is an
+  error that names both options.
 - `securezip` - SecureZIP AES archives.
 - `rar3p`, `rar3hp` - RAR3 archives with password and header encryption.
 - `rar5` - RAR5 archives.
@@ -100,7 +106,7 @@ This file documents the extractors currently registered in
 - `pdf` - PDF user and owner password encryption dictionaries.
 - `pst` - PST mail stores.
 - `sappse` - SAP PSE files.
-- `openssl-enc` - OpenSSL `enc` files, requiring `--type` when the cipher is not recoverable.
+- `openssl-enc` - OpenSSL `enc` files. The `Salted__` envelope is detected directly; the cipher and digest are not stored, so extraction assumes AES-256/SHA-256 unless `--opt cipher=aes-256|aes-128` or `--opt digest=md5|sha1|sha256` is given. Ciphertexts that are not a multiple of the AES block size are refused because John's format only serializes AES. Base64 inputs are buffered up to 16 MiB; decode larger files first.
 - `pkcs12`, `pfx` - PKCS#12 and PFX bundle MAC records.
 - `pem-private-key` - PEM private keys.
 - `jks-private-key` - JKS and JCEKS private keys.
@@ -139,7 +145,7 @@ This file documents the extractors currently registered in
 - `dcc2` - DCC2 cached domain credential records.
 - `dpapi` - DPAPI master key records.
 - `windows-hello` - Windows Hello PIN and container records.
-- `bitlocker` - BitLocker FVE volume metadata and VMK material. Raw volumes, MBR/GPT partitions, VDI images, and unencrypted QCOW2 images are read through the shared container layer. Use `--deep` to scan for embedded volumes that are not at a partition start.
+- `bitlocker` - BitLocker FVE volume metadata and VMK material. Raw volumes, MBR/GPT partitions, VDI images, and unencrypted QCOW2 images are read through the shared container layer. Use `--opt deep` to scan for embedded volumes that are not at a partition start.
 - `veeam` - Veeam VBK backup metadata.
 - `apple-keychain` - macOS login keychains.
 - `apple-secure-notes` - Apple Secure Notes.

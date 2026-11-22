@@ -12,21 +12,22 @@ forensics. It replaces a collection of loose extraction scripts with one tool
 that understands both hashcat and John the Ripper serializations.
 
 [![CI](https://github.com/pwrbob/omniex/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pwrbob/omniex/actions/workflows/ci.yml)
-![Rust 1.85](https://img.shields.io/badge/rust-1.85%2B-dea584)
+![Rust 1.90](https://img.shields.io/badge/rust-1.90%2B-dea584)
 ![license](https://img.shields.io/badge/license-MIT-blue)
 ![hashcat modes](https://img.shields.io/badge/hashcat_modes-720%2F720-2ea44f)
 ![John modes](https://img.shields.io/badge/John_modes-265%2F265-1f6feb)
 ![extractor formats](https://img.shields.io/badge/extractor_formats-208%2F208-8957e5)
-![exact extractors](https://img.shields.io/badge/exact_extractors-187%2F239-8957e5)
+![exact extractors](https://img.shields.io/badge/exact_extractors-186%2F239-8957e5)
 ![external samples](https://img.shields.io/badge/external_samples-65_formats_%2F_617_cases-8957e5)
 
 Status: pre-1.0. Every hashcat 8.0.0 mode entry and John jumbo format label
 that describes a hash is implemented, and every artifact format on the
-extraction checklist has an extractor. Coverage is tracked in
-[`MODES.md`](MODES.md) and [`EXTRACTION.md`](EXTRACTION.md).
+extraction checklist has an extractor. Artifact coverage is tracked in
+[`EXTRACTION.md`](EXTRACTION.md); hash type and mode coverage is enforced by the
+registry and its conformance vectors.
 
 - Over 500 hash types covering 720 hashcat modes and 265 John labels.
-- 239 extractors for 208 artifact formats, 187 of which recognise their input
+- 239 extractors for 208 artifact formats, 186 of which recognise their input
   without being told the type.
 - 617 pinned external files across 65 formats extracted in CI from 23 upstream
   projects, on top of synthetic fixtures for every extractor.
@@ -204,15 +205,26 @@ Non-goals:
 
 ## Install
 
-Rust 1.85 or newer is required.
+Rust 1.90 or newer is required.
+
+Release archives contain a static `x86_64` Linux binary built with musl, so
+they run on any modern Linux distribution without matching the build host's
+glibc:
+
+```bash
+tar -xzf omniex-vX.Y.Z-x86_64-unknown-linux-musl.tar.gz
+./omniex-vX.Y.Z-x86_64-unknown-linux-musl/omniex --help
+```
+
+To build from a checkout:
 
 ```bash
 cargo build --release
 ./target/release/omniex --help
+cargo install --path .
 ```
 
-The workspace is not published, so install from a checkout with
-`cargo install --path .`. There are no release binaries yet.
+The workspace is not published on crates.io.
 
 ## Usage
 
@@ -256,9 +268,10 @@ omniex identify 8743b52063cd84097a65d1633f5c74f5
 ```
 
 The table names every type that accepts the input, so an ambiguous short hex
-string lists all of its interpretations rather than picking one. `--json` emits
-the same records as objects with `line`, `input`, `slug`, `name`, `hashcat`, and
-`john` keys.
+string lists all of its interpretations rather than picking one, followed by a
+`N hash types match this input; use --type <slug>` notice. `--json` emits the
+same records as objects with `line`, `input`, `slug`, `name`, `hashcat`, `john`,
+and `ambiguous` keys.
 
 Process a hash list. Blank lines are skipped and the first bad line aborts with
 a line number; nothing is printed for a partially valid list. Input and output
@@ -279,7 +292,7 @@ only the rendered hash for a pipeline. `--tool hashcat|john|json` chooses the
 serialization for `parse` and `extract`; it never changes how input is parsed.
 
 `parse` accepts hashcat, John, and `omniex.hash.v1` JSON documents as input.
-See [`doc/JSON.md`](doc/JSON.md) for both JSON schemas.
+See [`internals/JSON.md`](internals/JSON.md) for both JSON schemas.
 
 ### Exit codes
 
@@ -301,21 +314,40 @@ omniex extract artifact --all
 omniex extract artifact --all --format json
 omniex extract filesystem.dat --type encdv \
   --companion enckey=/path/to/enckey.dat
-omniex extract disk.vdi --type bitlocker --deep
+omniex extract disk.vdi --type bitlocker --opt deep
+omniex extract archive.zip --type pkzip --opt checksum-only
 ```
 
 `--companion NAME=PATH` attaches a named sidecar input, such as the `enckey`
 file used by ENCDataVault or a KeePass `keyfile`. Repeat it for extractors that
-need more than one.
+need more than one. `omniex show <slug>` lists the companions an extractor
+accepts, whether each one is required, and what it is used for. Siblings named
+`<artifact>.salt`, `<artifact>.keyfile`, and `<artifact>.key` are attached
+automatically.
 
-`--deep` permits slower exhaustive scans. Extractors that only inspect
-partition tables or headers by default may scan the whole artifact when it is
-explicitly requested, as the BitLocker extractor does for embedded volumes.
+`--opt NAME` passes an extractor-specific switch. `--opt NAME=VALUE` passes a
+value where the extractor declares one; unknown or misused options are a usage
+error. `omniex show <slug>` lists the options a type's extractor accepts.
+
+- `--opt deep` permits slower exhaustive scans, such as looking for BitLocker
+  volumes that are not at a partition start.
+- `--opt cipher=<aes-256|aes-128>` and `--opt digest=<md5|sha1|sha256>`
+  (OpenSSL `enc`) set the cipher and digest the envelope does not record. Only
+  AES block sizes are serialized; non-AES payloads are refused.
+- `--opt checksum-only` (PKZIP) emits only checksum records, matching
+  `zip2john -c`. The hash embeds no entry data and cracks only through the
+  2-byte checksum, which hashcat exposes as mode 17230 for three or more
+  entries.
+- `--opt full-data` (PKZIP) embeds the compressed entry even when it exceeds
+  hashcat's 320 KiB data limit. The value streams from the artifact to stdout,
+  so only `--format hash` is available.
 
 Without `--type`, every extractor first probes the artifact. Auto-detection
 succeeds only when exactly one extractor reports confident recognition. Formats
 without a reliable signature, and artifacts that only look possible, are listed
-as candidates and require an explicit `--type`.
+as candidates and require an explicit `--type`. Each probe reads at most a
+2 MiB budget, so auto-detection does not scale with artifact size; formats that
+need a full scan require `--type`.
 
 `--all` runs every extractor that returned confident recognition, in registry
 order. It conflicts with `--type`, never promotes possible-but-unconfirmed
@@ -327,7 +359,7 @@ remains one hash per line, deduplicated by type and rendered hash.
 extracted value; `--full` disables truncation.
 
 Registered extractors and their supported serializations are documented in
-[`doc/EXTRACTORS.md`](doc/EXTRACTORS.md). Extraction coverage is tracked in
+[`internals/EXTRACTORS.md`](internals/EXTRACTORS.md). Extraction coverage is tracked in
 [`EXTRACTION.md`](EXTRACTION.md).
 
 ### Supported artifacts
@@ -412,19 +444,19 @@ python3 scripts/external-samples/run.py run --repo omniex-fixtures \
 
 Cases whose prerequisites are missing, such as `tshark` for Kerberos captures or
 the Perl LZMA module for 7-Zip headers, skip with a recorded reason instead of
-passing silently. `doc/SAMPLE_CORPORA.md` lists the corpora.
+passing silently. `scripts/external-samples/repos/` holds one manifest per
+upstream project and `scripts/external-samples/README.md` documents the format.
 
 ## Documentation
 
-- [`doc/DESIGN.md`](doc/DESIGN.md) - data model and CLI behavior.
-- [`doc/MACROS.md`](doc/MACROS.md) - `#[derive(HashType)]` reference.
-- [`doc/TESTING.md`](doc/TESTING.md) - test strategy and fixtures.
-- [`doc/EXTRACTORS.md`](doc/EXTRACTORS.md) - registered extractors.
-- [`doc/DEVELOPMENT.md`](doc/DEVELOPMENT.md) - project goal, layout, and workflow.
-- [`doc/SAMPLE_CORPORA.md`](doc/SAMPLE_CORPORA.md) - external corpora used for extraction tests.
-- [`doc/UNSUPPORTED_FORMATS.md`](doc/UNSUPPORTED_FORMATS.md) - formats outside mainline hashcat and John.
-- [`doc/JSON.md`](doc/JSON.md) - JSON hash documents and output envelopes.
-- [`doc/IDEAS.md`](doc/IDEAS.md) - features that are not implemented yet.
+- [`internals/DESIGN.md`](internals/DESIGN.md) - data model and CLI behavior.
+- [`internals/MACROS.md`](internals/MACROS.md) - `#[derive(HashType)]` reference.
+- [`internals/TESTING.md`](internals/TESTING.md) - test strategy and fixtures.
+- [`internals/EXTRACTORS.md`](internals/EXTRACTORS.md) - registered extractors.
+- [`internals/DEVELOPMENT.md`](internals/DEVELOPMENT.md) - project goal, layout, and workflow.
+- [`internals/UNSUPPORTED_FORMATS.md`](internals/UNSUPPORTED_FORMATS.md) - formats outside mainline hashcat and John.
+- [`internals/JSON.md`](internals/JSON.md) - JSON hash documents and output envelopes.
+- [`internals/IDEAS.md`](internals/IDEAS.md) - features that are not implemented yet.
 - [`CHANGELOG.md`](CHANGELOG.md) - release history.
 - [`AGENTS.md`](AGENTS.md) - instructions for automated contributors.
 

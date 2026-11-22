@@ -60,6 +60,7 @@ ALLOWED_CASE = {
     "exclude",
     "normalize",
     "reference_subset",
+    "env",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -87,6 +88,7 @@ class Case:
     normalize: str = ""
     exclude: list[str] = field(default_factory=list)
     filter: list[str] = field(default_factory=list)
+    env: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -504,6 +506,7 @@ def expand_cases(
             normalize=str(raw.get("normalize", "")),
             filter=list(raw.get("filter", [])),
             exclude=list(raw.get("exclude", [])),
+            env={str(key): str(value) for key, value in raw.get("env", {}).items()},
         )
         pattern = raw.get("glob")
         if pattern is not None:
@@ -638,8 +641,13 @@ def omniex_binary() -> Path:
     fail("build omniex or set OMNIEX_BIN")
 
 
-def run_command(command: list[str], cwd: Path | None = None) -> str:
-    result = timed_run(command, cwd=cwd, text=True, capture_output=True)
+def run_command(
+    command: list[str],
+    cwd: Path | None = None,
+    extra_env: dict[str, str] | None = None,
+) -> str:
+    env = {**os.environ, **extra_env} if extra_env else None
+    result = timed_run(command, cwd=cwd, env=env, text=True, capture_output=True)
     if result.returncode != 0:
         fail(
             f"command failed ({' '.join(command)}): "
@@ -775,7 +783,7 @@ def compare(
     raise SystemExit(1)
 
 
-def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: bool) -> None:
+def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: bool) -> bool:
     for requirement in case.requires:
         kind, _, name = requirement.partition(":")
         if kind == "perl":
@@ -785,7 +793,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             )
             if result.returncode != 0:
                 print(f"skip {manifest.ident}/{case.name}: Perl module `{name}` is missing")
-                return
+                return True
         elif kind == "python":
             result = timed_run(
                 [sys.executable, "-c", f"import {name}"],
@@ -793,11 +801,11 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             )
             if result.returncode != 0:
                 print(f"skip {manifest.ident}/{case.name}: Python module `{name}` is missing")
-                return
+                return True
         elif kind == "tool":
             if shutil.which(name) is None:
                 print(f"skip {manifest.ident}/{case.name}: tool `{name}` is missing")
-                return
+                return True
         else:
             fail(f"{manifest.ident}/{case.name}: unknown requirement `{requirement}`")
     artifact = artifact_path(manifest, case, sources, offline)
@@ -858,7 +866,11 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             for arg in case.args
         ]
         command = reference_command(kind, value, reference_artifact, reference_args)
-        reference_text = run_command(command, cwd=john_run() if kind == "john" else None)
+        reference_text = run_command(
+            command,
+            cwd=john_run() if kind == "john" else None,
+            extra_env=case.env,
+        )
         normalize = case.normalize or (
             "bks" if case.slug in {"bks", "vmx-keysafe", "sappse"} else "hash"
         )
@@ -888,6 +900,7 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
         case.subset,
         case.reference_subset,
     )
+    return False
 
 
 def command_list(args: argparse.Namespace) -> None:
@@ -966,6 +979,11 @@ def main() -> int:
                 action="store_true",
                 help="skip reference extraction and only require omniex output",
             )
+            sub.add_argument(
+                "--fail-on-skip",
+                action="store_true",
+                help="fail when a case is skipped because a requirement is missing",
+            )
 
     args = parser.parse_args()
     global SOURCES, LOCKS_BY_REPO
@@ -986,6 +1004,7 @@ def main() -> int:
 
     manifests = load_manifests(args.repo)
     failures = []
+    skipped = 0
     for manifest in manifests:
         local_root = SOURCES.get(manifest.ident)
         if local_root is None:
@@ -1011,7 +1030,8 @@ def main() -> int:
             if args.structural:
                 case.reference = "structural"
             try:
-                run_case(manifest, case, SOURCES, args.offline)
+                if run_case(manifest, case, SOURCES, args.offline):
+                    skipped += 1
             except SystemExit as error:
                 failures.append((manifest.ident, case.name, str(error)))
         print(f"{manifest.ident}: {len(selected)} case(s) checked")
@@ -1020,6 +1040,9 @@ def main() -> int:
         for repo, name, message in failures:
             print(f"  {repo}/{case_name(name)}: {message}")
         return 1
+    if skipped:
+        print(f"\n{skipped} case(s) skipped")
+        return 1 if args.fail_on_skip else 0
     return 0
 
 

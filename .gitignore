@@ -6,3 +6,6 @@
 
 # Release packaging output
 /dist/
+
+# Python test environment
+/.venv/

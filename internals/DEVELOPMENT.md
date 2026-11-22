@@ -13,16 +13,19 @@ src/             facade library, registry, CLI
 src/types/       one module per logical hash type
 tests/           CLI, coverage, per-type, and conformance tests
 scripts/         pinned reference-tool builds and local CI
-doc/             normative design documents
+assets/          logo sources used by the README and the site
+docs/            published site, the GitHub Pages source
+internals/       design, development, and testing documents
+docker/          development container image
 ```
 
 ## How to build this
 
 - Use Rust.
-- Read `doc/DESIGN.md` first. It defines the data model and CLI behavior.
-- Read `doc/MACROS.md` before adding a struct. The derive generates metadata,
+- Read `internals/DESIGN.md` first. It defines the data model and CLI behavior.
+- Read `internals/MACROS.md` before adding a struct. The derive generates metadata,
   `Describe`, `ModeCompat`, and the descriptor. `Parse` and `Render` are manual.
-- Read `doc/TESTING.md` before adding tests.
+- Read `internals/TESTING.md` before adding tests.
 - Use `Md5` and `SaltedMd5` as reference implementations.
 - Do not add a C shim, FFI module harness, or long-running server. Do not link
   against hashcat or John. Tests invoke the tools or their shipped Python test
@@ -31,8 +34,6 @@ doc/             normative design documents
   Master is informational only.
 
 ## Implementation workflow
-
-`MODES.md` is a temporary checklist. It is not the source of truth.
 
 Identity is algorithm-based. See the naming rule in `DESIGN.md`: only modes
 with the same algorithm, field meanings, and serialization share a type. A salt
@@ -48,7 +49,6 @@ For each mode or named John format:
    and `Render`; let the derive generate the rest.
 4. Add unit tests, hashcat/John conformance cases, and an extraction fixture if
    the type is extractable.
-5. Remove the covered entries from `MODES.md`.
 
 Do not merge two modes into one type just because they have the same field
 shape. If they need different hashcat serializations, they are different types.
@@ -59,7 +59,31 @@ Run `scripts/ci.sh` locally. It mirrors the fast CI jobs and, when the reference
 binaries are present, hashcat and John conformance. Missing reference tools must
 be recorded, not silently treated as passing.
 
-Then remove covered entries from `MODES.md` and commit. Do not push.
+Then commit. Do not push.
+
+## Python test dependencies
+
+The external-sample harness and its reference converters need Python packages
+that are not installed by `cargo`. They are managed with `uv`:
+
+```bash
+uv venv .venv
+uv pip install -r requirements-dev.txt
+```
+
+`scripts/ci-external-samples.sh` repeats those two commands itself when `uv` is
+available and the environment is stale, so a checkout needs no manual setup. It
+then runs the harness with `.venv/bin/python`, and the harness calls
+`sys.executable` for reference scripts, so the same environment reaches the
+upstream converters.
+
+Native prerequisites come from `scripts/ci-deps.sh` (it needs root or a
+`SUDO_CMD` wrapper): `libdb-dev` and `python3-dev` for `bsddb3`, `tshark`,
+`p7zip-full`, and `libcompress-raw-lzma-perl`.
+
+The external-sample shards fail rather than skip when a requirement is
+missing. GitHub CI installs every requirement; local runs need the packages
+above.
 
 ## CI environment
 
@@ -74,7 +98,10 @@ to resolve the Ubuntu mirrors; one aborted install for a few kilobytes of
 packages should not fail a job.
 
 Job logic lives in scripts, not inline in the workflow, so it can be run
-outside GitHub. The external-samples job is the reference example:
+outside GitHub. `scripts/ci.sh` runs the fast jobs inside the development
+container by default, so it sees the toolchains, reference binaries, and
+packages the GitHub jobs have; `OMNIEX_NO_CONTAINER=1` runs it on the host
+instead. The external-samples job is the reference example:
 
 ```bash
 scripts/ci-job.sh external-samples fixtures
@@ -125,8 +152,9 @@ The build job can be rehearsed without CI:
 
 ```bash
 scripts/check-version.sh v0.2.0
-cargo build --release --locked
-scripts/package-release.sh v0.2.0
+rustup target add x86_64-unknown-linux-musl
+cargo build --release --locked --target x86_64-unknown-linux-musl
+scripts/package-release.sh v0.2.0 x86_64-unknown-linux-musl
 ```
 
 `dist/` is ignored by git and holds the tarball, the unpacked directory, and
@@ -138,6 +166,6 @@ release a new patch version instead.
 
 ## Scope
 
-Hashcat and John coverage is tracked in `MODES.md`. Extraction, version-specific
-format changes, custom base64 alphabets, and optional/repeated fields are
-future work.
+Hashcat and John coverage is complete and enforced by the registry and its
+conformance vectors. Extraction, version-specific format changes, custom base64
+alphabets, and optional/repeated fields are future work.

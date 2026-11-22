@@ -102,6 +102,22 @@ fn pdf_probe_and_errors() {
 }
 
 #[test]
+fn pdf_permissions_render_as_signed_int32() {
+    let unsigned = expected("pdf", "encrypted-r3.hash")[0].replace("*-4*", "*4294967292*");
+    let output = omniex()
+        .arg("parse")
+        .arg(&unsigned)
+        .args(["--format", "hash"])
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    assert_eq!(
+        String::from_utf8(output.stdout).unwrap().trim_end(),
+        expected("pdf", "encrypted-r3.hash")[0]
+    );
+}
+
+#[test]
 fn pst_extracts_every_checksum() {
     assert_eq!(
         extracted("pst", "checksum-32bit.pst", Tool::John),
@@ -198,13 +214,24 @@ fn openssl_enc_extracts_salted_payloads() {
     );
 }
 
+fn with_options(artifact: Artifact, options: &[(&str, &str)]) -> Artifact {
+    let mut set = extract::ExtractOptions::new();
+    for (name, value) in options {
+        assert!(
+            set.set(*name, Some((*value).to_owned())),
+            "duplicate {name}"
+        );
+    }
+    artifact.with_options(set)
+}
+
 #[test]
-fn openssl_enc_is_maybe_and_requires_type() {
+fn openssl_enc_detects_the_envelope_and_validates_parameters() {
     let openssl = extractor("openssl-enc");
-    assert!(!openssl.exact());
+    assert!(openssl.exact());
     assert!(matches!(
         openssl.probe(&artifact("openssl-enc", "secret.enc")),
-        Probe::Maybe(reason) if reason.contains("does not record")
+        Probe::Yes(reason) if reason == "OpenSSL enc salted envelope"
     ));
     assert_eq!(
         openssl.probe(&Artifact::from_bytes("junk", b"not encrypted".to_vec())),
@@ -217,25 +244,34 @@ fn openssl_enc_is_maybe_and_requires_type() {
 
     let auto = omniex()
         .arg("extract")
-        .arg(fixture("openssl-enc", "secret.enc"))
-        .output()
-        .unwrap();
-    assert!(!auto.status.success());
-
-    let selected = omniex()
-        .arg("extract")
-        .arg("--type")
-        .arg("openssl-enc")
         .arg("--tool")
         .arg("john")
         .arg(fixture("openssl-enc", "secret.enc"))
         .output()
         .unwrap();
-    assert!(selected.status.success());
+    assert!(auto.status.success());
     assert_eq!(
-        String::from_utf8(selected.stdout).unwrap().trim_end(),
+        String::from_utf8(auto.stdout).unwrap().trim_end(),
         expected("openssl-enc", "secret.hash")[0]
     );
+
+    let cipher = with_options(
+        artifact("openssl-enc", "secret.enc"),
+        &[("cipher", "aes-128")],
+    );
+    let cipher_hash = openssl.extract(&cipher).expect("extract");
+    assert_eq!(
+        rendered(cipher_hash[0].as_ref(), Tool::John),
+        expected("openssl-enc", "secret.hash")[0].replace("$openssl$0$2$", "$openssl$1$2$")
+    );
+
+    let digest = with_options(artifact("openssl-enc", "secret.enc"), &[("digest", "sha1")]);
+    let digest_hash = openssl.extract(&digest).expect("extract");
+    let digest_hash = rendered(digest_hash[0].as_ref(), Tool::John);
+    assert!(digest_hash.starts_with("$openssl$0$1$"), "{digest_hash}");
+
+    let bad = with_options(artifact("openssl-enc", "secret.enc"), &[("cipher", "3")]);
+    assert!(openssl.extract(&bad).is_err());
 
     let selected_base64 = omniex()
         .arg("extract")
@@ -247,6 +283,46 @@ fn openssl_enc_is_maybe_and_requires_type() {
         .output()
         .unwrap();
     assert!(selected_base64.status.success());
+}
+
+#[test]
+fn openssl_enc_detects_large_payloads_without_buffering() {
+    use std::io::Write;
+
+    let path = Path::new(env!("CARGO_TARGET_TMPDIR")).join("large-openssl-salted.bin");
+    let mut file = std::fs::File::create(&path).unwrap();
+    file.write_all(b"Salted__").unwrap();
+    file.write_all(&[1; 8]).unwrap();
+    file.set_len(8 * 1024 * 1024).unwrap();
+    drop(file);
+
+    let artifact = Artifact::from_file(&path).unwrap();
+    assert!(matches!(
+        extract::select(extract::EXTRACTORS, &artifact),
+        Selection::Unique(extractor) if extractor.slug() == "openssl-enc"
+    ));
+    let hashes = extractor("openssl-enc")
+        .extract(&artifact)
+        .expect("extract");
+    assert!(rendered(hashes[0].as_ref(), Tool::John).starts_with("$openssl$0$2$8$"));
+}
+
+#[test]
+fn openssl_enc_refuses_non_aes_block_sizes() {
+    let openssl = extractor("openssl-enc");
+    let mut blob = b"Salted__".to_vec();
+    blob.extend_from_slice(&[1; 8]);
+    blob.extend_from_slice(&[2; 24]);
+    let artifact = Artifact::from_bytes("des.enc", blob);
+    assert!(matches!(
+        openssl.probe(&artifact),
+        Probe::Yes(reason) if reason == "OpenSSL enc salted envelope"
+    ));
+    let error = openssl
+        .extract(&artifact)
+        .err()
+        .expect("non-AES block size is refused");
+    assert!(error.to_string().contains("AES block size"), "{error}");
 }
 
 #[test]
@@ -314,7 +390,7 @@ fn auto_detection_and_all_respect_probe_confidence() {
     let openssl = artifact("openssl-enc", "secret.enc");
     assert!(matches!(
         extract::select(extract::EXTRACTORS, &openssl),
-        Selection::Unconfirmed(_)
+        Selection::Unique(extractor) if extractor.slug() == "openssl-enc"
     ));
     let all = omniex()
         .arg("extract")
@@ -322,7 +398,7 @@ fn auto_detection_and_all_respect_probe_confidence() {
         .arg(fixture("openssl-enc", "secret.enc"))
         .output()
         .unwrap();
-    assert!(!all.status.success());
+    assert!(all.status.success());
 
     let json = omniex()
         .arg("extract")

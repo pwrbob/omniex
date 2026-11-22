@@ -239,10 +239,10 @@ fn keys_from_artifact(artifact: &Artifact) -> Result<Vec<Sshng>, ExtractError> {
             if let Some(key) = new_format(&decode_body(block)?)? {
                 keys.push(key);
             }
-        } else if block.label.ends_with("PRIVATE KEY") {
-            if let Some(key) = legacy_format(block)? {
-                keys.push(key);
-            }
+        } else if block.label.ends_with("PRIVATE KEY")
+            && let Some(key) = legacy_format(block)?
+        {
+            keys.push(key);
         }
     }
     if keys.is_empty() {

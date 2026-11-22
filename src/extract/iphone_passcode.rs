@@ -2,7 +2,9 @@
 
 use byteorder::{BigEndian, ByteOrder};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, MemberRole, Probe, ReadAt};
+use super::{
+    Artifact, CompanionSpec, ExtractError, Extracted, Extractor, MemberRole, Probe, ReadAt,
+};
 use crate::parse;
 use crate::types::IphonePasscode;
 use crate::{HashType, HashValue};
@@ -10,6 +12,7 @@ use crate::{HashType, HashValue};
 pub struct IphonePasscodeExtractor;
 
 const KEYBAG_MAGIC: &[u8] = b"VERS";
+const PROBE_WINDOW: u64 = 1 << 20;
 const SCAN_CHUNK: usize = 64 * 1024;
 const MAX_PAYLOAD: usize = 1024 * 1024;
 const MAX_RECORDS: usize = 4096;
@@ -136,11 +139,10 @@ fn parse_keybag(source: &dyn ReadAt, offset: u64) -> Result<Keybag, ExtractError
     })
 }
 
-fn offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
-    let len = source.len();
+fn offsets(source: &dyn ReadAt, from: u64, len: u64) -> Result<Vec<u64>, ExtractError> {
     let overlap = KEYBAG_MAGIC.len().saturating_sub(1);
     let mut found = Vec::new();
-    let mut start = 0u64;
+    let mut start = from;
     while start < len {
         let read_len = usize::try_from(len - start)
             .unwrap_or(usize::MAX)
@@ -181,7 +183,7 @@ fn uid_key(artifact: &Artifact) -> Result<[u8; 16], ExtractError> {
             .filter(|character| character.is_ascii_alphanumeric())
             .flat_map(char::to_lowercase)
             .collect();
-        if !matches!(normalized.as_str(), "uid" | "uidkey" | "uidkeyhex") {
+        if normalized != "uidkey" {
             continue;
         }
         let length = usize::try_from(member.source.len().min(128)).unwrap_or(0);
@@ -209,20 +211,40 @@ fn uid_key(artifact: &Artifact) -> Result<[u8; 16], ExtractError> {
     ))
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::optional(
+    "uid-key",
+    "device UID key when it is not stored in the keybag; `uid_key` and `uidkey` are accepted",
+)];
+
 impl Extractor for IphonePasscodeExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         IphonePasscode::SLUG
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        let Ok(found) = offsets(artifact.primary()) else {
-            return Probe::No;
-        };
+        let source = artifact.primary();
+        let len = source.len();
+        let mut found = Vec::new();
+        for (from, end) in [
+            (0, len.min(PROBE_WINDOW)),
+            (len.saturating_sub(PROBE_WINDOW), len),
+        ] {
+            let Ok(mut offsets) = offsets(source, from, end) else {
+                return Probe::No;
+            };
+            found.append(&mut offsets);
+        }
+        found.sort_unstable();
+        found.dedup();
         if found.is_empty() {
             return Probe::No;
         }
         for offset in &found {
-            if parse_keybag(artifact.primary(), *offset).is_ok() {
+            if parse_keybag(source, *offset).is_ok() {
                 return Probe::yes("iOS keybag with a wrapped class key");
             }
         }
@@ -231,7 +253,7 @@ impl Extractor for IphonePasscodeExtractor {
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
         let source = artifact.primary();
-        let found = offsets(source)?;
+        let found = offsets(source, 0, source.len())?;
         if found.is_empty() {
             return Err(ExtractError::Unsupported("not an iOS keybag".to_owned()));
         }

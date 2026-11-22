@@ -19,14 +19,27 @@ fn parse(artifact: &Artifact) -> Result<(Iwork, Format), ExtractError> {
     let data = artifact.primary().read_all().map_err(|error| {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
     })?;
-    let mut archive = zip::ZipArchive::new(Cursor::new(data.as_slice()))
-        .map_err(|error| ExtractError::Invalid(format!("invalid iWork ZIP: {error}")))?;
+    let mut archive = match zip::ZipArchive::new(Cursor::new(data.as_slice())) {
+        Ok(archive) => archive,
+        Err(error) => {
+            return match parse_legacy(&data) {
+                Ok(hash) => Ok((hash, Format::Legacy)),
+                Err(ExtractError::Unsupported(_)) => {
+                    Err(ExtractError::Invalid(format!("invalid iWork ZIP: {error}")))
+                }
+                Err(error) => Err(error),
+            };
+        }
+    };
     let mut verifier = None;
     for index in 0..archive.len() {
         let mut entry = archive
             .by_index(index)
             .map_err(|error| ExtractError::Invalid(format!("invalid iWork entry: {error}")))?;
-        if entry.name().ends_with(".iwpv2") {
+        let name = entry
+            .name()
+            .map_err(|error| ExtractError::Invalid(format!("invalid iWork entry name: {error}")))?;
+        if name.ends_with(".iwpv2") {
             let mut data = Vec::new();
             entry.read_to_end(&mut data).map_err(|error| {
                 ExtractError::Invalid(format!("cannot read iWork verifier: {error}"))

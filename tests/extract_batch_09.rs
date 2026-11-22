@@ -2,7 +2,7 @@
 
 use std::path::{Path, PathBuf};
 
-use omniex::extract::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt};
+use omniex::extract::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe, ReadAt};
 use omniex::{HashType, HashValue, RenderOptions, Tool};
 
 pub mod types {

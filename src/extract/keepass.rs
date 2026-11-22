@@ -2,7 +2,7 @@
 
 use sha2::{Digest, Sha256};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Keepass;
 use crate::{HashType, HashValue};
 
@@ -245,7 +245,16 @@ fn parse(artifact: &Artifact) -> Result<Keepass, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::optional(
+    "keyfile",
+    "key file used in addition to the password",
+)];
+
 impl Extractor for KeepassExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Keepass::SLUG
     }

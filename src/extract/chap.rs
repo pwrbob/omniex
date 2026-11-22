@@ -194,7 +194,7 @@ mod iscsi {
             .strip_prefix(b"0x")
             .or_else(|| value.strip_prefix(b"0X"))
             .unwrap_or(value);
-        if value.len() % 2 != 0 {
+        if !value.len().is_multiple_of(2) {
             return Err(ExtractError::Invalid(
                 "odd-length iSCSI CHAP value".to_owned(),
             ));
@@ -286,17 +286,19 @@ fn value(kind: u8, challenge: &[u8], response: &[u8]) -> Option<Chap> {
 fn values(artifact: &Artifact) -> Result<Vec<Chap>, ExtractError> {
     let mut records = BTreeSet::new();
     for exchange in ppp::exchanges(artifact)? {
-        if exchange.challenge.len() == 16 && exchange.response.len() == 16 {
-            if let Some(chap) = value(exchange.id, &exchange.challenge, &exchange.response) {
-                records.insert((chap.kind, chap.challenge, chap.response));
-            }
+        if exchange.challenge.len() == 16
+            && exchange.response.len() == 16
+            && let Some(chap) = value(exchange.id, &exchange.challenge, &exchange.response)
+        {
+            records.insert((chap.kind, chap.challenge, chap.response));
         }
     }
     for exchange in iscsi::exchanges(artifact)? {
-        if exchange.challenge.len() == 16 && exchange.response.len() == 16 {
-            if let Some(chap) = value(exchange.id, &exchange.challenge, &exchange.response) {
-                records.insert((chap.kind, chap.challenge, chap.response));
-            }
+        if exchange.challenge.len() == 16
+            && exchange.response.len() == 16
+            && let Some(chap) = value(exchange.id, &exchange.challenge, &exchange.response)
+        {
+            records.insert((chap.kind, chap.challenge, chap.response));
         }
     }
     Ok(records

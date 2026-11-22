@@ -10,6 +10,7 @@ const MAGIC: &[u8; 4] = b"TDF$";
 const SALT_SIZE: usize = 32;
 const KEY_SIZE: usize = 288;
 const RECORD_HEADER: usize = 4 + 4 + 4 + SALT_SIZE + 4 + KEY_SIZE;
+const PROBE_WINDOW: u64 = 1 << 20;
 
 fn record_at(artifact: &Artifact, offset: u64) -> Option<Telegram> {
     if offset + RECORD_HEADER as u64 > artifact.primary().len() {
@@ -56,8 +57,8 @@ fn record_at(artifact: &Artifact, offset: u64) -> Option<Telegram> {
     })
 }
 
-fn scan(artifact: &Artifact) -> Result<Vec<Telegram>, ExtractError> {
-    let len = artifact.primary().len();
+fn scan(artifact: &Artifact, window: u64) -> Result<Vec<Telegram>, ExtractError> {
+    let len = artifact.primary().len().min(window);
     let mut hashes = Vec::new();
     let mut offsets = Vec::new();
     let mut start = 0;
@@ -108,14 +109,14 @@ impl Extractor for TelegramExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        match scan(artifact) {
+        match scan(artifact, PROBE_WINDOW) {
             Ok(_) => Probe::yes("Telegram Desktop local storage map"),
             Err(_) => Probe::No,
         }
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
-        Ok(scan(artifact)?
+        Ok(scan(artifact, u64::MAX)?
             .into_iter()
             .map(|hash| Box::new(hash) as Box<dyn HashValue>)
             .collect())

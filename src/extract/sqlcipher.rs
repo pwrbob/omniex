@@ -2,7 +2,7 @@
 
 use std::str;
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Sqlcipher;
 use crate::{HashType, HashValue};
 
@@ -75,7 +75,7 @@ fn parse(artifact: &Artifact) -> Result<Sqlcipher, ExtractError> {
             "database is plaintext SQLite, not SQLCipher".to_owned(),
         ));
     }
-    if artifact.primary().len() % 512 != 0 {
+    if !artifact.primary().len().is_multiple_of(512) {
         return Err(ExtractError::Unsupported(
             "database length is not a multiple of a SQLCipher page size".to_owned(),
         ));
@@ -96,7 +96,26 @@ fn parse(artifact: &Artifact) -> Result<Sqlcipher, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[
+    CompanionSpec::optional(
+        "sqlcipher-preset",
+        "`1` (64,000 PBKDF2-SHA1) or `2` (256,000 PBKDF2-SHA512) shortcut",
+    ),
+    CompanionSpec::optional(
+        "sqlcipher-type",
+        "KDF type; required unless `sqlcipher-preset` is supplied",
+    ),
+    CompanionSpec::optional(
+        "sqlcipher-iterations",
+        "KDF iteration count; required unless `sqlcipher-preset` is supplied",
+    ),
+];
+
 impl Extractor for SqlcipherExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Sqlcipher::SLUG
     }
@@ -107,7 +126,7 @@ impl Extractor for SqlcipherExtractor {
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         let len = artifact.primary().len();
-        if len < HEADER_SIZE as u64 || len % 512 != 0 {
+        if len < HEADER_SIZE as u64 || !len.is_multiple_of(512) {
             return Probe::No;
         }
         let mut magic = [0; 16];

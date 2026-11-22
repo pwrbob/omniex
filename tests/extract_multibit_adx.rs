@@ -98,9 +98,10 @@ fn bitshares_backup_requires_explicit_type_and_round_trips() {
 #[test]
 fn adxcrypt_extracts_all_user_records() {
     let extractor = extract::by_slug("adxcrypt").expect("ADX extractor");
+    assert!(!extractor.exact());
     assert!(matches!(
         extractor.probe(&artifact("adxcrypt", "ADXCSOUF.DAT")),
-        Probe::Yes(reason) if reason == "ADXCSOUF user records"
+        Probe::Maybe(reason) if reason.contains("ADXCSOUF")
     ));
     let hashes = extractor
         .extract(&artifact("adxcrypt", "ADXCSOUF.DAT"))
@@ -125,14 +126,23 @@ fn adxcrypt_extracts_all_user_records() {
 }
 
 #[test]
-fn adxcrypt_auto_detects_and_rejects_unrelated_text() {
+fn adxcrypt_needs_an_explicit_type_and_rejects_unrelated_text() {
     let auto = omniex()
         .arg("extract")
         .arg(fixture("adxcrypt", "ADXCSOUF.DAT"))
         .args(["--tool", "john"])
         .output()
         .unwrap();
-    assert!(auto.status.success());
+    assert_eq!(auto.status.code(), Some(1));
+    assert!(String::from_utf8_lossy(&auto.stderr).contains("has no reliable signature"));
+
+    let typed = omniex()
+        .arg("extract")
+        .arg(fixture("adxcrypt", "ADXCSOUF.DAT"))
+        .args(["--type", "adxcrypt", "--tool", "john"])
+        .output()
+        .unwrap();
+    assert!(typed.status.success());
 
     let extractor = extract::by_slug("adxcrypt").expect("ADX extractor");
     assert!(

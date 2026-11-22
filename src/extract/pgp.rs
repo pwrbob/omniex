@@ -4,7 +4,9 @@ use std::io::{Cursor, Read};
 
 use pgp::armor::Dearmor;
 use pgp::packet::{Packet, PacketParser};
-use pgp::types::{PublicParams, SecretParams, StringToKeyType};
+use pgp::types::{
+    EcdhPublicParams, PublicKeyTrait, PublicParams, S2kParams, SecretParams, StringToKey,
+};
 
 use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Pgp;
@@ -211,9 +213,11 @@ impl Extractor for PgpExtractor {
                             "OpenPGP encrypted data has no symmetric session key".to_owned(),
                         )
                     })?;
-                    hashes
-                        .push(Box::new(symmetric_hash(session, 18, data.data())?)
-                            as Box<dyn HashValue>);
+                    hashes.push(Box::new(symmetric_hash(
+                        session,
+                        18,
+                        protected_payload(data.data())?,
+                    )?) as Box<dyn HashValue>);
                 }
                 _ => {}
             }
@@ -229,34 +233,51 @@ impl Extractor for PgpExtractor {
     }
 }
 
+struct StringToKeyFields {
+    kind: u8,
+    hash: u32,
+    salt: Vec<u8>,
+    iterations: u32,
+}
+
+fn string_to_key(s2k: &StringToKey) -> Result<StringToKeyFields, ExtractError> {
+    match s2k {
+        StringToKey::IteratedAndSalted {
+            hash_alg,
+            salt,
+            count,
+        } => Ok(StringToKeyFields {
+            kind: 3,
+            hash: u32::from(hash_algorithm(*hash_alg)),
+            salt: salt.to_vec(),
+            iterations: (16 + u32::from(count & 15)) << (u32::from(count >> 4) + 6),
+        }),
+        other => Err(ExtractError::Unsupported(format!(
+            "unsupported OpenPGP string-to-key type {other:?}"
+        ))),
+    }
+}
+
 fn symmetric_session(
     key: pgp::packet::SymKeyEncryptedSessionKey,
 ) -> Result<SymmetricSession, ExtractError> {
-    let s2k = key.s2k();
-    let s2k_type = match s2k.typ() {
-        StringToKeyType::Salted => 1,
-        StringToKeyType::IteratedAndSalted => 3,
-        other => {
-            return Err(ExtractError::Unsupported(format!(
-                "unsupported OpenPGP string-to-key type {other:?}"
-            )));
-        }
-    };
-    let iterations = s2k.count().ok_or_else(|| {
-        ExtractError::Unsupported("OpenPGP string-to-key has no iteration count".to_owned())
-    })?;
-    let salt = s2k
-        .salt()
-        .ok_or_else(|| ExtractError::Unsupported("OpenPGP string-to-key has no salt".to_owned()))?;
+    let s2k = string_to_key(key.s2k())?;
     Ok(SymmetricSession {
-        s2k_type,
-        s2k_hash: u32::from(hash_algorithm(s2k.hash())),
+        s2k_type: s2k.kind,
+        s2k_hash: s2k.hash,
         cipher: symmetric_algorithm(key.sym_algorithm()),
-        iterations: u32::try_from(iterations).map_err(|_| {
-            ExtractError::Invalid("OpenPGP iteration count is too large".to_owned())
-        })?,
-        salt: salt.to_vec(),
+        iterations: s2k.iterations,
+        salt: s2k.salt,
     })
+}
+
+fn protected_payload(data: &pgp::packet::Data) -> Result<&[u8], ExtractError> {
+    match data {
+        pgp::packet::Data::V1 { data } => Ok(data),
+        _ => Err(ExtractError::Unsupported(
+            "OpenPGP AEAD protected data is not serialized".to_owned(),
+        )),
+    }
 }
 
 fn symmetric_hash(session: SymmetricSession, usage: u8, data: &[u8]) -> Result<Pgp, ExtractError> {
@@ -312,37 +333,39 @@ fn convert(
             let p = match params {
                 pgp::types::EcdsaPublicParams::P256 { key: _, p } => p,
                 pgp::types::EcdsaPublicParams::P384 { key: _, p } => p,
+                pgp::types::EcdsaPublicParams::P521 { key: _, p } => p,
+                pgp::types::EcdsaPublicParams::Secp256k1 { key: _, p } => p,
                 pgp::types::EcdsaPublicParams::Unsupported { curve: _, p } => p,
             };
             (19, bit_length(p))
         }
-        PublicParams::ECDH {
-            curve: _,
-            p,
-            hash: _,
-            alg_sym: _,
-        } => (18, bit_length(p)),
+        PublicParams::ECDH(params) => match params {
+            EcdhPublicParams::Known { p, .. } => (18, bit_length(p)),
+            EcdhPublicParams::Unsupported { opaque, .. } => (18, opaque.len() * 8),
+        },
         PublicParams::Elgamal { p, g: _, y: _ } => (16, bit_length(p)),
-        PublicParams::EdDSA { curve: _, q } => (18, bit_length(q)),
-    };
-
-    let s2k = secret.string_to_key();
-    let s2k_type = match s2k.typ() {
-        StringToKeyType::Salted => 1,
-        StringToKeyType::IteratedAndSalted => 3,
-        other => {
-            return Err(ExtractError::Unsupported(format!(
-                "unsupported OpenPGP string-to-key type {other:?}"
-            )));
+        PublicParams::EdDSALegacy { curve: _, q } => (18, bit_length(q)),
+        PublicParams::Ed25519 { public } => (18, public.len() * 8),
+        PublicParams::X25519 { public } => (18, public.len() * 8),
+        PublicParams::X448 { public } => (18, public.len() * 8),
+        PublicParams::Unknown { .. } => {
+            return Err(ExtractError::Unsupported(
+                "unknown OpenPGP public-key parameters".to_owned(),
+            ));
         }
     };
-    let iterations = s2k.count().ok_or_else(|| {
-        ExtractError::Unsupported("OpenPGP string-to-key has no iteration count".to_owned())
-    })?;
-    let salt = s2k
-        .salt()
-        .ok_or_else(|| ExtractError::Unsupported("OpenPGP string-to-key has no salt".to_owned()))?;
-    let iv = secret.iv();
+
+    let (s2k, cipher, iv) = match secret.string_to_key_params() {
+        S2kParams::Cfb { sym_alg, s2k, iv } | S2kParams::MalleableCfb { sym_alg, s2k, iv } => {
+            (s2k, *sym_alg, iv)
+        }
+        _ => {
+            return Err(ExtractError::Unsupported(
+                "unsupported OpenPGP secret-key encryption mode".to_owned(),
+            ));
+        }
+    };
+    let s2k = string_to_key(s2k)?;
     let data = secret.data();
 
     Ok(Pgp {
@@ -352,17 +375,15 @@ fn convert(
         modulus_size: u32::try_from(modulus_size)
             .map_err(|_| ExtractError::Invalid("OpenPGP key is too large".to_owned()))?,
         encrypted_data: data.to_vec(),
-        s2k_type,
-        s2k_hash: u32::from(hash_algorithm(s2k.hash())),
+        s2k_type: s2k.kind,
+        s2k_hash: s2k.hash,
         s2k_mode: secret.string_to_key_id(),
-        cipher: symmetric_algorithm(secret.encryption_algorithm()),
+        cipher: symmetric_algorithm(cipher),
         iv_size: u8::try_from(iv.len())
             .map_err(|_| ExtractError::Invalid("OpenPGP IV is too large".to_owned()))?,
         iv: iv.to_vec(),
-        iterations: u32::try_from(iterations).map_err(|_| {
-            ExtractError::Invalid("OpenPGP iteration count is too large".to_owned())
-        })?,
-        salt: salt.to_vec(),
+        iterations: s2k.iterations,
+        salt: s2k.salt,
     })
 }
 

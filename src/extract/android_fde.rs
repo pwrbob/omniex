@@ -2,13 +2,14 @@
 
 use byteorder::{ByteOrder, LittleEndian};
 
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe, ReadAt};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe, ReadAt};
 use crate::types::AndroidFde;
 use crate::{HashType, HashValue};
 
 pub struct AndroidFdeExtractor;
 
 const MAGIC: [u8; 4] = [0xc4, 0xb1, 0xb5, 0xd0];
+const PROBE_WINDOW: u64 = 1 << 20;
 const FOOTER_SIZE: usize = 100;
 const DATA_SAMPLE: usize = 512 * 3;
 const SCAN_CHUNK: usize = 64 * 1024;
@@ -22,11 +23,11 @@ fn read(source: &dyn ReadAt, offset: u64, len: usize) -> Result<Vec<u8>, Extract
     Ok(data)
 }
 
-fn footer_offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
+fn footer_offsets(source: &dyn ReadAt, from: u64) -> Result<Vec<u64>, ExtractError> {
     let len = source.len();
     let overlap = MAGIC.len().saturating_sub(1);
     let mut found = Vec::new();
-    let mut start = 0u64;
+    let mut start = from;
     while start < len {
         let read_len = usize::try_from(len - start)
             .unwrap_or(usize::MAX)
@@ -134,13 +135,24 @@ fn parse_footer(artifact: &Artifact, offset: u64) -> Result<AndroidFde, ExtractE
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::optional(
+    "data",
+    "data sample when the header does not carry it",
+)];
+
 impl Extractor for AndroidFdeExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         AndroidFde::SLUG
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        let Ok(found) = footer_offsets(artifact.primary()) else {
+        let source = artifact.primary();
+        let from = source.len().saturating_sub(PROBE_WINDOW);
+        let Ok(found) = footer_offsets(source, from) else {
             return Probe::No;
         };
         if found.is_empty() {
@@ -155,7 +167,7 @@ impl Extractor for AndroidFdeExtractor {
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
-        let found = footer_offsets(artifact.primary())?;
+        let found = footer_offsets(artifact.primary(), 0)?;
         if found.is_empty() {
             return Err(ExtractError::Unsupported(
                 "not an Android FDE footer".to_owned(),

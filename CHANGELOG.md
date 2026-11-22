@@ -7,6 +7,51 @@ version is zero, a minor release may change the CLI or a serialization.
 
 ## [Unreleased]
 
+- The completed hashcat and John mode checklist is gone. The registry and its
+  conformance vectors are now the only record of mode coverage, and the README
+  badges are checked against fixed upstream mode counts.
+
+## [0.2.2] - 2026-11-18
+
+- PDF `/P` permissions are canonicalized to signed 32-bit integers; both signed
+  and unsigned input spellings are accepted and unsigned values render in the
+  form hashcat and John expect.
+- `openssl-enc` is auto-detected from the `Salted__` envelope and reads only the
+  header, sample, and tail instead of the whole artifact. `--opt cipher=...`
+  and `--opt digest=...` replace the one-byte companion files; non-AES block
+  sizes are refused instead of being labelled AES-256. `show` now documents the
+  real defaults (`aes-256`, `sha256`).
+- `identify` marks ambiguous input with a follow-up notice and an `ambiguous`
+  flag in JSON output.
+- OpenPGP extraction uses `pgp` 0.14 and ZIP readers use `zip` 9, clearing the
+  RustSec findings; `cargo audit` runs in CI with documented ignores for
+  cryptographic operations the parser never performs.
+- The minimum supported Rust version is now 1.90, and the toolchain is pinned
+  for local and CI builds.
+- Release archives are static `x86_64` Linux binaries built with musl.
+- CI installs the Python sample dependencies with `uv`, fails when an
+  external-sample case is skipped, and runs a full-history secret scan.
+
+## [0.2.1] - 2026-11-16
+
+- `extract --opt NAME[=VALUE]` passes extractor-specific options; `omniex show`
+  lists them. `--deep` moved to `--opt deep`.
+- Auto-detection bounds each probe to 2 MiB, so a multi-gigabyte artifact no
+  longer makes detection read the whole file once per extractor.
+- `omniex show` now documents each extractor's companion roles and marks the
+  ones extraction requires. Companion aliases without upstream support
+  (`email`, `iter`, `system`, `uidkeyhex`) were removed; use the canonical
+  `username`, `iterations`, `SYSTEM`, and `uid-key` roles.
+- Probes for APFS, Android FDE, Android backups, FileVault 2, iTunes backups,
+  iPhone keybags, Telegram, Veeam, and KeePass-style containers now read
+  bounded headers and tails instead of scanning the artifact. LastPass CLI and
+  ADXCSOUF record extractors are Maybe-only because their input has no
+  structural signature, and Keplr JSON keyrings are recognized directly.
+- PKZIP extraction reads the central directory, understands zip64 archives, and
+  no longer loads the whole archive. New `--opt checksum-only` matches
+  `zip2john -c`; `--opt full-data` streams the embedded entry instead of
+  buffering it when it exceeds hashcat's 320 KiB data limit.
+
 ## [0.2.0] - 2026-11-11
 
 First release.

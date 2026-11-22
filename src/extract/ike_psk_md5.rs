@@ -225,27 +225,28 @@ pub(crate) mod ike {
                 6 if body >= 20 => {
                     let interface = u32_at(source, offset + 8, big_endian)? as usize;
                     let captured = u64::from(u32_at(source, offset + 20, big_endian)?);
-                    if let Some(link_type) = interfaces.get(interface) {
-                        if captured <= MAX_PACKET && 20 + captured <= body {
-                            buffer.resize(captured as usize, 0);
-                            source
-                                .read_exact_at(offset + 28, &mut buffer)
-                                .map_err(|_| truncated())?;
-                            visit(*link_type, &buffer);
-                        }
+                    if let Some(link_type) = interfaces.get(interface)
+                        && captured <= MAX_PACKET
+                        && 20 + captured <= body
+                    {
+                        buffer.resize(captured as usize, 0);
+                        source
+                            .read_exact_at(offset + 28, &mut buffer)
+                            .map_err(|_| truncated())?;
+                        visit(*link_type, &buffer);
                     }
                 }
                 3 if body >= 4 => {
                     let original = u64::from(u32_at(source, offset + 8, big_endian)?);
                     let length = original.min(body - 4).min(MAX_PACKET);
-                    if let Some(link_type) = interfaces.first().copied() {
-                        if length > 0 {
-                            buffer.resize(length as usize, 0);
-                            source
-                                .read_exact_at(offset + 12, &mut buffer)
-                                .map_err(|_| truncated())?;
-                            visit(link_type, &buffer);
-                        }
+                    if let Some(link_type) = interfaces.first().copied()
+                        && length > 0
+                    {
+                        buffer.resize(length as usize, 0);
+                        source
+                            .read_exact_at(offset + 12, &mut buffer)
+                            .map_err(|_| truncated())?;
+                        visit(link_type, &buffer);
                     }
                 }
                 _ => {}

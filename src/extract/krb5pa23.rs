@@ -213,10 +213,10 @@ pub(crate) mod asreq {
         }
         let mut messages = Vec::new();
         net::scan(source, |link_type, frame| {
-            if let Some(payload) = net::kerberos_payload(link_type, frame) {
-                if let Some(message) = parse_message(payload) {
-                    messages.push(message);
-                }
+            if let Some(payload) = net::kerberos_payload(link_type, frame)
+                && let Some(message) = parse_message(payload)
+            {
+                messages.push(message);
             }
         })?;
         Ok(messages)

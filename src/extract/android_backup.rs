@@ -8,6 +8,7 @@ use crate::{HashType, HashValue};
 pub struct AndroidBackupExtractor;
 
 const MAGIC: &[u8] = b"ANDROID BACKUP\n";
+const PROBE_WINDOW: u64 = 1 << 20;
 const HEADER_LIMIT: usize = 8192;
 const SCAN_CHUNK: usize = 64 * 1024;
 
@@ -98,9 +99,9 @@ fn parse_header_at(source: &dyn ReadAt, offset: u64) -> Result<AndroidBackup, Ex
     })
 }
 
-fn offsets(artifact: &Artifact) -> Result<Vec<u64>, ExtractError> {
+fn offsets(artifact: &Artifact, window: u64) -> Result<Vec<u64>, ExtractError> {
     let source = artifact.primary();
-    let len = source.len();
+    let len = source.len().min(window);
     let mut found = Vec::new();
     let overlap = MAGIC.len().saturating_sub(1);
     let mut start = 0u64;
@@ -140,7 +141,11 @@ impl Extractor for AndroidBackupExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        let Ok(found) = offsets(artifact) else {
+        let mut magic = [0u8; 15];
+        if artifact.primary().read_exact_at(0, &mut magic).is_err() || magic != MAGIC {
+            return Probe::No;
+        }
+        let Ok(found) = offsets(artifact, PROBE_WINDOW) else {
             return Probe::No;
         };
         if found.is_empty() {
@@ -155,7 +160,7 @@ impl Extractor for AndroidBackupExtractor {
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
-        let found = offsets(artifact)?;
+        let found = offsets(artifact, u64::MAX)?;
         if found.is_empty() {
             return Err(ExtractError::Unsupported(
                 "not an Android backup".to_owned(),

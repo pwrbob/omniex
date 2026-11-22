@@ -199,7 +199,7 @@ omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|j
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
-omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john|json] [--full] [--deep]
+omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john|json] [--full] [--opt NAME[=VALUE]] [--companion NAME=PATH]...
 ```
 
 - `parse` parses one hash string into a hash type instance and renders it again.
@@ -208,10 +208,13 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
 - `--type` selects the hash type by slug. The same slug is used by `parse` and
   `extract`.
 - `identify` lists every hash type that parses the input. Ambiguous input is
-  not an error; the user disambiguates with `--type`.
+  not an error; the table is followed by a notice and JSON records carry an
+  `ambiguous` flag so the user can disambiguate with `--type`.
 - `types` lists the hash types registered in this build. It is separate from
   `identify`, which is always input-driven.
-- `show` prints one type's fields and modes without requiring a hash.
+- `show` prints one type's fields and modes without requiring a hash, plus the
+  extractor's `--opt` options and companion roles, marking companions that
+  extraction requires.
 - `extract` uses the extractor registered for the selected hash type. Without
   `--type`, it auto-detects when exactly one type reports confident recognition;
   otherwise it lists candidates.
@@ -220,8 +223,25 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   output if one extractor fails, and deduplicates by type and rendered hash.
 - `extract --format json` emits a versioned envelope whose `results` entries
   contain `type` and `hash`.
-- `extract --deep` allows slower exhaustive scans. Without it, extractors must
-  use bounded structural checks such as headers and partition tables.
+- Auto-detection gives every probe a 2 MiB read budget. A probe that needs
+  more does full-artifact analysis and must be selected with `--type`, so
+  detection time stays bounded regardless of artifact size. Probes inspect
+  signatures, headers, and tails rather than reading the artifact; a fixture
+  test checks that detection reads a bounded number of bytes.
+- `extract --opt NAME[=VALUE]` passes an extractor-specific option. Each
+  extractor declares its options through `Extractor::options`; the CLI rejects
+  unknown names, missing values, and values supplied to flags. `show` prints
+  the list. `--opt deep` allows slower exhaustive scans; without it,
+  extractors must use bounded structural checks such as headers and partition
+  tables.
+- `extract --companion NAME=PATH` supplies an auxiliary file whose role the
+  extractor declares through `Extractor::companions`. It may be repeated, and
+  `show` marks the companions extraction requires. Missing or unknown role
+  names are usage errors, and an artifact that needs a companion fails rather
+  than guessing its parameters.
+- `extract` values whose payload streams from the artifact, such as a PKZIP
+  data record above hashcat's 320 KiB limit, require `--format hash`; JSON and
+  human output reject them instead of buffering the payload.
 - `--tool` defaults to `hashcat` and selects only the output serialization:
   `hashcat`, `john`, or `json`. It never changes input parsing. Rendering fails
   when the concrete value has no mode for the selected text tool.

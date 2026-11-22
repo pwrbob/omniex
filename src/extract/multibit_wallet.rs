@@ -117,10 +117,10 @@ fn parse_encrypted_data(data: &[u8]) -> Result<Option<Vec<u8>>, ExtractError> {
     let mut encrypted = None;
     let mut reader = Reader::new(data);
     while let Some((field, value)) = reader.next()? {
-        if field == 2 {
-            if let Field::Bytes(key) = value {
-                encrypted = Some(key.to_vec());
-            }
+        if field == 2
+            && let Field::Bytes(key) = value
+        {
+            encrypted = Some(key.to_vec());
         }
     }
     Ok(encrypted)

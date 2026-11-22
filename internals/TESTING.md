@@ -149,8 +149,7 @@ Use `assert_cmd` or `trycmd` plus `insta` for snapshots:
 3. Add the John case if a named format exists: format label, hash, password.
 4. Add an extraction fixture if the type is extractable.
 5. Add a CLI snapshot if the type has a user-visible example.
-6. Remove the corresponding entries from `MODES.md`.
-7. Run:
+6. Run:
 
 ```text
 cargo test --workspace
@@ -198,29 +197,29 @@ committed.
 
 ## Coverage
 
-`MODES.md` is the working checklist. Remove entries when a type is implemented.
+The registry and the vector table in `tests/common/mod.rs` are the source of
+truth for hashcat and John coverage. `tests/coverage.rs` enforces it: every
+registered type has a conformance vector, every mode in
+`HashTypeDescriptor::all_modes` appears in that vector's modes, and the README
+badges match the registry counts.
 
-In v0 there is no global coverage gate. Once the first release is complete, add
-one simple test:
-
-- every mode in every `HashTypeDescriptor::all_modes` has at least one
-  canonical test or fixture,
-- every remaining `MODES.md` entry is either implemented or explicitly listed
-  as unsupported.
-
-Do not build a separate coverage framework before that. The registry and test
-tables are enough.
+Do not build a separate coverage framework. The registry and test tables are
+enough.
 
 ## CI and local workflow
 
 | Job | Contents | Blocking |
 | --- | --- | --- |
-| `checks` | fmt, clippy, docs, unit, property, CLI, and macro tests | yes |
-| `msrv` | compile check with Rust 1.85 | yes |
-| `hashcat` | conformance against `8.0.0` | yes when implemented |
-| `john` | conformance against pinned jumbo | yes when implemented |
-| `extraction` | extraction fixtures | yes when implemented |
-| `master` | hashcat master drift | no, later |
+| `lint` | formatting and clippy | yes |
+| `docs` | documentation build | yes |
+| `tests` | unit, property, CLI, and macro tests | yes |
+| `ui` | `trybuild` derive diagnostics | yes |
+| `msrv` | compile check with Rust 1.90 | yes |
+| `audit` | dependency audit against RustSec | yes |
+| `secret-scan` | full-history gitleaks scan | yes |
+| `hashcat` | conformance against `8.0.0`, four shards | yes |
+| `john` | conformance against pinned jumbo | yes |
+| `external-samples` | extraction against external corpora, four shards | yes |
 
 The fast suite must run without hashcat or John. Missing reference tools are a
 failure when a conformance test is run; an explicit
@@ -228,9 +227,8 @@ failure when a conformance test is run; an explicit
 warning.
 
 `cargo check --workspace --all-targets --locked` runs on the declared MSRV.
-Pull requests run a representative conformance subset; `main` runs the full
-vector set. Target budgets: fast suite under 5 minutes; PR total under 10
-minutes.
+Every job runs on every push and pull request; the conformance and
+external-sample jobs wait for the fast jobs first through `needs`.
 
 ## Definition of done for a mode
 
@@ -242,7 +240,6 @@ minutes.
 - Hashcat conformance passes for the mode.
 - John conformance passes where a named John format exists.
 - An extraction test exists if the mode is extractable.
-- The `MODES.md` entry is removed.
 
 ## Deferred decisions
 
@@ -264,4 +261,5 @@ pairs KeePass KDBX v4 files with hashcat and John serializations, and GPG
 OCB-AES private keys with hashcat serializations. The artifacts are not stored
 in this repository.
 
-See `doc/SAMPLE_CORPORA.md` for artifact-only corpora and their limitations.
+See `scripts/external-samples/README.md` for the manifest format and the
+available corpora.

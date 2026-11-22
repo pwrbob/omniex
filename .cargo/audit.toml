@@ -1,0 +1,9 @@
+[advisories]
+# These advisories affect cryptographic operations that omniex never performs:
+# it parses OpenPGP key material and extracts encrypted packets, but does not
+# run RSA decryption or elliptic-curve scalar multiplication on untrusted data.
+ignore = [
+    "RUSTSEC-2026-0387", # crypto-bigint constant-time operations
+    "RUSTSEC-2023-0071", # rsa Marvin attack on decryption
+    "RUSTSEC-2026-0543", # chrono unmaintained, transitive via pgp, no upgrade available
+]

@@ -299,6 +299,31 @@ fn extract_reports_that_no_extractor_exists() {
 }
 
 #[test]
+fn extract_writes_a_hash_document_with_the_json_tool() {
+    let artifact = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/artifacts/dpapi/masterkey.bin");
+
+    let output = omniex()
+        .args(["extract", "--type", "dpapi"])
+        .arg(&artifact)
+        .args(["--format", "hash", "--tool", "json"])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let text = String::from_utf8(output.stdout).expect("UTF-8 output");
+    let documents = text.lines().collect::<Vec<_>>();
+    assert_eq!(documents.len(), 3);
+
+    for document in documents {
+        let value: Value = serde_json::from_str(document).expect("valid JSON");
+        assert_eq!(value["schema"], "omniex.hash.v1");
+        assert_eq!(value["type"], "dpapi");
+        assert!(value["fields"]["contents"].is_object());
+    }
+}
+
+#[test]
 fn missing_input_is_a_usage_error() {
     omniex()
         .args(["parse", "--type", "md5"])
@@ -366,6 +391,34 @@ fn identify_json_is_an_array_of_matches() {
     assert_eq!(entries[0]["slug"], "md4");
     assert_eq!(entries[0]["hashcat"], serde_json::json!([900]));
     assert_eq!(entries[0]["john"], serde_json::json!(["Raw-MD4"]));
+    assert_eq!(entries[0]["ambiguous"], true);
+}
+
+#[test]
+fn identify_flags_ambiguous_input() {
+    let output = omniex()
+        .args(["identify", "6d4988f143dc3870"])
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    let text = String::from_utf8_lossy(&output.stdout);
+    assert!(text.contains("hash types match this input"), "{text}");
+
+    let single = omniex()
+        .args(["identify", MD5_HASH, "--json"])
+        .output()
+        .unwrap();
+    assert!(single.status.success());
+    let value: Value = serde_json::from_slice(&single.stdout).unwrap();
+    assert_eq!(value[0]["ambiguous"], true);
+
+    let unique = omniex()
+        .args(["identify", "$1$38652870$DUjsu4TTlTsOe/xxZ05uf/"])
+        .output()
+        .unwrap();
+    if unique.status.success() {
+        assert!(!String::from_utf8_lossy(&unique.stdout).contains("hash types match"));
+    }
 }
 
 #[test]

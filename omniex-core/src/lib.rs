@@ -1,3 +1,5 @@
+#![forbid(unsafe_code)]
+
 //! Core runtime types shared by `omniex`.
 //!
 //! This crate contains no CLI, no I/O, and no concrete hash implementations. It
@@ -218,14 +220,27 @@ pub trait Render: ModeCompat {
     /// Serialize without checking tool or version compatibility.
     fn render_value(&self, opts: &RenderOptions) -> String;
 
+    /// Writes the serialization to `out` without building a `String`.
+    ///
+    /// Types that hold streamed data override this; the default delegates to
+    /// `render_value`.
+    fn render_to(&self, opts: &RenderOptions, out: &mut dyn std::io::Write) -> std::io::Result<()> {
+        out.write_all(self.render_value(opts).as_bytes())
+    }
+
+    /// Whether serializing this value streams bytes instead of a compiled
+    /// string, which makes the value unusable for JSON and human output.
+    fn streams(&self) -> bool {
+        false
+    }
+
     /// Render the type using the given options.
     fn render(&self, opts: &RenderOptions) -> Result<String, RenderError> {
-        if let Some(version) = opts.hc_version.release() {
-            if let Some(first) = HashcatVersion::FIRST_SUPPORTED_RELEASE.release() {
-                if version < first {
-                    return Err(RenderError::UnsupportedRelease(version));
-                }
-            }
+        if let Some(version) = opts.hc_version.release()
+            && let Some(first) = HashcatVersion::FIRST_SUPPORTED_RELEASE.release()
+            && version < first
+        {
+            return Err(RenderError::UnsupportedRelease(version));
         }
 
         let supported = self.modes().iter().any(|mode| {

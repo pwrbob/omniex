@@ -30,7 +30,7 @@ fn decode_hex<const N: usize>(text: &str, name: &str) -> Result<[u8; N], Extract
         )));
     }
     let mut out = [0; N];
-    for (index, pair) in bytes.chunks_exact(2).enumerate() {
+    for (index, pair) in bytes.as_chunks::<2>().0.iter().enumerate() {
         let high = hex_value(pair[0])
             .ok_or_else(|| ExtractError::Invalid(format!("invalid Terra {name} hex")))?;
         let low = hex_value(pair[1])

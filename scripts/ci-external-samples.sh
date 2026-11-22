@@ -18,6 +18,28 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
+export TIMEFORMAT='  [time] %3R s'
+
+python="${PYTHON:-}"
+if [[ -z "$python" ]]; then
+    if command -v uv >/dev/null 2>&1 && [[ -f "$root/requirements-dev.txt" ]]; then
+        venv="$root/.venv"
+        stamp="$venv/.omniex-requirements"
+        digest="$(sha256sum "$root/requirements-dev.txt" | cut -d' ' -f1)"
+        if [[ ! -x "$venv/bin/python" || "$(cat "$stamp" 2>/dev/null)" != "$digest" ]]; then
+            echo "==> python test dependencies"
+            time uv venv --clear "$venv" --python python3
+            time uv pip install --python "$venv/bin/python" -r "$root/requirements-dev.txt"
+            printf '%s\n' "$digest" >"$stamp"
+        fi
+        python="$venv/bin/python"
+    elif [[ -x "$root/.venv/bin/python" ]]; then
+        python="$root/.venv/bin/python"
+    else
+        python=python3
+    fi
+fi
+
 if [[ $# -lt 1 ]]; then
     echo "usage: scripts/ci-external-samples.sh SHARD [--cold] [--skip-build]" >&2
     exit 2
@@ -92,7 +114,6 @@ fi
 mkdir -p tmp/external-samples
 chmod -R u+rwX,go+rX tmp/external-samples 2>/dev/null || true
 
-export TIMEFORMAT='  [time] %3R s'
 if ((build)); then
     echo "==> build omniex"
     time cargo build --workspace --locked
@@ -105,10 +126,10 @@ done
 
 echo "==> external sample extraction ($shard)"
 if [[ "$shard" == "fixtures" ]]; then
-    time python3 scripts/external-samples/run.py run "${args[@]}" \
-        --source "omniex-fixtures=$root"
+    time "$python" scripts/external-samples/run.py run "${args[@]}" \
+        --source "omniex-fixtures=$root" --fail-on-skip
 else
-    time python3 scripts/external-samples/run.py run "${args[@]}"
+    time "$python" scripts/external-samples/run.py run "${args[@]}" --fail-on-skip
 fi
 
 if [[ "$shard" == "fixtures" ]]; then

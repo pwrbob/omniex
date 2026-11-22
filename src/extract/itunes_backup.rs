@@ -12,6 +12,7 @@ const TAG_SALT: &[u8] = b"SALT";
 const TAG_ITER: &[u8] = b"ITER";
 const TAG_WPKY: &[u8] = b"WPKY";
 const TAG_DPIC: &[u8] = b"DPIC";
+const PROBE_WINDOW: u64 = 1 << 20;
 const TAG_DPSL: &[u8] = b"DPSL";
 const PLIST_MAGIC: &[u8] = b"bplist00";
 const SCAN_CHUNK: usize = 64 * 1024;
@@ -108,12 +109,15 @@ fn parse_record(source: &dyn ReadAt, offset: u64) -> Result<ItunesBackup, Extrac
 }
 
 fn offsets(source: &dyn ReadAt) -> Result<Vec<u64>, ExtractError> {
-    let len = source.len();
+    offsets_range(source, 0, source.len())
+}
+
+fn offsets_range(source: &dyn ReadAt, from: u64, end: u64) -> Result<Vec<u64>, ExtractError> {
     let overlap = TAG_SALT.len().saturating_sub(1);
     let mut found = Vec::new();
-    let mut start = 0u64;
-    while start < len {
-        let read_len = usize::try_from(len - start)
+    let mut start = from;
+    while start < end {
+        let read_len = usize::try_from(end - start)
             .unwrap_or(usize::MAX)
             .min(SCAN_CHUNK);
         let mut chunk = vec![0; read_len];
@@ -154,9 +158,18 @@ impl Extractor for ItunesBackupExtractor {
 
     fn probe(&self, artifact: &Artifact) -> Probe {
         let source = artifact.primary();
-        let Ok(found) = offsets(source) else {
-            return Probe::No;
-        };
+        let mut found = Vec::new();
+        for (from, end) in [
+            (0, source.len().min(PROBE_WINDOW)),
+            (source.len().saturating_sub(PROBE_WINDOW), source.len()),
+        ] {
+            let Ok(mut offsets) = offsets_range(source, from, end) else {
+                return Probe::No;
+            };
+            found.append(&mut offsets);
+        }
+        found.sort_unstable();
+        found.dedup();
         if found.is_empty() {
             return Probe::No;
         }

@@ -1,6 +1,8 @@
+#![forbid(unsafe_code)]
+
 //! Derive macro for hash-type metadata.
 //!
-//! See `doc/MACROS.md` for the supported attribute syntax. The derive only
+//! See `internals/MACROS.md` for the supported attribute syntax. The derive only
 //! generates metadata and the inherent descriptor; `Parse` and `Render` are
 //! implemented by hand.
 
@@ -34,6 +36,7 @@ struct FieldAttrs {
     role: String,
     encoding: String,
     rename: Option<String>,
+    ty: Option<String>,
 }
 
 fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
@@ -90,7 +93,7 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
 
         let role = role_variant(&attrs.role)?;
         let encoding = encoding_variant(&attrs.encoding)?;
-        let ty = compact_type(&field.ty);
+        let ty = attrs.ty.unwrap_or_else(|| compact_type(&field.ty));
 
         field_entries.push(quote! {
             ::omniex::Field {
@@ -322,6 +325,7 @@ fn parse_field_attrs(field: &Field) -> syn::Result<FieldAttrs> {
     let mut role: Option<String> = None;
     let mut encoding: Option<String> = None;
     let mut rename: Option<String> = None;
+    let mut ty: Option<String> = None;
 
     for attr in &field.attrs {
         if !attr.path().is_ident("field") {
@@ -346,6 +350,12 @@ fn parse_field_attrs(field: &Field) -> syn::Result<FieldAttrs> {
                 }
                 let value: LitStr = meta.value()?.parse()?;
                 rename = Some(value.value());
+            } else if meta.path.is_ident("ty") {
+                if ty.is_some() {
+                    return Err(meta.error("duplicate `ty` key"));
+                }
+                let value: LitStr = meta.value()?.parse()?;
+                ty = Some(value.value());
             } else {
                 return Err(meta.error("unknown `#[field]` key"));
             }
@@ -357,6 +367,7 @@ fn parse_field_attrs(field: &Field) -> syn::Result<FieldAttrs> {
         role: role.unwrap_or_else(|| "other".to_owned()),
         encoding: encoding.unwrap_or_else(|| "raw".to_owned()),
         rename,
+        ty,
     })
 }
 
@@ -367,14 +378,13 @@ fn doc_comment(field: &Field) -> syn::Result<LitStr> {
         if !attr.path().is_ident("doc") {
             continue;
         }
-        if let syn::Meta::NameValue(value) = &attr.meta {
-            if let Expr::Lit(ExprLit {
+        if let syn::Meta::NameValue(value) = &attr.meta
+            && let Expr::Lit(ExprLit {
                 lit: Lit::Str(text),
                 ..
             }) = &value.value
-            {
-                lines.push(text.value().trim().to_owned());
-            }
+        {
+            lines.push(text.value().trim().to_owned());
         }
     }
 

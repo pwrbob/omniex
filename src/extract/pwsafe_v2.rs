@@ -12,7 +12,7 @@ pub struct PwsafeV2Extractor;
 fn has_v2_shape(artifact: &Artifact) -> bool {
     let source = artifact.primary();
     let len = source.len();
-    if len < MIN_LENGTH || (len - HEADER_LENGTH) % 8 != 0 {
+    if len < MIN_LENGTH || !(len - HEADER_LENGTH).is_multiple_of(8) {
         return false;
     }
     let mut magic = [0; 4];

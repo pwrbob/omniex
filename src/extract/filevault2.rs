@@ -261,7 +261,7 @@ pub(super) fn xts_decrypt(key: &[u8], tweak: u128, data: &mut [u8]) -> Result<()
             "unsupported AES-XTS key length".to_owned(),
         ));
     }
-    if data.len() % 16 != 0 {
+    if !data.len().is_multiple_of(16) {
         return Err(ExtractError::Invalid(
             "AES-XTS data is not block aligned".to_owned(),
         ));
@@ -275,7 +275,7 @@ pub(super) fn xts_decrypt_sectors(
     data: &mut [u8],
     sector_size: usize,
 ) -> Result<(), ExtractError> {
-    if sector_size == 0 || sector_size % 16 != 0 {
+    if sector_size == 0 || !sector_size.is_multiple_of(16) {
         return Err(ExtractError::Invalid("invalid XTS sector size".to_owned()));
     }
     for (index, sector) in data.chunks_mut(sector_size).enumerate() {
@@ -312,7 +312,7 @@ fn candidates(source: &dyn ReadAt) -> io::Result<Vec<u64>> {
                 continue;
             }
             let signature = base + index as u64;
-            if signature < 88 || (signature - 88) % HEADER_SIZE as u64 != 0 {
+            if signature < 88 || !(signature - 88).is_multiple_of(HEADER_SIZE as u64) {
                 continue;
             }
             offsets.push(signature - 88);
@@ -594,7 +594,7 @@ impl Extractor for FileVault2Extractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        match extract_all(artifact) {
+        match volume(artifact.primary(), 0) {
             Ok(_) => Probe::yes("CoreStorage encryption context"),
             Err(_) => Probe::No,
         }

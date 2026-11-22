@@ -353,10 +353,10 @@ fn document_id(data: &[u8]) -> Option<Vec<u8>> {
             && data.get(offset + 3).is_none_or(|byte| is_delimiter(*byte))
         {
             let mut parser = Parser::new(data, offset + 3);
-            if let Ok(Value::Array(values)) = parser.parse_value(0) {
-                if let Some(id) = values.first().and_then(Value::bytes) {
-                    found = Some(id.to_vec());
-                }
+            if let Ok(Value::Array(values)) = parser.parse_value(0)
+                && let Some(id) = values.first().and_then(Value::bytes)
+            {
+                found = Some(id.to_vec());
             }
         }
         offset += 1;
@@ -370,11 +370,10 @@ fn find_encryption_dictionaries(data: &[u8]) -> Vec<Vec<(Vec<u8>, Value)>> {
     while offset + 1 < data.len() {
         if data[offset] == b'<' && data[offset + 1] == b'<' {
             let mut parser = Parser::new(data, offset);
-            if let Ok(Value::Dictionary(entries)) = parser.parse_value(0) {
-                if dictionary_value(&entries, b"Filter").and_then(Value::name) == Some(b"Standard")
-                {
-                    dictionaries.push(entries);
-                }
+            if let Ok(Value::Dictionary(entries)) = parser.parse_value(0)
+                && dictionary_value(&entries, b"Filter").and_then(Value::name) == Some(b"Standard")
+            {
+                dictionaries.push(entries);
             }
         }
         offset += 1;
@@ -469,7 +468,9 @@ fn convert_dictionary(entries: &[(Vec<u8>, Value)], id: &[u8]) -> Result<Pdf, Ex
             .map_err(|_| ExtractError::Invalid("invalid PDF revision".to_owned()))?,
         key_length: u32::try_from(key_length)
             .map_err(|_| ExtractError::Invalid("invalid PDF key length".to_owned()))?,
-        permissions: permissions.to_string(),
+        permissions: crate::types::signed_permissions(permissions)
+            .ok_or_else(|| ExtractError::Invalid(format!("invalid PDF permissions {permissions}")))?
+            .to_string(),
         encrypt_metadata: u8::from(encrypt_metadata).to_string(),
         salt: id.len().to_string(),
         data,

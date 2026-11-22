@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
 # Local mirror of the fast CI jobs. Run before considering work finished.
+#
+# The suite runs inside the development container so it sees the same
+# toolchains, reference binaries, and system packages as CI. Set
+# OMNIEX_NO_CONTAINER=1 to run it on the host instead, which skips every case
+# whose prerequisites the host does not have.
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
+
+if [[ -z "${OMNIEX_IN_CONTAINER:-}" && -z "${OMNIEX_NO_CONTAINER:-}" ]]; then
+    if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+        exec "$root/scripts/dev-container.sh" bash /work/scripts/ci.sh "$@"
+    fi
+    echo "warning: docker is unavailable; running on the host, where" >&2
+    echo "         prerequisite-bound cases are skipped" >&2
+fi
 
 TIMEFORMAT='  [time] %3R s'
 started=$SECONDS
@@ -14,12 +27,22 @@ time cargo fmt --all --check
 echo "==> cargo clippy"
 time cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 
-echo "==> cargo +1.85.0 check"
-if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.85\.0'; then
-    time cargo +1.85.0 check --workspace --all-targets --locked
+echo "==> cargo +1.90.0 check"
+if command -v rustup >/dev/null 2>&1 && rustup toolchain list | grep -q '^1\.90\.0'; then
+    time cargo +1.90.0 check --workspace --all-targets --locked
 else
-    echo "warning: Rust 1.85.0 toolchain not installed; MSRV check skipped" >&2
+    echo "warning: Rust 1.90.0 toolchain not installed; MSRV check skipped" >&2
 fi
+
+echo "==> cargo audit"
+if command -v cargo-audit >/dev/null 2>&1; then
+    time cargo audit
+else
+    echo "warning: cargo-audit is not installed; dependency audit skipped" >&2
+fi
+
+echo "==> secret scan"
+time scripts/secret-scan.sh
 
 echo "==> cargo doc"
 time RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked

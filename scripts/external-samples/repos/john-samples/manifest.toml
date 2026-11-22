@@ -109,7 +109,7 @@ glob = "BitLocker/*.vdi"
 slug = "bitlocker"
 reference = "john:bitlocker2john"
 args = ["-i"]
-omniex_args = ["--deep"]
+omniex_args = ["--opt", "deep"]
 format = "john"
 reference_subset = true
 
@@ -120,7 +120,7 @@ glob = "BitLocker/encryption-jungle/disks-v1/*.vdi"
 slug = "bitlocker"
 reference = "john:bitlocker2john"
 args = ["-i"]
-omniex_args = ["--deep"]
+omniex_args = ["--opt", "deep"]
 format = "john"
 reference_subset = true
 exclude = [
@@ -524,7 +524,7 @@ glob = "Multibit/MultibitClassic/*.key"
 slug = "multibit"
 reference = "john:multibit2john.py"
 format = "john"
-requires = ["python:protobuf"]
+env = { PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION = "python" }
 
 [[case]]
 name = "openbsd-{base}"

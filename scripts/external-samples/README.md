@@ -4,6 +4,14 @@ Runs `omniex` extraction against artifacts from external repositories. Artifacts
 are not committed. A manifest names the source repository, the pinned commit,
 and the files or globs to use.
 
+## Corpora
+
+`repos/` holds one manifest and one integrity lock per upstream project. The
+set covers both extraction fixtures from project test suites and artifact-only
+corpora whose expected hashes come from a reference tool at run time. Add a
+corpus by dropping a manifest in `repos/` and regenerating its lock; do not
+check the artifacts in.
+
 ## Usage
 
 ```bash
@@ -78,6 +86,11 @@ intermediate form, such as a packet capture converted to PDML.
 plus `{artifact_dir}` for the directory holding the fetched artifact. Use it to
 attach sidecars, for example `--companion keyfile={artifact_dir}/v4sample.keyx`
 with `companions = ["{dir}/v4sample.keyx"]`.
+
+`env` adds variables to the environment of the reference tool only. Use it for
+a converter that needs a runtime switch, for example John's
+`multibit2john.py`, which ships generated protobuf code that needs
+`PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION = "python"` with current protobuf.
 
 Reference forms:
 

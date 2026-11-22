@@ -1,3 +1,6 @@
+#![forbid(unsafe_code)]
+#![allow(clippy::chunks_exact_to_as_chunks)]
+
 //! `omniex` command-line interface.
 
 use std::collections::HashSet;
@@ -120,11 +123,11 @@ struct ExtractArgs {
     #[arg(long, value_enum)]
     tool: Option<ToolArg>,
 
-    /// Allow extractors to use slower exhaustive scans.
-    #[arg(long)]
-    deep: bool,
+    /// Extractor option, as NAME or NAME=VALUE. May be repeated; `show` lists them.
+    #[arg(long = "opt", value_name = "NAME[=VALUE]")]
+    options: Vec<String>,
 
-    /// Named companion file, as NAME=PATH. May be repeated.
+    /// Named companion file, as NAME=PATH. May be repeated; `show` lists them.
     #[arg(long = "companion", value_name = "NAME=PATH")]
     companion: Vec<String>,
 
@@ -253,6 +256,58 @@ fn run_show(args: ShowArgs) -> Result<(), CliError> {
         &["Name", "Role", "Encoding", "Type", "Description"],
         &rows,
     ));
+
+    if let Some(extractor) = extract::by_slug(descriptor.slug) {
+        let specs = extractor.options();
+        if !specs.is_empty() {
+            block.push('\n');
+            block.push('\n');
+            let rows = specs
+                .iter()
+                .map(|spec| {
+                    vec![
+                        spec.name.to_owned(),
+                        if spec.takes_value {
+                            "value".to_owned()
+                        } else {
+                            "flag".to_owned()
+                        },
+                        spec.help.to_owned(),
+                    ]
+                })
+                .collect::<Vec<_>>();
+            block.push_str(&ui::table(
+                &context,
+                &["Option", "Argument", "Description"],
+                &rows,
+            ));
+        }
+
+        let specs = extractor.companions();
+        if !specs.is_empty() {
+            block.push('\n');
+            block.push('\n');
+            let rows = specs
+                .iter()
+                .map(|spec| {
+                    vec![
+                        spec.name.to_owned(),
+                        if spec.required {
+                            "required".to_owned()
+                        } else {
+                            "optional".to_owned()
+                        },
+                        spec.help.to_owned(),
+                    ]
+                })
+                .collect::<Vec<_>>();
+            block.push_str(&ui::table(
+                &context,
+                &["Companion", "Required", "Description"],
+                &rows,
+            ));
+        }
+    }
 
     write_stdout(&format!("{block}\n"))
 }
@@ -425,9 +480,17 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
             )));
         }
 
+        let ambiguous = matches.len() > 1;
+        let count = matches.len();
         if args.json {
             for (descriptor, value) in &matches {
-                json_output.push(identify_json(descriptor, value.as_ref(), *line, text));
+                json_output.push(identify_json(
+                    descriptor,
+                    value.as_ref(),
+                    *line,
+                    text,
+                    ambiguous,
+                ));
             }
             continue;
         }
@@ -444,6 +507,12 @@ fn run_identify(args: IdentifyArgs) -> Result<(), CliError> {
             &["Slug", "Name", "Hashcat", "John"],
             &rows,
         ));
+        if ambiguous {
+            block.push('\n');
+            block.push_str(&format!(
+                "{count} hash types match this input; use --type <slug> to select one."
+            ));
+        }
         blocks.push(block);
     }
 
@@ -472,11 +541,12 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                 .map(|extractor| (descriptor, extractor))
         })
         .transpose()?;
+    let options = parse_options(&args.options)?;
     let mut artifact = extract::Artifact::from_file(&args.artifact)
         .map_err(|error| {
             CliError::Input(format!("cannot read {}: {error}", args.artifact.display()))
         })?
-        .with_deep(args.deep);
+        .with_options(options.clone());
     for companion in &args.companion {
         let (name, path) = companion.split_once('=').ok_or_else(|| {
             CliError::Input(format!("companion must be NAME=PATH, got `{companion}`"))
@@ -515,6 +585,8 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
         },
     };
 
+    validate_options(&options, &extractors)?;
+
     let mut outputs = Vec::new();
     let mut seen = HashSet::new();
     for (slug, extractor) in extractors {
@@ -535,6 +607,7 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
 
     match args.format {
         OutputFormat::Json => {
+            ensure_compiled(&outputs)?;
             let mut used_tools = Vec::with_capacity(outputs.len());
             let entries = outputs
                 .iter()
@@ -565,24 +638,9 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                 "results": entries,
             }))
         }
-        OutputFormat::Hash => {
-            let mut lines = Vec::with_capacity(outputs.len());
-            for (slug, value) in &outputs {
-                let descriptor = registry::by_slug(slug).ok_or_else(|| {
-                    CliError::Input(format!("no descriptor registered for `{slug}`"))
-                })?;
-                let (_, hash) =
-                    render_value(tool, descriptor, value.as_ref()).map_err(|error| {
-                        CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
-                    })?;
-                lines.push(match hash {
-                    Value::String(hash) => hash,
-                    other => serde_json::to_string(&other).expect("JSON values always serialize"),
-                });
-            }
-            write_stdout(&format!("{}\n", lines.join("\n")))
-        }
+        OutputFormat::Hash => write_hashes(&outputs, tool),
         OutputFormat::Human => {
+            ensure_compiled(&outputs)?;
             let context = human_context()?;
             let mut blocks = Vec::with_capacity(outputs.len());
             for (index, (slug, value)) in outputs.iter().enumerate() {
@@ -792,12 +850,45 @@ fn descriptor_json(descriptor: &omniex::HashTypeDescriptor) -> Value {
         })
         .collect::<Vec<_>>();
 
+    let options = extract::by_slug(descriptor.slug)
+        .map(|extractor| {
+            extractor
+                .options()
+                .iter()
+                .map(|spec| {
+                    json!({
+                        "name": spec.name,
+                        "takes_value": spec.takes_value,
+                        "help": spec.help,
+                    })
+                })
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    let companions = extract::by_slug(descriptor.slug)
+        .map(|extractor| {
+            extractor
+                .companions()
+                .iter()
+                .map(|spec| {
+                    json!({
+                        "name": spec.name,
+                        "required": spec.required,
+                        "help": spec.help,
+                    })
+                })
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+
     json!({
         "slug": descriptor.slug,
         "name": descriptor.name,
         "hashcat": hashcat,
         "john": john,
         "fields": fields,
+        "options": options,
+        "companions": companions,
     })
 }
 
@@ -806,6 +897,7 @@ fn identify_json(
     value: &dyn HashValue,
     line: usize,
     input: &str,
+    ambiguous: bool,
 ) -> Value {
     let (hashcat, john) = split_modes(&value.modes());
     json!({
@@ -815,7 +907,163 @@ fn identify_json(
         "name": descriptor.name,
         "hashcat": hashcat,
         "john": john,
+        "ambiguous": ambiguous,
     })
+}
+
+fn parse_options(raw: &[String]) -> Result<extract::ExtractOptions, CliError> {
+    let mut options = extract::ExtractOptions::new();
+    for entry in raw {
+        let (name, value) = match entry.split_once('=') {
+            Some((name, value)) => (name, Some(value.to_owned())),
+            None => (entry.as_str(), None),
+        };
+        if name.is_empty() {
+            return Err(CliError::Usage(format!(
+                "option must be NAME or NAME=VALUE, got `{entry}`"
+            )));
+        }
+        if !options.set(name, value) {
+            return Err(CliError::Usage(format!("duplicate option `{name}`")));
+        }
+    }
+    Ok(options)
+}
+
+fn validate_options(
+    options: &extract::ExtractOptions,
+    extractors: &[(&'static str, &'static dyn extract::Extractor)],
+) -> Result<(), CliError> {
+    if options.is_empty() {
+        return Ok(());
+    }
+
+    let mut supported: Vec<&'static str> = Vec::new();
+    for (_, extractor) in extractors {
+        for spec in extractor.options() {
+            if !supported.contains(&spec.name) {
+                supported.push(spec.name);
+            }
+        }
+    }
+
+    for (name, value) in options.iter() {
+        let spec = extractors
+            .iter()
+            .flat_map(|(_, extractor)| extractor.options())
+            .find(|spec| spec.name == name);
+        let Some(spec) = spec else {
+            let slugs = extractors
+                .iter()
+                .map(|(slug, _)| *slug)
+                .collect::<Vec<_>>()
+                .join(", ");
+            let hint = if supported.is_empty() {
+                "it takes no options".to_owned()
+            } else {
+                format!("supported options: {}", supported.join(", "))
+            };
+            return Err(CliError::Usage(format!(
+                "{slugs} does not accept `--opt {name}`; {hint}"
+            )));
+        };
+        if spec.takes_value && value.is_none() {
+            return Err(CliError::Usage(format!(
+                "`--opt {name}` requires a value: --opt {name}=VALUE"
+            )));
+        }
+        if !spec.takes_value && value.is_some() {
+            return Err(CliError::Usage(format!(
+                "`--opt {name}` does not take a value"
+            )));
+        }
+    }
+    Ok(())
+}
+
+fn ensure_compiled(outputs: &[(&'static str, Box<dyn HashValue>)]) -> Result<(), CliError> {
+    if let Some((slug, _)) = outputs.iter().find(|(_, value)| value.streams()) {
+        return Err(CliError::Usage(format!(
+            "extracted `{slug}` hash streams its payload; use `--format hash`"
+        )));
+    }
+    Ok(())
+}
+
+fn write_result(result: std::io::Result<()>) -> Result<(), CliError> {
+    match result {
+        Ok(()) => Ok(()),
+        Err(error) if error.kind() == std::io::ErrorKind::BrokenPipe => Ok(()),
+        Err(error) => Err(CliError::Input(format!("cannot write output: {error}"))),
+    }
+}
+
+fn write_hashes(
+    outputs: &[(&'static str, Box<dyn HashValue>)],
+    tool: Option<ToolArg>,
+) -> Result<(), CliError> {
+    let stdout = std::io::stdout();
+    let mut out = std::io::BufWriter::new(stdout.lock());
+    for (slug, value) in outputs {
+        if tool == Some(ToolArg::Json) {
+            if value.streams() {
+                return Err(CliError::Usage(format!(
+                    "extracted `{slug}` hash streams its payload and cannot be written as a JSON document"
+                )));
+            }
+            let descriptor = registry::by_slug(slug)
+                .ok_or_else(|| CliError::Input(format!("no descriptor registered for `{slug}`")))?;
+            let (_, hash) = render_value(tool, descriptor, value.as_ref()).map_err(|error| {
+                CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+            })?;
+            let text = match hash {
+                Value::String(hash) => hash,
+                other => serde_json::to_string(&other).expect("JSON values always serialize"),
+            };
+            write_result(
+                out.write_all(text.as_bytes())
+                    .and_then(|()| out.write_all(b"\n")),
+            )?;
+        } else if value.streams() {
+            let tool = preferred_tool(tool, value.as_ref()).map_err(|error| {
+                CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+            })?;
+            let options = RenderOptions {
+                tool: tool.into(),
+                ..RenderOptions::default()
+            };
+            value.render_to(&options, &mut out).map_err(|error| {
+                CliError::Input(format!("cannot write extracted `{slug}` hash: {error}"))
+            })?;
+            write_result(out.write_all(b"\n"))?;
+        } else {
+            let (_, hash) = render_hash(tool, value.as_ref()).map_err(|error| {
+                CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+            })?;
+            write_result(
+                out.write_all(hash.as_bytes())
+                    .and_then(|()| out.write_all(b"\n")),
+            )?;
+        }
+    }
+    write_result(out.flush())
+}
+
+fn preferred_tool(requested: Option<ToolArg>, value: &dyn HashValue) -> Result<ToolArg, String> {
+    if let Some(tool) = requested {
+        return Ok(tool);
+    }
+    let modes = value.modes();
+    if value.streams() && modes.iter().any(|mode| matches!(mode, Mode::John(_))) {
+        return Ok(ToolArg::John);
+    }
+    if modes.iter().any(|mode| matches!(mode, Mode::Hashcat(_))) {
+        Ok(ToolArg::Hashcat)
+    } else if modes.iter().any(|mode| matches!(mode, Mode::John(_))) {
+        Ok(ToolArg::John)
+    } else {
+        Err("no compatible hashcat or John serialization".to_owned())
+    }
 }
 
 fn render_hash(

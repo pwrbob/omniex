@@ -231,14 +231,13 @@ Do not edit any other path. In particular, never edit:
 - \`src/registry.rs\`
 - \`tests/common/mod.rs\`
 - \`EXTRACTION.md\`
-- \`MODES.md\`
 - \`README.md\`
 - \`Cargo.toml\` or \`Cargo.lock\`
 - any other worker's module, test, or fixture
 
 ## Rules
 
-1. Read \`AGENTS.md\`, \`doc/DESIGN.md\`, and \`doc/TESTING.md\` first.
+1. Read \`AGENTS.md\`, \`internals/DESIGN.md\`, and \`internals/TESTING.md\` first.
 2. Use only hash types that already exist in the registry. If an assignment
    needs a new hash type, stop and report the blocker instead of adding one.
 3. Keep exactly one extractor per hash type. Do not mix slugs in one extractor.

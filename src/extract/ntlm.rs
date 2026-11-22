@@ -3,7 +3,7 @@
 use pgp::crypto::hash::HashAlgorithm;
 
 use super::hashlist::{extract_from_data, probe_data};
-use super::{Artifact, ExtractError, Extracted, Extractor, Probe};
+use super::{Artifact, CompanionSpec, ExtractError, Extracted, Extractor, Probe};
 use crate::types::Ntlm;
 use crate::{HashType, HashValue};
 
@@ -48,7 +48,7 @@ fn decode_ascii(bytes: &[u8]) -> Result<String, ExtractError> {
 }
 
 fn decode_utf16(bytes: &[u8]) -> Result<String, ExtractError> {
-    if bytes.len() % 2 != 0 {
+    if !bytes.len().is_multiple_of(2) {
         return Err(invalid("registry string has an odd byte length"));
     }
     let mut units = Vec::with_capacity(bytes.len() / 2);
@@ -111,7 +111,7 @@ impl<'a> Hive<'a> {
                 return Err(invalid("registry hive bin offset mismatch"));
             }
             let size = u32_at(data, start + 8)? as usize;
-            if size < 0x1000 || size % 0x1000 != 0 || start + size > bins_end {
+            if size < 0x1000 || !size.is_multiple_of(0x1000) || start + size > bins_end {
                 return Err(invalid("invalid registry hive bin size"));
             }
             bins.push((start, start + size));
@@ -614,7 +614,7 @@ fn aes128_decrypt_block(round_keys: &[[u8; 16]; 11], block: [u8; 16]) -> [u8; 16
 }
 
 fn aes128_cbc_decrypt(key: &[u8; 16], iv: &[u8; 16], data: &[u8]) -> Result<Vec<u8>, ExtractError> {
-    if data.is_empty() || data.len() % 16 != 0 {
+    if data.is_empty() || !data.len().is_multiple_of(16) {
         return Err(invalid("AES ciphertext is not a whole number of blocks"));
     }
     let round_keys = aes128_expand(key);
@@ -791,9 +791,7 @@ fn account_boot_key(hive: &Hive<'_>, account: &Key) -> Result<[u8; 16], ExtractE
 }
 
 fn system_boot_key(artifact: &Artifact) -> Option<Result<[u8; 16], ExtractError>> {
-    let source = artifact
-        .member("SYSTEM")
-        .or_else(|| artifact.member("system"))?;
+    let source = artifact.member("SYSTEM")?;
     let data = source.read_all().ok()?;
     let hive = Hive::parse(&data).ok()?;
     let root = hive.key(hive.root).ok()?;
@@ -866,7 +864,16 @@ fn data(artifact: &Artifact) -> Result<Vec<u8>, ExtractError> {
 /// Extractor for NTLM hashes in SAM hives and plain hash lists.
 pub struct NtlmExtractor;
 
+const COMPANIONS: &[CompanionSpec] = &[CompanionSpec::required(
+    "SYSTEM",
+    "SYSTEM hive that accompanies the SAM hive",
+)];
+
 impl Extractor for NtlmExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Ntlm::SLUG
     }

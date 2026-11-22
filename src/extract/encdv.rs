@@ -2,7 +2,9 @@
 
 use std::path::Path;
 
-use super::{Artifact, ExtractError, Extracted, Extractor, MemberRole, Probe, ReadAt};
+use super::{
+    Artifact, CompanionSpec, ExtractError, Extracted, Extractor, MemberRole, Probe, ReadAt,
+};
 use crate::types::Encdv;
 use crate::{HashType, HashValue};
 
@@ -177,7 +179,22 @@ fn parse(artifact: &Artifact) -> Result<Encdv, ExtractError> {
     })
 }
 
+const COMPANIONS: &[CompanionSpec] = &[
+    CompanionSpec::optional(
+        "enckey",
+        "PBKDF2 salt and iteration count; required when the vault contains enckey.dat",
+    ),
+    CompanionSpec::optional(
+        "keychain",
+        "keychain tail; required when the vault uses index.dat",
+    ),
+];
+
 impl Extractor for EncdvExtractor {
+    fn companions(&self) -> &'static [CompanionSpec] {
+        COMPANIONS
+    }
+
     fn slug(&self) -> &'static str {
         Encdv::SLUG
     }

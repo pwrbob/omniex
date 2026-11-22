@@ -270,7 +270,7 @@ fn sha256(data: &[u8]) -> [u8; 32] {
         message.push(0);
     }
     message.extend_from_slice(&bit_len.to_be_bytes());
-    for chunk in message.chunks_exact(64) {
+    for chunk in message.as_chunks::<64>().0 {
         let mut w = [0u32; 64];
         for index in 0..16 {
             w[index] = u32::from_be_bytes([
@@ -403,7 +403,7 @@ fn ripemd160(data: &[u8]) -> [u8; 20] {
         0x1032_5476,
         0xc3d2_e1f0,
     ];
-    for chunk in message.chunks_exact(64) {
+    for chunk in message.as_chunks::<64>().0 {
         let mut x = [0u32; 16];
         for index in 0..16 {
             x[index] = u32::from_le_bytes([
@@ -551,12 +551,12 @@ fn candidates(data: &[u8]) -> Vec<String> {
             while index < data.len() && alphabet.contains(&data[index]) {
                 index += 1;
             }
-            if (51..=53).contains(&(index - start)) {
-                if let Ok(text) = std::str::from_utf8(&data[start..index]) {
-                    if wif_key(text).is_some() && !values.iter().any(|value| value == text) {
-                        values.push(text.to_owned());
-                    }
-                }
+            if (51..=53).contains(&(index - start))
+                && let Ok(text) = std::str::from_utf8(&data[start..index])
+                && wif_key(text).is_some()
+                && !values.iter().any(|value| value == text)
+            {
+                values.push(text.to_owned());
             }
         } else {
             index += 1;

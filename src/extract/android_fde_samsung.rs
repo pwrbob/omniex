@@ -12,14 +12,15 @@ pub struct AndroidFdeSamsungExtractor;
 
 const CHUNK_SIZE: usize = 1 << 20;
 const MAGIC: &[u8] = &[0xc4, 0xb1, 0xb5, 0xd0];
+const PROBE_WINDOW: u64 = 1 << 20;
 const DEK_OFFSET: usize = 0x84;
 const DEK_LENGTH: usize = 80;
 const HEADER_LENGTH: usize = DEK_OFFSET + DEK_LENGTH;
 
-fn candidates(source: &dyn ReadAt) -> io::Result<Vec<u64>> {
+fn candidates(source: &dyn ReadAt, from: u64) -> io::Result<Vec<u64>> {
     let mut offsets = Vec::new();
     let mut chunk = vec![0u8; CHUNK_SIZE];
-    let mut base = 0u64;
+    let mut base = from;
     while base < source.len() {
         let read = source.read_at(base, &mut chunk)?;
         if read < MAGIC.len() {
@@ -30,7 +31,7 @@ fn candidates(source: &dyn ReadAt) -> io::Result<Vec<u64>> {
                 continue;
             }
             let offset = base + index as u64;
-            if offset % 512 != 0 {
+            if !offset.is_multiple_of(512) {
                 continue;
             }
             offsets.push(offset);
@@ -83,9 +84,9 @@ fn footer(source: &dyn ReadAt, offset: u64) -> Result<AndroidFdeSamsung, Extract
     })
 }
 
-fn extract_all(artifact: &Artifact) -> Result<Vec<AndroidFdeSamsung>, ExtractError> {
+fn extract_all(artifact: &Artifact, from: u64) -> Result<Vec<AndroidFdeSamsung>, ExtractError> {
     let source = artifact.primary();
-    let offsets = candidates(source).map_err(|error| {
+    let offsets = candidates(source, from).map_err(|error| {
         ExtractError::Invalid(format!("cannot read {}: {error}", artifact.label()))
     })?;
     let mut hashes = Vec::new();
@@ -110,14 +111,15 @@ impl Extractor for AndroidFdeSamsungExtractor {
     }
 
     fn probe(&self, artifact: &Artifact) -> Probe {
-        match extract_all(artifact) {
+        let from = artifact.primary().len().saturating_sub(PROBE_WINDOW);
+        match extract_all(artifact, from) {
             Ok(_) => Probe::yes("Samsung Android FDE footer"),
             Err(_) => Probe::No,
         }
     }
 
     fn extract(&self, artifact: &Artifact) -> Result<Extracted, ExtractError> {
-        Ok(extract_all(artifact)?
+        Ok(extract_all(artifact, 0)?
             .into_iter()
             .map(|value| Box::new(value) as Box<dyn HashValue>)
             .collect())
