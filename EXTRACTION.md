@@ -26,7 +26,6 @@ README badge counts checked lines in this file.
 ## Unix and directory credentials
 
 - [x] IBM/Toshiba 4690 ADXCSOUF user database (`adxcrypt`)
-
 - [x] Linux `/etc/shadow` (`descrypt`, `md5crypt`, `sha256crypt`, `sha512crypt`, `yescrypt`)
 - [x] BSD `/etc/master.passwd` (`bsdicrypt`)
 - [x] AIX `/etc/security/passwd` (`aix-smd5`, `ssha1-aix`, `ssha256-aix`, `ssha512-aix`)
@@ -98,7 +97,6 @@ README badge counts checked lines in this file.
 ## Keys and certificate containers
 
 - [x] Hashed SSH known_hosts entries (`known-hosts`)
-
 - [x] PKCS#12 and PFX bundles (`pkcs12`, `pfx`)
 - [x] PKCS#8 and PEM private keys (`pem-private-key`)
 - [x] PEM private keys in the John serialization (`pem`)
@@ -113,7 +111,6 @@ README badge counts checked lines in this file.
 - [x] MSSQL database user hashes (`mssql-2000`, `mssql-2005`, `mssql-2012`, `mssql-2025`)
 - [x] PostgreSQL SCRAM verifier dumps (`postgres-scram-sha256`)
 - [x] Oracle H and T password hashes (`oracle-h`, `oracle-t`)
-
 - [x] KeePass KDBX v2/v3 (`keepass`)
 - [x] KeePass KDBX v4 (`keepass4`)
 - [x] 1Password agilekeychain (`onepassword-agile`, `agilekeychain`)
@@ -171,9 +168,7 @@ README badge counts checked lines in this file.
 
 - [x] Lotus Notes/Domino 5 user ID files (`lotus5`)
 - [x] Lotus Notes/Domino 6/8 user ID files (`lotus-notes`)
-
 - [x] FileZilla Server XML configuration (`filezilla-server`)
-
 - [x] Android backups (`android-backup`)
 - [x] Signal backups (`signal`)
 - [x] Telegram local data (`telegram`)
