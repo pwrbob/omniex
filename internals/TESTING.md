@@ -217,7 +217,6 @@ enough.
 | `msrv` | compile check with Rust 1.90 | yes |
 | `audit` | dependency audit against RustSec | yes |
 | `secret-scan` | full-history gitleaks scan | yes |
-| `musl` | static x86_64 musl release build | yes |
 | `hashcat` | conformance against `8.0.0`, four shards | yes |
 | `john` | conformance against pinned jumbo | yes |
 | `external-samples` | extraction against external corpora, four shards | yes |

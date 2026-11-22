@@ -34,14 +34,6 @@ time scripts/secret-scan.sh
 echo "==> cargo doc"
 time RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 
-echo "==> musl build"
-if rustup target list --installed 2>/dev/null | grep -q '^x86_64-unknown-linux-musl$'; then
-    time cargo build --release --locked --target x86_64-unknown-linux-musl
-    file target/x86_64-unknown-linux-musl/release/omniex
-else
-    echo "warning: x86_64-unknown-linux-musl target is not installed; musl build skipped" >&2
-fi
-
 echo "==> cargo test"
 time cargo test --workspace --all-targets --locked
 

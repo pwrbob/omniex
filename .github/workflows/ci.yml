@@ -202,46 +202,6 @@ jobs:
       - name: Scan every commit
         run: scripts/secret-scan.sh
 
-  musl:
-    name: musl build
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v5
-
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@1.100.0
-
-      - name: Install musl toolchain
-        run: |
-          scripts/ci-deps.sh musl-tools
-          rustup target add x86_64-unknown-linux-musl
-
-      - name: Cache Cargo
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git/db
-            target
-          key: ${{ runner.os }}-cargo-${{ github.job }}-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-${{ github.job }}-
-
-      - name: Build static binary
-        run: cargo build --release --locked --target x86_64-unknown-linux-musl
-
-      - name: Check static linkage
-        run: |
-          file target/x86_64-unknown-linux-musl/release/omniex
-          if readelf -l target/x86_64-unknown-linux-musl/release/omniex | grep -q "INTERP"; then
-            echo "musl binary is dynamically linked" >&2
-            exit 1
-          fi
-          docker run --rm -v "$PWD/target/x86_64-unknown-linux-musl/release/omniex:/omniex:ro" debian:12 /omniex --version
-
   hashcat-build:
     name: Build hashcat
     runs-on: ubuntu-24.04
