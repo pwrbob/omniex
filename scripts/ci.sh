@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
 # Local mirror of the fast CI jobs. Run before considering work finished.
+#
+# The suite runs inside the development container so it sees the same
+# toolchains, reference binaries, and system packages as CI. Set
+# OMNIEX_NO_CONTAINER=1 to run it on the host instead, which skips every case
+# whose prerequisites the host does not have.
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
+
+if [[ -z "${OMNIEX_IN_CONTAINER:-}" && -z "${OMNIEX_NO_CONTAINER:-}" ]]; then
+    if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+        exec "$root/scripts/dev-container.sh" bash /work/scripts/ci.sh "$@"
+    fi
+    echo "warning: docker is unavailable; running on the host, where" >&2
+    echo "         prerequisite-bound cases are skipped" >&2
+fi
 
 TIMEFORMAT='  [time] %3R s'
 started=$SECONDS

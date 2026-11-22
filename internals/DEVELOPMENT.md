@@ -71,9 +71,11 @@ uv venv .venv
 uv pip install -r requirements-dev.txt
 ```
 
-`scripts/ci-external-samples.sh` automatically uses `.venv/bin/python` when it
-exists, and the harness calls `sys.executable` for reference scripts, so the
-same environment reaches the upstream converters.
+`scripts/ci-external-samples.sh` repeats those two commands itself when `uv` is
+available and the environment is stale, so a checkout needs no manual setup. It
+then runs the harness with `.venv/bin/python`, and the harness calls
+`sys.executable` for reference scripts, so the same environment reaches the
+upstream converters.
 
 Native prerequisites come from `scripts/ci-deps.sh` (it needs root or a
 `SUDO_CMD` wrapper): `libdb-dev` and `python3-dev` for `bsddb3`, `tshark`,
@@ -96,7 +98,10 @@ to resolve the Ubuntu mirrors; one aborted install for a few kilobytes of
 packages should not fail a job.
 
 Job logic lives in scripts, not inline in the workflow, so it can be run
-outside GitHub. The external-samples job is the reference example:
+outside GitHub. `scripts/ci.sh` runs the fast jobs inside the development
+container by default, so it sees the toolchains, reference binaries, and
+packages the GitHub jobs have; `OMNIEX_NO_CONTAINER=1` runs it on the host
+instead. The external-samples job is the reference example:
 
 ```bash
 scripts/ci-job.sh external-samples fixtures

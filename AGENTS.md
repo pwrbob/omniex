@@ -13,10 +13,11 @@
 
 Before calling an iteration finished:
 
-1. Run `scripts/ci.sh` locally. It executes the fast CI jobs: formatting, clippy,
-   the Rust 1.90 MSRV check when that toolchain is installed, docs, workspace
-   tests, and doc tests. It also runs hashcat and John conformance when the
-   reference binaries are available.
+1. Run `scripts/ci.sh` locally. It runs inside the development container, so it
+   has the same toolchains, reference binaries, and system packages as CI, and
+   it executes the fast CI jobs: formatting, clippy, the Rust 1.90 MSRV check,
+   audit, secret scan, docs, workspace tests, and doc tests, plus hashcat and
+   John conformance and the external-sample shards.
 2. Run `cargo +1.90.0 check --workspace --all-targets --locked` whenever
    dependencies change. Treat the CI `msrv` job as the final authority.
 3. If a conformance tool is not available, record that explicitly rather than

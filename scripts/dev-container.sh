@@ -29,6 +29,7 @@ fi
 exec docker run --rm --init "${tty_args[@]}" \
     --user "$(id -u):$(id -g)" \
     --env HOME=/tmp \
+    --env OMNIEX_IN_CONTAINER=1 \
     --volume "$root:/work" \
     --workdir /work \
     "$image" "$@"
