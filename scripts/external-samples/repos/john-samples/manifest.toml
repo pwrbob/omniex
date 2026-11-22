@@ -524,7 +524,7 @@ glob = "Multibit/MultibitClassic/*.key"
 slug = "multibit"
 reference = "john:multibit2john.py"
 format = "john"
-requires = ["python:protobuf"]
+env = { PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION = "python" }
 
 [[case]]
 name = "openbsd-{base}"

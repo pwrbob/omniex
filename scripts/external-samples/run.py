@@ -60,6 +60,7 @@ ALLOWED_CASE = {
     "exclude",
     "normalize",
     "reference_subset",
+    "env",
 }
 ALLOWED_FETCH = {"mode"}
 
@@ -87,6 +88,7 @@ class Case:
     normalize: str = ""
     exclude: list[str] = field(default_factory=list)
     filter: list[str] = field(default_factory=list)
+    env: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -504,6 +506,7 @@ def expand_cases(
             normalize=str(raw.get("normalize", "")),
             filter=list(raw.get("filter", [])),
             exclude=list(raw.get("exclude", [])),
+            env={str(key): str(value) for key, value in raw.get("env", {}).items()},
         )
         pattern = raw.get("glob")
         if pattern is not None:
@@ -638,8 +641,13 @@ def omniex_binary() -> Path:
     fail("build omniex or set OMNIEX_BIN")
 
 
-def run_command(command: list[str], cwd: Path | None = None) -> str:
-    result = timed_run(command, cwd=cwd, text=True, capture_output=True)
+def run_command(
+    command: list[str],
+    cwd: Path | None = None,
+    extra_env: dict[str, str] | None = None,
+) -> str:
+    env = {**os.environ, **extra_env} if extra_env else None
+    result = timed_run(command, cwd=cwd, env=env, text=True, capture_output=True)
     if result.returncode != 0:
         fail(
             f"command failed ({' '.join(command)}): "
@@ -864,7 +872,11 @@ def run_case(manifest: Manifest, case: Case, sources: dict[str, Path], offline: 
             for arg in case.args
         ]
         command = reference_command(kind, value, reference_artifact, reference_args)
-        reference_text = run_command(command, cwd=john_run() if kind == "john" else None)
+        reference_text = run_command(
+            command,
+            cwd=john_run() if kind == "john" else None,
+            extra_env=case.env,
+        )
         normalize = case.normalize or (
             "bks" if case.slug in {"bks", "vmx-keysafe", "sappse"} else "hash"
         )

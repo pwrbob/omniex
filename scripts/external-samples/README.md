@@ -86,6 +86,11 @@ plus `{artifact_dir}` for the directory holding the fetched artifact. Use it to
 attach sidecars, for example `--companion keyfile={artifact_dir}/v4sample.keyx`
 with `companions = ["{dir}/v4sample.keyx"]`.
 
+`env` adds variables to the environment of the reference tool only. Use it for
+a converter that needs a runtime switch, for example John's
+`multibit2john.py`, which ships generated protobuf code that needs
+`PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION = "python"` with current protobuf.
+
 Reference forms:
 
 - `john:<script>` runs `$OMNIEX_JOHN_RUN/<script>`.
