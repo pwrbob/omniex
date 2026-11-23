@@ -330,6 +330,9 @@ pub enum ParseErrorKind {
 /// Parses a hash string into a boxed runtime value.
 pub type ParseFn = fn(&str, &ParseOptions) -> Result<Box<dyn HashValue>, ParseError>;
 
+/// Parses a JSON hash document into a boxed runtime value.
+pub type ParseJsonFn = fn(&str) -> Result<Box<dyn HashValue>, ParseError>;
+
 /// Type-erased metadata and parser for one hash type.
 pub struct HashTypeDescriptor {
     /// Human-readable name.
@@ -342,6 +345,8 @@ pub struct HashTypeDescriptor {
     pub all_modes: &'static [Mode],
     /// Parses a hash string into a boxed runtime value.
     pub parse: ParseFn,
+    /// Parses an `omniex.hash.v1` JSON document into a boxed runtime value.
+    pub parse_json: ParseJsonFn,
 }
 
 #[cfg(test)]
@@ -395,6 +400,12 @@ mod tests {
             fields: Self::FIELDS,
             all_modes: &[Mode::Hashcat(0), Mode::John("raw-md5")],
             parse: |input, opts| Ok(Box::new(<Self as Parse>::parse(input, opts)?)),
+            parse_json: |input| {
+                Ok(Box::new(<Self as Parse>::parse(
+                    input,
+                    &ParseOptions::default(),
+                )?))
+            },
         };
     }
 

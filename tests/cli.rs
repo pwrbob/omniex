@@ -88,10 +88,46 @@ fn parse_json_has_the_pinned_shape() {
     assert_eq!(entry["line"], 1);
     assert_eq!(entry["input"], MD5_HASH);
     assert_eq!(entry["hash"], MD5_HASH);
-    assert_eq!(entry["fields"][0]["name"], "digest");
-    assert_eq!(entry["fields"][0]["role"], "digest");
-    assert_eq!(entry["fields"][0]["encoding"], "hex");
-    assert_eq!(entry["fields"][0]["value"], MD5_HASH);
+    assert!(entry.get("fields").is_none());
+}
+
+#[test]
+fn parse_json_with_the_json_tool_contains_fields() {
+    let output = omniex()
+        .args([
+            "parse", MD5_HASH, "--type", "md5", "--format", "json", "--tool", "json",
+        ])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    assert_eq!(value["tool"], "json");
+    let entry = &value["results"][0];
+    assert_eq!(entry["type"], "md5");
+    assert_eq!(entry["hash"]["schema"], "omniex.hash.v1");
+    assert_eq!(entry["hash"]["type"], "md5");
+    assert_eq!(entry["hash"]["fields"]["digest"]["role"], "digest");
+    assert_eq!(entry["hash"]["fields"]["digest"]["encoding"], "hex");
+    assert_eq!(entry["hash"]["fields"]["digest"]["value"], MD5_HASH);
+}
+
+#[test]
+fn parse_hash_with_the_json_tool_is_a_hash_document() {
+    let output = omniex()
+        .args([
+            "parse", MD5_HASH, "--type", "md5", "--format", "hash", "--tool", "json",
+        ])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let value: Value = serde_json::from_slice(&output.stdout).expect("valid JSON");
+    assert_eq!(value["schema"], "omniex.hash.v1");
+    assert_eq!(value["type"], "md5");
+    assert_eq!(value["fields"]["digest"]["role"], "digest");
+    assert_eq!(value["fields"]["digest"]["encoding"], "hex");
+    assert_eq!(value["fields"]["digest"]["value"], MD5_HASH);
 }
 
 #[test]
@@ -110,6 +146,47 @@ fn parse_accepts_john_input_and_renders_for_hashcat() {
         .assert()
         .success()
         .stdout("YjDBNr.A0AN7DA8s:4684\n");
+}
+
+#[test]
+fn parse_reads_json_hash_documents() {
+    let document = omniex()
+        .args([
+            "parse", MD5_HASH, "--type", "md5", "--format", "hash", "--tool", "json",
+        ])
+        .output()
+        .expect("command runs")
+        .stdout;
+
+    omniex()
+        .args(["parse", "--format", "hash", "--tool", "hashcat"])
+        .write_stdin(document.clone())
+        .assert()
+        .success()
+        .stdout(format!("{MD5_HASH}\n"));
+
+    omniex()
+        .args(["parse", "--format", "hash", "--tool", "john"])
+        .write_stdin(document.clone())
+        .assert()
+        .success()
+        .stdout(format!("{MD5_HASH}\n"));
+
+    omniex()
+        .args([
+            "parse", "--type", "sha1", "--format", "hash", "--tool", "hashcat",
+        ])
+        .write_stdin(document)
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains("does not match"));
+
+    omniex()
+        .args(["parse", "--format", "hash"])
+        .write_stdin(r#"{"schema":"omniex.hash.v2","type":"md5","fields":{}}"#)
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains("unsupported JSON hash schema"));
 }
 
 #[test]
@@ -219,6 +296,31 @@ fn extract_reports_that_no_extractor_exists() {
         .assert()
         .code(1)
         .stderr(predicate::str::contains("no extractor is registered"));
+}
+
+#[test]
+fn extract_writes_a_hash_document_with_the_json_tool() {
+    let artifact = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/artifacts/dpapi/masterkey.bin");
+
+    let output = omniex()
+        .args(["extract", "--type", "dpapi"])
+        .arg(&artifact)
+        .args(["--format", "hash", "--tool", "json"])
+        .output()
+        .expect("command runs");
+    assert!(output.status.success());
+
+    let text = String::from_utf8(output.stdout).expect("UTF-8 output");
+    let documents = text.lines().collect::<Vec<_>>();
+    assert_eq!(documents.len(), 3);
+
+    for document in documents {
+        let value: Value = serde_json::from_str(document).expect("valid JSON");
+        assert_eq!(value["schema"], "omniex.hash.v1");
+        assert_eq!(value["type"], "dpapi");
+        assert!(value["fields"]["contents"].is_object());
+    }
 }
 
 #[test]

@@ -37,7 +37,8 @@ Reference tools must be present:
 - `OMNIEX_HASHCAT` (binary) or `OMNIEX_HASHCAT_TOOLS` (hashcat `tools/`).
 
 The default oracle is the reference extractor. Both outputs are parsed with
-`omniex parse --type <slug> --format json` and compared by field name and value. `reference = "structural"` is the explicit weak mode.
+`omniex parse --type <slug> --format json --tool json` and compared by field
+name and value. `reference = "structural"` is the explicit weak mode.
 
 ## Manifest format
 

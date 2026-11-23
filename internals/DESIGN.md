@@ -195,15 +195,16 @@ pub enum Mode {
 The CLI is intentionally small:
 
 ```text
-omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|john] [--full]
+omniex parse <hash> [--type <slug>] [--format human|hash|json] [--tool hashcat|john|json] [--full]
 omniex identify <hash> [--json]
 omniex types [--json]
 omniex show <slug> [--json]
-omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john] [--full] [--opt NAME[=VALUE]] [--companion NAME=PATH]...
+omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--tool hashcat|john|json] [--full] [--opt NAME[=VALUE]] [--companion NAME=PATH]...
 ```
 
 - `parse` parses one hash string into a hash type instance and renders it again.
-  Input may be a hashcat or John serialization.
+  Input may be a hashcat string, a John string, or an `omniex.hash.v1` JSON
+  document; JSON is detected automatically.
 - `--type` selects the hash type by slug. The same slug is used by `parse` and
   `extract`.
 - `identify` lists every hash type that parses the input. Ambiguous input is
@@ -242,8 +243,8 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   data record above hashcat's 320 KiB limit, require `--format hash`; JSON and
   human output reject them instead of buffering the payload.
 - `--tool` defaults to `hashcat` and selects only the output serialization:
-  `hashcat` or `john`. It never changes input parsing. Rendering fails when the
-  concrete value has no mode for the selected tool.
+  `hashcat`, `john`, or `json`. It never changes input parsing. Rendering fails
+  when the concrete value has no mode for the selected text tool.
 - `--format` controls presentation: `human`, `hash`, or `json`. `parse`
   defaults to `human`; `extract` defaults to `hash`.
 - `--full` disables center truncation of long values in human output.
@@ -255,8 +256,9 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
 - The minimum terminal size is 40x10. Human output is rejected on smaller
   terminals. Columns and mode lists wrap to the terminal width.
 - `--format json` emits one envelope per invocation with `omniex_version`,
-  `command`, `tool`, and `results`; each result carries `hash` and `fields`.
-  `show --json` keeps emitting one descriptor object.
+  `command`, `tool`, and `results`. `show --json` keeps emitting one descriptor
+  object. Field details live in the `--tool json` hash document, not duplicated
+  in the envelope. See [`JSON.md`](JSON.md).
 - `parse --format hash` prints only the rendered hash, which keeps it usable in
   a pipeline.
 

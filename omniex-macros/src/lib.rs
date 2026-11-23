@@ -74,6 +74,7 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
 
     let mut field_entries = Vec::with_capacity(fields.len());
     let mut describe_entries = Vec::with_capacity(fields.len());
+    let mut json_fields = Vec::with_capacity(fields.len());
     let mut seen_renames = Vec::with_capacity(fields.len());
 
     for (index, field) in fields.iter().enumerate() {
@@ -111,6 +112,21 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
                 field: &Self::FIELDS[#index],
                 value: #value,
             }
+        });
+
+        let field_ty = &field.ty;
+        json_fields.push(quote! {
+            #field_ident: <#field_ty as ::omniex::FromFieldValue>::from_field_value(
+                document
+                    .get("fields")
+                    .and_then(::serde_json::Value::as_object)
+                    .and_then(|fields| fields.get(#rename))
+                    .and_then(|field| field.get("value"))
+                    .and_then(::serde_json::Value::as_str)
+                    .ok_or_else(|| json_error(::std::format!("missing field `{}`", #rename)))?,
+                ::omniex::Encoding::#encoding,
+            )
+            .map_err(|error| json_error(::std::format!("invalid field `{}`: {}", #rename, error)))?,
         });
     }
 
@@ -169,6 +185,32 @@ fn expand(input: DeriveInput) -> syn::Result<proc_macro2::TokenStream> {
                     ::std::result::Result::Ok(::std::boxed::Box::new(
                         <Self as ::omniex::Parse>::parse(input, opts)?,
                     ))
+                },
+                parse_json: |input| {
+                    let json_error = |message: ::std::string::String| ::omniex::ParseError {
+                        kind: ::omniex::ParseErrorKind::Other,
+                        offset: 0,
+                        message,
+                    };
+                    let document: ::serde_json::Value = ::serde_json::from_str(input)
+                        .map_err(|error| json_error(error.to_string()))?;
+                    if document.get("schema").and_then(::serde_json::Value::as_str)
+                        != ::std::option::Option::Some("omniex.hash.v1")
+                    {
+                        return ::std::result::Result::Err(json_error(
+                            "unsupported JSON hash schema".to_owned(),
+                        ));
+                    }
+                    if document.get("type").and_then(::serde_json::Value::as_str)
+                        != ::std::option::Option::Some(#slug)
+                    {
+                        return ::std::result::Result::Err(json_error(
+                            ::std::format!("JSON hash type is not `{}`", #slug),
+                        ));
+                    }
+                    ::std::result::Result::Ok(::std::boxed::Box::new(Self {
+                        #(#json_fields)*
+                    }))
                 },
             };
         }

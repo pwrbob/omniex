@@ -4,7 +4,10 @@ use std::sync::Arc;
 
 use crate::extract::ReadAt;
 use crate::parse;
-use crate::{HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render, RenderOptions};
+use crate::{
+    Encoding, FromFieldValue, HashType, Parse, ParseError, ParseErrorKind, ParseOptions, Render,
+    RenderOptions,
+};
 
 /// Payload attached to a PKZIP hash.
 ///
@@ -50,6 +53,12 @@ impl From<String> for PkzipPayload {
 impl AsRef<[u8]> for PkzipPayload {
     fn as_ref(&self) -> &[u8] {
         self.as_str().as_bytes()
+    }
+}
+
+impl FromFieldValue for PkzipPayload {
+    fn from_field_value(value: &str, encoding: Encoding) -> Result<Self, String> {
+        String::from_field_value(value, encoding).map(Self::Owned)
     }
 }
 

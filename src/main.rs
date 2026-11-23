@@ -10,8 +10,9 @@ use std::process::ExitCode;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use omniex::extract;
+use omniex::json::{encoding_name, hash_document, role_name};
 use omniex::registry;
-use omniex::{Encoding, FieldRole, HashValue, Mode, ParseOptions, RenderOptions, Tool};
+use omniex::{FieldRole, HashValue, Mode, ParseOptions, RenderOptions, Tool};
 use serde_json::{Value, json};
 
 mod ui;
@@ -139,23 +140,32 @@ struct ExtractArgs {
 enum ToolArg {
     Hashcat,
     John,
+    Json,
 }
 
 impl ToolArg {
+    fn tool(self) -> Option<Tool> {
+        match self {
+            Self::Hashcat => Some(Tool::Hashcat),
+            Self::John => Some(Tool::John),
+            Self::Json => None,
+        }
+    }
+
     fn name(self) -> &'static str {
         match self {
             Self::Hashcat => "hashcat",
             Self::John => "john",
+            Self::Json => "json",
         }
     }
 }
 
 impl From<ToolArg> for Tool {
     fn from(value: ToolArg) -> Self {
-        match value {
-            ToolArg::Hashcat => Self::Hashcat,
-            ToolArg::John => Self::John,
-        }
+        value
+            .tool()
+            .expect("JSON output is handled by render_value")
     }
 }
 
@@ -349,30 +359,55 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
     let mut used_tools = Vec::new();
 
     for (line, text) in &lines {
-        let (descriptor, value) = match selected {
-            Some(descriptor) => (
-                descriptor,
-                registry::parse(descriptor, text, &parse_opts)
-                    .map_err(|error| line_error(*line, total, error.to_string()))?,
-            ),
-            None => {
-                let mut matches = matches(text, &parse_opts);
-                match matches.len() {
-                    0 => {
-                        return Err(CliError::Input(format!(
-                            "line {line}: no hash type matched `{text}`"
-                        )));
-                    }
-                    1 => matches.pop().expect("one match"),
-                    _ => {
-                        let candidates = matches
-                            .iter()
-                            .map(|(descriptor, _)| descriptor.slug)
-                            .collect::<Vec<_>>()
-                            .join(", ");
-                        return Err(CliError::Input(format!(
-                            "line {line}: ambiguous hash type (candidates: {candidates}); use --type"
-                        )));
+        let document = serde_json::from_str::<Value>(text)
+            .ok()
+            .filter(Value::is_object);
+        let (descriptor, value) = if let Some(document) = document {
+            let slug = document
+                .get("type")
+                .and_then(Value::as_str)
+                .ok_or_else(|| CliError::Input(format!("line {line}: JSON hash has no type")))?;
+            let descriptor = match selected {
+                Some(descriptor) if descriptor.slug == slug => descriptor,
+                Some(descriptor) => {
+                    return Err(CliError::Input(format!(
+                        "line {line}: JSON hash type `{slug}` does not match `{}`",
+                        descriptor.slug
+                    )));
+                }
+                None => registry::by_slug(slug).ok_or_else(|| {
+                    CliError::Input(format!("line {line}: unknown JSON hash type `{slug}`"))
+                })?,
+            };
+            let value = (descriptor.parse_json)(text)
+                .map_err(|error| line_error(*line, total, error.to_string()))?;
+            (descriptor, value)
+        } else {
+            match selected {
+                Some(descriptor) => (
+                    descriptor,
+                    registry::parse(descriptor, text, &parse_opts)
+                        .map_err(|error| line_error(*line, total, error.to_string()))?,
+                ),
+                None => {
+                    let mut matches = matches(text, &parse_opts);
+                    match matches.len() {
+                        0 => {
+                            return Err(CliError::Input(format!(
+                                "line {line}: no hash type matched `{text}`"
+                            )));
+                        }
+                        1 => matches.pop().expect("one match"),
+                        _ => {
+                            let candidates = matches
+                                .iter()
+                                .map(|(descriptor, _)| descriptor.slug)
+                                .collect::<Vec<_>>()
+                                .join(", ");
+                            return Err(CliError::Input(format!(
+                                "line {line}: ambiguous hash type (candidates: {candidates}); use --type"
+                            )));
+                        }
                     }
                 }
             }
@@ -380,7 +415,7 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
 
         match args.format {
             OutputFormat::Json => {
-                let (used, hash) = render_hash(tool, value.as_ref())
+                let (used, hash) = render_value(tool, descriptor, value.as_ref())
                     .map_err(|error| line_error(*line, total, error))?;
                 used_tools.push(used);
                 json_output.push(json!({
@@ -389,7 +424,6 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
                     "tool": used.name(),
                     "input": text,
                     "hash": hash,
-                    "fields": json_fields(value.as_ref()),
                 }));
             }
             OutputFormat::Human => {
@@ -403,9 +437,12 @@ fn run_parse(args: ParseArgs) -> Result<(), CliError> {
                 ));
             }
             OutputFormat::Hash => {
-                let (_, hash) = render_hash(tool, value.as_ref())
+                let (_, hash) = render_value(tool, descriptor, value.as_ref())
                     .map_err(|error| line_error(*line, total, error))?;
-                output.push(hash);
+                output.push(match hash {
+                    Value::String(hash) => hash,
+                    other => serde_json::to_string(&other).expect("JSON values always serialize"),
+                });
             }
         }
     }
@@ -575,9 +612,15 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
             let entries = outputs
                 .iter()
                 .map(|(slug, value)| {
-                    let (used, hash) = render_hash(tool, value.as_ref()).map_err(|error| {
-                        CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+                    let descriptor = registry::by_slug(slug).ok_or_else(|| {
+                        CliError::Input(format!("no descriptor registered for `{slug}`"))
                     })?;
+                    let (used, hash) =
+                        render_value(tool, descriptor, value.as_ref()).map_err(|error| {
+                            CliError::Input(format!(
+                                "cannot render extracted `{slug}` hash: {error}"
+                            ))
+                        })?;
                     used_tools.push(used);
                     Ok(json!({
                         "type": slug,
@@ -962,7 +1005,26 @@ fn write_hashes(
     let stdout = std::io::stdout();
     let mut out = std::io::BufWriter::new(stdout.lock());
     for (slug, value) in outputs {
-        if value.streams() {
+        if tool == Some(ToolArg::Json) {
+            if value.streams() {
+                return Err(CliError::Usage(format!(
+                    "extracted `{slug}` hash streams its payload and cannot be written as a JSON document"
+                )));
+            }
+            let descriptor = registry::by_slug(slug)
+                .ok_or_else(|| CliError::Input(format!("no descriptor registered for `{slug}`")))?;
+            let (_, hash) = render_value(tool, descriptor, value.as_ref()).map_err(|error| {
+                CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
+            })?;
+            let text = match hash {
+                Value::String(hash) => hash,
+                other => serde_json::to_string(&other).expect("JSON values always serialize"),
+            };
+            write_result(
+                out.write_all(text.as_bytes())
+                    .and_then(|()| out.write_all(b"\n")),
+            )?;
+        } else if value.streams() {
             let tool = preferred_tool(tool, value.as_ref()).map_err(|error| {
                 CliError::Input(format!("cannot render extracted `{slug}` hash: {error}"))
             })?;
@@ -1035,6 +1097,17 @@ fn render_hash(
         .map_err(|error| error.to_string())
 }
 
+fn render_value(
+    requested: Option<ToolArg>,
+    descriptor: &omniex::HashTypeDescriptor,
+    value: &dyn HashValue,
+) -> Result<(ToolArg, Value), String> {
+    if requested == Some(ToolArg::Json) {
+        return Ok((ToolArg::Json, hash_document(descriptor, value)));
+    }
+    render_hash(requested, value).map(|(tool, hash)| (tool, Value::String(hash)))
+}
+
 fn report_tool(requested: Option<ToolArg>, used: &[ToolArg]) -> &'static str {
     if let Some(tool) = requested {
         return tool.name();
@@ -1061,29 +1134,6 @@ fn json_fields(value: &dyn HashValue) -> Value {
             })
             .collect(),
     )
-}
-
-fn role_name(role: FieldRole) -> &'static str {
-    match role {
-        FieldRole::Salt => "salt",
-        FieldRole::Key => "key",
-        FieldRole::Digest => "digest",
-        FieldRole::Iv => "iv",
-        FieldRole::Ciphertext => "ciphertext",
-        FieldRole::Iterations => "iterations",
-        FieldRole::Username => "username",
-        FieldRole::Other => "other",
-    }
-}
-
-fn encoding_name(encoding: Encoding) -> &'static str {
-    match encoding {
-        Encoding::Raw => "raw",
-        Encoding::Hex => "hex",
-        Encoding::Base64 => "base64",
-        Encoding::Decimal => "decimal",
-        Encoding::Ascii => "ascii",
-    }
 }
 
 fn verbose_value(
@@ -1227,7 +1277,7 @@ fn accent_for(role: FieldRole) -> Option<ui::Accent> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use omniex::FieldValue;
+    use omniex::{Encoding, FieldValue};
 
     static FIELDS: [omniex::Field; 2] = [
         omniex::Field {

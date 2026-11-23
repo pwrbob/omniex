@@ -79,9 +79,10 @@ $gpg$*1*348*1024*aec9d969...*3*254*8*7*16*2271f718af70d3bd9d60c2aed9469b67*65536
 $gpg$*1*348*1024*724234ac...*3*254*8*7*16*7a128c1924dc3b71cf6ee96199db60b5*65536*cb18e77884f2f055
 ```
 
-`--format json` emits the same hashes as structured fields, and `--tool john`
-re-renders them for John instead of hashcat. If the artifact cannot be
-auto-detected, provide `--type <slug>` explicitly.
+`--tool john` re-renders hashes for John instead of hashcat, and `--tool json`
+emits a structured hash document. `--format json` wraps results in a versioned
+envelope. If the artifact cannot be auto-detected, provide `--type <slug>`
+explicitly.
 
 ## Core model
 
@@ -245,11 +246,12 @@ omniex parse --type salted-md5 3d83c8e717ff0e7ecfe187f088d69954:343141
 omniex parse --type md5crypt '$1$38652870$DUjsu4TTlTsOe/xxZ05uf/'
 ```
 
-Inspect fields explicitly, or emit machine-readable JSON:
+Inspect fields explicitly, emit a JSON envelope, or emit the JSON hash document:
 
 ```bash
 omniex parse --type salted-md5 3d83c8e717ff0e7ecfe187f088d69954:343141 --format human
 omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5 --format json
+omniex parse --type md5 8743b52063cd84097a65d1633f5c74f5 --format hash --tool json
 ```
 
 Emit only the rendered hash for a pipeline, optionally for John:
@@ -284,11 +286,13 @@ omniex identify < hashes.txt
 
 `--format human` renders a titled field view, truncating long parameters unless
 `--full` is passed. `--format json` emits a versioned envelope with
-`omniex_version`, `command`, `tool`, and `results`; each result carries the
-rendered hash and its fields. `show --json` still emits one descriptor object
-because it describes a single type. `--format hash` prints only the rendered
-hash for a pipeline. `--tool hashcat|john` chooses the serialization for `parse`
-and `extract`; it never changes how input is parsed.
+`omniex_version`, `command`, `tool`, and `results`. `show --json` still emits one
+descriptor object because it describes a single type. `--format hash` prints
+only the rendered hash for a pipeline. `--tool hashcat|john|json` chooses the
+serialization for `parse` and `extract`; it never changes how input is parsed.
+
+`parse` accepts hashcat, John, and `omniex.hash.v1` JSON documents as input.
+See [`internals/JSON.md`](internals/JSON.md) for both JSON schemas.
 
 ### Exit codes
 
@@ -349,8 +353,7 @@ need a full scan require `--type`.
 order. It conflicts with `--type`, never promotes possible-but-unconfirmed
 matches, and fails without partial output if any confident extractor fails.
 `--format json` emits a versioned envelope whose `results` entries contain
-`type`, `hash`, and `fields`, so mixed output keeps its type. The default
-`--format hash`
+`type` and `hash`, so mixed output keeps its type. The default `--format hash`
 remains one hash per line, deduplicated by type and rendered hash.
 `--format human` shows the artifact, rendered hash, and field table for each
 extracted value; `--full` disables truncation.
@@ -452,6 +455,7 @@ upstream project and `scripts/external-samples/README.md` documents the format.
 - [`internals/EXTRACTORS.md`](internals/EXTRACTORS.md) - registered extractors.
 - [`internals/DEVELOPMENT.md`](internals/DEVELOPMENT.md) - project goal, layout, and workflow.
 - [`internals/UNSUPPORTED_FORMATS.md`](internals/UNSUPPORTED_FORMATS.md) - formats outside mainline hashcat and John.
+- [`internals/JSON.md`](internals/JSON.md) - JSON hash documents and output envelopes.
 - [`internals/IDEAS.md`](internals/IDEAS.md) - features that are not implemented yet.
 - [`CHANGELOG.md`](CHANGELOG.md) - release history.
 - [`AGENTS.md`](AGENTS.md) - instructions for automated contributors.
