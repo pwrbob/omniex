@@ -213,6 +213,59 @@ fn extract_supports_human_output_and_validates_full() {
 }
 
 #[test]
+fn extract_reports_irm_protected_office_documents() {
+    let source = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures/artifacts/office/agile-2010.docx");
+    let mut data = std::fs::read(source).expect("read fixture");
+    let needle = "EncryptionInfo"
+        .encode_utf16()
+        .flat_map(u16::to_le_bytes)
+        .collect::<Vec<_>>();
+    let replacement = "EncryptionInfX"
+        .encode_utf16()
+        .flat_map(u16::to_le_bytes)
+        .collect::<Vec<_>>();
+    let offset = data
+        .windows(needle.len())
+        .position(|window| window == needle)
+        .expect("EncryptionInfo directory entry");
+    data[offset..offset + needle.len()].copy_from_slice(&replacement);
+
+    let path = std::path::Path::new(env!("CARGO_TARGET_TMPDIR")).join("irm.docx");
+    std::fs::write(&path, data).expect("write fixture");
+
+    omniex()
+        .arg("extract")
+        .arg(&path)
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains(
+            "Information Rights Management (IRM/Purview)",
+        ))
+        .stderr(predicate::str::contains("irm.docx").not());
+}
+
+#[test]
+fn extract_reports_certificate_encrypted_pdfs() {
+    let path = std::path::Path::new(env!("CARGO_TARGET_TMPDIR")).join("pubsec.pdf");
+    std::fs::write(
+        &path,
+        b"%PDF-1.7\n1 0 obj\n<< /Filter /Adobe.PubSec /SubFilter /adbe.pkcs7.s5 /V 5 /R 6 /Recipients [ ] >>\nendobj\ntrailer\n<< /Encrypt 1 0 R /ID [<00112233445566778899aabbccddeeff> <00112233445566778899aabbccddeeff>] >>\n%%EOF\n",
+    )
+    .expect("write fixture");
+
+    omniex()
+        .arg("extract")
+        .arg(&path)
+        .assert()
+        .code(1)
+        .stderr(predicate::str::contains(
+            "certificate encryption (Adobe.PubSec)",
+        ))
+        .stderr(predicate::str::contains("pubsec.pdf").not());
+}
+
+#[test]
 fn extract_reports_that_no_extractor_exists() {
     omniex()
         .args(["extract", "artifact.bin", "--type", "chacha20"])

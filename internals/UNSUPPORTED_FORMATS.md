@@ -71,6 +71,46 @@ or memory attack:
 - Android StrongBox, Keymaster, and Knox
 - Self-encrypting drives using Opal/TCG
 
+## Service- and certificate-bound encryption
+
+These files are encrypted, but the key is not derived from anything in the
+artifact. The content key has full entropy and is wrapped to a tenant key, a
+recipient certificate, or a vendor service, so there is no password verifier,
+salt, or spin count to attack and no hashcat or John mode to target. omniex
+recognizes the container and reports the handler instead of listing unrelated
+candidates.
+
+- **Office IRM / Microsoft Purview Information Protection** (formerly Azure
+  Information Protection and Rights Management Services). The file is an OLE
+  compound file with an Information Rights Management data space: an
+  `EncryptionInfo` stream is absent, `TransformInfo/DRMEncryptedTransform` holds
+  the XrML issuance license, and each authorized user has an `EUL-<id>` use
+  license. Content lives in `EncryptedPackage` or `\x09DRMContent` and is
+  AES-128 encrypted. The content key is RSA-wrapped to the user's Rights Account
+  Certificate and released by the RMS service under the file's policy. A cached
+  `EUL-` stream only helps a reader that already holds that user's private key.
+- **Office Extensible Encryption** (`EncryptionInfo` major 3 or 4, minor 3,
+  `fExternal` set). All cryptography is delegated to a COM provider identified
+  by GUID, and the provider data in the file is opaque. There is no key material
+  to extract.
+- **Office `CertificateKeyEncryptor`**. Agile-encrypted OOXML may wrap its
+  intermediate key to an X.509 public key instead of, or alongside, a password.
+  Recovering the key needs the matching private key, which is not in the file.
+- **PDF public-key encryption** (`/Filter /Adobe.PubSec`, `/SubFilter
+  /adbe.pkcs7.s3`, `/adbe.pkcs7.s4`, or `/adbe.pkcs7.s5`). The encryption
+  dictionary lists `/Recipients` as PKCS#7 envelopes; each recipient unwraps the
+  file key with its own private key. There is no password.
+- **PDF policy-server protection** (`/Filter /Adobe.APS`, the LiveCycle and
+  Adobe Experience Manager rights-management handler). The file key is released
+  by the policy server after an authenticated request.
+- **Third-party PDF handlers** (`/Filter /FileOpen`, `/LockLizard`, `/Vitrium`,
+  and other vendor names). The handler name identifies the product; the key
+  comes from that vendor's service or client.
+
+Password-protected OOXML and PDFs with the Standard handler remain extractable;
+the container is only reported as unsupported when the password-based transform
+is absent.
+
 ## Partial and variant gaps
 
 - **IPMI 2.0 RAKP HMAC-SHA256/384/512** - hashcat has MD5 and SHA1 only.
@@ -101,3 +141,6 @@ Argon2, scrypt, bcrypt, and yescrypt.
 - Zoho Vault provisioning analysis: <https://init6.me/zoho-story-of-where-not-to-store-keys/>
 - Elcomsoft supported formats: <https://www.elcomsoft.com/edpr.html>
 - Passware supported formats: <https://www.passware.com/>
+- Office Document Cryptography Structure, MS-OFFCRYPTO: <https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-offcrypto/>
+- Rights Management Services protocol, MS-RMPR: <https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-rmpr/>
+- qpdf PDF encryption chapter: <https://qpdf.readthedocs.io/en/stable/encryption.html>

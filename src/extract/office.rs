@@ -14,6 +14,15 @@ pub struct OfficeExtractor;
 
 const CFB_SIGNATURE: &[u8] = &[0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1];
 
+const IRM_MESSAGE: &str = "Office document is protected with Information Rights Management (IRM/Purview); the content key is released by the Rights Management service, not derived from a password";
+
+fn is_irm(cfb: &Cfb) -> bool {
+    !cfb.has_stream("EncryptionInfo")
+        && (cfb.has_stream("EncryptedPackage")
+            || cfb.has_stream_prefix("EUL-")
+            || cfb.has_stream("\u{9}DRMContent"))
+}
+
 fn attribute<'a>(node: Node<'a, 'a>, name: &str) -> Option<&'a str> {
     node.attributes()
         .find(|attribute| attribute.name() == name)
@@ -93,7 +102,7 @@ fn agile_hashes(xml: &str) -> Result<Vec<Office>, ExtractError> {
     }
     if hashes.is_empty() {
         return Err(ExtractError::Unsupported(
-            "Office EncryptionInfo has no password key encryptor".to_owned(),
+            "Office document is protected with a certificate key encryptor; the content key is wrapped to an X.509 key, not derived from a password".to_owned(),
         ));
     }
     Ok(hashes)
@@ -180,9 +189,14 @@ fn hashes(data: Vec<u8>) -> Result<Vec<Office>, ExtractError> {
         ));
     }
     let cfb = Cfb::parse(data)?;
-    let stream = cfb
-        .stream("EncryptionInfo")
-        .ok_or_else(|| ExtractError::Unsupported("missing EncryptionInfo stream".to_owned()))?;
+    let Some(stream) = cfb.stream("EncryptionInfo") else {
+        if is_irm(&cfb) {
+            return Err(ExtractError::Unsupported(IRM_MESSAGE.to_owned()));
+        }
+        return Err(ExtractError::Unsupported(
+            "missing EncryptionInfo stream".to_owned(),
+        ));
+    };
     if stream.len() < 8 {
         return Err(ExtractError::Invalid(
             "truncated EncryptionInfo stream".to_owned(),
@@ -203,7 +217,7 @@ fn hashes(data: Vec<u8>) -> Result<Vec<Office>, ExtractError> {
     }
     if flags == 16 {
         return Err(ExtractError::Unsupported(
-            "external Office cryptographic providers are not supported".to_owned(),
+            "Office document delegates decryption to an external COM provider; the key is not in the file".to_owned(),
         ));
     }
     Ok(vec![standard_hash(&stream[8..])?])
@@ -226,6 +240,7 @@ impl Extractor for OfficeExtractor {
             Ok(cfb) if cfb.has_stream("EncryptionInfo") => {
                 Probe::yes("OLE compound file with an EncryptionInfo stream")
             }
+            Ok(cfb) if is_irm(&cfb) => Probe::unsupported(IRM_MESSAGE),
             _ => Probe::No,
         }
     }

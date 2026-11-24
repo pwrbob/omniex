@@ -199,6 +199,10 @@ fn every_supported_fixture_auto_detects() {
                         tolerated += 1;
                     }
                 }
+                Selection::Unsupported(candidate) => failures.push(format!(
+                    "{label}: reported unsupported ({}) instead of {slug}",
+                    candidate.extractor.slug()
+                )),
                 Selection::None => failures.push(format!("{label}: no candidate")),
             }
         }

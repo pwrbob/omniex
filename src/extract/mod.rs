@@ -471,6 +471,8 @@ pub enum Probe {
     Maybe(String),
     /// The extractor is confident that it recognizes the artifact.
     Yes(String),
+    /// The extractor recognizes the artifact but no extractable hash exists.
+    Unsupported(String),
 }
 
 impl Probe {
@@ -486,12 +488,18 @@ impl Probe {
         Self::Yes(evidence.into())
     }
 
-    /// Returns the evidence or reason for a non-negative probe.
+    /// Builds an `Unsupported` probe with the reason no hash exists.
+    #[must_use]
+    pub fn unsupported(reason: impl Into<String>) -> Self {
+        Self::Unsupported(reason.into())
+    }
+
+    /// Returns the evidence or reason for a probe that is not `No`.
     #[must_use]
     pub fn reason(&self) -> Option<&str> {
         match self {
             Self::No => None,
-            Self::Maybe(reason) | Self::Yes(reason) => Some(reason),
+            Self::Maybe(reason) | Self::Yes(reason) | Self::Unsupported(reason) => Some(reason),
         }
     }
 }
@@ -553,6 +561,8 @@ pub enum Selection {
     Ambiguous(Vec<Candidate>),
     /// No extractor is confident, but some consider the artifact possible.
     Unconfirmed(Vec<Candidate>),
+    /// No extractor is confident, and one recognizes a format with no hash.
+    Unsupported(Candidate),
     /// No extractor recognized the artifact.
     None,
 }
@@ -560,11 +570,13 @@ pub enum Selection {
 /// Probes extractors and applies the auto-selection policy.
 ///
 /// `Unique` requires exactly one `Probe::Yes`. `Probe::Maybe` never selects an
-/// extractor automatically.
+/// extractor automatically. When nothing is confident, a recognized but
+/// unreachable format takes precedence over unconfirmed candidates.
 #[must_use]
 pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Selection {
     let mut confident = Vec::new();
     let mut possible = Vec::new();
+    let mut unsupported = Vec::new();
 
     for extractor in extractors {
         let artifact = artifact.bounded(PROBE_BUDGET);
@@ -578,14 +590,20 @@ pub fn select(extractors: &[&'static dyn Extractor], artifact: &Artifact) -> Sel
                 extractor: *extractor,
                 reason,
             }),
+            Probe::Unsupported(reason) => unsupported.push(Candidate {
+                extractor: *extractor,
+                reason,
+            }),
         }
     }
 
     match confident.len() {
         1 => Selection::Unique(confident[0].extractor),
+        _ if confident.len() > 1 => Selection::Ambiguous(confident),
+        0 if !unsupported.is_empty() => Selection::Unsupported(unsupported.remove(0)),
         0 if possible.is_empty() => Selection::None,
         0 => Selection::Unconfirmed(possible),
-        _ => Selection::Ambiguous(confident),
+        _ => unreachable!(),
     }
 }
 
@@ -1046,6 +1064,10 @@ mod tests {
         slug: "no",
         probe: || Probe::No,
     };
+    static UNSUPPORTED: Fake = Fake {
+        slug: "unsupported",
+        probe: || Probe::unsupported("key is not in the file"),
+    };
 
     fn artifact() -> Artifact {
         Artifact::from_bytes("test", (0..=9).collect::<Vec<u8>>())
@@ -1114,6 +1136,21 @@ mod tests {
             select(&[&NO, &MAYBE], &artifact),
             Selection::Unconfirmed(candidates)
                 if candidates[0].reason == "no signature"
+        ));
+    }
+
+    #[test]
+    fn select_prefers_a_recognized_unsupported_format() {
+        let artifact = artifact();
+
+        assert!(matches!(
+            select(&[&MAYBE, &UNSUPPORTED], &artifact),
+            Selection::Unsupported(candidate)
+                if candidate.reason == "key is not in the file"
+        ));
+        assert!(matches!(
+            select(&[&UNSUPPORTED, &YES_A], &artifact),
+            Selection::Unique(extractor) if extractor.slug() == "yes-a"
         ));
     }
 

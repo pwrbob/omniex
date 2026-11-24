@@ -533,6 +533,9 @@ fn run_extract(args: ExtractArgs) -> Result<(), CliError> {
                     format_candidates(&candidates)
                 )));
             }
+            extract::Selection::Unsupported(candidate) => {
+                return Err(CliError::Input(candidate.reason));
+            }
             extract::Selection::Unconfirmed(candidates) => {
                 return Err(CliError::Input(format!(
                     "artifact may match an extractor but has no reliable signature: {}; use --type",

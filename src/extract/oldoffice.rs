@@ -155,6 +155,17 @@ impl Cfb {
             .any(|entry| entry.kind == 2 && entry.name.eq_ignore_ascii_case(name))
     }
 
+    /// Returns whether a stream whose name starts with `prefix` exists.
+    pub(crate) fn has_stream_prefix(&self, prefix: &str) -> bool {
+        self.entries.iter().any(|entry| {
+            entry.kind == 2
+                && entry
+                    .name
+                    .get(..prefix.len())
+                    .is_some_and(|head| head.eq_ignore_ascii_case(prefix))
+        })
+    }
+
     /// Reads a stream by name.
     pub(crate) fn stream(&self, name: &str) -> Option<Vec<u8>> {
         let entry = self

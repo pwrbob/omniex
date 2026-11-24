@@ -79,7 +79,8 @@ raises the real requirement.
      checksum,
    - successful discovery of the exact packet or record needed for extraction.
    `Probe::Maybe` is for formats without reliable signatures and must require
-   `--type`. A filename or extension alone is never `Yes`. Return `No` for
+   `--type`. `Probe::Unsupported` reports a format whose key is not in the
+   artifact, so no hash exists to extract. A filename or extension alone is never `Yes`. Return `No` for
    unrelated input, and do not turn a permissive parser or a successful byte
    search into confident recognition. Override `Extractor::exact()` to return
    `false` when the extractor can only ever produce `Probe::Maybe`.

@@ -10,6 +10,9 @@ pub struct PdfExtractor;
 
 const ENCRYPTION_DICTIONARY_KEYS: [&[u8]; 4] = [b"V", b"R", b"O", b"U"];
 
+const NOT_PDF: &str = "not a PDF document";
+const MISSING_STANDARD: &str = "PDF has no Standard encryption dictionary";
+
 #[derive(Debug)]
 enum Value {
     Name(Vec<u8>),
@@ -50,6 +53,10 @@ impl Value {
         }
     }
 }
+
+type Dictionary = Vec<(Vec<u8>, Value)>;
+
+type EncryptionDictionary = (Option<Vec<u8>>, Dictionary);
 
 struct Parser<'a> {
     data: &'a [u8],
@@ -364,21 +371,44 @@ fn document_id(data: &[u8]) -> Option<Vec<u8>> {
     found
 }
 
-fn find_encryption_dictionaries(data: &[u8]) -> Vec<Vec<(Vec<u8>, Value)>> {
+fn find_encryption_dictionaries(data: &[u8]) -> Vec<EncryptionDictionary> {
     let mut dictionaries = Vec::new();
     let mut offset = 0;
     while offset + 1 < data.len() {
         if data[offset] == b'<' && data[offset + 1] == b'<' {
             let mut parser = Parser::new(data, offset);
             if let Ok(Value::Dictionary(entries)) = parser.parse_value(0)
-                && dictionary_value(&entries, b"Filter").and_then(Value::name) == Some(b"Standard")
+                && dictionary_value(&entries, b"V")
+                    .and_then(Value::integer)
+                    .is_some()
+                && dictionary_value(&entries, b"R")
+                    .and_then(Value::integer)
+                    .is_some()
+                && [b"O".as_slice(), b"U", b"Recipients", b"SubFilter", b"CF"]
+                    .iter()
+                    .any(|key| dictionary_value(&entries, key).is_some())
             {
-                dictionaries.push(entries);
+                let filter = dictionary_value(&entries, b"Filter")
+                    .and_then(Value::name)
+                    .map(<[u8]>::to_vec);
+                dictionaries.push((filter, entries));
             }
         }
         offset += 1;
     }
     dictionaries
+}
+
+fn unsupported_handler(filter: Option<&[u8]>) -> String {
+    match filter {
+        Some(name) if name == b"Adobe.PubSec" => "PDF uses certificate encryption (Adobe.PubSec); the file key is wrapped to recipient certificates, not derived from a password".to_owned(),
+        Some(name) if name == b"Adobe.APS" => "PDF uses Adobe policy-server protection (Adobe.APS); the file key is released by the Adobe service, not derived from a password".to_owned(),
+        Some(name) => format!(
+            "PDF uses the `{}` security handler, which is not password-based; only the Standard handler can be extracted",
+            String::from_utf8_lossy(name)
+        ),
+        None => MISSING_STANDARD.to_owned(),
+    }
 }
 
 fn required_integer(entries: &[(Vec<u8>, Value)], key: &[u8]) -> Result<i64, ExtractError> {
@@ -486,13 +516,19 @@ fn parse(artifact: &Artifact) -> Result<Vec<Pdf>, ExtractError> {
         .windows(5)
         .any(|window| window == b"%PDF-")
     {
-        return Err(ExtractError::Unsupported("not a PDF document".to_owned()));
+        return Err(ExtractError::Unsupported(NOT_PDF.to_owned()));
     }
     let dictionaries = find_encryption_dictionaries(&data);
-    if dictionaries.is_empty() {
-        return Err(ExtractError::Unsupported(
-            "PDF has no Standard encryption dictionary".to_owned(),
-        ));
+    let standard = dictionaries
+        .iter()
+        .filter(|(filter, _)| filter.as_deref() == Some(b"Standard".as_slice()))
+        .map(|(_, entries)| entries)
+        .collect::<Vec<_>>();
+    if standard.is_empty() {
+        return Err(ExtractError::Unsupported(match dictionaries.first() {
+            Some((filter, _)) => unsupported_handler(filter.as_deref()),
+            None => MISSING_STANDARD.to_owned(),
+        }));
     }
     let id = document_id(&data)
         .ok_or_else(|| ExtractError::Invalid("PDF trailer has no document ID".to_owned()))?;
@@ -500,7 +536,7 @@ fn parse(artifact: &Artifact) -> Result<Vec<Pdf>, ExtractError> {
     let mut seen = HashSet::new();
     let mut hashes = Vec::new();
     let mut first_error = None;
-    for entries in &dictionaries {
+    for entries in standard {
         if !ENCRYPTION_DICTIONARY_KEYS
             .iter()
             .all(|key| dictionary_value(entries, key).is_some())
@@ -556,10 +592,12 @@ impl Extractor for PdfExtractor {
             Ok(hashes) if !hashes.is_empty() => Probe::yes("PDF Standard encryption dictionary"),
             Ok(_) => Probe::No,
             Err(ExtractError::Unsupported(reason))
-                if reason == "not a PDF document"
-                    || reason == "PDF has no Standard encryption dictionary" =>
+                if reason == NOT_PDF || reason == MISSING_STANDARD =>
             {
                 Probe::No
+            }
+            Err(ExtractError::Unsupported(reason)) if reason.starts_with("PDF uses ") => {
+                Probe::unsupported(reason)
             }
             Err(error) => Probe::maybe(error.to_string()),
         }
