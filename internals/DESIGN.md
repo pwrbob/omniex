@@ -259,6 +259,14 @@ omniex extract <artifact> [--type <slug>|--all] [--format human|hash|json] [--to
   `show --json` keeps emitting one descriptor object.
 - `parse --format hash` prints only the rendered hash, which keeps it usable in
   a pipeline.
+- Shell completion is environment-activated, not a subcommand. With
+  `COMPLETE=<shell>` set, `omniex` writes a completion script for that shell
+  (bash, zsh, fish, elvish, powershell) and exits 0; the script is sourced at
+  shell startup and re-invokes the binary at completion time, so candidates
+  always match the installed build. With `COMPLETE` unset or set to `0`, the
+  CLI is unchanged. Candidates come from the same command definition, the
+  registry's slugs for `--type` and `show`, and `ValueHint::FilePath` for
+  artifact and `--file` arguments. An unknown shell name is a usage error.
 
 ## Extraction
 

@@ -34,6 +34,7 @@ categories.workspace = true
 base64 = "0.22"
 byteorder = "1"
 clap = { version = "4", features = ["derive"] }
+clap_complete = { version = "=4.6.7", features = ["unstable-dynamic"] }
 comfy-table = "7"
 hex = "0.4"
 lzma-rs = { version = "0.3", features = ["raw_decoder"] }

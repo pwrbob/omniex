@@ -7,6 +7,12 @@ version is zero, a minor release may change the CLI or a serialization.
 
 ## [Unreleased]
 
+- Shell completion is activated by the environment instead of a subcommand:
+  sourcing `COMPLETE=bash omniex` (also `zsh`, `fish`, `elvish`,
+  `powershell`) installs a script that the binary itself generates and answers
+  at completion time. It completes subcommands and flags, registered hash
+  type slugs for `--type` and `show`, and file paths for artifacts and
+  `--file`. `COMPLETE=0` disables the engine.
 - The completed hashcat and John mode checklist is gone. The registry and its
   conformance vectors are now the only record of mode coverage, and the README
   badges are checked against fixed upstream mode counts.

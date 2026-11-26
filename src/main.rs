@@ -8,7 +8,8 @@ use std::io::{IsTerminal, Read, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use clap::{Args, Parser, Subcommand, ValueEnum};
+use clap::{Args, CommandFactory as _, Parser, Subcommand, ValueEnum, ValueHint};
+use clap_complete::{ArgValueCandidates, CompleteEnv, CompletionCandidate};
 use omniex::extract;
 use omniex::registry;
 use omniex::{Encoding, FieldRole, HashValue, Mode, ParseOptions, RenderOptions, Tool};
@@ -48,7 +49,12 @@ struct InputArgs {
     hash: Option<String>,
 
     /// Read one hash per line from a file.
-    #[arg(long, value_name = "FILE", conflicts_with = "hash")]
+    #[arg(
+        long,
+        value_name = "FILE",
+        value_hint = ValueHint::FilePath,
+        conflicts_with = "hash"
+    )]
     file: Option<PathBuf>,
 }
 
@@ -58,7 +64,11 @@ struct ParseArgs {
     input: InputArgs,
 
     /// Hash type slug.
-    #[arg(long = "type", value_name = "SLUG")]
+    #[arg(
+        long = "type",
+        value_name = "SLUG",
+        add = ArgValueCandidates::new(slug_candidates)
+    )]
     type_slug: Option<String>,
 
     /// Output format.
@@ -94,6 +104,7 @@ struct TypesArgs {
 #[derive(Args)]
 struct ShowArgs {
     /// Hash type slug.
+    #[arg(value_name = "SLUG", add = ArgValueCandidates::new(slug_candidates))]
     slug: String,
 
     /// Print one JSON object.
@@ -104,10 +115,16 @@ struct ShowArgs {
 #[derive(Args)]
 struct ExtractArgs {
     /// Artifact to extract from.
+    #[arg(value_hint = ValueHint::FilePath)]
     artifact: PathBuf,
 
     /// Hash type slug.
-    #[arg(long = "type", value_name = "SLUG", conflicts_with = "all")]
+    #[arg(
+        long = "type",
+        value_name = "SLUG",
+        conflicts_with = "all",
+        add = ArgValueCandidates::new(slug_candidates)
+    )]
     type_slug: Option<String>,
 
     /// Extract every hash type that confidently matches.
@@ -184,6 +201,10 @@ impl CliError {
 }
 
 fn main() -> ExitCode {
+    // Must run before any stdout write: with COMPLETE set it answers the
+    // completion request and exits, otherwise it is a no-op.
+    CompleteEnv::with_factory(Cli::command).complete();
+
     let cli = Cli::parse();
 
     match run(cli) {
@@ -643,6 +664,15 @@ fn select_type(
             .ok_or_else(|| CliError::Usage(format!("unknown hash type `{slug}`")))
     })
     .transpose()
+}
+
+fn slug_candidates() -> Vec<CompletionCandidate> {
+    registry::all()
+        .iter()
+        .map(|descriptor| {
+            CompletionCandidate::new(descriptor.slug).help(Some(descriptor.name.into()))
+        })
+        .collect()
 }
 
 fn matches(
